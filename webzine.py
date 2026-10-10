@@ -880,10 +880,10 @@ function run(){
     .map(d=>({d,score:terms.reduce((a,t)=>a+(d.ht.includes(t)?10:1),0)}))
     .sort((a,b)=>b.score-a.score||b.d.ts-a.d.ts).slice(0,60);
   $("#sc").textContent=hits.length?`"${q}" 검색 결과 ${hits.length}건`:`"${q}"에 대한 결과가 없습니다.`;
-  $("#res").innerHTML=hits.map(({d})=>`<a class="sr-item ${d.img?"hi":""}" href="a/${esc(d.id)}.html"><span class="tm">${fmt(d.ts)}</span>
+  $("#res").innerHTML=hits.map(({d})=>`<a class="sr-item" href="a/${esc(d.id)}.html"><span class="tm">${fmt(d.ts)}</span>
    <div><div class="meta"><span class="b ${esc(d.tr)}">${esc(d.tr)}</span><span>${esc(d.c)}</span>${d.p.map(x=>`<span>${esc(x)}</span>`).join("")}</div>
    <div class="t">${hl(d.t,terms)}</div><div class="s">${hl(d.s,terms)}</div></div>
-   ${d.img?`<img class="th" src="${esc(d.img)}" alt="" loading="lazy">`:""}</a>`).join("");
+   </a>`).join("");
   document.querySelectorAll("#res a").forEach((el,i)=>{el.animate([{opacity:0,transform:"translateY(10px)"},{opacity:1,transform:"none"}],{duration:350,delay:Math.min(i,10)*30,easing:"cubic-bezier(.2,.7,.2,1)",fill:"backwards"})});
 }
 let tm;$("#q").addEventListener("input",()=>{clearTimeout(tm);tm=setTimeout(run,120)});
@@ -962,20 +962,19 @@ def build():
 
     recent = [a for a in articles if time.time() - a["ts"] < 86400] or articles
     top = sorted(recent, key=lambda a: (-len(a["sources"]), a["trust"] != "공식", -a["ts"]))[:5]
-    lead = next((a for a in top if a.get("img")), None)
+    lead = None  # 뉴스 목록에는 이미지 없이, 이미지는 기사 안에서만
     lead_html = (f'<a class="lead" href="a/{lead["id"]}.html"><img src="{esc(lead["img"])}" alt=""><div class="lc">{meta(lead)}'
                  f'<div class="t"><span>{esc(lead["title"])}</span></div><div class="w">{esc(lead.get("why"))}</div></div></a>'
                  ) if lead else ""
     top = [a for a in top if a is not lead]
     ticker = "".join(f'<a href="a/{a["id"]}.html"><b>{fmt_time(a["ts"])[6:]}</b>{esc(a["title"])}</a>' for a in articles[:12])
-    brief = "".join(f'<a href="a/{a["id"]}.html" class="{"hi" if a.get("img") else ""}"><div>{meta(a)}'
+    brief = "".join(f'<a href="a/{a["id"]}.html"><div>{meta(a)}'
                     f'<div class="t">{esc(a["title"])}</div><div class="w">{esc(a.get("why"))}</div></div>'
-                    + (f'<img class="th" src="{esc(a["img"])}" alt="" loading="lazy">' if a.get("img") else "") + '</a>'
+                    + "</a>"
                     for a in top)
-    stream = "".join(f'<a href="a/{a["id"]}.html" class="{"hi" if a.get("img") else ""}" data-c="{esc(a.get("category"))}" '
+    stream = "".join(f'<a href="a/{a["id"]}.html" data-c="{esc(a.get("category"))}" '
                      f'data-p="{esc(" ".join(a.get("platforms", [])))}"><span class="tm">{fmt_time(a["ts"])[6:]}</span>'
                      f'<div>{meta(a)}<div class="t">{"<span class=new>NEW</span>" if time.time() - a["ts"] < 3 * 3600 else ""}{esc(a["title"])}</div></div>'
-                     + (f'<img class="th" src="{esc(a["img"])}" alt="" loading="lazy">' if a.get("img") else "")
                      + '</a>' for a in articles[:100])
     filters = "".join(f'<button data-f="{f}">{f}</button>' for f in ["PC", "PS5", "Xbox", "Switch"] + CATEGORIES[:-1])
     index = page("알트탭 ALT+TAB — 업무 중 잠깐, 게임 소식 3줄", f"""
