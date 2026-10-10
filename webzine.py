@@ -536,7 +536,11 @@ font:16px/1.65 "Pretendard",-apple-system,"Segoe UI","Malgun Gothic",sans-serif}
 a{color:inherit;text-decoration:none}.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
 header{border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:5}
 header .wrap{display:flex;align-items:center;gap:20px;height:56px}
-.logo{font-weight:900;font-size:20px;letter-spacing:-.5px}.logo b{color:var(--acc)}
+.logo{display:flex;align-items:center;gap:4px;flex:none}
+.logo kbd{font:800 13px/1 ui-monospace,Consolas,monospace;letter-spacing:.5px;padding:6px 8px 7px;border:1px solid var(--fg);
+border-bottom-width:3px;border-radius:6px;background:var(--card);color:var(--fg)}
+.logo kbd:last-child{background:var(--acc);color:#fff;border-color:#a8282c}
+.logo i{font-style:normal;color:var(--mut);font-weight:700}
 nav{display:flex;gap:6px;overflow-x:auto}nav button{border:1px solid var(--line);background:none;color:var(--mut);
 border-radius:99px;padding:4px 12px;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}
 nav button.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
@@ -589,7 +593,7 @@ def page(title, body):
     return f"""<!doctype html><html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)}</title>
 <style>{CSS}</style>{ads_head()}</head><body>
-<header><div class="wrap"><a class="logo" href="{{root}}index.html">PRESS<b>START</b></a>
+<header><div class="wrap"><a class="logo" href="{{root}}index.html" aria-label="알트탭"><kbd>ALT</kbd><i>+</i><kbd>TAB</kbd></a>
 <div class="gnb"><a href="{{root}}index.html">뉴스</a><a href="{{root}}patches.html">패치노트</a><a href="{{root}}calendar.html">출시 캘린더</a></div></div></header>
 <div class="wrap">{body}</div><footer><div><a href="{{root}}about.html">소개</a><a href="{{root}}privacy.html">개인정보처리방침</a><a href="{{root}}contact.html">문의</a></div>
 <p>AI가 공개 출처를 종합해 작성하고 팩트체크를 거친 기사입니다 · 원문은 각 기사 하단 출처 참고</p></footer></body></html>"""
@@ -611,14 +615,14 @@ def ad(slot_env):
             f'<script>(adsbygoogle=window.adsbygoogle||[]).push({{}});</script></div>')
 
 
-SITE_NAME = "PRESS START"
+SITE_NAME = "알트탭"
 
 
 def static_pages():
     email = os.environ.get("CONTACT_EMAIL") or "contact@example.com"
     today = datetime.now().strftime("%Y년 %m월 %d일")
     pages = {
-        "about": ("소개", f"""<p>{SITE_NAME}는 PC·콘솔 게이머를 위한 게임 뉴스 브리핑입니다.</p>
+        "about": ("소개", f"""<p>{SITE_NAME}(ALT+TAB)은 업무 중 잠깐 Alt+Tab 하듯 확인하는 PC·콘솔 게이머를 위한 게임 뉴스 브리핑입니다.</p>
 <p>공식 발표와 국내외 게임 매체의 보도를 수집해, 같은 소식을 하나의 이슈로 묶고 핵심 요약과
 "왜 중요한가"를 붙여 전달합니다. 기사는 AI가 여러 출처를 종합해 작성하며, 별도의 팩트체크 단계에서
 출처와 대조합니다. 루머성 소식은 편집자 검수를 거친 뒤에만 게시됩니다.</p>
@@ -626,7 +630,7 @@ def static_pages():
 <li><b>확인</b> — 2개 이상의 매체가 보도</li><li><b>루머</b> — 단일 매체 보도, 유출, 소문</li></ul>
 <p>모든 기사 하단에 원문 출처 링크를 제공합니다. 오류 제보는 <a href="contact.html">문의</a>로 보내주세요.</p>"""),
         "privacy": ("개인정보처리방침", f"""<p>시행일: {today}</p>
-<p>{SITE_NAME}(이하 "사이트")는 회원가입 없이 이용할 수 있으며, 이용자의 이름·연락처 등 개인정보를 직접 수집하지 않습니다.</p>
+<p>{SITE_NAME}(이하 "사이트")은 회원가입 없이 이용할 수 있으며, 이용자의 이름·연락처 등 개인정보를 직접 수집하지 않습니다.</p>
 <h2>쿠키 및 광고</h2><p>사이트는 Google AdSense 광고를 게재할 수 있습니다. Google을 포함한 제3자 공급업체는 쿠키를 사용하여
 이용자의 이전 방문 기록을 바탕으로 광고를 게재합니다. Google의 광고 쿠키 사용으로 Google 및 파트너는 이 사이트 및
 다른 사이트 방문 정보를 기반으로 광고를 제공할 수 있습니다.</p>
@@ -855,7 +859,7 @@ def build():
                        for s in a["sources"])
         note = "※ 아직 번역·재작성되지 않은 원문 요약입니다." if a.get("untranslated") else \
             f"이 기사는 AI가 출처 {len(a['sources'])}건을 종합해 작성했습니다. 사실관계는 출처를 확인하세요."
-        html_ = page(a["title"], f"""<article>{meta(a)}<h1>{esc(a["title"])}</h1>
+        html_ = page(a["title"] + " — " + SITE_NAME, f"""<article>{meta(a)}<h1>{esc(a["title"])}</h1>
 {f'<figure class="hero"><img src="{esc(a["img"])}" alt=""><figcaption>이미지: Steam 스토어</figcaption></figure>' if a.get("img") else ''}
 {f'<div class="tldr"><ul>{tldr}</ul></div>' if tldr else ''}
 {f'<p class="why">{esc(a["why"])}</p>' if a.get("why") else ''}
@@ -874,7 +878,7 @@ def build():
                      + (f'<img class="th" src="{esc(a["img"])}" alt="" loading="lazy">' if a.get("img") else "")
                      + '</a>' for a in articles[:100])
     filters = "".join(f'<button data-f="{f}">{f}</button>' for f in ["PC", "PS5", "Xbox", "Switch"] + CATEGORIES[:-1])
-    index = page("PRESS START — 게임 브리핑", f"""
+    index = page("알트탭 ALT+TAB — 업무 중 잠깐, 게임 소식 3줄", f"""
 <h2 class="sec">오늘의 브리핑</h2><div class="brief">{brief or '<p>아직 기사가 없습니다.</p>'}</div>
 {ad("ADSENSE_SLOT_HOME")}<h2 class="sec">최신 소식</h2><nav><button class="on" data-f="">전체</button>{filters}</nav>
 <div class="stream" id="st" style="margin-top:12px">{stream}</div>
