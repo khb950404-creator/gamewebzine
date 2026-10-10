@@ -1,0 +1,66 @@
+name: webzine
+
+on:
+  schedule:
+    - cron: "0 */3 * * *"   # 3시간마다 수집·작성 (UTC 기준, 실제 실행은 몇 분 늦을 수 있음)
+  push:
+    branches: [main]        # 검수 승인/거절을 push 하면 사이트만 다시 빌드
+  workflow_dispatch:         # Actions 탭에서 수동 실행
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: webzine
+  cancel-in-progress: false
+
+env:
+  TZ: Asia/Seoul
+  LLM: gemini
+  GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+  MAX_ARTICLES: ${{ vars.MAX_ARTICLES || '8' }}
+  REVIEW_ALL: ${{ vars.REVIEW_ALL || '0' }}
+  CONTACT_EMAIL: ${{ vars.CONTACT_EMAIL }}
+  ADSENSE_CLIENT: ${{ vars.ADSENSE_CLIENT }}
+  ADSENSE_SLOT_HOME: ${{ vars.ADSENSE_SLOT_HOME }}
+  ADSENSE_SLOT_ARTICLE: ${{ vars.ADSENSE_SLOT_ARTICLE }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 수집·기사 작성
+        if: github.event_name != 'push'
+        run: python webzine.py || echo "작성 단계 실패 — 기존 기사로 빌드만 진행"
+
+      - name: 사이트 빌드
+        run: python webzine.py build
+
+      - name: 데이터 커밋
+        if: github.event_name != 'push'
+        run: |
+          git config user.name "webzine-bot"
+          git config user.email "webzine-bot@users.noreply.github.com"
+          git add data
+          git diff --cached --quiet || (git commit -m "새 기사 $(date '+%m-%d %H:%M')" && git pull --rebase && git push)
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
