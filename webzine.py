@@ -325,17 +325,32 @@ def norm(s):
     return re.sub(r"[^0-9a-z가-힣]", "", (s or "").lower().replace("&", "and"))
 
 
+def steam_info(d):
+    langs = d.get("supported_languages") or ""
+    ko = "한국어" in langs or "Korean" in langs
+    ko_voice = bool(re.search(r"(한국어|Korean)<strong>\*</strong>", langs))
+    price = d.get("price_overview") or {}
+    return {"date": (d.get("release_date") or {}).get("date", ""),
+            "soon": (d.get("release_date") or {}).get("coming_soon", False),
+            "genres": [g["description"] for g in d.get("genres", [])][:3],
+            "dev": (d.get("developers") or [""])[0], "pub": (d.get("publishers") or [""])[0],
+            "ko": ko, "ko_voice": ko_voice,
+            "price": "무료" if d.get("is_free") else price.get("final_formatted", ""),
+            "discount": price.get("discount_percent", 0),
+            "meta": (d.get("metacritic") or {}).get("score")}
+
+
 def steam_app(appid, cache):
     """appid → {name, img}. data/steam_apps.json 에 캐시."""
     key = f"id:{appid}"
-    if key not in cache or (cache[key] and "hd" not in cache[key]):  # 예전 캐시엔 고해상도 주소가 없음
+    if key not in cache or (cache[key] and "info" not in cache[key]):  # 예전 캐시엔 상세 정보가 없음
         try:
             d = get_json(f"https://store.steampowered.com/api/appdetails?appids={appid}&cc=kr&l=koreana")[str(appid)]
             d = d.get("data") if d.get("success") else None
             # hd: 첫 번째 공식 스크린샷(1920x1080) — 기사 대표 이미지용
             shots = (d or {}).get("screenshots") or [{}]
             cache[key] = {"appid": appid, "name": d["name"], "img": d.get("header_image"),
-                          "hd": shots[0].get("path_full") or d.get("header_image")} if d else None
+                          "hd": shots[0].get("path_full") or d.get("header_image"), "info": steam_info(d)} if d else None
             time.sleep(0.3)
         except Exception:
             return None
@@ -568,7 +583,24 @@ border-radius:12px;padding:16px 18px}.brief a:hover{border-color:var(--mut)}
 .stream{border-top:1px solid var(--line)}.stream a{display:grid;grid-template-columns:64px 1fr;gap:12px;
 padding:12px 0;border-bottom:1px solid var(--line)}.stream .tm{color:var(--mut);font-size:13px;font-variant-numeric:tabular-nums}
 .stream .t{font-weight:600}
-article{max-width:680px;margin:40px auto}article h1{font-size:30px;line-height:1.3;letter-spacing:-.6px;margin:8px 0 20px}
+article{max-width:680px;margin:40px auto}
+.apage{display:grid;grid-template-columns:minmax(0,680px) 300px;gap:48px;justify-content:center}.apage article{margin:40px 0;max-width:none}
+.side{margin:40px 0;display:flex;flex-direction:column;gap:16px}.side>div{position:relative}
+.sbx{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.sbx h3{font-size:12px;letter-spacing:1px;color:var(--mut);margin:0 0 10px;font-weight:700}
+.sbx ul{list-style:none;margin:0;padding:0}.sbx li{padding:7px 0;border-top:1px solid var(--line);font-size:14px;line-height:1.45}
+.sbx li:first-child{border-top:0;padding-top:0}.sbx li a:hover{color:var(--acc)}.sbx .m{font-size:12px;color:var(--mut)}
+.gcard img{width:calc(100% + 32px);margin:-14px -16px 12px;display:block;border-radius:12px 12px 0 0;aspect-ratio:460/215;object-fit:cover}
+.gcard .n{font-weight:800;font-size:16px;margin-bottom:8px}.gcard dl{display:grid;grid-template-columns:64px 1fr;gap:5px 8px;margin:0;font-size:13px}
+.gcard dt{color:var(--mut)}.gcard dd{margin:0}.kb{display:inline-block;font-size:11px;font-weight:700;border:1px solid var(--ok);color:var(--ok);border-radius:4px;padding:0 5px;margin-right:4px}
+.kb.no{border-color:var(--line);color:var(--mut)}.gbtn{display:block;text-align:center;margin-top:12px;padding:8px;border-radius:8px;background:var(--fg);color:var(--bg);font-size:13px;font-weight:700}
+.gbtn:hover{opacity:.85}.disc{color:#fff;background:var(--ok);border-radius:4px;padding:0 5px;font-size:12px;margin-right:4px}
+.relx{margin-top:40px}.relx .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.relx a{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;transition:transform .25s,border-color .25s}
+.relx a:hover{transform:translateY(-3px);border-color:var(--mut)}.relx .t{font-weight:700;line-height:1.4}
+@media(min-width:1081px){.side .sticky{position:sticky;top:76px}}
+@media(max-width:1080px){.apage{grid-template-columns:minmax(0,680px);gap:0}.apage article{margin-bottom:0}.side{margin-top:32px}}
+@media(max-width:640px){.relx .grid{grid-template-columns:1fr}}article h1{font-size:30px;line-height:1.3;letter-spacing:-.6px;margin:8px 0 20px}
 .tldr{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--acc);border-radius:8px;padding:14px 18px}
 .tldr ul{margin:0;padding-left:18px}.why{font-weight:600;margin:20px 0}
 .src{margin-top:32px;font-size:14px;border-top:1px solid var(--line);padding-top:16px}.src a{text-decoration:underline}
@@ -1009,11 +1041,87 @@ const t=document.getElementById('today');if(t)t.scrollIntoView({{block:'start'}}
         encoding="utf-8")
 
 
+REL_STOP = set("출시 공개 발표 업데이트 신작 게임 예정 추가 기념 진행 소식 정보 관련 버전 시리즈 이번 위한".split())
+
+
+def rel_keys(a):
+    games = {norm(g) for g in (a.get("games_en") or []) + (a.get("games") or []) if norm(g)}
+    words = {w for w in re.findall(r"[0-9A-Za-z가-힣]{2,}", a["title"].lower()) if w not in REL_STOP}
+    return games, words
+
+
+def related(a, pool, n=4):
+    ga, wa = rel_keys(a)
+    scored = []
+    for b in pool:
+        if b["id"] == a["id"]:
+            continue
+        gb, wb = rel_keys(b)
+        sc = (6 if a.get("appid") and a.get("appid") == b.get("appid") else 0) + 4 * len(ga & gb) + len(wa & wb)
+        if sc >= 2:
+            scored.append((sc + (0.5 if a.get("category") == b.get("category") else 0), b))
+    return [b for _, b in sorted(scored, key=lambda x: (-x[0], -x[1]["ts"]))[:n]]
+
+
+def related_html(a, pool):
+    rel = related(a, pool)
+    if not rel:
+        return ""
+    return ('<section class="relx"><h2 class="sec">관련 기사</h2><div class="grid">' + "".join(
+        f'<a href="{b["id"]}.html">{meta(b)}<div class="t">{esc(b["title"])}</div></a>' for b in rel) + "</div></section>")
+
+
+def sidebar_html(a, pool, apps, patches, cal):
+    boxes = []
+    app = apps.get(f"id:{a.get('appid')}") if a.get("appid") else None
+    if app and app.get("info"):
+        i = app["info"]
+        ko = (f'<span class="kb">자막</span>' if i["ko"] else '<span class="kb no">한국어 미지원</span>') + \
+             ('<span class="kb">음성</span>' if i["ko_voice"] else "")
+        price = (f'<span class="disc">-{i["discount"]}%</span>' if i.get("discount") else "") + esc(i.get("price") or "")
+        rows = [("출시", esc(i["date"]) + (" (예정)" if i.get("soon") else "")), ("장르", esc(", ".join(i["genres"]))),
+                ("개발", esc(i["dev"])), ("배급", esc(i["pub"]) if i["pub"] != i["dev"] else ""), ("한국어", ko),
+                ("가격", price), ("메타", str(i["meta"]) if i.get("meta") else "")]
+        boxes.append(f'<div class="sbx gcard"><img src="{esc(app["img"])}" alt="" loading="lazy"><div class="n">{esc(app["name"])}</div>'
+                     f'<dl>{"".join(f"<dt>{k}</dt><dd>{v}</dd>" for k, v in rows if v)}</dl>'
+                     f'<a class="gbtn" href="https://store.steampowered.com/app/{app["appid"]}" target="_blank" rel="noopener">Steam에서 보기</a></div>')
+    gp = [x for x in patches if a.get("appid") and x["appid"] == a.get("appid")][:3]
+    if gp:
+        boxes.append('<div class="sbx"><h3>이 게임 최근 패치</h3><ul>' + "".join(
+            f'<li><a href="../patches.html">{esc(x.get("title"))}</a><div class="m">{fmt_time(x["ts"])}</div></li>' for x in gp) + "</ul></div>")
+    today = datetime.now().strftime("%Y-%m-%d")
+    up = sorted([r for r in cal if r["date"] >= today], key=lambda r: (r["date"], not r.get("img")))
+    seen, up5 = set(), []
+    for r in up:  # 하루에 몰리지 않게 날짜별 1개씩
+        if r["date"] not in seen:
+            seen.add(r["date"]); up5.append(r)
+        if len(up5) == 5:
+            break
+    if up5:
+        boxes.append('<div class="sbx"><h3>다가오는 출시</h3><ul>' + "".join(
+            f'<li><a href="../calendar.html">{esc(r["title"])}</a><div class="m">{int(r["date"][5:7])}.{int(r["date"][8:])} · '
+            f'{esc(" · ".join(r["platforms"][:3]))}</div></li>' for r in up5) + "</ul></div>")
+    latest = [b for b in pool if b["id"] != a["id"]][:5]
+    if latest:
+        boxes.append('<div class="sbx"><h3>최신 기사</h3><ul>' + "".join(
+            f'<li><a href="{b["id"]}.html">{esc(b["title"])}</a><div class="m">{fmt_time(b["ts"])}</div></li>' for b in latest)
+            + "</ul></div>")
+    if not boxes:
+        return ""
+    # 첫 박스(게임 정보)는 스크롤해도 따라오게
+    if "gcard" in boxes[0]:
+        return f'<aside class="side"><div class="sticky">{boxes[0]}</div>{"".join(boxes[1:])}</aside>'
+    return f'<aside class="side">{"".join(boxes)}</aside>'
+
+
 def build():
     every = sorted(load_json(DATA / "articles.json", []), key=lambda a: -a["ts"])
     articles = [a for a in every if a.get("status", "published") == "published"]
     pending = [a for a in every if a.get("status") == "pending"]
     (SITE / "a").mkdir(parents=True, exist_ok=True)
+    apps = load_json(DATA / "steam_apps.json", {})
+    patches = [x for x in load_json(DATA / "patches.json", []) if not x.get("skip")]
+    cal = load_json(DATA / "calendar.json", {"releases": []})["releases"]
     for a in articles + pending:
         tldr = "".join(f"<li>{esc(t)}</li>" for t in a.get("tldr", []))
         body = "".join(f"<p>{esc(p)}</p>" for p in a.get("body", []))
@@ -1030,11 +1138,11 @@ def build():
               "mainEntityOfPage": site_url() + f"a/{a['id']}.html", "inLanguage": "ko",
               "author": {"@type": "Organization", "name": SITE_NAME}, "publisher": {"@type": "Organization", "name": SITE_NAME},
               **({"image": [img]} if img else {})}
-        html_ = page(a["title"] + " — " + SITE_NAME, f"""<article>{meta(a)}<h1>{esc(a["title"])}</h1>
+        html_ = page(a["title"] + " — " + SITE_NAME, f"""<div class="apage"><article>{meta(a)}<h1>{esc(a["title"])}</h1>
 {f'<figure class="hero"><img src="{esc(a.get("img_hd") or a["img"])}" alt=""><figcaption>이미지: Steam 스토어</figcaption></figure>' if a.get("img") else ''}
 {f'<div class="tldr"><ul>{tldr}</ul></div>' if tldr else ''}
 {f'<p class="why">{esc(a["why"])}</p>' if a.get("why") else ''}
-{body}{ad("ADSENSE_SLOT_ARTICLE")}<div class="src"><b>출처</b><ul>{srcs}</ul></div><p class="note">{note}</p></article>""", desc=desc[:160], path=f"a/{a['id']}.html", img=img, ld=ld)
+{body}{ad("ADSENSE_SLOT_ARTICLE")}<div class="src"><b>출처</b><ul>{srcs}</ul></div><p class="note">{note}</p>{related_html(a, articles)}</article>{sidebar_html(a, articles, apps, patches, cal)}</div>""", desc=desc[:160], path=f"a/{a['id']}.html", img=img, ld=ld)
         (SITE / "a" / f"{a['id']}.html").write_text(html_.replace("{root}", "../"), encoding="utf-8")
 
     recent = [a for a in articles if time.time() - a["ts"] < 86400] or articles
