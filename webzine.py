@@ -294,7 +294,8 @@ def run():
             failed = True
     articles += new
     cache = load_json(DATA / "steam_apps.json", {})
-    for step in (lambda: attach_images(articles, cache), lambda: collect_patches(cache), lambda: collect_calendar(cache)):
+    for step in (lambda: attach_images(articles, cache), lambda: collect_patches(cache), lambda: collect_calendar(cache),
+                 lambda: collect_deals(cache)):
         try:
             step()
         except Exception as e:  # 부가 기능 실패가 기사 저장을 막지 않게
@@ -465,6 +466,58 @@ def collect_patches(cache):
             x["title"], x["points"] = s.get("title") or x["orig_title"], s.get("points", [])
         patches.append(x)
     save_json(p, sorted(patches, key=lambda x: -x["ts"])[:300])
+
+
+# ---------- 할인 (Steam 인기 판매 순위 중 할인 게임, 한국 가격) ----------
+def collect_deals(cache):
+    ids = []
+    for start in (0, 50):
+        try:
+            res = json.loads(urllib.request.urlopen(urllib.request.Request(
+                "https://store.steampowered.com/search/results/?specials=1&filter=topsellers&json=1&count=50"
+                f"&start={start}&cc=kr&l=koreana", headers=UA), timeout=30).read())
+        except Exception as e:
+            print(f"  ! Steam 할인 목록: {e}")
+            continue
+        for it in res.get("items", []):
+            m = re.search(r"/apps/(\d+)/", it.get("logo", ""))
+            if m and int(m[1]) not in ids:
+                ids.append(int(m[1]))
+    if not ids:
+        return
+    prices = {}
+    for i in range(0, len(ids), 50):  # price_overview 는 여러 appid 를 한 번에 조회 가능
+        chunk = ids[i:i + 50]
+        try:
+            d = get_json("https://store.steampowered.com/api/appdetails?filters=price_overview&cc=kr&appids="
+                         + ",".join(map(str, chunk)), timeout=30)
+        except Exception as e:
+            print(f"  ! Steam 가격: {e}")
+            continue
+        for k, v in d.items():
+            po = (v.get("data") or {}).get("price_overview") if v.get("success") and isinstance(v.get("data"), dict) else None
+            if po and po.get("discount_percent", 0) > 0:
+                prices[int(k)] = po
+    hist = load_json(DATA / "price_hist.json", {})
+    deals = []
+    for rank, appid in enumerate(ids, 1):
+        po = prices.get(appid)
+        if not po:
+            continue
+        app = steam_app(appid, cache)
+        if not app or not app.get("info"):
+            continue
+        low = hist.get(str(appid))
+        record = low is None or po["final"] <= low
+        hist[str(appid)] = po["final"] if low is None else min(low, po["final"])
+        i = app["info"]
+        deals.append({"appid": appid, "name": app["name"], "img": app["img"], "rank": rank,
+                      "discount": po["discount_percent"], "initial": po["initial"] // 100, "final": po["final"] // 100,
+                      "low": record and low is not None, "ko": i["ko"], "ko_voice": i["ko_voice"],
+                      "genres": i["genres"], "meta": i.get("meta")})
+    save_json(DATA / "price_hist.json", hist)
+    save_json(DATA / "deals.json", {"updated": datetime.now().strftime("%m.%d %H:%M"), "deals": deals})
+    print(f"할인 {len(deals)}건")
 
 
 # ---------- 출시 캘린더 (위키백과 출시 목록, CC BY-SA) ----------
@@ -706,7 +759,7 @@ def page(title, body, desc=SITE_DESC, path="", img=None, ld=None):
 {seo_head(title, desc, path, img, ld)}
 <style>{CSS}</style>{ads_head()}</head><body>
 <header><div class="wrap"><a class="logo" href="{{root}}index.html" aria-label="알트탭"><span class="k k1">alt</span><em>+</em><span class="k k2">tab</span><span class="cur"></span></a>
-<div class="gnb"><a href="{{root}}index.html">뉴스</a><a href="{{root}}patches.html">패치노트</a><a href="{{root}}calendar.html">출시 캘린더</a></div>
+<div class="gnb"><a href="{{root}}index.html">뉴스</a><a href="{{root}}patches.html">패치노트</a><a href="{{root}}calendar.html">출시 캘린더</a><a href="{{root}}deals.html">할인</a></div>
 <a class="sbtn" href="{{root}}search.html" aria-label="검색"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></a></div></header>
 <div id="pg"></div><div class="wrap">{body}</div><footer><div><a href="{{root}}about.html">소개</a><a href="{{root}}privacy.html">개인정보처리방침</a><a href="{{root}}contact.html">문의</a></div>
 <p>AI가 공개 출처를 종합해 작성하고 팩트체크를 거친 기사입니다 · 원문은 각 기사 하단 출처 참고</p></footer>{MOTION_JS}</body></html>"""
@@ -926,7 +979,7 @@ def build_feeds(articles):
     base = site_url()
     iso = lambda ts: datetime.fromtimestamp(ts, timezone.utc).strftime("%Y-%m-%dT%H:%M:%S+00:00")
     now = time.time()
-    urls = [("", now, "hourly", "1.0"), ("patches.html", now, "daily", "0.7"), ("calendar.html", now, "daily", "0.7"),
+    urls = [("", now, "hourly", "1.0"), ("patches.html", now, "daily", "0.7"), ("calendar.html", now, "daily", "0.7"), ("deals.html", now, "daily", "0.8"),
             ("about.html", None, "monthly", "0.3"), ("privacy.html", None, "yearly", "0.1"), ("contact.html", None, "yearly", "0.1")]
     urls += [(f"a/{a['id']}.html", a.get("written", a["ts"]), "weekly", "0.8") for a in articles]
     sm = "".join(f"<url><loc>{html.escape(base + u)}</loc>" + (f"<lastmod>{iso(t)}</lastmod>" if t else "")
@@ -988,6 +1041,56 @@ function run(){
 let tm;$("#q").addEventListener("input",()=>{clearTimeout(tm);tm=setTimeout(run,120)});
 const q0=new URLSearchParams(location.search).get("q");if(q0)$("#q").value=q0;run();
 })()</script>"""
+
+
+def build_deals():
+    d = load_json(DATA / "deals.json", {"deals": []})
+    won = lambda n: f"₩{n:,}"
+    def badges(x):
+        b = '<span class="kb">자막</span>' if x["ko"] else '<span class="kb no">한국어 X</span>'
+        b += '<span class="kb">음성</span>' if x["ko_voice"] else ""
+        b += f'<span class="mc">{x["meta"]}</span>' if x.get("meta") else ""
+        return b
+
+    cards = "".join(
+        f'<a class="deal" href="https://store.steampowered.com/app/{x["appid"]}" target="_blank" rel="noopener" '
+        f'data-d="{x["discount"]}" data-r="{x["rank"]}" data-p="{x["final"]}" data-ko="{int(x["ko"])}" '
+        f'data-g="{esc("|".join(x["genres"]))}"><div class="dimg"><img src="{esc(x["img"])}" alt="" loading="lazy">'
+        f'<span class="pct">-{x["discount"]}%</span>{"<span class=low>최저가</span>" if x.get("low") else ""}</div>'
+        f'<div class="dn">{esc(x["name"])}</div><div class="dp"><s>{won(x["initial"])}</s><b>{won(x["final"])}</b></div>'
+        f'<div class="dm">{badges(x)}<span class="dg">{esc(" · ".join(x["genres"][:2]))}</span></div></a>' for x in d["deals"])
+    genres = sorted({g for x in d["deals"] for g in x["genres"]}, key=lambda g: -sum(g in x["genres"] for x in d["deals"]))[:8]
+    (SITE / "deals.html").write_text(page("게임 할인 — " + SITE_NAME, f"""
+<style>
+.dbar{{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0 16px}}
+.dbar select,.dbar label{{font:inherit;font-size:13px;color:var(--fg)}}.dbar select{{padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--card)}}
+.dbar label{{display:flex;gap:6px;align-items:center;cursor:pointer;border:1px solid var(--line);border-radius:99px;padding:4px 12px}}
+.dgrid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}}
+.deal{{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s,border-color .25s}}
+.deal:hover{{transform:translateY(-4px);box-shadow:0 16px 32px -18px rgba(0,0,0,.4);border-color:var(--mut)}}
+.dimg{{position:relative;overflow:hidden}}.dimg img{{width:100%;aspect-ratio:460/215;object-fit:cover;display:block;transition:transform .5s}}
+.deal:hover .dimg img{{transform:scale(1.05)}}
+.pct{{position:absolute;right:8px;bottom:8px;background:#4c6b22;color:#beee11;font-weight:900;font-size:15px;padding:2px 8px;border-radius:6px}}
+.low{{position:absolute;left:8px;top:8px;background:var(--acc);color:#fff;font-size:11px;font-weight:800;padding:2px 7px;border-radius:4px;animation:pulse 1.6s infinite}}
+.dn{{font-weight:800;padding:10px 12px 2px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}}
+.dp{{padding:2px 12px;display:flex;gap:8px;align-items:baseline}}.dp s{{color:var(--mut);font-size:13px}}.dp b{{font-size:17px}}
+.dm{{padding:6px 12px 12px;margin-top:auto;display:flex;gap:4px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--mut)}}
+.mc{{background:#66cc33;color:#fff;font-weight:800;border-radius:4px;padding:0 5px;font-size:11px}}.dg{{margin-left:auto}}
+</style>
+<h2 class="sec">Steam 할인 — 인기 판매 순위</h2>
+<div class="dbar"><select id="sort"><option value="r">인기순</option><option value="d">할인율 높은 순</option><option value="p">가격 낮은 순</option></select>
+<label><input type="checkbox" id="ko"> 한국어 지원만</label>
+<select id="g"><option value="">전체 장르</option>{"".join(f"<option>{esc(g)}</option>" for g in genres)}</select></div>
+<div class="dgrid" id="dg">{cards or "<p>할인 정보를 불러오지 못했습니다.</p>"}</div>
+<p class="note">Steam 인기 판매 상위 100개 중 할인 중인 게임 · 한국 가격 기준 · 업데이트 {esc(d.get("updated", ""))}<br>
+"최저가"는 알트탭이 기록한 가격 중 가장 낮은 경우입니다. 실제 가격은 Steam에서 확인하세요.</p>
+<script>(()=>{{const g=document.getElementById('dg'),cs=[...g.children];
+function f(){{const s=document.getElementById('sort').value,ko=document.getElementById('ko').checked,ge=document.getElementById('g').value;
+cs.sort((a,b)=>s==='d'?b.dataset.d-a.dataset.d:s==='p'?a.dataset.p-b.dataset.p:a.dataset.r-b.dataset.r)
+.forEach(c=>{{c.style.display=(!ko||c.dataset.ko==='1')&&(!ge||c.dataset.g.split('|').includes(ge))?'':'none';g.appendChild(c)}})}}
+['sort','ko','g'].forEach(i=>document.getElementById(i).onchange=f)}})()</script>""",
+        path="deals.html", desc="Steam 인기 게임 할인 정보. 한국 가격, 할인율, 한국어 지원 여부, 최저가를 한눈에.").replace("{root}", ""),
+        encoding="utf-8")
 
 
 def build_patches():
@@ -1180,6 +1283,7 @@ document.querySelectorAll('#st a').forEach(a=>a.style.display=!f||a.dataset.c===
     build_feeds(articles)
     build_patches()
     build_calendar()
+    build_deals()
     print(f"사이트 빌드 완료: {SITE / 'index.html'} (기사 {len(articles)}건)")
 
 
