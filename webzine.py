@@ -565,6 +565,16 @@ article{max-width:680px;margin:40px auto}article h1{font-size:30px;line-height:1
 .ad.ph{border:1px dashed var(--line);border-radius:8px;color:var(--mut);font-size:12px;display:flex;align-items:center;justify-content:center}
 .doc{max-width:680px;margin:40px auto}.doc h1{font-size:28px}.doc a{text-decoration:underline}
 footer a{margin:0 8px;text-decoration:underline}
+.sbtn{margin-left:auto;flex:none;width:36px;height:36px;display:grid;place-items:center;border-radius:50%;color:var(--mut);transition:background .2s,color .2s,transform .2s}
+.sbtn:hover{background:var(--line);color:var(--fg);transform:rotate(-8deg)}
+.sbox{position:relative;margin:28px 0 8px}.sbox svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--mut)}
+.sbox input{width:100%;font:inherit;font-size:18px;padding:14px 16px 14px 48px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--fg);outline:none;transition:border-color .2s,box-shadow .2s}
+.sbox input:focus{border-color:var(--acc);box-shadow:0 0 0 4px rgba(229,72,77,.15)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 4px}.chips button{border:1px solid var(--line);background:none;color:var(--mut);border-radius:99px;padding:3px 11px;font:inherit;font-size:13px;cursor:pointer}
+.chips button:hover{color:var(--fg);border-color:var(--mut)}
+#sc{font-size:13px;color:var(--mut);margin:14px 0 4px}
+mark{background:rgba(229,72,77,.22);color:inherit;border-radius:2px;padding:0 1px}
+.sr-item .s{font-size:14px;color:var(--mut);margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .gnb{display:flex;gap:16px;font-size:14px;font-weight:600;color:var(--mut);overflow-x:auto;white-space:nowrap}.gnb a:hover{color:var(--fg)}
 .brief a.hi{display:grid;grid-template-columns:1fr 220px;gap:18px;align-items:center}
 .th{width:100%;aspect-ratio:460/215;object-fit:cover;border-radius:8px;background:var(--line);display:block}
@@ -624,7 +634,8 @@ def page(title, body):
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)}</title>
 <style>{CSS}</style>{ads_head()}</head><body>
 <header><div class="wrap"><a class="logo" href="{{root}}index.html" aria-label="알트탭"><span class="k k1">alt</span><em>+</em><span class="k k2">tab</span><span class="cur"></span></a>
-<div class="gnb"><a href="{{root}}index.html">뉴스</a><a href="{{root}}patches.html">패치노트</a><a href="{{root}}calendar.html">출시 캘린더</a></div></div></header>
+<div class="gnb"><a href="{{root}}index.html">뉴스</a><a href="{{root}}patches.html">패치노트</a><a href="{{root}}calendar.html">출시 캘린더</a></div>
+<a class="sbtn" href="{{root}}search.html" aria-label="검색"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></a></div></header>
 <div id="pg"></div><div class="wrap">{body}</div><footer><div><a href="{{root}}about.html">소개</a><a href="{{root}}privacy.html">개인정보처리방침</a><a href="{{root}}contact.html">문의</a></div>
 <p>AI가 공개 출처를 종합해 작성하고 팩트체크를 거친 기사입니다 · 원문은 각 기사 하단 출처 참고</p></footer>{MOTION_JS}</body></html>"""
 
@@ -838,6 +849,50 @@ if (tok) load();
 </script>"""
 
 
+def build_search(articles):
+    idx = [{"id": a["id"], "t": a["title"], "s": " ".join(a.get("tldr", [])) or a.get("why", ""),
+            "k": " ".join([a.get("why", ""), " ".join(a.get("body", [])), " ".join(a.get("games", [])),
+                           " ".join(a.get("games_en", [])), a.get("category", ""), " ".join(a.get("platforms", []))]),
+            "c": a.get("category", ""), "p": a.get("platforms", []), "tr": a.get("trust", ""), "ts": a["ts"],
+            "img": a.get("img")} for a in articles]
+    (SITE / "search.json").write_text(json.dumps(idx, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    (SITE / "search.html").write_text(page("검색 — " + SITE_NAME, SEARCH_BODY).replace("{root}", ""), encoding="utf-8")
+
+
+SEARCH_BODY = r"""
+<div class="sbox"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+<input id="q" type="search" placeholder="게임, 회사, 플랫폼으로 검색" autocomplete="off" autofocus></div>
+<div class="chips" id="chips"></div>
+<p id="sc"></p><div class="stream" id="res"></div>
+<script>(async()=>{
+const $=s=>document.querySelector(s), esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let data=[];try{data=await (await fetch("search.json",{cache:"no-cache"})).json()}catch(e){$("#sc").textContent="검색 데이터를 불러오지 못했습니다."}
+const norm=s=>String(s??"").toLowerCase().normalize("NFC");
+data.forEach(d=>{d.h=norm([d.t,d.s,d.k].join(" "));d.ht=norm(d.t)});
+// 많이 언급된 게임·주제를 추천 검색어로
+const cnt={};data.forEach(d=>(d.k.match(/[A-Z][\w:'’ -]{3,30}/g)||[]).forEach(()=>{}));
+["PS5","Xbox","Switch 2","PC","출시","업데이트","연기","루머"].forEach(w=>{const b=document.createElement("button");b.textContent=w;b.onclick=()=>{$("#q").value=w;run()};$("#chips").append(b)});
+const fmt=ts=>{const d=new Date(ts*1000);return (d.getMonth()+1+"").padStart(2,"0")+"."+(d.getDate()+"").padStart(2,"0")};
+const hl=(s,terms)=>{let h=esc(s);terms.forEach(t=>{if(!t)return;const re=new RegExp(t.replace(/[.*+?^${}()|[\]\]/g,"\$&"),"gi");h=h.replace(re,m=>"<mark>"+m+"</mark>")});return h};
+function run(){
+  const q=$("#q").value.trim(), terms=norm(q).split(/\s+/).filter(Boolean);
+  history.replaceState(null,"",q?"?q="+encodeURIComponent(q):location.pathname);
+  if(!terms.length){$("#sc").textContent=`기사 ${data.length}건에서 검색합니다.`;$("#res").innerHTML="";return}
+  const hits=data.filter(d=>terms.every(t=>d.h.includes(t)))
+    .map(d=>({d,score:terms.reduce((a,t)=>a+(d.ht.includes(t)?10:1),0)}))
+    .sort((a,b)=>b.score-a.score||b.d.ts-a.d.ts).slice(0,60);
+  $("#sc").textContent=hits.length?`"${q}" 검색 결과 ${hits.length}건`:`"${q}"에 대한 결과가 없습니다.`;
+  $("#res").innerHTML=hits.map(({d})=>`<a class="sr-item ${d.img?"hi":""}" href="a/${esc(d.id)}.html"><span class="tm">${fmt(d.ts)}</span>
+   <div><div class="meta"><span class="b ${esc(d.tr)}">${esc(d.tr)}</span><span>${esc(d.c)}</span>${d.p.map(x=>`<span>${esc(x)}</span>`).join("")}</div>
+   <div class="t">${hl(d.t,terms)}</div><div class="s">${hl(d.s,terms)}</div></div>
+   ${d.img?`<img class="th" src="${esc(d.img)}" alt="" loading="lazy">`:""}</a>`).join("");
+  document.querySelectorAll("#res a").forEach((el,i)=>{el.animate([{opacity:0,transform:"translateY(10px)"},{opacity:1,transform:"none"}],{duration:350,delay:Math.min(i,10)*30,easing:"cubic-bezier(.2,.7,.2,1)",fill:"backwards"})});
+}
+let tm;$("#q").addEventListener("input",()=>{clearTimeout(tm);tm=setTimeout(run,120)});
+const q0=new URLSearchParams(location.search).get("q");if(q0)$("#q").value=q0;run();
+})()</script>"""
+
+
 def build_patches():
     ps = [x for x in load_json(DATA / "patches.json", []) if not x.get("skip")][:80]
     rows = "".join(f"""<div class="pt"><a href="{esc(x['url'])}" target="_blank" rel="noopener">
@@ -939,6 +994,7 @@ document.querySelectorAll('#st a').forEach(a=>a.style.display=!f||a.dataset.c===
         page("검수 — " + SITE_NAME, REVIEW_BODY.replace("__REPO__", repo)).replace("{root}", "")
         .replace("<head>", '<head><meta name="robots" content="noindex">'), encoding="utf-8")
     static_pages()
+    build_search(articles)
     build_patches()
     build_calendar()
     print(f"사이트 빌드 완료: {SITE / 'index.html'} (기사 {len(articles)}건)")
