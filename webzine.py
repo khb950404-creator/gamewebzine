@@ -244,7 +244,7 @@ def write_batch(cands):
             a["fixes"] = ["팩트체크 미완료"]; a["force_review"] = True
         srcs = c["items"][:6]
         review_all = os.environ.get("REVIEW_ALL") == "1"
-        a["status"] = "pending" if review_all or a.get("force_review") or a.get("trust") == "루머" else "published"
+        a["status"] = "pending" if review_all else "published"  # 일단 게시하고 검수 페이지에서 확인·수정
         a["id"] = hashlib.md5("".join(sorted(s["id"] for s in srcs)).encode()).hexdigest()[:10]
         a["sources"] = [{"name": s["source"], "title": s["title"], "link": s["link"], "official": s["official"]}
                         for s in srcs]
@@ -849,18 +849,23 @@ REVIEW_BODY = r"""
 .btn{border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:8px;padding:7px 14px;font:inherit;font-size:14px;cursor:pointer}
 .btn.pri{background:var(--fg);color:var(--bg);border-color:var(--fg)}.btn:disabled{opacity:.4;cursor:default}
 .btn.ok.on{background:var(--ok);color:#fff;border-color:var(--ok)}.btn.no.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+.btn.ed.on{background:var(--info);color:#fff;border-color:var(--info)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:12px}
-.card.ok{border-color:var(--ok)}.card.no{opacity:.5}
+.card.ok{border-color:var(--ok)}.card.no{opacity:.5}.card.chg{border-color:var(--info)}
 .card .t{font-size:18px;font-weight:800;line-height:1.35;margin:4px 0 8px}
 .card ul{margin:6px 0;padding-left:18px;font-size:14px}.card .fx{color:var(--warn);font-size:13px}
 .card .sr{font-size:13px;color:var(--mut)}.card .sr a{text-decoration:underline}
 .card .act{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center}
 .card select{padding:6px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--fg);font:inherit;font-size:13px}
+.ed-f{display:grid;gap:10px;margin-top:12px}.ed-f label{font-size:12px;color:var(--mut);font-weight:700;display:grid;gap:4px}
+.ed-f input,.ed-f textarea{font:inherit;font-size:14px;line-height:1.6;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);width:100%}
+.ed-f textarea{resize:vertical}.ed-f .row{display:flex;gap:8px;flex-wrap:wrap}
 #msg{font-size:14px;color:var(--mut);min-height:20px}
 .tabs{display:flex;gap:6px;margin:16px 0}
 .save{position:sticky;bottom:16px;display:flex;justify-content:flex-end;margin-top:16px}
+.tag{font-size:11px;font-weight:700;color:var(--info);margin-left:6px}
 </style>
-<h2 class="sec">기사 검수</h2>
+<h2 class="sec">기사 검수·편집</h2>
 <div id="login">
   <p>GitHub 토큰을 한 번 입력하면 이 브라우저에만 저장됩니다.<br>
   <a style="text-decoration:underline" target="_blank" rel="noopener" href="https://github.com/settings/personal-access-tokens/new">토큰 만들기</a>
@@ -868,8 +873,8 @@ REVIEW_BODY = r"""
   <div class="rv-bar"><input id="tok" type="password" placeholder="github_pat_..."><button class="btn pri" id="go">연결</button></div>
 </div>
 <div id="app" hidden>
-  <div class="tabs"><button class="btn pri" data-tab="pending">검수 대기 <span id="np"></span></button>
-  <button class="btn" data-tab="published">게시된 기사</button>
+  <div class="tabs"><button class="btn pri" data-tab="todo">미확인 <span id="np"></span></button>
+  <button class="btn" data-tab="all">전체 기사</button>
   <button class="btn" id="logout" style="margin-left:auto">토큰 지우기</button></div>
   <div id="list"></div>
   <div class="save"><button class="btn pri" id="save" disabled>변경사항 저장</button></div>
@@ -877,8 +882,9 @@ REVIEW_BODY = r"""
 <p id="msg"></p>
 <script>
 const REPO = "__REPO__", PATH = "data/articles.json", API = "https://api.github.com/repos/" + REPO + "/contents/" + PATH;
-let tok = "", arts = [], tab = "pending";
-const changes = {};  // id -> {status?, trust?}
+const CATS = __CATS__, TRUSTS = ["공식", "확인", "보도", "루머"];
+let tok = "", arts = [], tab = "todo", editing = null;
+const changes = {};  // id -> 바뀐 필드들
 try { tok = localStorage.getItem("gh_tok") || ""; } catch (e) {}
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -906,60 +912,90 @@ async function load() {
   catch (e) { msg("연결 실패: " + e.message); if (e.status === 401) { $("#login").hidden = false; $("#app").hidden = true; } return; }
   $("#login").hidden = true; $("#app").hidden = false; msg(""); render();
 }
-function cur(a) { return {...a, ...(changes[a.id] || {})}; }
+const cur = a => ({...a, ...(changes[a.id] || {})});
+const setc = (id, k, v, orig) => {
+  const c = changes[id] = changes[id] || {};
+  if (JSON.stringify(v) === JSON.stringify(orig)) delete c[k]; else c[k] = v;
+  if (!Object.keys(c).length) delete changes[id];
+};
+const isTodo = a => a.status !== "rejected" && !a.reviewed;
+function editor(a) {
+  return `<div class="ed-f" data-ed="${esc(a.id)}">
+    <label>제목<input data-k="title" value="${esc(a.title)}"></label>
+    <label>3줄 요약 (한 줄에 하나)<textarea data-k="tldr" rows="3">${esc((a.tldr || []).join("\n"))}</textarea></label>
+    <label>한 줄 설명<textarea data-k="why" rows="2">${esc(a.why)}</textarea></label>
+    <label>본문 (문단 사이 빈 줄)<textarea data-k="body" rows="10">${esc((a.body || []).join("\n\n"))}</textarea></label>
+    <div class="row"><label>신뢰도<select data-k="trust">${TRUSTS.map(t => `<option ${t === a.trust ? "selected" : ""}>${t}</option>`).join("")}</select></label>
+    <label>카테고리<select data-k="category">${CATS.map(t => `<option ${t === a.category ? "selected" : ""}>${t}</option>`).join("")}</select></label></div>
+    <div class="row"><button class="btn pri" data-done="${esc(a.id)}">편집 완료</button>
+    <button class="btn" data-revert="${esc(a.id)}">원래대로</button></div></div>`;
+}
 function render() {
-  const pend = arts.filter(a => a.status === "pending");
-  $("#np").textContent = pend.length;
+  const todo = arts.filter(isTodo);
+  $("#np").textContent = todo.length;
   document.querySelectorAll("[data-tab]").forEach(b => b.classList.toggle("pri", b.dataset.tab === tab));
-  const list = tab === "pending" ? pend : arts.filter(a => (a.status || "published") === "published").sort((x, y) => y.ts - x.ts).slice(0, 40);
+  const list = (tab === "todo" ? todo : arts.filter(a => a.status !== "rejected")).slice().sort((x, y) => y.ts - x.ts).slice(0, 60);
   $("#list").innerHTML = list.length ? list.map(a0 => {
-    const a = cur(a0), ch = changes[a.id] || {};
-    const st = ch.status;
-    return `<div class="card ${st === "published" && tab === "pending" ? "ok" : ""} ${st === "rejected" ? "no" : ""}">
+    const a = cur(a0), ch = changes[a.id] || {}, edited = ["title", "tldr", "why", "body", "trust", "category"].some(k => k in ch);
+    return `<div class="card ${ch.reviewed ? "ok" : ""} ${ch.status === "rejected" ? "no" : ""} ${edited ? "chg" : ""}">
       <div class="meta"><span class="b ${esc(a.trust)}">${esc(a.trust)}</span><span>${esc(a.category)}</span>
-      <span>· ${new Date(a.ts * 1000).toLocaleString("ko-KR", {month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit"})}</span></div>
+      <span>· ${new Date(a.ts * 1000).toLocaleString("ko-KR", {month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit"})}</span>
+      ${a.status === "pending" ? '<span class="tag">비공개</span>' : ""}${edited ? '<span class="tag">수정됨</span>' : ""}</div>
       <div class="t"><a href="a/${esc(a.id)}.html" target="_blank">${esc(a.title)}</a></div>
       <ul>${(a.tldr || []).map(t => `<li>${esc(t)}</li>`).join("")}</ul>
-      ${(a.fixes || []).map(f => `<div class="fx">! ${esc(f)}</div>`).join("")}
+      ${(a.fixes || []).map(f => `<div class="fx">! 팩트체크: ${esc(f)}</div>`).join("")}
       <div class="sr">출처: ${(a.sources || []).map(s => `<a href="${esc(s.link)}" target="_blank" rel="noopener">${esc(s.name)}</a>`).join(", ")}</div>
       <div class="act">
-        ${tab === "pending"
-          ? `<button class="btn ok ${st === "published" ? "on" : ""}" data-id="${esc(a.id)}" data-st="published">승인</button>
-             <button class="btn no ${st === "rejected" ? "on" : ""}" data-id="${esc(a.id)}" data-st="rejected">거절</button>`
-          : `<button class="btn no ${st === "rejected" ? "on" : ""}" data-id="${esc(a.id)}" data-st="rejected">내리기</button>`}
-        <select data-trust="${esc(a.id)}">${["공식", "확인", "보도", "루머"].map(t => `<option ${t === a.trust ? "selected" : ""}>${t}</option>`).join("")}</select>
-      </div></div>`;
-  }).join("") : `<p>${tab === "pending" ? "검수 대기 중인 기사가 없습니다." : "게시된 기사가 없습니다."}</p>`;
+        ${a0.reviewed ? "" : `<button class="btn ok ${ch.reviewed ? "on" : ""}" data-id="${esc(a.id)}" data-act="ok">확인 완료</button>`}
+        <button class="btn ed ${editing === a.id ? "on" : ""}" data-id="${esc(a.id)}" data-act="edit">수정</button>
+        <button class="btn no ${ch.status === "rejected" ? "on" : ""}" data-id="${esc(a.id)}" data-act="del">내리기</button>
+      </div>${editing === a.id ? editor(a) : ""}</div>`;
+  }).join("") : `<p>${tab === "todo" ? "확인할 기사가 없습니다." : "기사가 없습니다."}</p>`;
   const n = Object.keys(changes).length;
   $("#save").disabled = !n; $("#save").textContent = n ? `변경사항 ${n}건 저장` : "변경사항 저장";
 }
+function readEditor(id) {
+  const f = document.querySelector(`[data-ed="${id}"]`); if (!f) return;
+  const a0 = arts.find(a => a.id === id), v = k => f.querySelector(`[data-k="${k}"]`).value;
+  setc(id, "title", v("title").trim(), a0.title);
+  setc(id, "tldr", v("tldr").split("\n").map(s => s.trim()).filter(Boolean), a0.tldr || []);
+  setc(id, "why", v("why").trim(), a0.why || "");
+  setc(id, "body", v("body").split(/\n\s*\n/).map(s => s.replace(/\s*\n\s*/g, " ").trim()).filter(Boolean), a0.body || []);
+  setc(id, "trust", v("trust"), a0.trust);
+  setc(id, "category", v("category"), a0.category);
+}
 $("#list").addEventListener("click", e => {
-  const b = e.target.closest("button[data-st]"); if (!b) return;
-  const c = changes[b.dataset.id] = changes[b.dataset.id] || {};
-  if (c.status === b.dataset.st) delete c.status; else c.status = b.dataset.st;
-  if (!Object.keys(c).length) delete changes[b.dataset.id];
-  render();
-});
-$("#list").addEventListener("change", e => {
-  const id = e.target.dataset.trust; if (!id) return;
-  const orig = arts.find(a => a.id === id).trust, c = changes[id] = changes[id] || {};
-  if (e.target.value === orig) delete c.trust; else c.trust = e.target.value;
-  if (!Object.keys(c).length) delete changes[id];
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.dataset.done) { readEditor(b.dataset.done); editing = null; return render(); }
+  if (b.dataset.revert) { const id = b.dataset.revert, c = changes[id] || {};
+    ["title", "tldr", "why", "body", "trust", "category"].forEach(k => delete c[k]);
+    if (!Object.keys(c).length) delete changes[id]; editing = null; return render(); }
+  const id = b.dataset.id, a0 = arts.find(a => a.id === id); if (!a0) return;
+  if (editing && editing !== id) readEditor(editing);
+  if (b.dataset.act === "ok") setc(id, "reviewed", !(changes[id] || {}).reviewed, a0.reviewed || false);
+  if (b.dataset.act === "del") setc(id, "status", (changes[id] || {}).status === "rejected" ? a0.status : "rejected", a0.status);
+  if (b.dataset.act === "edit") { if (editing === id) { readEditor(id); editing = null; } else editing = id; }
   render();
 });
 $("#save").onclick = async () => {
+  if (editing) { readEditor(editing); editing = null; }
   $("#save").disabled = true;
   for (let attempt = 0; attempt < 3; attempt++) {
     try {
       msg("저장 중...");
       const {sha, data} = await fetchLatest();  // 봇이 그사이 새 기사를 썼을 수 있으니 최신본에 적용
       const n = Object.keys(changes).length;
-      for (const a of data) if (changes[a.id]) Object.assign(a, changes[a.id]);
+      for (const a of data) if (changes[a.id]) {
+        const c = changes[a.id];
+        if (["title", "tldr", "why", "body"].some(k => k in c)) { c.edited = Date.now() / 1000; c.reviewed = true; }
+        if (a.status === "pending" && (c.reviewed || c.edited)) c.status = c.status || "published";
+        Object.assign(a, c);
+      }
       await gh({method: "PUT", body: JSON.stringify({
         message: `검수: ${n}건 처리`, sha, content: b64(JSON.stringify(data, null, 1)), branch: "main"})});
       for (const k in changes) delete changes[k];
       arts = data; render();
-      msg(`저장했습니다. 1~3분 뒤 사이트에 반영됩니다.`);
+      msg("저장했습니다. 1~3분 뒤 사이트에 반영됩니다.");
       return;
     } catch (e) {
       if (e.status === 409 && attempt < 2) continue;  // 동시에 다른 커밋이 들어온 경우 재시도
@@ -970,7 +1006,8 @@ $("#save").onclick = async () => {
 $("#go").onclick = () => { tok = $("#tok").value.trim(); try { localStorage.setItem("gh_tok", tok); } catch (e) {} load(); };
 $("#tok").onkeydown = e => { if (e.key === "Enter") $("#go").click(); };
 $("#logout").onclick = () => { try { localStorage.removeItem("gh_tok"); } catch (e) {} location.reload(); };
-document.querySelectorAll("[data-tab]").forEach(b => b.onclick = () => { tab = b.dataset.tab; render(); });
+document.querySelectorAll("[data-tab]").forEach(b => b.onclick = () => { if (editing) readEditor(editing); editing = null; tab = b.dataset.tab; render(); });
+addEventListener("beforeunload", e => { if (Object.keys(changes).length) e.preventDefault(); });
 if (tok) load();
 </script>"""
 
@@ -1232,7 +1269,7 @@ def build():
                        f'<a href="{esc(s["link"])}" target="_blank" rel="noopener">{esc(s["title"])}</a></li>'
                        for s in a["sources"])
         note = "※ 아직 번역·재작성되지 않은 원문 요약입니다." if a.get("untranslated") else \
-            f"이 기사는 AI가 출처 {len(a['sources'])}건을 종합해 작성했습니다. 사실관계는 출처를 확인하세요."
+            f"이 기사는 AI가 출처 {len(a['sources'])}건을 종합해 작성했습니다."              + (" 편집자가 검토·수정했습니다." if a.get("edited") else " 사실관계는 출처를 확인하세요.")
         desc = " ".join(a.get("tldr", [])) or a.get("why", "") or a["title"]
         img = a.get("img_hd") or a.get("img")
         ld = {"@context": "https://schema.org", "@type": "NewsArticle", "headline": a["title"][:110],
@@ -1276,7 +1313,7 @@ document.querySelectorAll('#st a').forEach(a=>a.style.display=!f||a.dataset.c===
     (SITE / "index.html").write_text(index.replace("{root}", ""), encoding="utf-8")
     repo = os.environ.get("GITHUB_REPOSITORY", "khb950404-creator/gamewebzine")
     (SITE / "review.html").write_text(
-        page("검수 — " + SITE_NAME, REVIEW_BODY.replace("__REPO__", repo)).replace("{root}", "")
+        page("검수 — " + SITE_NAME, REVIEW_BODY.replace("__REPO__", repo).replace("__CATS__", json.dumps(CATEGORIES[:-1] + ["기타"], ensure_ascii=False))).replace("{root}", "")
         .replace("<head>", '<head><meta name="robots" content="noindex">'), encoding="utf-8")
     static_pages()
     build_search(articles)
