@@ -11,7 +11,7 @@ LLM 선택 (.env 또는 환경변수):
   LLM=ollama  OLLAMA_MODEL=qwen2.5:7b  # 로컬 무료
   LLM=none                         # LLM 없이 원문 제목/요약만 모음
 """
-import json, os, re, sys, html, hashlib, time, urllib.request, urllib.error
+import json, os, re, sys, html, hashlib, time, urllib.request, urllib.error, urllib.parse
 import xml.etree.ElementTree as ET
 from email.utils import parsedate_to_datetime
 from datetime import datetime, timezone
@@ -109,10 +109,12 @@ def cluster(items):
 exhausted = set()  # 이번 실행에서 하루 한도가 끝난 모델
 
 
-def llm(prompt):
+def llm(prompt, prefer_lite=False):
     mode = os.environ.get("LLM", "gemini" if os.environ.get("GEMINI_API_KEY") else "none")
     if mode == "gemini":
         models = [m for m in (os.environ.get("GEMINI_MODEL"), "gemini-flash-latest", "gemini-flash-lite-latest") if m]
+        if prefer_lite:
+            models = ["gemini-flash-lite-latest", "gemini-flash-latest"]
         for model in models:
             if model in exhausted:
                 continue
@@ -171,6 +173,7 @@ JSON 하나만 출력:
   "category": "{cats} 중 하나",
   "platforms": ["PC","PS5","Xbox","Switch" 중 출처에 명시된 것만],
   "games": ["관련 게임명"],
+  "games_en": ["관련 게임의 영문 공식 제목 (Steam 검색용, 출처에 나온 표기 그대로)"],
   "trust": "공식|확인|루머"}}
 ]}}
 
@@ -281,6 +284,13 @@ def run():
             print("LLM 호출 실패 - 이번 후보는 다음 실행 때 재시도")
             failed = True
     articles += new
+    cache = load_json(DATA / "steam_apps.json", {})
+    for step in (lambda: attach_images(articles, cache), lambda: collect_patches(cache), lambda: collect_calendar(cache)):
+        try:
+            step()
+        except Exception as e:  # 부가 기능 실패가 기사 저장을 막지 않게
+            print(f"  ! {e}")
+    save_json(DATA / "steam_apps.json", cache)
     save_json(DATA / "seen.json", sorted(seen))
     save_json(DATA / "articles.json", articles)
     print(f"기사 {len(new)}건 작성")
@@ -294,6 +304,204 @@ def run():
                 f.write(f"- [{a['status']}] ({a['trust']}) {a['title']}\n")
     if failed:
         sys.exit(1)
+
+
+# ---------- Steam: 게임 이미지 · 패치노트 ----------
+# 이미지는 Steam 스토어 공식 헤더 이미지만 사용(퍼블리셔 제공 홍보 이미지). 이름이 확실히 일치할 때만 붙인다.
+def get_json(url, timeout=20):
+    return json.loads(urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=timeout).read())
+
+
+def norm(s):
+    return re.sub(r"[^0-9a-z가-힣]", "", (s or "").lower().replace("&", "and"))
+
+
+def steam_app(appid, cache):
+    """appid → {name, img}. data/steam_apps.json 에 캐시."""
+    key = f"id:{appid}"
+    if key not in cache:
+        try:
+            d = get_json(f"https://store.steampowered.com/api/appdetails?appids={appid}&cc=kr&l=koreana")[str(appid)]
+            d = d.get("data") if d.get("success") else None
+            cache[key] = {"appid": appid, "name": d["name"], "img": d.get("header_image")} if d else None
+            time.sleep(0.3)
+        except Exception:
+            return None
+    return cache[key]
+
+
+def steam_find(title, cache):
+    """게임 이름 → Steam 앱. 이름이 정확히(또는 거의) 같을 때만 반환."""
+    key = "q:" + norm(title)
+    if not norm(title):
+        return None
+    if key not in cache:
+        cache[key] = None
+        try:
+            res = get_json("https://store.steampowered.com/api/storesearch/?cc=kr&l=english&term="
+                           + urllib.parse.quote(title))
+            time.sleep(0.3)
+            for it in res.get("items", [])[:5]:
+                a, b = norm(it["name"]), norm(title)
+                if a == b:  # 시리즈 다른 편 이미지가 붙지 않도록 정확히 같은 이름만
+                    app = steam_app(it["id"], cache)
+                    cache[key] = app["appid"] if app else None
+                    break
+        except Exception:
+            del cache[key]  # 네트워크 오류는 다음에 재시도
+            return None
+    return cache.get(f"id:{cache[key]}") if cache.get(key) else None
+
+
+def attach_images(articles, cache):
+    n = 0
+    for a in articles:
+        if "img" in a:
+            continue
+        a["img"] = None
+        for g in a.get("games_en") or a.get("games") or []:
+            app = steam_find(g, cache)
+            if app and app.get("img"):
+                a["img"], a["appid"] = app["img"], app["appid"]
+                n += 1
+                break
+    print(f"이미지 연결 {n}건")
+
+
+PATCH_RE = re.compile(r"patch|update|hotfix|fix|업데이트|패치", re.I)
+
+
+def strip_bbcode(s):
+    s = re.sub(r"\{STEAM_CLAN_IMAGE\}\S*", " ", s or "")
+    s = re.sub(r"\[\*\]", "\n- ", s)
+    s = re.sub(r"\[/?[a-z0-9]+(=[^\]]*)?\]", " ", s, flags=re.I)
+    return re.sub(r"[ \t]+", " ", strip_html(s) if "<" in s else s).strip()
+
+
+PATCH_PROMPT = """너는 한국어 게임 웹진 편집자다. 아래 Steam 패치노트들을 각각 한국 게이머가 읽기 쉽게 요약하라.
+패치노트에 없는 내용은 절대 쓰지 마라. 핵심 변경 위주로 최대 4줄, 각 줄 40자 안팎.
+게임 플레이와 무관한 공지(이벤트 홍보만, 판매 공지 등)면 skip: true.
+JSON 하나만 출력: {{"patches": [{{"n": 번호, "title": "한국어 제목(예: 5.2 업데이트 — 신규 맵 추가)", "points": ["..."], "skip": false}}]}}
+
+{notes}"""
+
+
+def collect_patches(cache):
+    """Steam 동시접속 상위 게임의 최근 패치노트를 모아 한국어 요약(LLM 1회)."""
+    p = DATA / "patches.json"
+    patches = load_json(p, [])
+    have = {x["gid"] for x in patches}
+    try:
+        ranks = get_json("https://api.steampowered.com/ISteamChartsService/GetMostPlayedGames/v1/")["response"]["ranks"]
+    except Exception as e:
+        print(f"  ! Steam 차트: {e}")
+        return
+    new = []
+    for r in ranks[:int(os.environ.get("PATCH_TOP", 40))]:
+        try:
+            items = get_json(f"https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid={r['appid']}"
+                             "&count=5&maxlength=0&feeds=steam_community_announcements")["appnews"].get("newsitems", [])
+        except Exception:
+            continue
+        for it in items:
+            if it["gid"] in have or time.time() - it["date"] > 7 * 86400:
+                continue
+            if "patchnotes" not in (it.get("tags") or []) and not PATCH_RE.search(it["title"]):
+                continue
+            app = steam_app(r["appid"], cache)
+            if not app:
+                continue
+            new.append({"gid": it["gid"], "appid": r["appid"], "game": app["name"], "img": app["img"],
+                        "orig_title": it["title"], "url": it["url"], "ts": it["date"],
+                        "text": strip_bbcode(it["contents"])[:2500]})
+        time.sleep(0.2)
+    new = sorted(new, key=lambda x: -x["ts"])[:15]
+    print(f"새 패치노트 {len(new)}건")
+    if not new:
+        return
+    notes = "\n\n".join(f"=== {i} === {x['game']} — {x['orig_title']}\n{x['text']}" for i, x in enumerate(new, 1))
+    try:
+        # 패치 요약은 가벼운 작업이라 lite 모델 우선 (flash 하루 한도는 기사용으로 아낀다)
+        res = llm(PATCH_PROMPT.format(notes=notes), prefer_lite=True) or {}
+        done = {x["n"]: x for x in res.get("patches", []) if isinstance(x, dict) and isinstance(x.get("n"), int)}
+    except Exception as e:
+        print(f"  ! 패치 요약 실패 (다음 실행 때 재시도): {e}")
+        return
+    for i, x in enumerate(new, 1):
+        s = done.get(i)
+        if not s:
+            continue
+        x.pop("text")
+        if s.get("skip"):
+            x["skip"] = True
+        else:
+            x["title"], x["points"] = s.get("title") or x["orig_title"], s.get("points", [])
+        patches.append(x)
+    save_json(p, sorted(patches, key=lambda x: -x["ts"])[:300])
+
+
+# ---------- 출시 캘린더 (위키백과 출시 목록, CC BY-SA) ----------
+MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
+          "November", "December"]
+PLAT_MAP = {"WIN": "PC", "PS5": "PS5", "XBX/S": "Xbox", "NS2": "Switch 2", "NS": "Switch"}
+
+
+def wiki_clean(s):
+    s = re.sub(r"<ref[^>]*/>|<ref[^>]*>.*?</ref>", "", s, flags=re.S)
+    for _ in range(4):  # 중첩 템플릿 제거
+        s = re.sub(r"\{\{[^{}]*\}\}", "", s)
+    s = re.sub(r"\[\[(?:[^|\]]*\|)?([^\]]*)\]\]", r"\1", s)
+    s = re.sub(r"'{2,}", "", s)
+    return re.sub(r"<[^>]+>", "", s).strip()
+
+
+def wiki_releases(year):
+    t = get_json("https://en.wikipedia.org/w/api.php?action=parse&format=json&prop=wikitext&page="
+                 f"List_of_video_games_released_in_{year}", timeout=60)["parse"]["wikitext"]["*"]
+    t = re.sub(r"<ref[^>]*/>|<ref[^>]*>.*?</ref>", "", t, flags=re.S)
+    out, date = [], None
+    for row in t.split("\n|-"):
+        lines = [l for l in row.split("\n") if l.startswith("|") and not l.startswith(("|}", "|+", "{|"))]
+        cells = []
+        for l in lines:
+            cells += [c for c in l[1:].split("||")]
+        cells = [c.split(" | ")[-1] if re.match(r'\s*(rowspan|colspan|style|class)\s*=', c) else c for c in cells]
+        cells = [wiki_clean(c) for c in cells]
+        if len(cells) < 3:
+            continue
+        m = re.fullmatch(r"(%s) (\d{1,2})" % "|".join(MONTHS), cells[0])
+        if m:
+            date, cells = f"{year}-{MONTHS.index(m[1]) + 1:02d}-{int(m[2]):02d}", cells[1:]
+        if not date or len(cells) < 2:
+            continue
+        title, plats = cells[0], [PLAT_MAP[p.strip()] for p in cells[1].split(",") if p.strip() in PLAT_MAP]
+        if not title or not plats or re.search(r"\((JP|CN|KR|AS)\)$", title):  # 지역 한정 출시 제외
+            continue
+        out.append({"date": date, "title": title, "platforms": plats, "genre": cells[3] if len(cells) > 3 else ""})
+    return out
+
+
+def collect_calendar(cache):
+    rel = []
+    y = datetime.now().year
+    for year in (y, y + 1):
+        try:
+            rel += wiki_releases(year)
+        except Exception as e:
+            print(f"  ! 위키 {year}: {e}")
+    if not rel:
+        return
+    today = datetime.now().strftime("%Y-%m-%d")
+    horizon = datetime.fromtimestamp(time.time() + 120 * 86400).strftime("%Y-%m-%d")
+    week_ago = datetime.fromtimestamp(time.time() - 7 * 86400).strftime("%Y-%m-%d")
+    rel = [r for r in rel if week_ago <= r["date"] <= horizon]
+    for r in rel:
+        if "PC" in r["platforms"]:
+            app = steam_find(r["title"], cache)
+            if app:
+                r["img"], r["appid"] = app["img"], app["appid"]
+    save_json(DATA / "calendar.json", {"updated": today, "releases": rel})
+    print(f"출시 캘린더 {len(rel)}건")
 
 
 # ---------- 검수 ----------
@@ -352,6 +560,22 @@ article{max-width:680px;margin:40px auto}article h1{font-size:30px;line-height:1
 .ad.ph{border:1px dashed var(--line);border-radius:8px;color:var(--mut);font-size:12px;display:flex;align-items:center;justify-content:center}
 .doc{max-width:680px;margin:40px auto}.doc h1{font-size:28px}.doc a{text-decoration:underline}
 footer a{margin:0 8px;text-decoration:underline}
+.gnb{display:flex;gap:16px;font-size:14px;font-weight:600;color:var(--mut);overflow-x:auto;white-space:nowrap}.gnb a:hover{color:var(--fg)}
+.brief a.hi{display:grid;grid-template-columns:1fr 220px;gap:18px;align-items:center}
+.th{width:100%;aspect-ratio:460/215;object-fit:cover;border-radius:8px;background:var(--line);display:block}
+.stream a.hi{grid-template-columns:64px 1fr 120px}.stream .th{border-radius:6px}
+.hero{margin:0 0 20px}.hero img{width:100%;border-radius:10px;display:block}.hero figcaption{font-size:12px;color:var(--mut);margin-top:6px}
+.pt{display:grid;grid-template-columns:184px 1fr;gap:16px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
+.pt .g{font-size:13px;color:var(--mut)}.pt .t{font-weight:800;margin:2px 0 6px}.pt ul{margin:0;padding-left:18px;font-size:14px}
+.pt .lk{font-size:12px;color:var(--mut);text-decoration:underline}
+.day{display:grid;grid-template-columns:88px 1fr;gap:16px;border-top:1px solid var(--line);padding:14px 0}
+.day .d{font-weight:800;font-size:20px;line-height:1.2}.day .d small{display:block;font-size:12px;color:var(--mut);font-weight:500}
+.day.today .d{color:var(--acc)}.day.past{opacity:.55}.rel{display:flex;gap:12px;align-items:center;padding:6px 0}
+.rel .th{width:120px;flex:none}.rel .nt{width:120px;flex:none;aspect-ratio:460/215;border-radius:8px;background:var(--line)}
+.rel .t{font-weight:700}.rel .s{font-size:12px;color:var(--mut)}
+@media(max-width:640px){.brief a.hi{grid-template-columns:1fr}.brief a.hi .th{order:-1}
+.stream a.hi{grid-template-columns:52px 1fr 88px}.pt{grid-template-columns:1fr}.day{grid-template-columns:64px 1fr}
+.rel .th,.rel .nt{width:88px}header .wrap{gap:12px}}
 footer{color:var(--mut);font-size:12px;padding:40px 0;text-align:center}
 @media(max-width:640px){article h1{font-size:24px}.brief .t{font-size:17px}}
 """
@@ -365,7 +589,8 @@ def page(title, body):
     return f"""<!doctype html><html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)}</title>
 <style>{CSS}</style>{ads_head()}</head><body>
-<header><div class="wrap"><a class="logo" href="{{root}}index.html">PRESS<b>START</b></a></div></header>
+<header><div class="wrap"><a class="logo" href="{{root}}index.html">PRESS<b>START</b></a>
+<div class="gnb"><a href="{{root}}index.html">뉴스</a><a href="{{root}}patches.html">패치노트</a><a href="{{root}}calendar.html">출시 캘린더</a></div></div></header>
 <div class="wrap">{body}</div><footer><div><a href="{{root}}about.html">소개</a><a href="{{root}}privacy.html">개인정보처리방침</a><a href="{{root}}contact.html">문의</a></div>
 <p>AI가 공개 출처를 종합해 작성하고 팩트체크를 거친 기사입니다 · 원문은 각 기사 하단 출처 참고</p></footer></body></html>"""
 
@@ -568,6 +793,55 @@ if (tok) load();
 </script>"""
 
 
+def build_patches():
+    ps = [x for x in load_json(DATA / "patches.json", []) if not x.get("skip")][:80]
+    rows = "".join(f"""<div class="pt"><a href="{esc(x['url'])}" target="_blank" rel="noopener">
+<img class="th" src="{esc(x['img'])}" alt="" loading="lazy"></a><div>
+<div class="g">{esc(x['game'])} · {fmt_time(x['ts'])}</div><div class="t">{esc(x.get('title'))}</div>
+<ul>{''.join(f'<li>{esc(t)}</li>' for t in x.get('points', []))}</ul>
+<a class="lk" href="{esc(x['url'])}" target="_blank" rel="noopener">Steam 원문 패치노트</a></div></div>""" for x in ps)
+    (SITE / "patches.html").write_text(page("패치노트 — " + SITE_NAME, f"""
+<h2 class="sec">Steam 인기 게임 패치노트</h2>
+<p class="note">Steam 동시접속 상위 게임의 최근 업데이트를 AI가 한국어로 요약했습니다. 정확한 내용은 원문을 확인하세요.</p>
+{rows or '<p>아직 수집된 패치노트가 없습니다.</p>'}""").replace("{root}", ""), encoding="utf-8")
+
+
+def build_calendar():
+    cal = load_json(DATA / "calendar.json", {"releases": []})
+    today = datetime.now().strftime("%Y-%m-%d")
+    days = {}
+    for r in cal["releases"]:
+        days.setdefault(r["date"], []).append(r)
+    wd = "월화수목금토일"
+    out, marked = "", False
+    for d in sorted(days):
+        dt = datetime.strptime(d, "%Y-%m-%d")
+        rels = sorted(days[d], key=lambda r: (not r.get("img"), -len(r["platforms"])))
+        items = "".join(
+            f'<div class="rel" data-p="{esc("|".join(r["platforms"]))}">'
+            + (f'<a href="https://store.steampowered.com/app/{r["appid"]}" target="_blank" rel="noopener">'
+               f'<img class="th" src="{esc(r["img"])}" alt="" loading="lazy"></a>' if r.get("img") else '<div class="nt"></div>')
+            + f'<div><div class="t">{esc(r["title"])}</div><div class="s">{esc(" · ".join(r["platforms"]))}'
+            + (" — " + esc(r["genre"]) if r.get("genre") else "") + '</div></div></div>' for r in rels)
+        anchor = ' id="today"' if d >= today and not marked else ""
+        marked = marked or d >= today
+        out += (f'<div class="day{" today" if d == today else ""}{" past" if d < today else ""}"{anchor}>'
+                f'<div class="d">{dt.month}.{dt.day}<small>{wd[dt.weekday()]}요일{" · 오늘" if d == today else ""}</small></div>'
+                f'<div>{items}</div></div>')
+    filters = "".join(f'<button data-f="{f}">{f}</button>' for f in ["PC", "PS5", "Xbox", "Switch 2", "Switch"])
+    (SITE / "calendar.html").write_text(page("출시 캘린더 — " + SITE_NAME, f"""
+<h2 class="sec">출시 캘린더</h2><nav><button class="on" data-f="">전체</button>{filters}</nav>
+<div style="margin-top:12px">{out or '<p>일정을 불러오지 못했습니다.</p>'}</div>
+<p class="note">출시 일정 출처: 위키백과 "List of video games released in {datetime.now().year}" (CC BY-SA 4.0) ·
+지역 한정 출시 제외 · 이미지: Steam 스토어 · 업데이트 {esc(cal.get("updated", ""))}</p>
+<script>document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{{
+document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x===b));const f=b.dataset.f;
+document.querySelectorAll('.rel').forEach(r=>r.style.display=!f||r.dataset.p.split('|').includes(f)?'':'none');
+document.querySelectorAll('.day').forEach(d=>d.style.display=[...d.querySelectorAll('.rel')].some(r=>r.style.display!=='none')?'':'none')}});
+const t=document.getElementById('today');if(t)t.scrollIntoView({{block:'start'}})</script>""").replace("{root}", ""),
+        encoding="utf-8")
+
+
 def build():
     every = sorted(load_json(DATA / "articles.json", []), key=lambda a: -a["ts"])
     articles = [a for a in every if a.get("status", "published") == "published"]
@@ -582,6 +856,7 @@ def build():
         note = "※ 아직 번역·재작성되지 않은 원문 요약입니다." if a.get("untranslated") else \
             f"이 기사는 AI가 출처 {len(a['sources'])}건을 종합해 작성했습니다. 사실관계는 출처를 확인하세요."
         html_ = page(a["title"], f"""<article>{meta(a)}<h1>{esc(a["title"])}</h1>
+{f'<figure class="hero"><img src="{esc(a["img"])}" alt=""><figcaption>이미지: Steam 스토어</figcaption></figure>' if a.get("img") else ''}
 {f'<div class="tldr"><ul>{tldr}</ul></div>' if tldr else ''}
 {f'<p class="why">{esc(a["why"])}</p>' if a.get("why") else ''}
 {body}{ad("ADSENSE_SLOT_ARTICLE")}<div class="src"><b>출처</b><ul>{srcs}</ul></div><p class="note">{note}</p></article>""")
@@ -589,11 +864,15 @@ def build():
 
     recent = [a for a in articles if time.time() - a["ts"] < 86400] or articles
     top = sorted(recent, key=lambda a: (-len(a["sources"]), a["trust"] != "공식", -a["ts"]))[:5]
-    brief = "".join(f'<a href="a/{a["id"]}.html" data-c="{esc(a.get("category"))}">{meta(a)}'
-                    f'<div class="t">{esc(a["title"])}</div><div class="w">{esc(a.get("why"))}</div></a>' for a in top)
-    stream = "".join(f'<a href="a/{a["id"]}.html" data-c="{esc(a.get("category"))}" '
+    brief = "".join(f'<a href="a/{a["id"]}.html" class="{"hi" if a.get("img") else ""}"><div>{meta(a)}'
+                    f'<div class="t">{esc(a["title"])}</div><div class="w">{esc(a.get("why"))}</div></div>'
+                    + (f'<img class="th" src="{esc(a["img"])}" alt="" loading="lazy">' if a.get("img") else "") + '</a>'
+                    for a in top)
+    stream = "".join(f'<a href="a/{a["id"]}.html" class="{"hi" if a.get("img") else ""}" data-c="{esc(a.get("category"))}" '
                      f'data-p="{esc(" ".join(a.get("platforms", [])))}"><span class="tm">{fmt_time(a["ts"])[6:]}</span>'
-                     f'<div>{meta(a)}<div class="t">{esc(a["title"])}</div></div></a>' for a in articles[:100])
+                     f'<div>{meta(a)}<div class="t">{esc(a["title"])}</div></div>'
+                     + (f'<img class="th" src="{esc(a["img"])}" alt="" loading="lazy">' if a.get("img") else "")
+                     + '</a>' for a in articles[:100])
     filters = "".join(f'<button data-f="{f}">{f}</button>' for f in ["PC", "PS5", "Xbox", "Switch"] + CATEGORIES[:-1])
     index = page("PRESS START — 게임 브리핑", f"""
 <h2 class="sec">오늘의 브리핑</h2><div class="brief">{brief or '<p>아직 기사가 없습니다.</p>'}</div>
@@ -608,6 +887,8 @@ document.querySelectorAll('#st a').forEach(a=>a.style.display=!f||a.dataset.c===
         page("검수 — " + SITE_NAME, REVIEW_BODY.replace("__REPO__", repo)).replace("{root}", "")
         .replace("<head>", '<head><meta name="robots" content="noindex">'), encoding="utf-8")
     static_pages()
+    build_patches()
+    build_calendar()
     print(f"사이트 빌드 완료: {SITE / 'index.html'} (기사 {len(articles)}건)")
 
 
