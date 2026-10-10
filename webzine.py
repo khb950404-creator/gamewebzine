@@ -108,22 +108,24 @@ def llm(prompt):
     mode = os.environ.get("LLM", "gemini" if os.environ.get("GEMINI_API_KEY") else "none")
     if mode == "gemini":
         time.sleep(5)  # 무료 티어 분당 요청 제한 대응
-        model = os.environ.get("GEMINI_MODEL", "gemini-flash-latest")
-        req = urllib.request.Request(
-            f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
-            data=json.dumps({"contents": [{"parts": [{"text": prompt}]}],
-                             "generationConfig": {"responseMimeType": "application/json", "temperature": 0.4}}).encode(),
-            headers={"Content-Type": "application/json", "x-goog-api-key": os.environ["GEMINI_API_KEY"]})
-        for attempt in range(4):  # 과부하(503)·한도(429)는 잠시 후 재시도
-            try:
-                r = json.loads(urllib.request.urlopen(req, timeout=120).read())
-                break
-            except urllib.error.HTTPError as e:
-                if e.code not in (429, 500, 503) or attempt == 3:
-                    raise
-                print(f"    … {e.code}, {20 * (attempt + 1)}초 후 재시도")
-                time.sleep(20 * (attempt + 1))
-        return json.loads(r["candidates"][0]["content"]["parts"][0]["text"])
+        # 기본 모델이 계속 혼잡하면 lite 모델로 대체
+        models = [os.environ.get("GEMINI_MODEL", "gemini-flash-latest"), "gemini-flash-lite-latest"]
+        for model in models:
+            req = urllib.request.Request(
+                f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
+                data=json.dumps({"contents": [{"parts": [{"text": prompt}]}],
+                                 "generationConfig": {"responseMimeType": "application/json", "temperature": 0.4}}).encode(),
+                headers={"Content-Type": "application/json", "x-goog-api-key": os.environ["GEMINI_API_KEY"]})
+            for attempt in range(3):  # 과부하(503)·한도(429)는 잠시 후 재시도
+                try:
+                    r = json.loads(urllib.request.urlopen(req, timeout=120).read())
+                    return json.loads(r["candidates"][0]["content"]["parts"][0]["text"])
+                except urllib.error.HTTPError as e:
+                    if e.code not in (429, 500, 503):
+                        raise
+                    print(f"    … {model} {e.code}, {15 * (attempt + 1)}초 후 재시도")
+                    time.sleep(15 * (attempt + 1))
+        raise RuntimeError("모든 Gemini 모델이 응답하지 않음 (혼잡 또는 무료 한도 초과)")
     if mode == "ollama":
         req = urllib.request.Request(
             os.environ.get("OLLAMA_URL", "http://localhost:11434") + "/api/generate",
@@ -153,7 +155,7 @@ JSON 하나만 출력:
  "games": ["관련 게임명"],
  "trust": "공식|확인|루머",
  "skip": false}}
-게이밍과 무관하거나 광고/딜 나열/퀴즈 같은 저가치 글이면 {{"skip": true}} 만 출력.
+PC·콘솔 비디오게임과 무관하거나(보드·카드게임, 게임과 연결 약한 영화·드라마 소식 등) 광고/딜 나열/퀴즈/팟캐스트 같은 저가치 글이면 {{"skip": true}} 만 출력.
 
 출처 자료:
 {sources}"""
@@ -173,6 +175,10 @@ JSON 하나만 출력: {{"problems": ["발견한 문제 설명"], "article": {{�
 {article}"""
 
 
+class LLMDown(Exception):
+    pass
+
+
 def write_article(c):
     srcs = c["items"][:6]
     sources = "\n\n".join(
@@ -182,7 +188,7 @@ def write_article(c):
         a = llm(PROMPT.format(cats=", ".join(CATEGORIES), sources=sources))
     except Exception as e:
         print(f"  ! LLM 오류: {e} {getattr(e, 'read', lambda: b'')()[:200]}")
-        raise SystemExit("LLM 호출 실패로 중단 (수집 항목은 다음 실행 때 다시 시도)")
+        raise LLMDown()
     if a is None:  # LLM 없음 모드
         s = srcs[0]
         a = {"title": s["title"], "tldr": [], "why": "", "body": [s["summary"]], "category": "기타",
@@ -228,12 +234,17 @@ def run():
     fresh = [i for i in items if i["id"] not in seen and time.time() - i["ts"] < 3 * 86400]
     print(f"새 항목 {len(fresh)}건")
     clusters = cluster(fresh)
-    written = 0
+    written, failed = 0, False
     for c in clusters:
         if written >= MAX_ARTICLES_PER_RUN:
             break
         print(f"작성: {c['items'][0]['title'][:70]} (출처 {len(c['items'])}, 점수 {c['score']:.1f})")
-        a = write_article(c)
+        try:
+            a = write_article(c)
+        except LLMDown:
+            print("LLM 호출 실패로 중단 - 작성된 기사까지 저장 (남은 항목은 다음 실행 때 재시도)")
+            failed = True
+            break
         for i in c["items"]:
             seen.add(i["id"])  # skip 판정도 다시 보지 않음
         if a:
@@ -241,6 +252,14 @@ def run():
     save_json(DATA / "seen.json", sorted(seen))
     save_json(DATA / "articles.json", articles)
     print(f"기사 {written}건 작성")
+    summary = os.environ.get("GITHUB_STEP_SUMMARY")  # Actions 실행 화면에 결과 표시(로그인 없이 보임)
+    if summary:
+        with open(summary, "a", encoding="utf-8") as f:
+            f.write(f"### 새 기사 {written}건{' (LLM 오류로 중단)' if failed else ''}\n")
+            for a in articles[len(articles) - written:]:
+                f.write(f"- [{a.get('status')}] ({a['trust']}) {a['title']}\n")
+    if failed:
+        sys.exit(1)
 
 
 # ---------- 검수 ----------
