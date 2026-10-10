@@ -414,7 +414,7 @@ def build():
             f"이 기사는 AI가 출처 {len(a['sources'])}건을 종합해 작성했습니다. 사실관계는 출처를 확인하세요."
         html_ = page(a["title"], f"""<article>{meta(a)}<h1>{esc(a["title"])}</h1>
 {f'<div class="tldr"><ul>{tldr}</ul></div>' if tldr else ''}
-{f'<p class="why">왜 중요한가 — {esc(a["why"])}</p>' if a.get("why") else ''}
+{f'<p class="why">{esc(a["why"])}</p>' if a.get("why") else ''}
 {body}{ad("ADSENSE_SLOT_ARTICLE")}<div class="src"><b>출처</b><ul>{srcs}</ul></div><p class="note">{note}</p></article>""")
         (SITE / "a" / f"{a['id']}.html").write_text(html_.replace("{root}", "../"), encoding="utf-8")
 
