@@ -536,11 +536,12 @@ font:16px/1.65 "Pretendard",-apple-system,"Segoe UI","Malgun Gothic",sans-serif}
 a{color:inherit;text-decoration:none}.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
 header{border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:5}
 header .wrap{display:flex;align-items:center;gap:20px;height:56px}
-.logo{display:flex;align-items:center;gap:4px;flex:none}
-.logo kbd{font:800 13px/1 ui-monospace,Consolas,monospace;letter-spacing:.5px;padding:6px 8px 7px;border:1px solid var(--fg);
-border-bottom-width:3px;border-radius:6px;background:var(--card);color:var(--fg)}
-.logo kbd:last-child{background:var(--acc);color:#fff;border-color:#a8282c}
-.logo i{font-style:normal;color:var(--mut);font-weight:700}
+.logo{font:700 20px/1 ui-monospace,"Cascadia Code",Consolas,monospace;letter-spacing:-.5px;display:inline-flex;align-items:center;flex:none;white-space:pre}
+.logo .k,.logo em{display:inline-block;transition:transform .55s cubic-bezier(.6,-.45,.3,1.45);animation:typ .35s cubic-bezier(.2,.7,.2,1) backwards}
+.logo em{font-style:normal;color:var(--acc);animation-delay:.12s}.logo .k2{animation-delay:.24s}
+.logo:hover .k1{transform:translateX(4ch)}.logo:hover .k2{transform:translateX(-4ch)}.logo:hover em{transform:rotate(180deg)}
+.logo .cur{width:.6ch;height:3px;background:var(--acc);margin:0 0 -6px 3px;animation:blink 1.05s steps(1) infinite .4s}
+@keyframes typ{from{opacity:0;transform:translateY(7px)}}@keyframes blink{50%{opacity:0}}
 nav{display:flex;gap:6px;overflow-x:auto}nav button{border:1px solid var(--line);background:none;color:var(--mut);
 border-radius:99px;padding:4px 12px;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}
 nav button.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
@@ -580,6 +581,35 @@ footer a{margin:0 8px;text-decoration:underline}
 @media(max-width:640px){.brief a.hi{grid-template-columns:1fr}.brief a.hi .th{order:-1}
 .stream a.hi{grid-template-columns:52px 1fr 88px}.pt{grid-template-columns:1fr}.day{grid-template-columns:64px 1fr}
 .rel .th,.rel .nt{width:88px}header .wrap{gap:12px}}
+header{background:color-mix(in srgb,var(--bg) 82%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+#pg{position:fixed;top:0;left:0;height:3px;width:0;background:var(--acc);z-index:20;transition:width .1s linear}
+.rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+.brief a,.stream a,.pt,.rel{transition:transform .25s ease,box-shadow .25s ease,border-color .25s,background .25s}
+.brief a:hover,.pt:hover{transform:translateY(-3px);box-shadow:0 14px 30px -16px rgba(0,0,0,.35)}
+.th{transition:transform .5s cubic-bezier(.2,.7,.2,1),filter .3s}a:hover .th{transform:scale(1.03);filter:saturate(1.15)}
+.stream a:hover .t,.brief a:hover .t{color:var(--acc)}
+.tick{display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--line);height:40px;overflow:hidden;font-size:13px;margin:0 0 4px}
+.live{flex:none;font:700 11px ui-monospace,Consolas,monospace;letter-spacing:1px;color:var(--acc);display:flex;align-items:center;gap:7px}
+.live::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--acc);animation:pulse 1.6s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(229,72,77,.55)}100%{box-shadow:0 0 0 10px rgba(229,72,77,0)}}
+.tk{overflow:hidden;flex:1;-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
+.tkin{display:flex;gap:40px;width:max-content;animation:mq 80s linear infinite}.tk:hover .tkin{animation-play-state:paused}
+.tkin a{white-space:nowrap}.tkin a:hover{color:var(--acc)}.tkin b{color:var(--mut);font-weight:500;margin-right:8px;font-variant-numeric:tabular-nums}
+@keyframes mq{to{transform:translateX(-50%)}}
+.lead{position:relative;display:block;border-radius:16px;overflow:hidden;margin-bottom:12px;aspect-ratio:21/9;background:#111;color:#fff;isolation:isolate}
+.lead img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;animation:kb 20s ease-in-out infinite alternate}
+@keyframes kb{from{transform:scale(1.04)}to{transform:scale(1.15) translate(-2%,-1.5%)}}
+.lead::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,0) 25%,rgba(0,0,0,.88));transition:opacity .4s}
+.lead .lc{position:absolute;left:0;right:0;bottom:0;padding:28px}
+.lead .t{font-size:32px;font-weight:900;letter-spacing:-.9px;line-height:1.22;color:#fff;max-width:760px}
+.lead .w{color:rgba(255,255,255,.82);margin-top:8px;max-width:680px}.lead .meta{color:rgba(255,255,255,.75)}
+.lead .t span{background:linear-gradient(transparent 62%,rgba(229,72,77,.75) 62%) no-repeat 0 0/0% 100%;transition:background-size .6s cubic-bezier(.2,.7,.2,1)}
+.lead:hover .t span{background-size:100% 100%}
+.new{display:inline-block;font:700 10px ui-monospace,Consolas,monospace;color:#fff;background:var(--acc);border-radius:3px;padding:1px 5px;margin-right:6px;vertical-align:2px;animation:pulse 1.6s infinite}
+.day.today .d{position:relative}.day.today .d::before{content:"";position:absolute;left:-12px;top:6px;width:6px;height:6px;border-radius:50%;background:var(--acc);animation:pulse 1.6s infinite}
+@media(max-width:640px){.lead{aspect-ratio:4/5}.lead .t{font-size:23px}.lead .lc{padding:18px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
 footer{color:var(--mut);font-size:12px;padding:40px 0;text-align:center}
 @media(max-width:640px){article h1{font-size:24px}.brief .t{font-size:17px}}
 """
@@ -593,10 +623,21 @@ def page(title, body):
     return f"""<!doctype html><html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)}</title>
 <style>{CSS}</style>{ads_head()}</head><body>
-<header><div class="wrap"><a class="logo" href="{{root}}index.html" aria-label="알트탭"><kbd>ALT</kbd><i>+</i><kbd>TAB</kbd></a>
+<header><div class="wrap"><a class="logo" href="{{root}}index.html" aria-label="알트탭"><span class="k k1">alt</span><em>+</em><span class="k k2">tab</span><span class="cur"></span></a>
 <div class="gnb"><a href="{{root}}index.html">뉴스</a><a href="{{root}}patches.html">패치노트</a><a href="{{root}}calendar.html">출시 캘린더</a></div></div></header>
-<div class="wrap">{body}</div><footer><div><a href="{{root}}about.html">소개</a><a href="{{root}}privacy.html">개인정보처리방침</a><a href="{{root}}contact.html">문의</a></div>
-<p>AI가 공개 출처를 종합해 작성하고 팩트체크를 거친 기사입니다 · 원문은 각 기사 하단 출처 참고</p></footer></body></html>"""
+<div id="pg"></div><div class="wrap">{body}</div><footer><div><a href="{{root}}about.html">소개</a><a href="{{root}}privacy.html">개인정보처리방침</a><a href="{{root}}contact.html">문의</a></div>
+<p>AI가 공개 출처를 종합해 작성하고 팩트체크를 거친 기사입니다 · 원문은 각 기사 하단 출처 참고</p></footer>{MOTION_JS}</body></html>"""
+
+
+MOTION_JS = """<script>(()=>{
+if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{rootMargin:'0px 0px -6% 0px'});
+document.querySelectorAll('.lead,.brief>a,.stream>a,.pt,.day,article>*,.doc>*,h2.sec').forEach((el,i)=>{
+ const r=el.getBoundingClientRect();el.classList.add('rv');el.style.transitionDelay=(r.top<innerHeight?Math.min(i,8)*55:0)+'ms';io.observe(el)});
+const pg=document.getElementById('pg');
+if(pg&&document.querySelector('article'))addEventListener('scroll',()=>{const h=document.documentElement;
+ pg.style.width=Math.min(100,h.scrollTop/Math.max(1,h.scrollHeight-h.clientHeight)*100)+'%'},{passive:true});
+})()</script>"""
 
 
 def ads_head():
@@ -868,18 +909,25 @@ def build():
 
     recent = [a for a in articles if time.time() - a["ts"] < 86400] or articles
     top = sorted(recent, key=lambda a: (-len(a["sources"]), a["trust"] != "공식", -a["ts"]))[:5]
+    lead = next((a for a in top if a.get("img")), None)
+    lead_html = (f'<a class="lead" href="a/{lead["id"]}.html"><img src="{esc(lead["img"])}" alt=""><div class="lc">{meta(lead)}'
+                 f'<div class="t"><span>{esc(lead["title"])}</span></div><div class="w">{esc(lead.get("why"))}</div></div></a>'
+                 ) if lead else ""
+    top = [a for a in top if a is not lead]
+    ticker = "".join(f'<a href="a/{a["id"]}.html"><b>{fmt_time(a["ts"])[6:]}</b>{esc(a["title"])}</a>' for a in articles[:12])
     brief = "".join(f'<a href="a/{a["id"]}.html" class="{"hi" if a.get("img") else ""}"><div>{meta(a)}'
                     f'<div class="t">{esc(a["title"])}</div><div class="w">{esc(a.get("why"))}</div></div>'
                     + (f'<img class="th" src="{esc(a["img"])}" alt="" loading="lazy">' if a.get("img") else "") + '</a>'
                     for a in top)
     stream = "".join(f'<a href="a/{a["id"]}.html" class="{"hi" if a.get("img") else ""}" data-c="{esc(a.get("category"))}" '
                      f'data-p="{esc(" ".join(a.get("platforms", [])))}"><span class="tm">{fmt_time(a["ts"])[6:]}</span>'
-                     f'<div>{meta(a)}<div class="t">{esc(a["title"])}</div></div>'
+                     f'<div>{meta(a)}<div class="t">{"<span class=new>NEW</span>" if time.time() - a["ts"] < 3 * 3600 else ""}{esc(a["title"])}</div></div>'
                      + (f'<img class="th" src="{esc(a["img"])}" alt="" loading="lazy">' if a.get("img") else "")
                      + '</a>' for a in articles[:100])
     filters = "".join(f'<button data-f="{f}">{f}</button>' for f in ["PC", "PS5", "Xbox", "Switch"] + CATEGORIES[:-1])
     index = page("알트탭 ALT+TAB — 업무 중 잠깐, 게임 소식 3줄", f"""
-<h2 class="sec">오늘의 브리핑</h2><div class="brief">{brief or '<p>아직 기사가 없습니다.</p>'}</div>
+<div class="tick"><span class="live">LIVE</span><div class="tk"><div class="tkin">{ticker}{ticker}</div></div></div>
+<h2 class="sec">오늘의 브리핑</h2>{lead_html}<div class="brief">{brief or '<p>아직 기사가 없습니다.</p>'}</div>
 {ad("ADSENSE_SLOT_HOME")}<h2 class="sec">최신 소식</h2><nav><button class="on" data-f="">전체</button>{filters}</nav>
 <div class="stream" id="st" style="margin-top:12px">{stream}</div>
 <script>document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{{
