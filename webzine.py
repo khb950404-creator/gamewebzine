@@ -869,11 +869,9 @@ const $=s=>document.querySelector(s), esc=s=>String(s??"").replace(/[&<>"]/g,c=>
 let data=[];try{data=await (await fetch("search.json",{cache:"no-cache"})).json()}catch(e){$("#sc").textContent="검색 데이터를 불러오지 못했습니다."}
 const norm=s=>String(s??"").toLowerCase().normalize("NFC");
 data.forEach(d=>{d.h=norm([d.t,d.s,d.k].join(" "));d.ht=norm(d.t)});
-// 많이 언급된 게임·주제를 추천 검색어로
-const cnt={};data.forEach(d=>(d.k.match(/[A-Z][\w:'’ -]{3,30}/g)||[]).forEach(()=>{}));
 ["PS5","Xbox","Switch 2","PC","출시","업데이트","연기","루머"].forEach(w=>{const b=document.createElement("button");b.textContent=w;b.onclick=()=>{$("#q").value=w;run()};$("#chips").append(b)});
 const fmt=ts=>{const d=new Date(ts*1000);return (d.getMonth()+1+"").padStart(2,"0")+"."+(d.getDate()+"").padStart(2,"0")};
-const hl=(s,terms)=>{let h=esc(s);terms.forEach(t=>{if(!t)return;const re=new RegExp(t.replace(/[.*+?^${}()|[\]\]/g,"\$&"),"gi");h=h.replace(re,m=>"<mark>"+m+"</mark>")});return h};
+const hl=(s,terms)=>{let h=esc(s);terms.forEach(t=>{if(!t)return;const re=new RegExp(t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"gi");h=h.replace(re,m=>"<mark>"+m+"</mark>")});return h};
 function run(){
   const q=$("#q").value.trim(), terms=norm(q).split(/\s+/).filter(Boolean);
   history.replaceState(null,"",q?"?q="+encodeURIComponent(q):location.pathname);
