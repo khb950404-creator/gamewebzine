@@ -632,9 +632,37 @@ def esc(s):
     return html.escape(str(s or ""))
 
 
-def page(title, body):
+SITE_DESC = "업무 중 잠깐 Alt+Tab 하듯 확인하는 PC·콘솔 게임 뉴스 브리핑. 핵심 3줄 요약, 신뢰도 표시, Steam 패치노트, 출시 캘린더."
+
+
+def site_url():
+    return os.environ.get("SITE_URL", "https://khb950404-creator.github.io/gamewebzine/").rstrip("/") + "/"
+
+
+def seo_head(title, desc, path, img, ld):
+    url = site_url() + path
+    tags = [f'<meta name="description" content="{esc(desc)}">', f'<link rel="canonical" href="{esc(url)}">',
+            f'<link rel="alternate" type="application/rss+xml" title="{SITE_NAME}" href="{site_url()}rss.xml">',
+            f'<meta property="og:type" content="{"article" if ld else "website"}">',
+            f'<meta property="og:site_name" content="{SITE_NAME}">', f'<meta property="og:title" content="{esc(title)}">',
+            f'<meta property="og:description" content="{esc(desc)}">', f'<meta property="og:url" content="{esc(url)}">',
+            f'<meta property="og:locale" content="ko_KR">',
+            f'<meta name="twitter:card" content="{"summary_large_image" if img else "summary"}">']
+    if img:
+        tags.append(f'<meta property="og:image" content="{esc(img)}">')
+    for env, name in (("GOOGLE_SITE_VERIFICATION", "google-site-verification"),
+                      ("NAVER_SITE_VERIFICATION", "naver-site-verification")):
+        if os.environ.get(env):
+            tags.append(f'<meta name="{name}" content="{esc(os.environ[env])}">')
+    if ld:
+        tags.append('<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False).replace("</", "<\\/") + '</script>')
+    return "\n".join(tags)
+
+
+def page(title, body, desc=SITE_DESC, path="", img=None, ld=None):
     return f"""<!doctype html><html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)}</title>
+{seo_head(title, desc, path, img, ld)}
 <style>{CSS}</style>{ads_head()}</head><body>
 <header><div class="wrap"><a class="logo" href="{{root}}index.html" aria-label="알트탭"><span class="k k1">alt</span><em>+</em><span class="k k2">tab</span><span class="cur"></span></a>
 <div class="gnb"><a href="{{root}}index.html">뉴스</a><a href="{{root}}patches.html">패치노트</a><a href="{{root}}calendar.html">출시 캘린더</a></div>
@@ -700,7 +728,7 @@ def static_pages():
     }
     for name, (title, body) in pages.items():
         (SITE / f"{name}.html").write_text(
-            page(f"{title} — {SITE_NAME}", f'<div class="doc"><h1>{title}</h1>{body}</div>').replace("{root}", ""),
+            page(f"{title} — {SITE_NAME}", f'<div class="doc"><h1>{title}</h1>{body}</div>', path=f"{name}.html").replace("{root}", ""),
             encoding="utf-8")
     c = os.environ.get("ADSENSE_CLIENT")
     if c:
@@ -852,6 +880,32 @@ if (tok) load();
 </script>"""
 
 
+def build_feeds(articles):
+    base = site_url()
+    iso = lambda ts: datetime.fromtimestamp(ts, timezone.utc).strftime("%Y-%m-%dT%H:%M:%S+00:00")
+    now = time.time()
+    urls = [("", now, "hourly", "1.0"), ("patches.html", now, "daily", "0.7"), ("calendar.html", now, "daily", "0.7"),
+            ("about.html", None, "monthly", "0.3"), ("privacy.html", None, "yearly", "0.1"), ("contact.html", None, "yearly", "0.1")]
+    urls += [(f"a/{a['id']}.html", a.get("written", a["ts"]), "weekly", "0.8") for a in articles]
+    sm = "".join(f"<url><loc>{html.escape(base + u)}</loc>" + (f"<lastmod>{iso(t)}</lastmod>" if t else "")
+                 + f"<changefreq>{c}</changefreq><priority>{pr}</priority></url>\n" for u, t, c, pr in urls)
+    (SITE / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + sm + "</urlset>\n", encoding="utf-8")
+    rfc = lambda ts: datetime.fromtimestamp(ts, timezone.utc).strftime("%a, %d %b %Y %H:%M:%S +0000")
+    items = "".join(
+        f"<item><title>{html.escape(a['title'])}</title><link>{base}a/{a['id']}.html</link>"
+        f"<guid isPermaLink=\"true\">{base}a/{a['id']}.html</guid><pubDate>{rfc(a.get('written', a['ts']))}</pubDate>"
+        f"<category>{html.escape(a.get('category', ''))}</category>"
+        f"<description>{html.escape(' / '.join(a.get('tldr', [])) or a.get('why', ''))}</description></item>\n"
+        for a in articles[:50])
+    (SITE / "rss.xml").write_text(
+        f'<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel><title>{SITE_NAME}</title>'
+        f"<link>{base}</link><description>{html.escape(SITE_DESC)}</description><language>ko</language>"
+        f"<lastBuildDate>{rfc(now)}</lastBuildDate>\n{items}</channel></rss>\n", encoding="utf-8")
+    # 프로젝트 주소(github.io/저장소)에선 robots.txt 가 무시되지만, 자체 도메인 연결 후를 위해 생성
+    (SITE / "robots.txt").write_text(f"User-agent: *\nDisallow: /review.html\nSitemap: {base}sitemap.xml\n", encoding="utf-8")
+
+
 def build_search(articles):
     idx = [{"id": a["id"], "t": a["title"], "s": " ".join(a.get("tldr", [])) or a.get("why", ""),
             "k": " ".join([a.get("why", ""), " ".join(a.get("body", [])), " ".join(a.get("games", [])),
@@ -859,7 +913,7 @@ def build_search(articles):
             "c": a.get("category", ""), "p": a.get("platforms", []), "tr": a.get("trust", ""), "ts": a["ts"],
             "img": a.get("img")} for a in articles]
     (SITE / "search.json").write_text(json.dumps(idx, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    (SITE / "search.html").write_text(page("검색 — " + SITE_NAME, SEARCH_BODY).replace("{root}", ""), encoding="utf-8")
+    (SITE / "search.html").write_text(page("검색 — " + SITE_NAME, SEARCH_BODY, path="search.html").replace("{root}", ""), encoding="utf-8")
 
 
 SEARCH_BODY = r"""
@@ -902,9 +956,10 @@ def build_patches():
 <ul>{''.join(f'<li>{esc(t)}</li>' for t in x.get('points', []))}</ul>
 <a class="lk" href="{esc(x['url'])}" target="_blank" rel="noopener">Steam 원문 패치노트</a></div></div>""" for x in ps)
     (SITE / "patches.html").write_text(page("패치노트 — " + SITE_NAME, f"""
-<h2 class="sec">Steam 인기 게임 패치노트</h2>
+<h2 class="sec">Steam 인기 게임 패치노트</h2><!--seo-->
 <p class="note">Steam 동시접속 상위 게임의 최근 업데이트를 AI가 한국어로 요약했습니다. 정확한 내용은 원문을 확인하세요.</p>
-{rows or '<p>아직 수집된 패치노트가 없습니다.</p>'}""").replace("{root}", ""), encoding="utf-8")
+{rows or '<p>아직 수집된 패치노트가 없습니다.</p>'}""", path="patches.html",
+        desc="Steam 인기 게임의 최신 패치노트를 한국어 3줄로 요약. 업데이트 내용을 빠르게 확인하세요.").replace("{root}", ""), encoding="utf-8")
 
 
 def build_calendar():
@@ -939,7 +994,8 @@ def build_calendar():
 document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x===b));const f=b.dataset.f;
 document.querySelectorAll('.rel').forEach(r=>r.style.display=!f||r.dataset.p.split('|').includes(f)?'':'none');
 document.querySelectorAll('.day').forEach(d=>d.style.display=[...d.querySelectorAll('.rel')].some(r=>r.style.display!=='none')?'':'none')}});
-const t=document.getElementById('today');if(t)t.scrollIntoView({{block:'start'}})</script>""").replace("{root}", ""),
+const t=document.getElementById('today');if(t)t.scrollIntoView({{block:'start'}})</script>""", path="calendar.html",
+        desc="PC·PS5·Xbox·닌텐도 스위치 게임 출시 일정을 날짜별로 정리한 출시 캘린더.").replace("{root}", ""),
         encoding="utf-8")
 
 
@@ -956,11 +1012,19 @@ def build():
                        for s in a["sources"])
         note = "※ 아직 번역·재작성되지 않은 원문 요약입니다." if a.get("untranslated") else \
             f"이 기사는 AI가 출처 {len(a['sources'])}건을 종합해 작성했습니다. 사실관계는 출처를 확인하세요."
+        desc = " ".join(a.get("tldr", [])) or a.get("why", "") or a["title"]
+        img = a.get("img_hd") or a.get("img")
+        ld = {"@context": "https://schema.org", "@type": "NewsArticle", "headline": a["title"][:110],
+              "description": desc[:300], "datePublished": datetime.fromtimestamp(a.get("written", a["ts"]), timezone.utc).isoformat(),
+              "dateModified": datetime.fromtimestamp(a.get("written", a["ts"]), timezone.utc).isoformat(),
+              "mainEntityOfPage": site_url() + f"a/{a['id']}.html", "inLanguage": "ko",
+              "author": {"@type": "Organization", "name": SITE_NAME}, "publisher": {"@type": "Organization", "name": SITE_NAME},
+              **({"image": [img]} if img else {})}
         html_ = page(a["title"] + " — " + SITE_NAME, f"""<article>{meta(a)}<h1>{esc(a["title"])}</h1>
 {f'<figure class="hero"><img src="{esc(a.get("img_hd") or a["img"])}" alt=""><figcaption>이미지: Steam 스토어</figcaption></figure>' if a.get("img") else ''}
 {f'<div class="tldr"><ul>{tldr}</ul></div>' if tldr else ''}
 {f'<p class="why">{esc(a["why"])}</p>' if a.get("why") else ''}
-{body}{ad("ADSENSE_SLOT_ARTICLE")}<div class="src"><b>출처</b><ul>{srcs}</ul></div><p class="note">{note}</p></article>""")
+{body}{ad("ADSENSE_SLOT_ARTICLE")}<div class="src"><b>출처</b><ul>{srcs}</ul></div><p class="note">{note}</p></article>""", desc=desc[:160], path=f"a/{a['id']}.html", img=img, ld=ld)
         (SITE / "a" / f"{a['id']}.html").write_text(html_.replace("{root}", "../"), encoding="utf-8")
 
     recent = [a for a in articles if time.time() - a["ts"] < 86400] or articles
@@ -980,7 +1044,7 @@ def build():
                      f'<div>{meta(a)}<div class="t">{"<span class=new>NEW</span>" if time.time() - a["ts"] < 3 * 3600 else ""}{esc(a["title"])}</div></div>'
                      + '</a>' for a in articles[:100])
     filters = "".join(f'<button data-f="{f}">{f}</button>' for f in ["PC", "PS5", "Xbox", "Switch"] + CATEGORIES[:-1])
-    index = page("알트탭 ALT+TAB — 업무 중 잠깐, 게임 소식 3줄", f"""
+    index = page("알트탭 ALT+TAB — 업무 중 잠깐, 게임 소식 3줄", path="", body=f"""
 <div class="tick"><span class="live">LIVE</span><div class="tk"><div class="tkin">{ticker}{ticker}</div></div></div>
 <h2 class="sec">오늘의 브리핑</h2>{lead_html}<div class="brief">{brief or '<p>아직 기사가 없습니다.</p>'}</div>
 {ad("ADSENSE_SLOT_HOME")}<h2 class="sec">최신 소식</h2><nav><button class="on" data-f="">전체</button>{filters}</nav>
@@ -995,6 +1059,7 @@ document.querySelectorAll('#st a').forEach(a=>a.style.display=!f||a.dataset.c===
         .replace("<head>", '<head><meta name="robots" content="noindex">'), encoding="utf-8")
     static_pages()
     build_search(articles)
+    build_feeds(articles)
     build_patches()
     build_calendar()
     print(f"사이트 빌드 완료: {SITE / 'index.html'} (기사 {len(articles)}건)")
