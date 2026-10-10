@@ -490,5 +490,320 @@
   ],
   "ts": 1791604500.0,
   "written": 1791606816.0061636
+ },
+ {
+  "title": "이번 주말 Xbox 프리 플레이 데이즈 라인업 공개",
+  "tldr": [
+   "10월 8일부터 11일까지 주말 동안 프리 플레이 데이즈 진행",
+   "Screamer와 Family Man은 구독 회원 대상 무료 플레이 제공",
+   "ARC Raiders는 모든 Xbox 멤버를 대상으로 무료 체험 개방"
+  ],
+  "why": "주말 동안 다양한 인기 게임을 추가 비용 없이 직접 플레이해 볼 수 있는 좋은 기회다.",
+  "body": [
+   "Xbox는 공식 채널을 통해 다가오는 주말 동안 진행되는 '프리 플레이 데이즈' 대상 게임 목록을 공개했다.",
+   "이번 행사는 10월 8일 목요일부터 10월 11일 일요일까지 진행되며, 일부 게임은 구독 회원뿐만 아니라 모든 Xbox 이용자에게 개방된다.",
+   "구체적으로 Screamer와 Family Man은 Xbox Game Pass 회원들을 위해 제공되며, ARC Raiders는 모든 Xbox 멤버가 기간 동안 자유롭게 즐길 수 있다."
+  ],
+  "category": "할인·이벤트",
+  "platforms": [
+   "Xbox"
+  ],
+  "games": [
+   "ARC Raiders",
+   "Screamer",
+   "Family Man"
+  ],
+  "trust": "공식",
+  "skip": false,
+  "fixes": [
+   "출처에 없는 게임인 S.T.A.L.K.E.R. 2: Heart of Chornobyl과 Little Nightmares III가 games 필드에 포함되어 있음",
+   "출처에 없는 플랫폼인 PC가 platforms 필드에 포함되어 있음",
+   "Game Pass 회원 등급(Ultimate, Premium and Essential)이 축소 표기되었으나 본문의 'Xbox Game Pass 회원' 표현은 대략적으로 수용 가능하나, 정확한 출처 반영을 위해 games 목록 및 platforms 정리가 필요함"
+  ],
+  "status": "published",
+  "id": "fb1135d6e3",
+  "sources": [
+   {
+    "name": "Xbox Wire",
+    "title": "Free Play Days – ARC Raiders, S.T.A.L.K.E.R. 2: Heart of Chornobyl, Little Nightmares III, Screamer, and More",
+    "link": "https://news.xbox.com/en-us/2026/10/08/free-play-days-10-08-2026/",
+    "official": true
+   }
+  ],
+  "ts": 1791471600.0,
+  "written": 1791608759.6240134
+ },
+ {
+  "skip": false,
+  "title": "베스트바이, 스위치 2 젤다 심야 런칭 행사 개최",
+  "tldr": [
+   "베스트바이에서 젤다의 전설 리메이크 스위치 2 출시 기념 심야 매장 오픈을 진행한다.",
+   "사전예약자는 매장 수령으로 변경 가능하며, 한정 수량의 스위치 2 및 프로 컨트롤러도 현장 판매된다.",
+   "미국 지역 한정으로 오프라인 매장을 통해 소량 추가 물량이 풀릴 예정이다."
+  ],
+  "why": "스위치 2로 출시되는 대형 타이틀의 오프라인 심야 발매와 함께, 구하기 힘든 하드웨어 추가 물량을 확보할 수 있는 기회이기 때문이다.",
+  "body": [
+   "미국 베스트바이가 다음 달 예정된 스위치 2용 젤다의 전설 리메이크 출시를 맞아 과거 1998년 닌텐도 64 시절의 감성을 재현하는 심야 매장 오픈 행사를 개최한다.",
+   "이미 해당 타이틀을 사전 예약한 이용자들은 주문 방식을 매장 픽업으로 변경하여 심야에 직접 게임을 수령하는 것이 가능하다.",
+   "또한 사전 예약에 실패해 기기를 구하지 못한 미국 거주 게이머들을 위해 젤다 에디션 스위치 2와 프로 컨트롤러의 한정 수량 추가 물량도 현장에서 함께 판매될 예정이다."
+  ],
+  "category": "신작",
+  "platforms": [
+   "Switch 2"
+  ],
+  "games": [
+   "The Legend of Zelda: Ocarina of Time"
+  ],
+  "trust": "루머",
+  "fixes": [
+   "trust 값이 출처 두 곳 모두 official=false이므로 '확인'이 아니라 '루머'여야 함",
+   "platforms 배열에 'Switch 2' 대신 'Switch'로 되어 있어 출처(Switch 2)와 다름"
+  ],
+  "status": "pending",
+  "id": "cd7074b036",
+  "sources": [
+   {
+    "name": "Nintendo Life",
+    "title": "Best Buy To Offer Additional Switch 2 Zelda Units In-Store At Midnight Launch",
+    "link": "https://www.nintendolife.com/news/2026/10/best-buy-to-offer-additional-switch-2-zelda-units-in-store-at-midnight-launch",
+    "official": false
+   },
+   {
+    "name": "GameSpot",
+    "title": "Best Buy Wants To Travel Back To 1998 With Zelda: Ocarina Of Time Midnight Launch",
+    "link": "https://www.gamespot.com/articles/best-buy-wants-to-travel-back-to-1998-with-zelda-ocarina-of-time-midnight-launch/",
+    "official": false
+   }
+  ],
+  "ts": 1791513000.0,
+  "written": 1791608953.7174776
+ },
+ {
+  "title": "포르자 호라이즌 6, 세븐일레븐 협업 업데이트 실시",
+  "tldr": [
+   "Xbox와 세븐일레븐이 협업한 호라이즌 미츠 업데이트 공개",
+   "게임 내에서 한정 기간 동안 세븐일레븐 편의점 방문 가능",
+   "미국 전역에서 오프라인 매장 혜택 및 의류 컬렉션 동시 출시"
+  ],
+  "why": "인기 레이싱 게임인 포르자 호라이즌 6에 실제 브랜드와의 협업 콘텐츠가 추가되어 색다른 주행 경험을 제공하기 때문입니다.",
+  "body": [
+   "Xbox와 세븐일레븐이 손을 잡고 포르자 호라이즌 6에 특별한 협업 콘텐츠를 선보였다.",
+   "이번 호라이즌 미츠 업데이트를 통해 플레이어들은 오늘부터 게임 내에서 한정 기간 동안 세븐일레븐 편의점에 들를 수 있게 된다.",
+   "또한 미국 내 오프라인 매장 프로모션과 함께 전용 의류 컬렉션도 함께 출시된다."
+  ],
+  "category": "업데이트",
+  "platforms": [
+   "PC",
+   "Xbox"
+  ],
+  "games": [
+   "Forza Horizon 6"
+  ],
+  "trust": "공식",
+  "skip": false,
+  "fixes": [],
+  "status": "published",
+  "id": "63ce7649c8",
+  "sources": [
+   {
+    "name": "Xbox Wire",
+    "title": "Pull Up to 7-Eleven in Forza Horizon 6",
+    "link": "https://news.xbox.com/en-us/2026/10/08/forza-horizon-6-7-eleven/",
+    "official": true
+   }
+  ],
+  "ts": 1791468660.0,
+  "written": 1791609146.8099556
+ },
+ {
+  "title": "드래곤즈 도그마 2 스위치 2·PS5 그래픽 비교 영상 공개",
+  "tldr": [
+   "유튜브 채널을 통해 스위치 2와 PS5 버전의 그래픽 비교 영상이 공개됨",
+   "스위치 2 버전은 휴대 모드 1080p, 독 모드 1440p 업스케일 해상도 지원",
+   "프레임 생성 기능 활성화 시 약 60프레임 수준의 성능 구현 가능"
+  ],
+  "why": "휴대용 기기와 거대 콘솔 간의 성능 차이와 최적화 수준을 미리 확인할 수 있기 때문이다.",
+  "body": [
+   "닌텐도 라이프 등의 보도에 따르면, 유튜브 채널 '엘 아날리스타 데 비츠'가 '드래곤즈 도그마 2'의 스위치 2 버전과 PS5 버전의 그래픽을 비교하는 영상을 공개했다.",
+   "이번에 선보인 비교 영상에는 프레임 생성 기능 토글 여부에 따른 성능 차이도 함께 포함되어 관심을 모으고 있다.",
+   "공개된 내용에 따르면 스위치 2 버전은 휴대 모드에서 1080p, 독 모드에서 1440p의 업스케일 해상도를 제공하며, 기본 40프레임 내외에서 프레임 생성 기능을 켤 경우 60프레임에 준하는 환경을 경험할 수 있는 것으로 나타났다."
+  ],
+  "category": "신작",
+  "platforms": [
+   "PC",
+   "PS5",
+   "Switch"
+  ],
+  "games": [
+   "Dragon's Dogma 2"
+  ],
+  "trust": "확인",
+  "skip": false,
+  "fixes": [
+   "팩트체크 실패"
+  ],
+  "force_review": true,
+  "status": "pending",
+  "id": "3d9fe4ac63",
+  "sources": [
+   {
+    "name": "Nintendo Life",
+    "title": "Video: Dragon's Dogma 2 Side-By-Side Graphics Comparison (Switch 2 & PS5)",
+    "link": "https://www.nintendolife.com/news/2026/10/video-dragons-dogma-2-side-by-side-graphics-comparison-switch-2-and-ps5",
+    "official": false
+   }
+  ],
+  "ts": 1791596700.0,
+  "written": 1791609345.6325102
+ },
+ {
+  "title": "엑스박스, 크리에이터 및 디비전 지원 위한 리더십 인사 단행",
+  "tldr": [
+   "엑스박스가 글로벌 직원들을 대상으로 새로운 리더십 인사를 발표했습니다.",
+   "이번 인사는 크리에이터와 디비전을 지원하기 위해 이루어졌습니다.",
+   "타운홀 미팅에서 언급된 4가지 핵심 요소와 실행 전략의 연장선입니다."
+  ],
+  "why": "엑스박스 부서의 리더십 변화는 향후 조직 운영과 크리에이터 지원 방향성에 영향을 미치므로 업계의 주목을 받을 필요가 있습니다.",
+  "body": [
+   "마이크로소프트는 엑스박스(Xbox) 부서의 조직 개편과 함께 새로운 리더십 인사를 발표했다. 이번 인사는 글로벌 팀원들에게 직접 공유된 메시지를 통해 공개되었다.",
+   "앞서 타운홀 미팅에서 강조된 4가지 핵심 요소와 실행 선택지 중 '크리에이터'와 '디비전' 영역을 뒷받침하기 위한 목적이다.",
+   "핵심 콘텐츠와 코어 영역의 성과에 이어, 이번 인사를 통해 엑스박스의 창작자 지원과 조직 운영 체계에 어떤 변화가 생길지 이목이 집중된다."
+  ],
+  "category": "업계",
+  "platforms": [
+   "Xbox"
+  ],
+  "games": [],
+  "trust": "공식",
+  "skip": false,
+  "fixes": [
+   "출처에 없는 'PC, PS5, Switch' 플랫폼이 platforms 필드에 추가되어 있어 출처(Xbox Wire)에 근거한 'Xbox'로 수정함.",
+   "기사의 why 항목은 출처에 없는 추측성 배경 설명이므로 출처에 맞게 간소화하거나 삭제해야 하나, 구조 유지를 위해 출처 내용과 무관한 구체적 플랫폼 언급 등 과도한 추측 부분을 정제함."
+  ],
+  "status": "published",
+  "id": "83c4cfefaf",
+  "sources": [
+   {
+    "name": "Xbox Wire",
+    "title": "New Leadership Appointments and XBOX Division",
+    "link": "https://news.xbox.com/en-us/2026/10/08/new-leadership-appointments-and-xbox-division/",
+    "official": true
+   }
+  ],
+  "ts": 1791460622.0,
+  "written": 1791609732.1433067
+ },
+ {
+  "title": "소닉 레이싱 크로스월드, 2년 차 로드맵 공개",
+  "tldr": [
+   "세가가 소닉 레이싱 크로스월드의 2년 차 로드맵을 발표함",
+   "11월 3일에 대규모 업데이트와 신규 캐릭터 등 추가 예정",
+   "시즌 패스 2와 다양한 협업 콘텐츠가 순차적으로 도입될 계획"
+  ],
+  "why": "지속적인 콘텐츠 확장을 통해 게임의 즐길 거리가 대폭 늘어나기 때문입니다.",
+  "body": [
+   "세가가 소닉 레이싱 크로스월드의 2년 차 서비스 계획인 '로드맵'을 공개했다. 이번 로드맵은 오는 11월 3일부터 본격적으로 시작되며, 팬들의 기대를 모으고 있다.",
+   "업데이트 첫날부터 대규모 패치가 적용될 예정이다. 이와 함께 플레이어들이 무료로 즐길 수 있는 신규 캐릭터들이 다수 추가되어 트랙에 활력을 불어넣을 전망이다.",
+   "또한 새로운 시즌 패스 2와 함께 다채로운 컬래버레이션 콘텐츠가 예고되어 있어, 향후 레이스 환경에 큰 변화가 찾아올 것으로 보인다."
+  ],
+  "category": "업데이트",
+  "platforms": [],
+  "games": [
+   "Sonic Racing: CrossWorlds"
+  ],
+  "trust": "루머",
+  "skip": false,
+  "fixes": [
+   "trust 값 오류: 출처 자료가 official=false 및 단일 매체(Nintendo Life) 기반이므로 '공식' 대신 '루머'여야 함",
+   "출처에 없는 플랫폼 정보(PC, PS5, Xbox, Switch)가 포함되어 있어 삭제함",
+   "출처에 없는 장르 설명(아케이드 레이싱 게임)이 포함되어 있어 수정함"
+  ],
+  "status": "pending",
+  "id": "a290d437b9",
+  "sources": [
+   {
+    "name": "Nintendo Life",
+    "title": "Sonic Racing: CrossWorlds \"Year Two\" Roadmap Revealed - Major Free Updates, New Collabs And Much More",
+    "link": "https://www.nintendolife.com/news/2026/10/sonic-racing-crossworlds-year-two-roadmap-revealed-major-free-updates-new-collabs-and-much-more",
+    "official": false
+   }
+  ],
+  "ts": 1791590100.0,
+  "written": 1791610037.4997776
+ },
+ {
+  "title": "언리얼 엔진 탑재한 AAA급 지뢰찾기 패러디 공개",
+  "tldr": [
+   "개발자 마이크 라허가 제작한 AAA급 지뢰찾기 패러디 게임 공개",
+   "언리얼 엔진, 엔비디아 등 과장된 타이틀 카드로 유머 선사",
+   "웹 브라우저를 통해 무료로 직접 플레이 가능"
+  ],
+  "why": "클래식 퍼즐 게임을 현대적인 AAA급 대작 게임의 과장된 연출로 비틀어 유쾌한 재미를 주는 웹 게임이기 때문이다.",
+  "body": [
+   "수십 년간 사랑받아 온 고전 퍼즐 게임 '지뢰찾기'를 현대적인 대작 게임처럼 과장한 패러디 작품이 등장했다. 작가이자 프로그래머인 마이크 라허가 제작한 이 게임은 웹 브라우저를 통해 누구나 직접 플레이할 수 있다.",
+   "게임은 실제 플레이 방식이나 외형은 기존 지뢰찾기와 거의 흡사하지만, 언리얼 엔진, 엔비디아, 빙크 비디오, 와이즈 등 거대 기술 기업의 로고와 과장된 타이틀 카드를 의도적으로 삽입해 웃음을 자아낸다.",
+   "이 패러디물은 현대 AAA급 게임들의 과도한 연출과 홍보 방식을 유머러스하게 비판하며 게이머들에게 색다른 재미를 제공하고 있다."
+  ],
+  "category": "신작",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "지뢰찾기"
+  ],
+  "trust": "루머",
+  "skip": false,
+  "fixes": [
+   "출처에서 개발자 이름은 'Mike Lacher'이나 기사에서는 '마크 라허'로 오기됨",
+   "출처의 trust 값은 'official=false'이자 단일 매체(GameSpot) 정보이므로 규칙상 '루머' 또는 단일 매체 기준에 맞아야 함. 본문에서 2개 이상 매체가 확인되지 않았으므로 '루머'로 수정"
+  ],
+  "status": "pending",
+  "id": "f658f5df5e",
+  "sources": [
+   {
+    "name": "GameSpot",
+    "title": "Let’s All Be Happy This AAA Minesweeper Game Isn’t Real",
+    "link": "https://www.gamespot.com/articles/lets-all-be-happy-this-aaa-minesweeper-game-isnt-real/",
+    "official": false
+   }
+  ],
+  "ts": 1791588224.0,
+  "written": 1791610328.638231
+ },
+ {
+  "title": "코나미, '사일런트 Hill' 신작 후속 웨이브 예고",
+  "tldr": [
+   "코나미 프로듀서 모토이 오카모토가 언급",
+   "신작 사일런트 힐 시리즈의 2·3차 웨이브 기획 중",
+   "추가적인 신작 타이틀 개발 계획 시사"
+  ],
+  "why": "공포 게임 명작 시리즈인 사일런트 힐의 향후 전개 방향을 엿볼 수 있어 게이머들의 주목을 받습니다.",
+  "body": [
+   "코나미의 모토이 오카모토 프로듀서에 따르면, 회사는 현재 진행 중인 프로젝트에 이어 사일런트 힐 프랜차이즈의 두 번째와 세 번째 웨이브에 해당하는 신작들을 기획하고 있습니다.",
+   "이번 언급은 시리즈의 부활을 알린 최근의 움직임이 단발성에 그치지 않고 지속적인 후속작 전개로 이어질 것임을 보여줍니다."
+  ],
+  "category": "신작",
+  "platforms": [],
+  "games": [
+   "Silent Hill"
+  ],
+  "trust": "루머",
+  "skip": false,
+  "fixes": [
+   "출처에 플랫폼(PC, PS5, Xbox) 정보가 없으므로 삭제해야 함.",
+   "출처(IGN)의 신뢰도 표기가 공식이 아니므로 '루머' 또는 '공식'이 아닌 단일 매체 보도에 기반하여 trust 값을 검토해야 함. 출처[1]의 trust는 '루머'가 타당함."
+  ],
+  "status": "pending",
+  "id": "5af30c537e",
+  "sources": [
+   {
+    "name": "IGN",
+    "title": "Konami Planning 'Second and Third Waves' of New Silent Hill Games",
+    "link": "https://www.ign.com/articles/konami-planning-second-and-third-waves-of-new-silent-hill-games",
+    "official": false
+   }
+  ],
+  "ts": 1791586050.0,
+  "written": 1791610522.2171974
  }
 ]
