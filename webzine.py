@@ -319,11 +319,14 @@ def norm(s):
 def steam_app(appid, cache):
     """appid → {name, img}. data/steam_apps.json 에 캐시."""
     key = f"id:{appid}"
-    if key not in cache:
+    if key not in cache or (cache[key] and "hd" not in cache[key]):  # 예전 캐시엔 고해상도 주소가 없음
         try:
             d = get_json(f"https://store.steampowered.com/api/appdetails?appids={appid}&cc=kr&l=koreana")[str(appid)]
             d = d.get("data") if d.get("success") else None
-            cache[key] = {"appid": appid, "name": d["name"], "img": d.get("header_image")} if d else None
+            # hd: 첫 번째 공식 스크린샷(1920x1080) — 기사 대표 이미지용
+            shots = (d or {}).get("screenshots") or [{}]
+            cache[key] = {"appid": appid, "name": d["name"], "img": d.get("header_image"),
+                          "hd": shots[0].get("path_full") or d.get("header_image")} if d else None
             time.sleep(0.3)
         except Exception:
             return None
@@ -362,7 +365,7 @@ def attach_images(articles, cache):
         for g in a.get("games_en") or a.get("games") or []:
             app = steam_find(g, cache)
             if app and app.get("img"):
-                a["img"], a["appid"] = app["img"], app["appid"]
+                a["img"], a["img_hd"], a["appid"] = app["img"], app.get("hd"), app["appid"]
                 n += 1
                 break
     print(f"이미지 연결 {n}건")
@@ -579,7 +582,7 @@ mark{background:rgba(229,72,77,.22);color:inherit;border-radius:2px;padding:0 1p
 .brief a.hi{display:grid;grid-template-columns:1fr 220px;gap:18px;align-items:center}
 .th{width:100%;aspect-ratio:460/215;object-fit:cover;border-radius:8px;background:var(--line);display:block}
 .stream a.hi{grid-template-columns:64px 1fr 120px}.stream .th{border-radius:6px}
-.hero{margin:0 0 20px}.hero img{width:100%;border-radius:10px;display:block}.hero figcaption{font-size:12px;color:var(--mut);margin-top:6px}
+.hero{margin:0 0 20px}.hero img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px;display:block;background:var(--line)}.hero figcaption{font-size:12px;color:var(--mut);margin-top:6px}
 .pt{display:grid;grid-template-columns:184px 1fr;gap:16px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
 .pt .g{font-size:13px;color:var(--mut)}.pt .t{font-weight:800;margin:2px 0 6px}.pt ul{margin:0;padding-left:18px;font-size:14px}
 .pt .lk{font-size:12px;color:var(--mut);text-decoration:underline}
@@ -954,7 +957,7 @@ def build():
         note = "※ 아직 번역·재작성되지 않은 원문 요약입니다." if a.get("untranslated") else \
             f"이 기사는 AI가 출처 {len(a['sources'])}건을 종합해 작성했습니다. 사실관계는 출처를 확인하세요."
         html_ = page(a["title"] + " — " + SITE_NAME, f"""<article>{meta(a)}<h1>{esc(a["title"])}</h1>
-{f'<figure class="hero"><img src="{esc(a["img"])}" alt=""><figcaption>이미지: Steam 스토어</figcaption></figure>' if a.get("img") else ''}
+{f'<figure class="hero"><img src="{esc(a.get("img_hd") or a["img"])}" alt=""><figcaption>이미지: Steam 스토어</figcaption></figure>' if a.get("img") else ''}
 {f'<div class="tldr"><ul>{tldr}</ul></div>' if tldr else ''}
 {f'<p class="why">{esc(a["why"])}</p>' if a.get("why") else ''}
 {body}{ad("ADSENSE_SLOT_ARTICLE")}<div class="src"><b>출처</b><ul>{srcs}</ul></div><p class="note">{note}</p></article>""")
