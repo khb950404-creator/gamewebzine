@@ -30,6 +30,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -39,7 +40,7 @@ jobs:
       - name: 수집·기사 작성
         if: github.event_name != 'push'
         continue-on-error: true   # 실패해도 경고로 표시하고 기존 기사로 빌드·배포는 계속
-        run: python webzine.py
+        run: python -u webzine.py
 
       - name: 사이트 빌드
         run: python webzine.py build

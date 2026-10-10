@@ -104,116 +104,150 @@ def cluster(items):
 
 
 # ---------- LLM ----------
+# Gemini 무료 한도는 "모델별 하루 요청 수"(flash 는 하루 20회)라서 기사 여러 건을 한 번의 호출로 묶어 쓴다.
+# 실행 1회 = 작성 1회 + 팩트체크 1회.
+exhausted = set()  # 이번 실행에서 하루 한도가 끝난 모델
+
+
 def llm(prompt):
     mode = os.environ.get("LLM", "gemini" if os.environ.get("GEMINI_API_KEY") else "none")
     if mode == "gemini":
-        time.sleep(5)  # 무료 티어 분당 요청 제한 대응
-        # 기본 모델이 계속 혼잡하면 lite 모델로 대체
-        models = [os.environ.get("GEMINI_MODEL", "gemini-flash-latest"), "gemini-flash-lite-latest"]
+        models = [m for m in (os.environ.get("GEMINI_MODEL"), "gemini-flash-latest", "gemini-flash-lite-latest") if m]
         for model in models:
+            if model in exhausted:
+                continue
             req = urllib.request.Request(
                 f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
                 data=json.dumps({"contents": [{"parts": [{"text": prompt}]}],
                                  "generationConfig": {"responseMimeType": "application/json", "temperature": 0.4}}).encode(),
                 headers={"Content-Type": "application/json", "x-goog-api-key": os.environ["GEMINI_API_KEY"]})
-            for attempt in range(3):  # 과부하(503)·한도(429)는 잠시 후 재시도
+            for attempt in range(3):
                 try:
-                    r = json.loads(urllib.request.urlopen(req, timeout=120).read())
+                    t = time.time()
+                    r = json.loads(urllib.request.urlopen(req, timeout=300).read())
+                    print(f"    ({model}, {time.time() - t:.0f}초)")
                     return json.loads(r["candidates"][0]["content"]["parts"][0]["text"])
                 except urllib.error.HTTPError as e:
+                    msg = e.read().decode("utf-8", "ignore")
+                    if e.code == 429 and "PerDay" in msg:  # 하루 한도 소진 → 재시도 무의미, 다음 모델로
+                        print(f"    … {model} 오늘 무료 한도 소진, 다음 모델로")
+                        exhausted.add(model)
+                        break
                     if e.code not in (429, 500, 503):
-                        raise
-                    print(f"    … {model} {e.code}, {15 * (attempt + 1)}초 후 재시도")
-                    time.sleep(15 * (attempt + 1))
-        raise RuntimeError("모든 Gemini 모델이 응답하지 않음 (혼잡 또는 무료 한도 초과)")
+                        raise RuntimeError(f"{model} {e.code}: {msg[:300]}")
+                    print(f"    … {model} {e.code}, {10 * (attempt + 1)}초 후 재시도")
+                    time.sleep(10 * (attempt + 1))
+        raise RuntimeError("모든 Gemini 모델이 응답하지 않음 (혼잡 또는 무료 한도 소진)")
     if mode == "ollama":
         req = urllib.request.Request(
             os.environ.get("OLLAMA_URL", "http://localhost:11434") + "/api/generate",
             data=json.dumps({"model": os.environ.get("OLLAMA_MODEL", "qwen2.5:7b"), "prompt": prompt,
                              "format": "json", "stream": False}).encode(),
             headers={"Content-Type": "application/json"})
-        return json.loads(json.loads(urllib.request.urlopen(req, timeout=600).read())["response"])
+        return json.loads(json.loads(urllib.request.urlopen(req, timeout=1800).read())["response"])
     return None
 
 
 PROMPT = """너는 PC·콘솔 게이머를 위한 한국어 게임 웹진 기자다.
-아래 출처 자료만 근거로 기사를 써라. 자료에 없는 사실(날짜, 가격, 플랫폼, 수치)은 절대 지어내지 마라.
+아래 이슈들 각각에 대해 기사를 하나씩 써라. 각 기사는 해당 이슈의 출처 자료만 근거로 한다.
+자료에 없는 사실(날짜, 가격, 플랫폼, 수치)은 절대 지어내지 마라.
 원문 문장을 번역해 옮기지 말고, 여러 출처를 종합해 자신의 문장으로 새로 써라.
 
 신뢰도 규칙:
-- "공식": 공식 출처(official=true)가 직접 발표
-- "확인": 공식은 아니지만 2개 이상 매체가 보도
-- "루머": 단일 매체 보도, 유출, 소문, 익명 소식통
+- "공식": 공식 출처(official=true)가 직접 발표했거나, 매체가 회사의 공식 발표를 전한 경우
+- "확인": 공식 발표는 아니지만 2개 이상 매체가 보도
+- "루머": 단일 매체의 독자 보도, 유출, 소문, 익명 소식통
+
+PC·콘솔 비디오게임과 무관하거나(보드·카드게임, 게임과 연결 약한 영화·드라마 소식 등)
+광고/딜 나열/퀴즈/팟캐스트 같은 저가치 글은 {{"issue": 번호, "skip": true}} 로만 표시하라.
 
 JSON 하나만 출력:
-{{"title": "한국어 헤드라인(40자 이내, 낚시 금지)",
- "tldr": ["핵심 요약 1", "핵심 요약 2", "핵심 요약 3"],
- "why": "PC·콘솔 게이머에게 왜 중요한가 (1~2문장)",
- "body": ["문단1", "문단2", "문단3"],
- "category": "{cats} 중 하나",
- "platforms": ["PC","PS5","Xbox","Switch" 중 해당하는 것],
- "games": ["관련 게임명"],
- "trust": "공식|확인|루머",
- "skip": false}}
-PC·콘솔 비디오게임과 무관하거나(보드·카드게임, 게임과 연결 약한 영화·드라마 소식 등) 광고/딜 나열/퀴즈/팟캐스트 같은 저가치 글이면 {{"skip": true}} 만 출력.
+{{"articles": [
+ {{"issue": 이슈 번호,
+  "title": "한국어 헤드라인(40자 이내, 낚시 금지)",
+  "tldr": ["핵심 요약 1", "핵심 요약 2", "핵심 요약 3"],
+  "why": "PC·콘솔 게이머에게 왜 중요한가 (1~2문장)",
+  "body": ["문단1", "문단2", "문단3"],
+  "category": "{cats} 중 하나",
+  "platforms": ["PC","PS5","Xbox","Switch" 중 출처에 명시된 것만],
+  "games": ["관련 게임명"],
+  "trust": "공식|확인|루머"}}
+]}}
 
-출처 자료:
-{sources}"""
+{issues}"""
 
 
-VERIFY = """너는 게임 웹진의 팩트체커다. 아래 기사를 출처 자료와 한 문장씩 대조하라.
+VERIFY = """너는 게임 웹진의 팩트체커다. 아래 기사들을 각 이슈의 출처 자료와 한 문장씩 대조하라.
 출처에 근거가 없는 주장(추측, 배경 설명으로 지어낸 사실, 틀린 날짜·수치·플랫폼)은 삭제하거나 출처에 맞게 고쳐라.
 문체와 구조는 유지하고, 문제없는 문장은 건드리지 마라. trust 값도 규칙에 맞는지 확인하라
-(공식=official 출처가 직접 발표, 확인=2개 이상 매체, 루머=단일 매체·유출·소문).
+(공식=회사 공식 발표, 확인=2개 이상 매체, 루머=단일 매체 독자 보도·유출·소문).
 
-JSON 하나만 출력: {{"problems": ["발견한 문제 설명"], "article": {{수정된 기사 전체, 입력과 같은 필드}}}}
+JSON 하나만 출력 (입력의 모든 기사를 같은 issue 번호로):
+{{"articles": [{{"issue": 번호, "problems": ["발견한 문제 설명"], "title": ..., "tldr": [...], "why": ..., "body": [...],
+  "category": ..., "platforms": [...], "games": [...], "trust": ...}}]}}
 
-출처 자료:
-{sources}
+{issues}
 
 기사:
-{article}"""
+{articles}"""
 
 
 class LLMDown(Exception):
     pass
 
 
-def write_article(c):
-    srcs = c["items"][:6]
-    sources = "\n\n".join(
-        f"[{i+1}] {s['source']} (official={str(s['official']).lower()})\n제목: {s['title']}\n요약: {s['summary']}"
-        for i, s in enumerate(srcs))
+def issue_text(n, c):
+    return f"=== 이슈 {n} ===\n" + "\n".join(
+        f"- {s['source']} (official={str(s['official']).lower()})\n  제목: {s['title']}\n  요약: {s['summary']}"
+        for s in c["items"][:6])
+
+
+def write_batch(cands):
+    """후보 이슈들을 한 번에 작성 → 한 번에 팩트체크. 반환: 기사 목록(이슈 순서)."""
+    issues = "\n\n".join(issue_text(n, c) for n, c in enumerate(cands, 1))
     try:
-        a = llm(PROMPT.format(cats=", ".join(CATEGORIES), sources=sources))
+        res = llm(PROMPT.format(cats=", ".join(CATEGORIES), issues=issues))
     except Exception as e:
-        print(f"  ! LLM 오류: {e} {getattr(e, 'read', lambda: b'')()[:200]}")
+        print(f"  ! LLM 오류: {e}")
         raise LLMDown()
-    if a is None:  # LLM 없음 모드
-        s = srcs[0]
-        a = {"title": s["title"], "tldr": [], "why": "", "body": [s["summary"]], "category": "기타",
-             "platforms": [], "games": [], "trust": "공식" if s["official"] else ("확인" if len(srcs) > 1 else "루머"),
-             "untranslated": True}
-    if a.get("skip"):
-        return None
-    if not a.get("untranslated"):
+    if res is None:  # LLM 없음 모드
+        res = {"articles": [{"issue": n, "title": c["items"][0]["title"], "tldr": [], "why": "",
+                             "body": [c["items"][0]["summary"]], "category": "기타", "platforms": [], "games": [],
+                             "trust": "공식" if c["items"][0]["official"] else ("확인" if len(c["items"]) > 1 else "루머"),
+                             "untranslated": True} for n, c in enumerate(cands, 1)]}
+    drafts = {a["issue"]: a for a in res.get("articles", [])
+              if isinstance(a, dict) and isinstance(a.get("issue"), int) and not a.get("skip") and a.get("title")}
+    print(f"  초안 {len(drafts)}건 (건너뜀 {len(cands) - len(drafts)}건)")
+
+    checked = {}
+    if drafts and not any(a.get("untranslated") for a in drafts.values()):
         try:
-            v = llm(VERIFY.format(sources=sources, article=json.dumps(a, ensure_ascii=False)))
-            if v and isinstance(v.get("article"), dict) and v["article"].get("title"):
-                a = {**a, **v["article"]}
-                a["fixes"] = v.get("problems", [])
-                if a["fixes"]:
-                    print(f"    팩트체크 수정 {len(a['fixes'])}건")
+            v = llm(VERIFY.format(issues="\n\n".join(issue_text(n, cands[n - 1]) for n in drafts),
+                                  articles=json.dumps(list(drafts.values()), ensure_ascii=False)))
+            checked = {a["issue"]: a for a in (v or {}).get("articles", []) if isinstance(a, dict) and a.get("title")}
+            print(f"  팩트체크 수정 {sum(len(a.get('problems', [])) for a in checked.values())}건")
         except Exception as e:
-            print(f"    ! 팩트체크 실패, 검수 대기로 보냄: {e}")
-            a["fixes"] = ["팩트체크 실패"]; a["force_review"] = True
-    review_all = os.environ.get("REVIEW_ALL") == "1"
-    a["status"] = "pending" if review_all or a.get("force_review") or a.get("trust") == "루머" else "published"
-    a["id"] = hashlib.md5("".join(sorted(s["id"] for s in srcs)).encode()).hexdigest()[:10]
-    a["sources"] = [{"name": s["source"], "title": s["title"], "link": s["link"], "official": s["official"]} for s in srcs]
-    a["ts"] = max(s["ts"] for s in srcs)
-    a["written"] = time.time()
-    return a
+            print(f"  ! 팩트체크 실패, 전부 검수 대기로 보냄: {e}")
+
+    out = []
+    for n, a in sorted(drafts.items()):
+        c = cands[n - 1]
+        if n in checked:
+            fixes = checked[n].pop("problems", [])
+            a = {**a, **checked[n], "fixes": fixes}
+        elif not a.get("untranslated"):
+            a["fixes"] = ["팩트체크 미완료"]; a["force_review"] = True
+        srcs = c["items"][:6]
+        review_all = os.environ.get("REVIEW_ALL") == "1"
+        a["status"] = "pending" if review_all or a.get("force_review") or a.get("trust") == "루머" else "published"
+        a["id"] = hashlib.md5("".join(sorted(s["id"] for s in srcs)).encode()).hexdigest()[:10]
+        a["sources"] = [{"name": s["source"], "title": s["title"], "link": s["link"], "official": s["official"]}
+                        for s in srcs]
+        a["ts"] = max(s["ts"] for s in srcs)
+        a["written"] = time.time()
+        a.pop("issue", None)
+        out.append(a)
+    return out
 
 
 # ---------- 저장 ----------
@@ -233,31 +267,31 @@ def run():
     items = [i for name, url, off in FEEDS for i in fetch_feed(name, url, off)]
     fresh = [i for i in items if i["id"] not in seen and time.time() - i["ts"] < 3 * 86400]
     print(f"새 항목 {len(fresh)}건")
-    clusters = cluster(fresh)
-    written, failed = 0, False
-    for c in clusters:
-        if written >= MAX_ARTICLES_PER_RUN:
-            break
-        print(f"작성: {c['items'][0]['title'][:70]} (출처 {len(c['items'])}, 점수 {c['score']:.1f})")
+    # 건너뛰는 이슈를 감안해 여유 있게 후보를 뽑고, 작성된 것 중 상위 MAX 건만 쓴다
+    cands = cluster(fresh)[:MAX_ARTICLES_PER_RUN + 4]
+    for c in cands:
+        print(f"후보: {c['items'][0]['title'][:70]} (출처 {len(c['items'])}, 점수 {c['score']:.1f})")
+    failed, new = False, []
+    if cands:
         try:
-            a = write_article(c)
+            new = write_batch(cands)[:MAX_ARTICLES_PER_RUN]
+            for c in cands:  # 건너뛴 이슈도 다시 보지 않음
+                seen.update(i["id"] for i in c["items"])
         except LLMDown:
-            print("LLM 호출 실패로 중단 - 작성된 기사까지 저장 (남은 항목은 다음 실행 때 재시도)")
+            print("LLM 호출 실패 - 이번 후보는 다음 실행 때 재시도")
             failed = True
-            break
-        for i in c["items"]:
-            seen.add(i["id"])  # skip 판정도 다시 보지 않음
-        if a:
-            articles.append(a); written += 1
+    articles += new
     save_json(DATA / "seen.json", sorted(seen))
     save_json(DATA / "articles.json", articles)
-    print(f"기사 {written}건 작성")
-    summary = os.environ.get("GITHUB_STEP_SUMMARY")  # Actions 실행 화면에 결과 표시(로그인 없이 보임)
+    print(f"기사 {len(new)}건 작성")
+    for a in new:
+        print(f"  [{a['status']}] ({a['trust']}) {a['title']}")
+    summary = os.environ.get("GITHUB_STEP_SUMMARY")  # Actions 실행 화면에 결과 표시
     if summary:
         with open(summary, "a", encoding="utf-8") as f:
-            f.write(f"### 새 기사 {written}건{' (LLM 오류로 중단)' if failed else ''}\n")
-            for a in articles[len(articles) - written:]:
-                f.write(f"- [{a.get('status')}] ({a['trust']}) {a['title']}\n")
+            f.write(f"### 새 기사 {len(new)}건{' (LLM 오류로 중단)' if failed else ''}\n")
+            for a in new:
+                f.write(f"- [{a['status']}] ({a['trust']}) {a['title']}\n")
     if failed:
         sys.exit(1)
 
