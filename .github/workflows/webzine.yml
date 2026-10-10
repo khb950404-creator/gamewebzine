@@ -2,7 +2,9 @@ name: webzine
 
 on:
   schedule:
-    - cron: "0 */3 * * *"   # 3시간마다 수집·작성 (UTC 기준, 실제 실행은 몇 분 늦을 수 있음)
+    # GitHub 는 정각 예약을 혼잡할 때 자주 건너뛴다 → 매시간 17분에 깨우고,
+    # 실제 작성은 마지막 실행 후 150분 이상 지났을 때만 (webzine.py 의 MIN_GAP_MIN)
+    - cron: "17 * * * *"
   push:
     branches: [main]        # 검수 승인/거절을 push 하면 사이트만 다시 빌드
   workflow_dispatch:         # Actions 탭에서 수동 실행

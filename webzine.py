@@ -156,9 +156,11 @@ PROMPT = """너는 PC·콘솔 게이머를 위한 한국어 게임 웹진 기자
 원문 문장을 번역해 옮기지 말고, 여러 출처를 종합해 자신의 문장으로 새로 써라.
 
 신뢰도 규칙:
-- "공식": 공식 출처(official=true)가 직접 발표했거나, 매체가 회사의 공식 발표를 전한 경우
-- "확인": 공식 발표는 아니지만 2개 이상 매체가 보도
-- "루머": 단일 매체의 독자 보도, 유출, 소문, 익명 소식통
+- "공식": 회사(개발사·퍼블리셔·플랫폼)가 발표한 내용. 공식 블로그·보도자료·트레일러·패치노트를 매체가 전한 경우도 포함
+- "확인": 회사 발표는 아니지만 2개 이상 매체가 각자 확인해 보도 (판매량 집계, 업계 동향 등)
+- "보도": 매체 한 곳의 취재·분석 기사. 유출이나 익명 제보가 아니면 루머가 아니다
+- "루머": 유출, 데이터마이닝, 익명 소식통, "~라고 알려졌다/~할 수도" 같은 추측, 미확인 소문
+대부분의 게임 뉴스는 공식 발표를 전하는 기사다. 루머는 정말 확인되지 않은 정보에만 붙여라.
 
 PC·콘솔 비디오게임과 무관하거나(보드·카드게임, 게임과 연결 약한 영화·드라마 소식 등)
 광고/딜 나열/퀴즈/팟캐스트 같은 저가치 글은 {{"issue": 번호, "skip": true}} 로만 표시하라.
@@ -174,7 +176,7 @@ JSON 하나만 출력:
   "platforms": ["PC","PS5","Xbox","Switch" 중 출처에 명시된 것만],
   "games": ["관련 게임명"],
   "games_en": ["관련 게임의 영문 공식 제목 (Steam 검색용, 출처에 나온 표기 그대로)"],
-  "trust": "공식|확인|루머"}}
+  "trust": "공식|확인|보도|루머"}}
 ]}}
 
 {issues}"""
@@ -183,7 +185,7 @@ JSON 하나만 출력:
 VERIFY = """너는 게임 웹진의 팩트체커다. 아래 기사들을 각 이슈의 출처 자료와 한 문장씩 대조하라.
 출처에 근거가 없는 주장(추측, 배경 설명으로 지어낸 사실, 틀린 날짜·수치·플랫폼)은 삭제하거나 출처에 맞게 고쳐라.
 문체와 구조는 유지하고, 문제없는 문장은 건드리지 마라. trust 값도 규칙에 맞는지 확인하라
-(공식=회사 공식 발표, 확인=2개 이상 매체, 루머=단일 매체 독자 보도·유출·소문).
+(공식=회사 발표를 전한 경우 포함, 확인=2개 이상 매체, 보도=매체 한 곳의 취재, 루머=유출·익명 소식통·추측만).
 
 JSON 하나만 출력 (입력의 모든 기사를 같은 issue 번호로):
 {{"articles": [{{"issue": 번호, "problems": ["발견한 문제 설명"], "title": ..., "tldr": [...], "why": ..., "body": [...],
@@ -264,6 +266,13 @@ def save_json(p, obj):
 
 
 def run():
+    state = load_json(DATA / "state.json", {})
+    gap = float(os.environ.get("MIN_GAP_MIN", 150))
+    if os.environ.get("GITHUB_EVENT_NAME") == "schedule" and time.time() - state.get("last_run", 0) < gap * 60:
+        print(f"마지막 실행 후 {gap:.0f}분이 지나지 않아 건너뜀")
+        return
+    state["last_run"] = time.time()
+    save_json(DATA / "state.json", state)
     seen = set(load_json(DATA / "seen.json", []))
     articles = load_json(DATA / "articles.json", [])
     print("수집 중...")
@@ -555,7 +564,7 @@ border-radius:12px;padding:16px 18px}.brief a:hover{border-color:var(--mut)}
 .brief .w{color:var(--mut);font-size:14px;margin-top:4px}
 .meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--mut);margin-bottom:6px}
 .b{font-size:11px;font-weight:700;padding:1px 7px;border-radius:4px;border:1px solid}
-.b.공식{color:var(--ok)}.b.확인{color:var(--info)}.b.루머{color:var(--warn)}
+.b.공식{color:var(--ok)}.b.확인{color:var(--info)}.b.보도{color:var(--mut)}.b.루머{color:var(--warn)}
 .stream{border-top:1px solid var(--line)}.stream a{display:grid;grid-template-columns:64px 1fr;gap:12px;
 padding:12px 0;border-bottom:1px solid var(--line)}.stream .tm{color:var(--mut);font-size:13px;font-variant-numeric:tabular-nums}
 .stream .t{font-weight:600}
@@ -710,7 +719,8 @@ def static_pages():
 "왜 중요한가"를 붙여 전달합니다. 기사는 AI가 여러 출처를 종합해 작성하며, 별도의 팩트체크 단계에서
 출처와 대조합니다. 루머성 소식은 편집자 검수를 거친 뒤에만 게시됩니다.</p>
 <h2>신뢰도 표시</h2><ul><li><b>공식</b> — 플랫폼·개발사·퍼블리셔가 직접 발표</li>
-<li><b>확인</b> — 2개 이상의 매체가 보도</li><li><b>루머</b> — 단일 매체 보도, 유출, 소문</li></ul>
+<li><b>확인</b> — 2개 이상의 매체가 보도</li><li><b>보도</b> — 매체 한 곳의 취재 기사</li>
+<li><b>루머</b> — 유출, 익명 소식통, 미확인 소문 (편집자 검수 후 게시)</li></ul>
 <p>모든 기사 하단에 원문 출처 링크를 제공합니다. 오류 제보는 <a href="contact.html">문의</a>로 보내주세요.</p>"""),
         "privacy": ("개인정보처리방침", f"""<p>시행일: {today}</p>
 <p>{SITE_NAME}(이하 "사이트")은 회원가입 없이 이용할 수 있으며, 이용자의 이름·연락처 등 개인정보를 직접 수집하지 않습니다.</p>
@@ -832,7 +842,7 @@ function render() {
           ? `<button class="btn ok ${st === "published" ? "on" : ""}" data-id="${esc(a.id)}" data-st="published">승인</button>
              <button class="btn no ${st === "rejected" ? "on" : ""}" data-id="${esc(a.id)}" data-st="rejected">거절</button>`
           : `<button class="btn no ${st === "rejected" ? "on" : ""}" data-id="${esc(a.id)}" data-st="rejected">내리기</button>`}
-        <select data-trust="${esc(a.id)}">${["공식", "확인", "루머"].map(t => `<option ${t === a.trust ? "selected" : ""}>${t}</option>`).join("")}</select>
+        <select data-trust="${esc(a.id)}">${["공식", "확인", "보도", "루머"].map(t => `<option ${t === a.trust ? "selected" : ""}>${t}</option>`).join("")}</select>
       </div></div>`;
   }).join("") : `<p>${tab === "pending" ? "검수 대기 중인 기사가 없습니다." : "게시된 기사가 없습니다."}</p>`;
   const n = Object.keys(changes).length;
