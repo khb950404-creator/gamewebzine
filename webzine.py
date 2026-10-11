@@ -458,6 +458,58 @@ EDITION_RE = re.compile(r"\s*[-–:]?\s*(definitive|deluxe|ultimate|complete|gol
                         r"enhanced|remastered|director'?s cut)( edition)?\s*$", re.I)
 
 
+_igdb_token = None
+
+
+def igdb(query):
+    """IGDB(트위치) API. 콘솔 게임까지 공식 아트워크·스크린샷·표지를 제공."""
+    global _igdb_token
+    cid, sec = os.environ.get("IGDB_CLIENT_ID"), os.environ.get("IGDB_CLIENT_SECRET")
+    if not (cid and sec):
+        return None
+    if not _igdb_token:
+        _igdb_token = json.loads(urllib.request.urlopen(urllib.request.Request(
+            "https://id.twitch.tv/oauth2/token?" + urllib.parse.urlencode(
+                {"client_id": cid, "client_secret": sec, "grant_type": "client_credentials"}), data=b""), timeout=30).read())["access_token"]
+    req = urllib.request.Request("https://api.igdb.com/v4/games", data=query.encode(),
+                                 headers={"Client-ID": cid, "Authorization": f"Bearer {_igdb_token}", "Accept": "application/json"})
+    time.sleep(0.3)  # 초당 4회 제한
+    return json.loads(urllib.request.urlopen(req, timeout=30).read())
+
+
+def igdb_find(title, cache):
+    """게임 이름 → IGDB 이미지 (정확히 같은 이름·대체 이름만). 아트워크 > 스크린샷 > 표지 순."""
+    key = "ig:" + norm(title)
+    if not norm(title) or not os.environ.get("IGDB_CLIENT_ID"):
+        return None
+    if key not in cache:
+        cache[key] = None
+        try:
+            q = title.replace('"', "")
+            res = igdb(f'search "{q}"; fields name,alternative_names.name,artworks.image_id,screenshots.image_id,'
+                       f'cover.image_id,first_release_date; limit 8;') or []
+            want = norm(EDITION_RE.sub("", title))
+            for g in res:
+                cands = [g.get("name", "")] + [x.get("name", "") for x in g.get("alternative_names", [])]
+                if not any(norm(EDITION_RE.sub("", c)) == want for c in cands):
+                    continue
+                art = (g.get("artworks") or g.get("screenshots") or [{}])[0].get("image_id")
+                cov = (g.get("cover") or {}).get("image_id")
+                if art:
+                    cache[key] = {"img": f"https://images.igdb.com/igdb/image/upload/t_screenshot_big/{art}.jpg",
+                                  "hd": f"https://images.igdb.com/igdb/image/upload/t_1080p/{art}.jpg"}
+                elif cov:
+                    cache[key] = {"img": f"https://images.igdb.com/igdb/image/upload/t_cover_big/{cov}.jpg",
+                                  "hd": f"https://images.igdb.com/igdb/image/upload/t_720p/{cov}.jpg", "cover": True}
+                if cache[key]:
+                    break
+        except Exception as e:
+            print(f"  ! IGDB: {e}")
+            del cache[key]
+            return None
+    return cache.get(key)
+
+
 def itad_find(title, cache):
     """ITAD 게임 검색으로 배너 이미지(정확히 같은 이름만). Steam 에 없는 PC 게임 보완용."""
     if not os.environ.get("ITAD_API_KEY"):
@@ -492,6 +544,12 @@ def attach_images(articles, cache):
             if app and app.get("img"):
                 a["img"], a["img_hd"], a["appid"], a["img_src"] = app["img"], app.get("hd"), app["appid"], "Steam 스토어"
                 break
+        if not a["img"]:
+            for g in names:
+                ig = igdb_find(g, cache)
+                if ig:
+                    a["img"], a["img_hd"], a["img_src"] = ig["img"], ig["hd"], "IGDB"
+                    break
         if not a["img"]:
             for g in names:
                 im = itad_find(g, cache)
