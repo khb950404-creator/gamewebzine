@@ -22,6 +22,7 @@ env:
   TZ: Asia/Seoul
   LLM: gemini
   GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+  ITAD_API_KEY: ${{ secrets.ITAD_API_KEY }}
   MAX_ARTICLES: ${{ vars.MAX_ARTICLES || '8' }}
   REVIEW_ALL: ${{ vars.REVIEW_ALL || '0' }}
   CONTACT_EMAIL: ${{ vars.CONTACT_EMAIL }}
@@ -47,11 +48,16 @@ jobs:
         continue-on-error: true   # 실패해도 경고로 표시하고 기존 기사로 빌드·배포는 계속
         run: python -u webzine.py
 
+      - name: 할인 정보 갱신 (push 때)
+        if: github.event_name == 'push'
+        continue-on-error: true
+        run: python -u webzine.py deals
+
       - name: 사이트 빌드
         run: python webzine.py build
 
       - name: 데이터 커밋
-        if: always() && github.event_name != 'push'
+        if: always()
         run: |
           git config user.name "webzine-bot"
           git config user.email "webzine-bot@users.noreply.github.com"

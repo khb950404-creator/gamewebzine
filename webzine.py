@@ -517,7 +517,7 @@ def collect_deals(cache):
                       "genres": i["genres"], "meta": i.get("meta")})
     save_json(DATA / "price_hist.json", hist)
     try:
-        attach_shops(deals, cache)
+        (attach_shops_itad if os.environ.get("ITAD_API_KEY") else attach_shops)(deals, cache)
     except Exception as e:
         print(f"  ! 판매처 가격: {e}")
     save_json(DATA / "deals.json", {"updated": datetime.now().strftime("%m.%d %H:%M"), "deals": deals})
@@ -532,6 +532,56 @@ CS_UA = {"User-Agent": "AltTabWebzine/1.0 (+https://github.com/khb950404-creator
 
 def cs_json(url):
     return json.loads(urllib.request.urlopen(urllib.request.Request(url, headers=CS_UA), timeout=30).read())
+
+
+def itad(path, body=None, **q):
+    q["key"] = os.environ["ITAD_API_KEY"]
+    req = urllib.request.Request(f"https://api.isthereanydeal.com{path}?{urllib.parse.urlencode(q)}",
+                                 data=json.dumps(body).encode() if body is not None else None,
+                                 headers={"Content-Type": "application/json", **CS_UA})
+    return json.loads(urllib.request.urlopen(req, timeout=60).read())
+
+
+def attach_shops_itad(deals, cache):
+    """IsThereAnyDeal: 한국(KR) 기준 상점별 현재가·역대 최저가. Steam 키(DRM: Steam)를 파는 상점만."""
+    rate = None
+    need = [f"app/{x['appid']}" for x in deals if f"itad:{x['appid']}" not in cache]
+    if need:
+        for k, v in itad("/lookup/id/shop/61/v1", need).items():  # 61 = Steam
+            cache[f"itad:{k[4:]}"] = v
+    ids = {cache[f"itad:{x['appid']}"]: x for x in deals if cache.get(f"itad:{x['appid']}")}
+    res = []
+    for i in range(0, len(ids), 100):
+        res += itad("/games/prices/v3", list(ids)[i:i + 100], country="KR", deals="false", vouchers="true")
+
+    def krw(price):
+        nonlocal rate
+        if price.get("currency") == "KRW":
+            return int(price["amount"])
+        if rate is None:
+            rate = get_json("https://open.er-api.com/v6/latest/USD")["rates"]
+        # 다른 통화는 USD 기준 환율로 환산
+        return int(round(price["amount"] / rate.get(price["currency"], 1) * rate["KRW"] / 10) * 10)
+
+    n = 0
+    for g in res:
+        x = ids.get(g.get("id"))
+        if not x:
+            continue
+        shops = []
+        for d in g.get("deals", []):
+            if d["shop"]["id"] == 61 or not any(m.get("name") == "Steam" for m in d.get("drm", [])):
+                continue  # Steam 자체 가격은 따로 쓰고, Steam 키가 아닌 판매(GOG·Epic 등)는 제외
+            shops.append({"shop": d["shop"]["name"], "krw": krw(d["price"]), "cut": d.get("cut", 0),
+                          "url": d["url"], "cur": d["price"].get("currency")})
+        x["shops"] = sorted(shops, key=lambda s_: s_["krw"])[:4]
+        low = ((g.get("historyLow") or {}).get("all") or {})
+        if low.get("amount") is not None:
+            x["ever_low"] = krw(low)
+        n += 1
+    for x in deals:
+        x["best"] = min([x["final"]] + [s_["krw"] for s_ in x.get("shops", [])])
+    print(f"판매처 가격 비교 {n}건 (ITAD, KR)")
 
 
 def attach_shops(deals, cache):
@@ -1219,7 +1269,7 @@ background:rgba(31,157,85,.1);border:1px solid rgba(31,157,85,.35);transition:ba
 <select id="g"><option value="">전체 장르</option>{"".join(f"<option>{esc(g)}</option>" for g in genres)}</select></div>
 <div class="dgrid" id="dg">{cards or "<p>할인 정보를 불러오지 못했습니다.</p>"}</div>
 <p class="note">Steam 인기 판매 상위 100개 중 할인 중인 게임 · 한국 가격 기준 · 업데이트 {esc(d.get("updated", ""))}<br>
-판매처는 Steam 키를 판매하는 공인 상점만 비교합니다(가격 정보: CheapShark). 해외 상점 가격은 달러 가격을 오늘 환율로 환산한 값이며,
+판매처는 Steam 키를 판매하는 공인 상점만 비교합니다(가격 정보: IsThereAnyDeal). 원화 결제가 안 되는 상점은 오늘 환율로 환산한 값이며,
 결제 시 카드 해외결제 수수료가 붙을 수 있고 일부 게임은 한국 지역 제한이 있을 수 있으니 구매 전 확인하세요.<br>
 이미지 위 "최저가" 배지는 알트탭이 기록한 Steam 가격 중 가장 낮은 경우입니다.</p>
 <script>(()=>{{const g=document.getElementById('dg'),cs=[...g.children];
@@ -1437,6 +1487,10 @@ if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "run"
     if cmd in ("review", "approve", "reject"):
         review(cmd, sys.argv[2:])
+    elif cmd == "deals":  # 할인만 갱신 (LLM 미사용)
+        cache = load_json(DATA / "steam_apps.json", {})
+        collect_deals(cache)
+        save_json(DATA / "steam_apps.json", cache)
     elif cmd != "build":
         run()
     build()
