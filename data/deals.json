@@ -1,5 +1,5 @@
 {
- "updated": "10.11 11:27",
+ "updated": "10.11 11:28",
  "deals": [
   {
    "appid": 632360,
@@ -1733,5 +1733,7 @@
    ],
    "meta": 80
   }
- ]
+ ],
+ "shops_status": "HTTPError: HTTP Error 403: Forbidden {\"status_code\":403,\"reason_phrase\":\"Invalid or expired api key\"}",
+ "itad": true
 }
