@@ -648,7 +648,7 @@ article{max-width:680px;margin:40px auto}
 .gcard dt{color:var(--mut)}.gcard dd{margin:0}.kb{display:inline-block;font-size:11px;font-weight:700;border:1px solid var(--ok);color:var(--ok);border-radius:4px;padding:0 5px;margin-right:4px}
 .kb.no{border-color:var(--line);color:var(--mut)}.gbtn{display:block;text-align:center;margin-top:12px;padding:8px;border-radius:8px;background:var(--fg);color:var(--bg);font-size:13px;font-weight:700}
 .gbtn:hover{opacity:.85}.disc{color:#fff;background:var(--ok);border-radius:4px;padding:0 5px;font-size:12px;margin-right:4px}
-.relx{margin-top:40px}.relx .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.relx{margin:32px 0 8px}.relx .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .relx a{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;transition:transform .25s,border-color .25s}
 .relx a:hover{transform:translateY(-3px);border-color:var(--mut)}.relx .t{font-weight:700;line-height:1.4}
 @media(max-width:1080px){.apage{grid-template-columns:minmax(0,680px);gap:0}.apage article{margin-bottom:0}.side{margin-top:32px}}
@@ -1287,7 +1287,7 @@ def build():
 {f'<figure class="hero"><img src="{esc(a.get("img_hd") or a["img"])}" alt=""><figcaption>이미지: Steam 스토어</figcaption></figure>' if a.get("img") else ''}
 {f'<div class="tldr"><ul>{tldr}</ul></div>' if tldr else ''}
 {f'<p class="why">{esc(a["why"])}</p>' if a.get("why") else ''}
-{body}{ad("ADSENSE_SLOT_ARTICLE")}<div class="src"><b>출처</b><ul>{srcs}</ul></div><p class="note">{note}</p>{related_html(a, articles)}</article>{sidebar_html(a, articles, apps, patches, cal)}</div>""", desc=desc[:160], path=f"a/{a['id']}.html", img=img, ld=ld)
+{body}{related_html(a, articles)}{ad("ADSENSE_SLOT_ARTICLE")}<div class="src"><b>출처</b><ul>{srcs}</ul></div><p class="note">{note}</p></article>{sidebar_html(a, articles, apps, patches, cal)}</div>""", desc=desc[:160], path=f"a/{a['id']}.html", img=img, ld=ld)
         (SITE / "a" / f"{a['id']}.html").write_text(html_.replace("{root}", "../"), encoding="utf-8")
 
     recent = [a for a in articles if time.time() - a["ts"] < 86400] or articles
