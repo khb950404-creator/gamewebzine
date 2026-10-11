@@ -264,6 +264,122 @@ def write_batch(cands):
     return out
 
 
+# ---------- 공식 영상 (트레일러 기사) ----------
+VIDEO_RE = re.compile(r"trailer|teaser|gameplay|reveal|showcase|video|트레일러|티저|영상|게임플레이|쇼케이스", re.I)
+YT_RE = re.compile(r"(?:youtube(?:-nocookie)?\.com/(?:embed/|watch\?v=|shorts/)|youtu\.be/)([\w-]{11})")
+# 매체가 재업로드한 영상은 쓰지 않는다 (공식 채널 영상만)
+MEDIA_CHANNELS = {"ign", "gamespot", "pcgamer", "eurogamer", "nintendolife", "vgc", "gametrailers", "gamesradar",
+                  "polygon", "kotaku", "theverge", "pushsquare", "purexbox", "gameinformer", "rockpapershotgun", "dualshockers"}
+
+
+def yt_info(vid):
+    try:
+        return get_json(f"https://www.youtube.com/oembed?format=json&url=https://www.youtube.com/watch?v={vid}", timeout=15)
+    except Exception:
+        return None
+
+
+def find_videos(articles, cache=None):
+    n = 0
+    for a in articles:
+        if a.get("video_v"):
+            continue
+        a["video_v"] = 1
+        text = " ".join([a["title"]] + a.get("tldr", []) + [s_["title"] for s_ in a.get("sources", [])])
+        if not VIDEO_RE.search(text) or a.get("trust") == "루머" or re.search(r"유출|leak|협박|루머|rumou?r", text, re.I):
+            continue  # 유출·루머 기사에 공식 영상을 붙이면 오해를 부른다
+        ids = []
+        for s_ in a.get("sources", [])[:4]:
+            try:
+                page_ = urllib.request.urlopen(urllib.request.Request(s_["link"], headers=UA), timeout=15).read().decode("utf-8", "ignore")
+            except Exception:
+                continue
+            for v in YT_RE.findall(page_):
+                if v not in ids:
+                    ids.append(v)
+        for v in ids[:6]:
+            info = yt_info(v)
+            if not info:
+                continue
+            ch = re.sub(r"[^a-z]", "", (info.get("author_name") or "").lower())
+            if any(m in ch for m in MEDIA_CHANNELS):
+                continue
+            a["video"] = {"id": v, "title": info.get("title", ""), "channel": info.get("author_name", "")}
+            break
+        if not a.get("video"):  # 출처 페이지에 없으면 YouTube 에서 공식 채널 영상 검색
+            app = (cache or {}).get(f"id:{a.get('appid')}") or {}
+            extra = [(app.get("info") or {}).get("dev"), (app.get("info") or {}).get("pub")]
+            for g in (a.get("games_en") or [])[:2]:
+                v = yt_search(g, extra)
+                if v:
+                    a["video"] = v
+                    break
+        n += bool(a.get("video"))
+    print(f"공식 영상 {n}건")
+
+
+# 공식 채널로 인정하는 이름 (정규화). 여기에 더해 게임 이름·Steam 개발사/배급사 이름이 들어간 채널도 인정
+OFFICIAL_CHANNELS = {"playstation", "xbox", "nintendo", "nintendoofamerica", "nintendouk", "nintendokorea", "playstationkorea",
+                     "ubisoft", "ea", "electronicarts", "bethesda", "capcom", "capcomusa", "bandainamco", "bandainamcoentertainmentamerica",
+                     "squareenix", "sega", "atlus", "konami", "activision", "callofduty", "rockstargames", "2k", "warnerbrosgames",
+                     "devolverdigital", "marvelentertainment", "riotgames", "blizzardentertainment", "epicgames", "steam",
+                     "cdprojektred", "focusentertainment", "paradoxinteractive", "annapurnainteractive", "thq", "thqnordic",
+                     "krafton", "nexon", "netmarble", "ncsoft", "pearlabyss", "shiftup", "neowiz", "embarkstudios", "remedyentertainment",
+                     "fromsoftware", "koeitecmoamerica", "spikechunsoft", "arcsystemworks", "team17", "raw fury".replace(" ", "")}
+
+
+def yt_age_days(t):
+    m = re.match(r"(?:Streamed )?(\d+)\s*(second|minute|hour|day|week|month|year|s|m|h|d|w|mo|y)", (t or "").strip())
+    if not m:
+        return 999
+    n, u = int(m[1]), m[2]
+    return n * {"second": 0, "minute": 0, "hour": 0, "s": 0, "m": 0, "h": 0, "day": 1, "d": 1, "week": 7, "w": 7,
+                "month": 30, "mo": 30, "year": 365, "y": 365}[u]
+
+
+def yt_search(game, extra_official=()):
+    """YouTube 검색 → 최근 2주 안에 공식 채널이 올린 그 게임 영상."""
+    try:
+        h = urllib.request.urlopen(urllib.request.Request(
+            "https://www.youtube.com/results?hl=en&gl=US&search_query=" + urllib.parse.quote(game + " official trailer"),
+            headers={"User-Agent": "Mozilla/5.0", "Accept-Language": "en-US"}), timeout=20).read().decode("utf-8", "ignore")
+        data = json.loads(re.search(r"var ytInitialData = (\{.*?\});</script>", h)[1])
+    except Exception:
+        return None
+
+    def walk(o):
+        if isinstance(o, dict):
+            if "videoRenderer" in o:
+                yield o["videoRenderer"]
+            for v in o.values():
+                yield from walk(v)
+        elif isinstance(o, list):
+            for v in o:
+                yield from walk(v)
+    gbase = norm(EDITION_RE.sub("", game).split(":")[0])
+    official = OFFICIAL_CHANNELS | {norm(x) for x in extra_official if x}
+    for v in list(walk(data))[:12]:
+        title = "".join(r_.get("text", "") for r_ in v.get("title", {}).get("runs", []))
+        ch = (v.get("ownerText", {}).get("runs") or [{}])[0].get("text", "")
+        chn = norm(ch)
+        if gbase not in norm(title) or yt_age_days(v.get("publishedTimeText", {}).get("simpleText")) > 14:
+            continue
+        if chn in official or (gbase and gbase in chn) or any(o and o in chn for o in official if len(o) > 5):
+            return {"id": v["videoId"], "title": title, "channel": ch}
+    return None
+
+
+def video_html(a):
+    v = a.get("video")
+    if not v:
+        return ""
+    vid = esc(v["id"])
+    # 썸네일만 먼저 보여주고 누르면 재생 (페이지가 무거워지지 않게)
+    return (f'<figure class="vid"><button class="yt" data-v="{vid}" aria-label="영상 재생">'
+            f'<img src="https://i.ytimg.com/vi/{vid}/hqdefault.jpg" alt="" loading="lazy"><span class="play"></span></button>'
+            f'<figcaption>영상: {esc(v.get("channel") or "YouTube")}{" — " + esc(v["title"]) if v.get("title") else ""}</figcaption></figure>')
+
+
 # ---------- 게임 공식 한글 표기 ----------
 # data/names.json: {"정규화된 영문명": {"en": 원문, "ko": 공식 한글명 또는 null, "src": 출처}}
 # 직접 고쳐도 되고(검수 때 발견한 표기), 새 게임은 Steam 한국어 이름 → 구글 검색 순으로 자동으로 채운다.
@@ -365,7 +481,7 @@ def run():
             failed = True
     articles += new
     cache = load_json(DATA / "steam_apps.json", {})
-    for step in (lambda: resolve_names(new, cache), lambda: attach_images(articles, cache), lambda: collect_patches(cache), lambda: collect_calendar(cache),
+    for step in (lambda: resolve_names(new, cache), lambda: attach_images(articles, cache), lambda: find_videos(new, cache), lambda: collect_patches(cache), lambda: collect_calendar(cache),
                  lambda: collect_deals(cache), collect_all_deals):
         try:
             step()
@@ -1011,6 +1127,12 @@ position:relative;overflow:hidden;background:radial-gradient(120% 90% at 85% 10%
 .cover b{font-size:clamp(26px,5vw,44px);font-weight:900;letter-spacing:-1px;line-height:1.1;position:relative}
 .cover .cv-k{position:absolute;top:22px;left:28px;font:700 15px ui-monospace,Consolas,monospace;opacity:.8}
 .cover .cv-p{font-size:13px;opacity:.75;margin-top:8px;position:relative}
+.vid{margin:20px 0}.yt{position:relative;display:block;width:100%;padding:0;border:0;border-radius:10px;overflow:hidden;cursor:pointer;background:#000;aspect-ratio:16/9}
+.yt img{width:100%;height:100%;object-fit:cover;display:block;opacity:.85;transition:opacity .3s,transform .5s}.yt:hover img{opacity:1;transform:scale(1.03)}
+.yt .play{position:absolute;left:50%;top:50%;width:68px;height:48px;margin:-24px 0 0 -34px;border-radius:14px;background:#e5484d;transition:transform .2s}
+.yt .play::after{content:"";position:absolute;left:27px;top:14px;border-style:solid;border-width:10px 0 10px 17px;border-color:transparent transparent transparent #fff}
+.yt:hover .play{transform:scale(1.1)}.vid iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:10px;display:block}
+.vid figcaption{font-size:12px;color:var(--mut);margin-top:6px}
 .hero img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px;display:block;background:var(--line)}.hero figcaption{font-size:12px;color:var(--mut);margin-top:6px}
 .pt{display:grid;grid-template-columns:184px 1fr;gap:16px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
 .pt .g{font-size:13px;color:var(--mut)}.pt .t{font-weight:800;margin:2px 0 6px}.pt ul{margin:0;padding-left:18px;font-size:14px}
@@ -1103,7 +1225,10 @@ def page(title, body, desc=SITE_DESC, path="", img=None, ld=None):
 <p>AI가 공개 출처를 종합해 작성하고 팩트체크를 거친 기사입니다 · 원문은 각 기사 하단 출처 참고</p></footer>{MOTION_JS}</body></html>"""
 
 
-MOTION_JS = """<script>(()=>{
+MOTION_JS = """<script>document.addEventListener('click',e=>{const b=e.target.closest('.yt');if(!b)return;
+const f=document.createElement('iframe');f.src='https://www.youtube-nocookie.com/embed/'+b.dataset.v+'?autoplay=1&rel=0';
+f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;f.title='영상';b.replaceWith(f)});
+(()=>{
 if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{rootMargin:'0px 0px -6% 0px'});
 document.querySelectorAll('.lead,.brief>a,.stream>a,.pt,.day,article>*,.doc>*,h2.sec').forEach((el,i)=>{
@@ -1197,7 +1322,8 @@ REVIEW_BODY = r"""
 .card select{padding:6px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--fg);font:inherit;font-size:13px}
 .ed-f{display:grid;gap:10px;margin-top:12px}.ed-f label{font-size:12px;color:var(--mut);font-weight:700;display:grid;gap:4px}
 .ed-f input,.ed-f textarea{font:inherit;font-size:14px;line-height:1.6;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);width:100%}
-.ed-f textarea{resize:vertical}.ed-f .row{display:flex;gap:8px;flex-wrap:wrap}
+.ed-f textarea{resize:vertical}.media-ed{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.media-ed .pv{width:200px;aspect-ratio:16/9;object-fit:cover;border-radius:8px;border:1px solid var(--line)}.ed-f .row{display:flex;gap:8px;flex-wrap:wrap}
 #msg{font-size:14px;color:var(--mut);min-height:20px}
 .tabs{display:flex;gap:6px;margin:16px 0}
 .save{position:sticky;bottom:16px;display:flex;justify-content:flex-end;margin-top:16px}
@@ -1223,6 +1349,15 @@ const REPO = "__REPO__", PATH = "data/articles.json", API = "https://api.github.
 const CATS = __CATS__, TRUSTS = ["공식", "확인", "보도", "루머"];
 let tok = "", arts = [], tab = "todo", editing = null;
 const changes = {};  // id -> 바뀐 필드들
+const uploads = {};  // id -> {url: dataURL, b64} 저장할 때 media/ 에 올림
+const MEDIA_API = "https://api.github.com/repos/" + REPO + "/contents/";
+async function shrink(file) {  // 큰 사진은 가로 1600px JPEG 로 줄여서 올린다
+  const img = await createImageBitmap(file), k = Math.min(1, 1600 / img.width);
+  const c = document.createElement("canvas"); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+  c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+  const url = c.toDataURL("image/jpeg", 0.86);
+  return {url, b64: url.split(",")[1]};
+}
 try { tok = localStorage.getItem("gh_tok") || ""; } catch (e) {}
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -1265,6 +1400,11 @@ function editor(a) {
     <label>본문 (문단 사이 빈 줄)<textarea data-k="body" rows="10">${esc((a.body || []).join("\n\n"))}</textarea></label>
     <div class="row"><label>신뢰도<select data-k="trust">${TRUSTS.map(t => `<option ${t === a.trust ? "selected" : ""}>${t}</option>`).join("")}</select></label>
     <label>카테고리<select data-k="category">${CATS.map(t => `<option ${t === a.category ? "selected" : ""}>${t}</option>`).join("")}</select></label></div>
+    <div class="media-ed"><img class="pv" src="${esc(uploads[a.id] ? uploads[a.id].url : (a.img_hd || a.img || ""))}" ${a.img || uploads[a.id] ? "" : "hidden"} alt="">
+      <div style="flex:1;display:grid;gap:6px"><label>대표 이미지 주소 (비우면 카테고리 커버)<input data-k="img" value="${esc(uploads[a.id] ? "(업로드한 이미지)" : (a.img_hd || a.img || ""))}" placeholder="https://..."></label>
+      <div class="row"><label class="btn" style="display:inline-flex">내 PC에서 업로드<input type="file" accept="image/*" data-up="${esc(a.id)}" hidden></label>
+      <button class="btn" data-noimg="${esc(a.id)}">이미지 빼기</button></div></div></div>
+    <label>영상 (YouTube 주소, 비우면 없음)<input data-k="video" value="${esc(a.video ? "https://youtu.be/" + a.video.id : "")}" placeholder="https://youtu.be/..."></label>
     <div class="row"><button class="btn pri" data-done="${esc(a.id)}">편집 완료</button>
     <button class="btn" data-revert="${esc(a.id)}">원래대로</button></div></div>`;
 }
@@ -1274,7 +1414,7 @@ function render() {
   document.querySelectorAll("[data-tab]").forEach(b => b.classList.toggle("pri", b.dataset.tab === tab));
   const list = (tab === "todo" ? todo : arts.filter(a => a.status !== "rejected")).slice().sort((x, y) => y.ts - x.ts).slice(0, 60);
   $("#list").innerHTML = list.length ? list.map(a0 => {
-    const a = cur(a0), ch = changes[a.id] || {}, edited = ["title", "tldr", "why", "body", "trust", "category"].some(k => k in ch);
+    const a = cur(a0), ch = changes[a.id] || {}, edited = ["title", "tldr", "why", "body", "trust", "category", "img", "video"].some(k => k in ch) || uploads[a.id];
     return `<div class="card ${ch.reviewed ? "ok" : ""} ${ch.status === "rejected" ? "no" : ""} ${edited ? "chg" : ""}">
       <div class="meta"><span class="b ${esc(a.trust)}">${esc(a.trust)}</span><span>${esc(a.category)}</span>
       <span>· ${new Date(a.ts * 1000).toLocaleString("ko-KR", {month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit"})}</span>
@@ -1301,12 +1441,23 @@ function readEditor(id) {
   setc(id, "body", v("body").split(/\n\s*\n/).map(s => s.replace(/\s*\n\s*/g, " ").trim()).filter(Boolean), a0.body || []);
   setc(id, "trust", v("trust"), a0.trust);
   setc(id, "category", v("category"), a0.category);
+  if (!uploads[id]) {
+    const im = v("img").trim(), orig = a0.img_hd || a0.img || "";
+    if (im !== orig) { const c = changes[id] = changes[id] || {};
+      Object.assign(c, im ? {img: im, img_hd: im, img_src: "편집자"} : {img: null, img_hd: null, img_src: null}, {img_v: 2}); }
+  }
+  const vm = v("video").trim().match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/) || v("video").trim().match(/^([\w-]{11})$/);
+  const vid = vm ? vm[1] : null, ov = a0.video ? a0.video.id : null;
+  if (vid !== ov) { const c = changes[id] = changes[id] || {}; c.video = vid ? {id: vid, title: "", channel: "편집자 지정"} : null; c.video_v = 1; }
 }
 $("#list").addEventListener("click", e => {
   const b = e.target.closest("button"); if (!b) return;
   if (b.dataset.done) { readEditor(b.dataset.done); editing = null; return render(); }
+  if (b.dataset.noimg) { const f = document.querySelector(`[data-ed="${b.dataset.noimg}"]`);
+    delete uploads[b.dataset.noimg]; f.querySelector('[data-k="img"]').value = ""; f.querySelector(".pv").hidden = true; return; }
   if (b.dataset.revert) { const id = b.dataset.revert, c = changes[id] || {};
-    ["title", "tldr", "why", "body", "trust", "category"].forEach(k => delete c[k]);
+    ["title", "tldr", "why", "body", "trust", "category", "img", "img_hd", "img_src", "img_v", "video", "video_v"].forEach(k => delete c[k]);
+    delete uploads[id];
     if (!Object.keys(c).length) delete changes[id]; editing = null; return render(); }
   const id = b.dataset.id, a0 = arts.find(a => a.id === id); if (!a0) return;
   if (editing && editing !== id) readEditor(editing);
@@ -1315,17 +1466,34 @@ $("#list").addEventListener("click", e => {
   if (b.dataset.act === "edit") { if (editing === id) { readEditor(id); editing = null; } else editing = id; }
   render();
 });
+$("#list").addEventListener("change", async e => {
+  const id = e.target.dataset && e.target.dataset.up; if (!id || !e.target.files[0]) return;
+  msg("이미지 준비 중...");
+  uploads[id] = await shrink(e.target.files[0]);
+  const c = changes[id] = changes[id] || {}; c.img_v = 2;
+  const f = document.querySelector(`[data-ed="${id}"]`);
+  f.querySelector(".pv").src = uploads[id].url; f.querySelector(".pv").hidden = false;
+  f.querySelector('[data-k="img"]').value = "(업로드한 이미지)"; msg("업로드는 '변경사항 저장' 때 올라갑니다.");
+});
 $("#save").onclick = async () => {
   if (editing) { readEditor(editing); editing = null; }
   $("#save").disabled = true;
   for (let attempt = 0; attempt < 3; attempt++) {
     try {
       msg("저장 중...");
+      for (const id of Object.keys(uploads)) {  // 업로드 이미지 먼저 저장소 media/ 에 올림
+        const path = `media/${id}-${Date.now()}.jpg`;
+        const r = await fetch(MEDIA_API + path, {method: "PUT", headers: {Authorization: "Bearer " + tok, Accept: "application/vnd.github+json"},
+          body: JSON.stringify({message: `검수: 이미지 업로드 (${id})`, content: uploads[id].b64, branch: "main"})});
+        if (!r.ok) throw new Error("이미지 업로드 실패 " + r.status);
+        Object.assign(changes[id] = changes[id] || {}, {img: path, img_hd: path, img_src: "편집자", img_v: 2});
+        delete uploads[id];
+      }
       const {sha, data} = await fetchLatest();  // 봇이 그사이 새 기사를 썼을 수 있으니 최신본에 적용
       const n = Object.keys(changes).length;
       for (const a of data) if (changes[a.id]) {
         const c = changes[a.id];
-        if (["title", "tldr", "why", "body"].some(k => k in c)) { c.edited = Date.now() / 1000; c.reviewed = true; }
+        if (["title", "tldr", "why", "body", "img", "video"].some(k => k in c)) { c.edited = Date.now() / 1000; c.reviewed = true; }
         if (a.status === "pending" && (c.reviewed || c.edited)) c.status = c.status || "published";
         Object.assign(a, c);
       }
@@ -1605,6 +1773,10 @@ COVER_COLORS = {"신작": ("#e5484d", "#7c1d3f"), "업데이트": ("#2563eb", "#
                 "하드웨어": ("#0f766e", "#042f2e"), "할인·이벤트": ("#d97706", "#5b2c06"), "e스포츠": ("#db2777", "#4a0d2a")}
 
 
+def rel_img(u):
+    return u if u.startswith("http") else "../" + u
+
+
 def cover_html(a):
     """이미지가 없는 기사용 커버: 카테고리 색 + 게임명/플랫폼 타이포."""
     c1, c2 = COVER_COLORS.get(a.get("category"), ("#3f3f46", "#0f0f12"))
@@ -1686,6 +1858,8 @@ def build():
             f"이 기사는 AI가 출처 {len(a['sources'])}건을 종합해 작성했습니다."              + (" 편집자가 검토·수정했습니다." if a.get("edited") else " 사실관계는 출처를 확인하세요.")
         desc = " ".join(a.get("tldr", [])) or a.get("why", "") or a["title"]
         img = a.get("img_hd") or a.get("img")
+        if img and not img.startswith("http"):  # 검수 페이지에서 업로드한 이미지 (media/...)
+            img = site_url() + img
         ld = {"@context": "https://schema.org", "@type": "NewsArticle", "headline": a["title"][:110],
               "description": desc[:300], "datePublished": datetime.fromtimestamp(a.get("written", a["ts"]), timezone.utc).isoformat(),
               "dateModified": datetime.fromtimestamp(a.get("written", a["ts"]), timezone.utc).isoformat(),
@@ -1693,8 +1867,9 @@ def build():
               "author": {"@type": "Organization", "name": SITE_NAME}, "publisher": {"@type": "Organization", "name": SITE_NAME},
               **({"image": [img]} if img else {})}
         html_ = page(a["title"] + " — " + SITE_NAME, f"""<div class="apage"><article>{meta(a)}<h1>{esc(a["title"])}</h1>
-{f'<figure class="hero"><img src="{esc(a.get("img_hd") or a["img"])}" alt=""><figcaption>이미지: {esc(a.get("img_src") or "Steam 스토어")}</figcaption></figure>' if a.get("img") else cover_html(a)}
+{f'<figure class="hero"><img src="{esc(rel_img(a.get("img_hd") or a["img"]))}" alt=""><figcaption>이미지: {esc(a.get("img_src") or "Steam 스토어")}</figcaption></figure>' if a.get("img") else cover_html(a)}
 {f'<div class="tldr"><ul>{tldr}</ul></div>' if tldr else ''}
+{video_html(a)}
 {f'<p class="why">{esc(a["why"])}</p>' if a.get("why") else ''}
 {body}{related_html(a, articles)}{ad("ADSENSE_SLOT_ARTICLE")}<div class="src"><b>출처</b><ul>{srcs}</ul></div><p class="note">{note}</p></article>{sidebar_html(a, articles, apps, patches, cal)}</div>""", desc=desc[:160], path=f"a/{a['id']}.html", img=img, ld=ld)
         (SITE / "a" / f"{a['id']}.html").write_text(html_.replace("{root}", "../"), encoding="utf-8")
@@ -1733,6 +1908,9 @@ btn.onclick=()=>{{n+=PAGE;show()}};show()}})()</script>""")
         page("검수 — " + SITE_NAME, REVIEW_BODY.replace("__REPO__", repo).replace("__CATS__", json.dumps(CATEGORIES[:-1] + ["기타"], ensure_ascii=False))).replace("{root}", "")
         .replace("<head>", '<head><meta name="robots" content="noindex">'), encoding="utf-8")
     static_pages()
+    if (ROOT / "media").exists():  # 검수 페이지에서 업로드한 이미지
+        import shutil
+        shutil.copytree(ROOT / "media", SITE / "media", dirs_exist_ok=True)
     build_search(articles)
     build_feeds(articles)
     build_patches()
