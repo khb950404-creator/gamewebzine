@@ -185,6 +185,7 @@ JSON 하나만 출력:
   "platforms": ["PC","PS5","Xbox","Switch" 중 출처에 명시된 것만],
   "games": ["관련 게임명"],
   "games_en": ["관련 게임의 영문 공식 제목 (Steam 검색용, 출처에 나온 표기 그대로)"],
+  "video_q": "이 기사 주제에 딱 맞는 공식 영상을 YouTube 에서 찾을 영문 검색어 (예: 'Fortnite Sonic collaboration trailer'). 트레일러·영상 공개 기사가 아니면 null",
   "trust": "공식|확인|보도|루머"}}
 ]}}
 
@@ -269,7 +270,7 @@ VIDEO_RE = re.compile(r"trailer|teaser|gameplay|reveal|showcase|video|트레일�
 YT_RE = re.compile(r"(?:youtube(?:-nocookie)?\.com/(?:embed/|watch\?v=|shorts/)|youtu\.be/)([\w-]{11})")
 # 매체가 재업로드한 영상은 쓰지 않는다 (공식 채널 영상만)
 MEDIA_CHANNELS = {"ign", "gamespot", "pcgamer", "eurogamer", "nintendolife", "vgc", "gametrailers", "gamesradar",
-                  "polygon", "kotaku", "theverge", "pushsquare", "purexbox", "gameinformer", "rockpapershotgun", "dualshockers"}
+                  "polygon", "kotaku", "gamexplain", "maximiliandood", "gameranx", "skillup", "digitalfoundry", "gamespotgameplay", "theverge", "pushsquare", "purexbox", "gameinformer", "rockpapershotgun", "dualshockers"}
 
 
 def yt_info(vid):
@@ -302,7 +303,7 @@ def find_videos(articles, cache=None):
             if not info:
                 continue
             ch = re.sub(r"[^a-z]", "", (info.get("author_name") or "").lower())
-            if any(m in ch for m in MEDIA_CHANNELS):
+            if any(m in ch for m in MEDIA_CHANNELS) or not video_fits(info.get("title", ""), a):
                 continue
             a["video"] = {"id": v, "title": info.get("title", ""), "channel": info.get("author_name", "")}
             break
@@ -310,7 +311,7 @@ def find_videos(articles, cache=None):
             app = (cache or {}).get(f"id:{a.get('appid')}") or {}
             extra = [(app.get("info") or {}).get("dev"), (app.get("info") or {}).get("pub")]
             for g in (a.get("games_en") or [])[:2]:
-                v = yt_search(g, extra)
+                v = yt_search(g, extra, a.get("video_q"), a)
                 if v:
                     a["video"] = v
                     break
@@ -328,6 +329,20 @@ OFFICIAL_CHANNELS = {"playstation", "xbox", "nintendo", "nintendoofamerica", "ni
                      "fromsoftware", "koeitecmoamerica", "spikechunsoft", "arcsystemworks", "team17", "raw fury".replace(" ", "")}
 
 
+def video_fits(vtitle, a):
+    """영상 제목이 기사 주제와 맞는지: 콜라보처럼 게임이 둘 이상이면 둘 다, 검색어의 주제 단어도 하나 이상."""
+    t = norm(vtitle)
+    bases = [norm(EDITION_RE.sub("", g).split(":")[0]) for g in (a.get("games_en") or [])[:2]]
+    bases = [b for b in bases if len(b) > 2]
+    collab = re.search(r"x|×|콜라보|컬래버|collab|crossover", a["title"] + " " + (a.get("video_q") or ""), re.I)
+    if bases and sum(b in t for b in bases) < (min(2, len(bases)) if collab else 1):
+        return False
+    gw = {w_ for g in (a.get("games_en") or []) for w_ in re.findall(r"[a-z0-9]+", g.lower())}
+    topic = [w_ for w_ in re.findall(r"[a-z0-9]+", (a.get("video_q") or "").lower())
+             if w_ not in YT_GENERIC and w_ not in gw and len(w_) > 2]
+    return not topic or any(w_ in vtitle.lower() for w_ in topic)
+
+
 def yt_age_days(t):
     m = re.match(r"(?:Streamed )?(\d+)\s*(second|minute|hour|day|week|month|year|s|m|h|d|w|mo|y)", (t or "").strip())
     if not m:
@@ -337,11 +352,15 @@ def yt_age_days(t):
                 "month": 30, "mo": 30, "year": 365, "y": 365}[u]
 
 
-def yt_search(game, extra_official=()):
+YT_GENERIC = set("official trailer teaser gameplay reveal video launch announcement announce cinematic new the a of and "
+                 "for with in on to x vs collab collaboration update season showcase first look".split())
+
+
+def yt_search(game, extra_official=(), query=None, art=None):
     """YouTube 검색 → 최근 2주 안에 공식 채널이 올린 그 게임 영상."""
     try:
         h = urllib.request.urlopen(urllib.request.Request(
-            "https://www.youtube.com/results?hl=en&gl=US&search_query=" + urllib.parse.quote(game + " official trailer"),
+            "https://www.youtube.com/results?hl=en&gl=US&search_query=" + urllib.parse.quote(query or game + " official trailer"),
             headers={"User-Agent": "Mozilla/5.0", "Accept-Language": "en-US"}), timeout=20).read().decode("utf-8", "ignore")
         data = json.loads(re.search(r"var ytInitialData = (\{.*?\});</script>", h)[1])
     except Exception:
@@ -357,14 +376,25 @@ def yt_search(game, extra_official=()):
             for v in o:
                 yield from walk(v)
     gbase = norm(EDITION_RE.sub("", game).split(":")[0])
+    # 게임 이름 말고 주제를 나타내는 단어 (예: "Fortnite Sonic collaboration trailer" → sonic)
+    gwords = set(re.findall(r"[a-z0-9]+", game.lower()))
+    topic = [w_ for w_ in re.findall(r"[a-z0-9]+", (query or "").lower()) if w_ not in YT_GENERIC and w_ not in gwords and len(w_) > 2]
     official = OFFICIAL_CHANNELS | {norm(x) for x in extra_official if x}
     for v in list(walk(data))[:12]:
         title = "".join(r_.get("text", "") for r_ in v.get("title", {}).get("runs", []))
         ch = (v.get("ownerText", {}).get("runs") or [{}])[0].get("text", "")
         chn = norm(ch)
+        if topic and not any(t_ in title.lower() for t_ in topic):
+            continue
+        if art and not video_fits(title, art):
+            continue
         if gbase not in norm(title) or yt_age_days(v.get("publishedTimeText", {}).get("simpleText")) > 14:
             continue
-        if chn in official or (gbase and gbase in chn) or any(o and o in chn for o in official if len(o) > 5):
+        verified = any("VERIFIED" in (b_.get("metadataBadgeRenderer", {}).get("style", "")) for b_ in v.get("ownerBadges", []))
+        if any(m in chn for m in MEDIA_CHANNELS):
+            continue
+        gfirst = {w_ for g in [game] + ((art or {}).get("games_en") or []) for w_ in re.findall(r"[a-z0-9]+", g.lower())[:1] if len(w_) > 3}
+        if (verified and any(w_ in chn for w_ in gfirst)) or chn in official or (gbase and gbase in chn) or any(o and o in chn for o in official if len(o) > 5):
             return {"id": v["videoId"], "title": title, "channel": ch}
     return None
 
@@ -1006,6 +1036,21 @@ def wiki_releases(year):
     return out
 
 
+def calendar_images(rel, cache):
+    """출시 캘린더 이미지: PC 게임은 Steam, 콘솔 게임·Steam 에 없는 게임은 IGDB."""
+    for r in rel:
+        if r.get("img"):
+            continue
+        app = steam_find(r["title"], cache) if "PC" in r["platforms"] else None
+        if app:
+            r["img"], r["appid"] = app["img"], app["appid"]
+            continue
+        ig = igdb_find(r["title"], cache)
+        if ig:
+            r["img"] = ig["img"]
+    print(f"캘린더 이미지 {sum(1 for r in rel if r.get('img'))}/{len(rel)}")
+
+
 def collect_calendar(cache):
     rel = []
     y = datetime.now().year
@@ -1020,11 +1065,7 @@ def collect_calendar(cache):
     horizon = datetime.fromtimestamp(time.time() + 120 * 86400).strftime("%Y-%m-%d")
     week_ago = datetime.fromtimestamp(time.time() - 7 * 86400).strftime("%Y-%m-%d")
     rel = [r for r in rel if week_ago <= r["date"] <= horizon]
-    for r in rel:
-        if "PC" in r["platforms"]:
-            app = steam_find(r["title"], cache)
-            if app:
-                r["img"], r["appid"] = app["img"], app["appid"]
+    calendar_images(rel, cache)
     save_json(DATA / "calendar.json", {"updated": today, "releases": rel})
     print(f"출시 캘린더 {len(rel)}건")
 
@@ -1723,8 +1764,9 @@ def build_calendar():
         rels = sorted(days[d], key=lambda r: (not r.get("img"), -len(r["platforms"])))
         items = "".join(
             f'<div class="rel" data-p="{esc("|".join(r["platforms"]))}">'
-            + (f'<a href="https://store.steampowered.com/app/{r["appid"]}" target="_blank" rel="noopener">'
-               f'<img class="th" src="{esc(r["img"])}" alt="" loading="lazy"></a>' if r.get("img") else '<div class="nt"></div>')
+            + ((f'<a href="https://store.steampowered.com/app/{r["appid"]}" target="_blank" rel="noopener">'
+                f'<img class="th" src="{esc(r["img"])}" alt="" loading="lazy"></a>' if r.get("appid") else
+                f'<img class="th" src="{esc(r["img"])}" alt="" loading="lazy">') if r.get("img") else '<div class="nt"></div>')
             + f'<div><div class="t">{esc(r["title"])}</div><div class="s">{esc(" · ".join(r["platforms"]))}'
             + (" — " + esc(r["genre"]) if r.get("genre") else "") + '</div></div></div>' for r in rels)
         anchor = ' id="today"' if d >= today and not marked else ""
@@ -1942,6 +1984,11 @@ if __name__ == "__main__":
         except Exception as e:
             state["igdb"] = f"{e} {getattr(e, 'read', lambda: b'')()[:200]}"
         attach_images(arts, cache)
+        cal = load_json(DATA / "calendar.json", {"releases": []})
+        calendar_images(cal["releases"], cache)
+        save_json(DATA / "calendar.json", cal)
+        state["cal_img"] = f"{sum(1 for r in cal['releases'] if r.get('img'))}/{len(cal['releases'])}"
+        save_json(DATA / "steam_apps.json", cache)
         state["img_count"] = f"{sum(1 for a in arts if a.get('img'))}/{len(arts)}"
         save_json(DATA / "state.json", state)
         save_json(DATA / "articles.json", arts)
