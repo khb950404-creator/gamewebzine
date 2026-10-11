@@ -601,7 +601,7 @@ def collect_all_deals():
             d = g.get("deal") or {}
             if g.get("type") not in ("game", "dlc") or g.get("mature") or not d.get("cut"):
                 continue
-            out.append({"id": g["id"], "t": g["title"], "img": (g.get("assets") or {}).get("banner300", ""),
+            out.append({"id": g["id"], "t": g["title"], "img": (g.get("assets") or {}).get("banner400") or (g.get("assets") or {}).get("banner300", ""),
                         "p": int(d["price"]["amount"]), "r": int(d["regular"]["amount"]), "c": d["cut"],
                         "lo": int((d.get("historyLow") or {}).get("amount") or 0), "u": d["url"],
                         "x": (d.get("expiry") or "")[:10], "dlc": g["type"] == "dlc"})
