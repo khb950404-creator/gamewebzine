@@ -1041,11 +1041,15 @@ def calendar_images(rel, cache):
     for r in rel:
         if r.get("img"):
             continue
-        app = steam_find(r["title"], cache) if "PC" in r["platforms"] else None
+        # "(WW)" 같은 지역 표기, "– Nintendo Switch 2 Edition" 같은 판형 꼬리표를 떼고 찾는다
+        name = re.sub(r"\s*\((?:WW|NA|EU|JP|AS)\)\s*$", "", r["title"])
+        name = re.sub(r"\s*[–-]\s*(?:Nintendo Switch 2|Switch 2|PS5|Xbox Series X\|S)?\s*(?:Edition|Expanded Edition)\s*$", "", name)
+        name = EDITION_RE.sub("", name).strip()
+        app = (steam_find(r["title"], cache) or steam_find(name, cache)) if "PC" in r["platforms"] else None
         if app:
             r["img"], r["appid"] = app["img"], app["appid"]
             continue
-        ig = igdb_find(r["title"], cache)
+        ig = igdb_find(r["title"], cache) or igdb_find(name, cache)
         if ig:
             r["img"] = ig["img"]
     print(f"캘린더 이미지 {sum(1 for r in rel if r.get('img'))}/{len(rel)}")
