@@ -295,7 +295,7 @@ def run():
     articles += new
     cache = load_json(DATA / "steam_apps.json", {})
     for step in (lambda: attach_images(articles, cache), lambda: collect_patches(cache), lambda: collect_calendar(cache),
-                 lambda: collect_deals(cache)):
+                 lambda: collect_deals(cache), collect_all_deals):
         try:
             step()
         except Exception as e:  # 부가 기능 실패가 기사 저장을 막지 않게
@@ -542,7 +542,7 @@ def itad(path, body=None, **q):
     q["key"] = os.environ["ITAD_API_KEY"]
     req = urllib.request.Request(f"https://api.isthereanydeal.com{path}?{urllib.parse.urlencode(q)}",
                                  data=json.dumps(body).encode() if body is not None else None,
-                                 headers={"Content-Type": "application/json", **CS_UA})
+                                 headers={**({"Content-Type": "application/json"} if body is not None else {}), **CS_UA})
     return json.loads(urllib.request.urlopen(req, timeout=60).read())
 
 
@@ -588,6 +588,46 @@ def attach_shops_itad(deals, cache):
     print(f"판매처 가격 비교 {n}건 (ITAD, KR)")
     if not n:
         raise RuntimeError(f"ITAD 결과 없음: ids={len(ids)} res={len(res)} sample={json.dumps(res[:1], ensure_ascii=False)[:300]}")
+
+
+def collect_all_deals():
+    """Steam 에서 할인 중인 게임 전체(최대 DEALS_MAX)를 모아 site 검색용 data/deals_all.json 으로 저장."""
+    if not os.environ.get("ITAD_API_KEY"):
+        return
+    out, off, cap = [], 0, int(os.environ.get("DEALS_MAX", 3000))
+    while off is not None and len(out) < cap:
+        r = itad("/deals/v2", country="KR", shops="61", limit=200, offset=off, sort="-trending")
+        for g in r.get("list", []):
+            d = g.get("deal") or {}
+            if g.get("type") not in ("game", "dlc") or g.get("mature") or not d.get("cut"):
+                continue
+            out.append({"id": g["id"], "t": g["title"], "img": (g.get("assets") or {}).get("banner300", ""),
+                        "p": int(d["price"]["amount"]), "r": int(d["regular"]["amount"]), "c": d["cut"],
+                        "lo": int((d.get("historyLow") or {}).get("amount") or 0), "u": d["url"],
+                        "x": (d.get("expiry") or "")[:10], "dlc": g["type"] == "dlc"})
+        off = r.get("nextOffset") if r.get("hasMore") else None
+        time.sleep(0.3)
+    # 판매처(Steam 키 판매 공인 상점) 최저가
+    byid = {x["id"]: x for x in out}
+    ids = list(byid)
+    for i in range(0, len(ids), 200):
+        try:
+            res = itad("/games/prices/v3", ids[i:i + 200], country="KR", deals="false", vouchers="true")
+        except Exception as e:
+            print(f"  ! 전체 할인 판매처 가격: {e}")
+            break
+        for g in res:
+            x = byid.get(g.get("id"))
+            if not x:
+                continue
+            best = min(((int(d["price"]["amount"]), d["shop"]["name"], d["url"]) for d in g.get("deals", [])
+                        if d["shop"]["id"] != 61 and d["price"].get("currency") == "KRW"
+                        and any(m.get("name") == "Steam" for m in d.get("drm", []))), default=None)
+            if best and best[0] < x["p"] * 0.97:
+                x["bp"], x["bs"], x["bu"] = best
+        time.sleep(0.3)
+    save_json(DATA / "deals_all.json", {"updated": datetime.now().strftime("%m.%d %H:%M"), "list": out})
+    print(f"전체 할인 {len(out)}건")
 
 
 def attach_shops(deals, cache):
@@ -1205,6 +1245,8 @@ const q0=new URLSearchParams(location.search).get("q");if(q0)$("#q").value=q0;ru
 
 def build_deals():
     d = load_json(DATA / "deals.json", {"deals": []})
+    alld = load_json(DATA / "deals_all.json", {"list": []})
+    (SITE / "deals_all.json").write_text(json.dumps(alld, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     won = lambda n: f"₩{n:,}"
     def badges(x):
         b = '<span class="kb">자막</span>' if x["ko"] else '<span class="kb no">한국어 X</span>'
@@ -1241,7 +1283,9 @@ def build_deals():
         f'<a class="dn" href="{steam(x)}" target="_blank" rel="noopener">{esc(x["name"])}</a>'
         f'<div class="dp"><s>{won(x["initial"])}</s><span>Steam</span><b>{won(x["final"])}</b></div>'
         f'<div class="cmp">{compare(x)}</div>'
-        f'<div class="dm">{badges(x)}<span class="dg">{esc(" · ".join(x["genres"][:2]))}</span></div></div>' for x in d["deals"])
+        f'<div class="dm">{badges(x)}<span class="dg">{esc(" · ".join(x["genres"][:2]))}</span></div></div>'
+        + (f'<div class="dad">{ad("ADSENSE_SLOT_DEALS")}</div>' if i % 12 == 11 else "")
+        for i, x in enumerate(d["deals"]))
     genres = sorted({g for x in d["deals"] for g in x["genres"]}, key=lambda g: -sum(g in x["genres"] for x in d["deals"]))[:8]
     (SITE / "deals.html").write_text(page("게임 할인 — " + SITE_NAME, f"""
 <style>
@@ -1270,23 +1314,41 @@ background:rgba(31,157,85,.1);border:1px solid rgba(31,157,85,.35);transition:ba
 .ms{{position:absolute;left:8px;bottom:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;
 width:42px;height:42px;border-radius:8px;color:#fff;font-weight:900;font-size:18px;line-height:1;box-shadow:0 4px 12px rgba(0,0,0,.35)}}
 .ms small{{font-size:8px;letter-spacing:.5px;opacity:.9;margin-bottom:2px}}.ms.g{{background:#3fa72e}}.ms.y{{background:#d9a400}}.ms.r{{background:#e5484d}}
+.dad{{grid-column:1/-1}}.dad .ad{{margin:4px 0}}
+.exp{{font-size:11px;color:var(--warn);padding:0 12px}}
 .mc{{background:#66cc33;color:#fff;font-weight:800;border-radius:4px;padding:0 5px;font-size:11px}}.dg{{margin-left:auto}}
 </style>
+<div class="sbox"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+<input id="dq" type="search" placeholder="할인 중인 게임 전체에서 검색 ({len(alld["list"]):,}개)" autocomplete="off"></div>
+<div id="dres" hidden><p id="dsc" class="note"></p><div class="dgrid" id="drg"></div></div>
+<div id="dtop">{ad("ADSENSE_SLOT_DEALS")}
 <h2 class="sec">Steam 할인 — 인기 판매 순위</h2>
 <div class="dbar"><select id="sort"><option value="r">인기순</option><option value="d">할인율 높은 순</option><option value="p">최저가 낮은 순</option><option value="m">메타스코어 높은 순</option></select>
 <label><input type="checkbox" id="ko"> 한국어 지원만</label>
 <label><input type="checkbox" id="ch"> Steam보다 싼 곳 있음</label>
 <select id="g"><option value="">전체 장르</option>{"".join(f"<option>{esc(g)}</option>" for g in genres)}</select></div>
-<div class="dgrid" id="dg">{cards or "<p>할인 정보를 불러오지 못했습니다.</p>"}</div>
+<div class="dgrid" id="dg">{cards or "<p>할인 정보를 불러오지 못했습니다.</p>"}</div></div>
 <p class="note">Steam 인기 판매 상위 100개 중 할인 중인 게임 · 한국 가격 기준 · 업데이트 {esc(d.get("updated", ""))}<br>
 판매처는 Steam 키를 판매하는 공인 상점만 비교합니다(가격 정보: IsThereAnyDeal). 원화 결제가 안 되는 상점은 오늘 환율로 환산한 값이며,
 결제 시 카드 해외결제 수수료가 붙을 수 있고 일부 게임은 한국 지역 제한이 있을 수 있으니 구매 전 확인하세요.<br>
 이미지 위 "최저가" 배지는 알트탭이 기록한 Steam 가격 중 가장 낮은 경우입니다.</p>
-<script>(()=>{{const g=document.getElementById('dg'),cs=[...g.children];
+<script>(()=>{{const g=document.getElementById('dg'),cs=[...g.querySelectorAll('.deal')],ads=[...g.querySelectorAll('.dad')];
 function f(){{const s=document.getElementById('sort').value,ko=document.getElementById('ko').checked,ch=document.getElementById('ch').checked,ge=document.getElementById('g').value;
 cs.sort((a,b)=>s==='m'?b.dataset.m-a.dataset.m:s==='d'?b.dataset.d-a.dataset.d:s==='p'?a.dataset.p-b.dataset.p:a.dataset.r-b.dataset.r)
 .forEach(c=>{{c.style.display=(!ko||c.dataset.ko==='1')&&(!ch||c.dataset.ch==='1')&&(!ge||c.dataset.g.split('|').includes(ge))?'':'none';g.appendChild(c)}})}}
-['sort','ko','ch','g'].forEach(i=>document.getElementById(i).onchange=f)}})()</script>""",
+['sort','ko','ch','g'].forEach(i=>document.getElementById(i).onchange=()=>{{f();ads.forEach((a,i)=>g.insertBefore(a,[...g.querySelectorAll('.deal')][(i+1)*12]||null))}})
+// 전체 검색 (처음 입력할 때 목록을 불러옴)
+let all=null,tm;const q=document.getElementById('dq'),res=document.getElementById('dres'),top=document.getElementById('dtop');
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}}[c])),won=n=>'₩'+Number(n).toLocaleString('ko-KR');
+async function run(){{const v=q.value.trim().toLowerCase();if(!v){{res.hidden=true;top.hidden=false;return}}
+ if(!all){{document.getElementById('dsc').textContent='불러오는 중...';res.hidden=false;all=(await (await fetch('deals_all.json')).json()).list}}
+ const terms=v.split(/\s+/),hit=all.filter(x=>terms.every(t=>x.t.toLowerCase().includes(t))).slice(0,60);
+ top.hidden=true;res.hidden=false;document.getElementById('dsc').textContent=hit.length?`"${{q.value}}" 할인 중 ${{hit.length}}건${{hit.length===60?' (상위 60건)':''}}`:`"${{q.value}}" — 지금 할인 중인 게임이 없습니다.`;
+ document.getElementById('drg').innerHTML=hit.map(x=>`<div class="deal"><a class="dimg" href="${{esc(x.u)}}" target="_blank" rel="noopener"><img src="${{esc(x.img)}}" alt="" loading="lazy"><span class="pct">-${{x.c}}%</span>${{x.lo&&x.p<=x.lo?'<span class="low">역대 최저</span>':''}}</a>
+ <a class="dn" href="${{esc(x.u)}}" target="_blank" rel="noopener">${{esc(x.t)}}${{x.dlc?' <small>(DLC)</small>':''}}</a><div class="dp"><s>${{won(x.r)}}</s><span>Steam</span><b>${{won(x.p)}}</b></div>
+ <div class="cmp">${{x.bp?`<a class="best" href="${{esc(x.bu)}}" target="_blank" rel="noopener sponsored"><span>최저가 · ${{esc(x.bs)}}</span><b>${{won(x.bp)}}</b><em>Steam보다 ${{Math.round((1-x.bp/x.p)*100)}}%↓</em></a>`:`<a class="best st" href="${{esc(x.u)}}" target="_blank" rel="noopener"><span>Steam이 최저가</span><b>${{won(x.p)}}</b></a>`}}
+ ${{x.lo?`<div class="ever">역대 최저 ${{won(x.lo)}}</div>`:''}}</div>${{x.x?`<div class="exp">할인 종료 ${{x.x.slice(5).replace('-','.')}}</div>`:''}}<div class="dm"></div></div>`).join('')}}
+q.addEventListener('input',()=>{{clearTimeout(tm);tm=setTimeout(run,150)}})}})()</script>""",
         path="deals.html", desc="Steam 인기 게임 할인 정보. 한국 가격, 할인율, 한국어 지원 여부, 최저가를 한눈에.").replace("{root}", ""),
         encoding="utf-8")
 
@@ -1500,6 +1562,7 @@ if __name__ == "__main__":
     elif cmd == "deals":  # 할인만 갱신 (LLM 미사용)
         cache = load_json(DATA / "steam_apps.json", {})
         collect_deals(cache)
+        collect_all_deals()
         save_json(DATA / "steam_apps.json", cache)
     elif cmd != "build":
         run()
