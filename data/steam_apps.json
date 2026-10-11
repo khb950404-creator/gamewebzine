@@ -929,7 +929,22 @@
   "appid": 440,
   "name": "Team Fortress 2",
   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/440/header.jpg?t=1757348372",
-  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/440/ss_ea21f7bbf4f79bada4554df5108d04b6889d3453.1920x1080.jpg?t=1757348372"
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/440/ss_ea21f7bbf4f79bada4554df5108d04b6889d3453.1920x1080.jpg?t=1757348372",
+  "info": {
+   "date": "2007년 10월 10일",
+   "soon": false,
+   "genres": [
+    "액션",
+    "무료 플레이"
+   ],
+   "dev": "Valve",
+   "pub": "Valve",
+   "ko": true,
+   "ko_voice": false,
+   "price": "무료",
+   "discount": 0,
+   "meta": 92
+  }
  },
  "id:227300": {
   "appid": 227300,
@@ -942,26 +957,15 @@
   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1203220/7db37ea18e8ee1d1b929fe9ef4c4f9f46ac22623/header.jpg?t=1791518965"
  },
  "q:callofdutymodernwarfare4": 4435490,
- "q:사이버펑크2077": null,
- "q:매직더개더링": null,
  "q:gearsofwareday": 3010850,
  "q:wardogs": 1867240,
- "q:포르자호라이즌6": null,
- "q:에이스컴뱃8": null,
- "q:데이브더다이버": null,
- "q:서브노티카2": null,
- "q:레인보우식스모바일": null,
  "q:rockbeasts": 1445880,
  "q:echoweaver": 2184080,
  "q:fatalfurycityofthewolves": 2492040,
  "q:arcraiders": 1808500,
- "q:thelegendofzeldaocarinaoftime": null,
  "q:forzahorizon6": 2483190,
  "q:dragonsdogma2": 2054970,
  "q:sonicracingcrossworlds": 2486820,
- "q:지뢰찾기": null,
- "q:silenthill": null,
- "q:aion2ww": null,
  "q:starwarsgalacticracer": 4078430,
  "q:clivebarkershellraiserrevival": 1551980,
  "q:dancingwithghosts": 1352700,
@@ -970,7 +974,6 @@
  "q:neonabyss2": 2235200,
  "q:orderofthesinkingstar": 499170,
  "q:silverpines": 2333000,
- "q:dragonsdogma2darkarisen": null,
  "q:sesamestreetfriendsandfun": 3930330,
  "q:truckful": 3090810,
  "q:alphanomos": 2529960,
@@ -980,7 +983,6 @@
  "q:timetowakeup": 2509870,
  "q:deepdishdungeon": 2871520,
  "q:planetzoo2": 3219030,
- "q:totalwarshogun2completeedition": null,
  "q:valormortis": 2828710,
  "q:overthehill": 2929250,
  "q:warhammer40000boltgun2": 3115160,
@@ -991,7 +993,6 @@
  "q:harvestmoonechoesofteradea": 3591180,
  "q:pixelwasher": 2572060,
  "q:ratatan": 2949320,
- "q:toystory3completeedition": null,
  "q:talesofeterniaremastered": 3470960,
  "q:tenebrissomnia": 2121510,
  "q:blueridgehunting": 2434930,
@@ -1002,7 +1003,6 @@
  "q:escapefromplaytime": 2087540,
  "q:demonsnightfever": 3502620,
  "q:finalfantasyresonance": 3259780,
- "q:gaelcosportscollection": null,
  "q:moadra": 1713730,
  "q:redchatritualtsumimitime": 4413070,
  "q:onepiecegrandgourmet": 3905010,
@@ -1012,16 +1012,13 @@
  "q:dogmanbarkinaction": 4782240,
  "q:emberville": 2295170,
  "q:remotheredrednunslegacy": 3335310,
- "q:villageintheshadeww": null,
  "q:virtueandasledgehammer": 3743260,
  "q:gennady": 2430010,
- "q:probablystolen": null,
  "q:sulfur": 2124120,
  "q:usualjune": 2702430,
  "q:ageofempiresivraidersofthenorth": 4336170,
  "q:anomalith": 4017880,
  "q:atmosfar": 1798230,
- "q:crimsondesertchartingtheunknown": null,
  "q:croc2kingdomofthegobbos": 4198360,
  "q:danchidays": 3107530,
  "q:joeandmacretrocollection": 3672840,
@@ -1038,7 +1035,6 @@
  "q:soundsystem": 4242730,
  "q:theoscitiesofmyth": 3002130,
  "q:voidbreaker": 2615540,
- "q:worldofwarcraftforever": null,
  "q:airframeultra": 2522120,
  "q:crymelight": 3891160,
  "q:edgeofmemories": 2738170,
@@ -1069,10 +1065,8 @@
   "name": "ゾンビポリス ～ゾンビ刑事と凍てつく真夏のお正月～",
   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3649840/d3643a316e664fbf8275cb319df2d6b42dd508e1/header.jpg?t=1791602637"
  },
- "q:expelledfromparadisethestellarangel": null,
  "q:grimkeep": 3509380,
  "q:helaofmiceandmagic": 3161310,
- "q:pixelheroscrambleplus": null,
  "q:aeternalucis": 2710920,
  "q:applecrumble": 4110770,
  "q:dragonquestmonstersthewitheredworld": 3681610,
@@ -1085,17 +1079,10 @@
  "q:stronghold4": 2153760,
  "q:drunkengoddessreflux": 4150720,
  "q:atrain9primeline": 5006320,
- "q:attackontitan3": null,
  "q:caladrius2darkelement": 4655000,
  "q:ninjabaseballleaguemanbasesloaded": 3418870,
- "q:professorlaytonandthenewworldofsteam": null,
  "q:stagetour": 4452700,
- "q:pathofexile2": null,
  "q:sunsoftisbackretrogameselection2": 5129770,
- "q:gta6": null,
- "q:middleearthshadowofmordorgameoftheyearedition": null,
- "q:gravityrush": null,
- "q:siren": null,
  "q:heathen": 4702700,
  "id:4702700": {
   "appid": 4702700,
@@ -1118,7 +1105,6 @@
    "meta": null
   }
  },
- "q:mafia3": null,
  "id:4656000": {
   "appid": 4656000,
   "name": "BOMBANANA!",
@@ -3472,9 +3458,6 @@
    "meta": null
   }
  },
- "q:grandtheftautovi": null,
- "q:fortnite": null,
- "q:sonicthehedgehog": null,
  "id:1295660": {
   "appid": 1295660,
   "name": "시드 마이어의 문명 VII",
@@ -3648,7 +3631,6 @@
    "meta": null
   }
  },
- "q:leisuresuitlarry": null,
  "id:1096900": {
   "appid": 1096900,
   "name": "RPG Maker MZ",
@@ -3970,7 +3952,6 @@
    "meta": null
   }
  },
- "q:grandtheftauto": null,
  "q:battlefield6": 2807960,
  "id:2807960": {
   "appid": 2807960,
@@ -3992,7 +3973,6 @@
    "meta": 82
   }
  },
- "q:streetfighter5": null,
  "q:streetfighter6": 1364780,
  "q:ittakestwo": 1426210,
  "id:1426210": {
@@ -4156,8 +4136,6 @@
  "itad:4297840": "019bbe6d-2dff-73f1-bb89-1df3933abe96",
  "itad:3315530": "01958aaa-7c65-728e-bc17-66880c779069",
  "itad:4660280": "019dcfe2-a174-71d5-a918-f7ca37bb7893",
- "q:escapefromelohello": null,
- "q:marveltokonfightingsouls": null,
  "q:etre": 2391940,
  "id:2391940": {
   "appid": 2391940,
@@ -4328,7 +4306,6 @@
  "itq:thelegendofzeldaocarinaoftime": null,
  "itq:지뢰찾기": null,
  "itq:silenthill": null,
- "q:그랜드테프트오토6": null,
  "itq:gta6": null,
  "itq:그랜드테프트오토6": null,
  "q:middleearthshadowofmordor": 241930,
@@ -4350,22 +4327,15 @@
    "meta": 84
   }
  },
- "q:사일런트힐": null,
- "q:그라비티러쉬": null,
- "q:사이렌": null,
  "itq:gravityrush": null,
  "itq:siren": null,
  "itq:사일런트힐": null,
  "itq:그라비티러쉬": null,
  "itq:사이렌": null,
- "q:마피아3": null,
  "itq:mafia3": null,
  "itq:마피아3": null,
  "itq:grandtheftautovi": null,
- "q:포트나이트": null,
- "q:소닉더헤지혹": null,
  "itq:fortnite": "https://assets.isthereanydeal.com/018d937f-11ea-71f7-83bd-d230daa7aaa3/banner600.jpg?t=1744056903",
- "q:레저슈트래리": null,
  "itq:leisuresuitlarry": null,
  "itq:레저슈트래리": null,
  "q:gta": 3482260,
@@ -4387,10 +4357,8 @@
    "meta": null
   }
  },
- "q:이스케이프프롬엘로헬로": null,
  "itq:escapefromelohello": null,
  "itq:이스케이프프롬엘로헬로": null,
- "q:마블토콘파이팅소울즈": null,
  "itq:marveltokonfightingsouls": null,
  "itq:마블토콘파이팅소울즈": null,
  "id:1794680": {
@@ -4436,6 +4404,52 @@
    "ko": false,
    "ko_voice": false,
    "price": "",
+   "discount": 0,
+   "meta": null
+  }
+ },
+ "q:teamfortress2": 440,
+ "itq:마블투혼파이팅소울즈": null,
+ "q:사이버펑크2077": null,
+ "q:매직더개더링": null,
+ "q:포르자호라이즌6": null,
+ "q:에이스컴뱃8": null,
+ "q:데이브더다이버": null,
+ "q:서브노티카2": null,
+ "q:레인보우식스모바일": null,
+ "q:thelegendofzeldaocarinaoftime": null,
+ "q:지뢰찾기": null,
+ "q:silenthill": null,
+ "q:gta6": null,
+ "q:그랜드테프트오토6": null,
+ "q:gravityrush": null,
+ "q:siren": null,
+ "q:사일런트힐": null,
+ "q:그라비티러쉬": null,
+ "q:사이렌": null,
+ "q:mafia3": null,
+ "q:마피아3": null,
+ "q:grandtheftautovi": null,
+ "q:leisuresuitlarry": null,
+ "q:레저슈트래리": null,
+ "q:marveltokonfightingsouls": 3787240,
+ "id:3787240": {
+  "appid": 3787240,
+  "name": "MARVEL Tōkon: Fighting Souls",
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3787240/b12a65e2a140f07ff79d57773353d9ffc8f6507b/header_koreana.jpg?t=1788520309",
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3787240/10c0fc19577ce7b7d5ea0fbcb257a1744d320f91/ss_10c0fc19577ce7b7d5ea0fbcb257a1744d320f91.1920x1080.jpg?t=1788520309",
+  "info": {
+   "date": "2026년 8월 6일",
+   "soon": false,
+   "genres": [
+    "액션",
+    "캐주얼"
+   ],
+   "dev": "ARC SYSTEM WORKS CO., LTD",
+   "pub": "PlayStation Publishing LLC",
+   "ko": true,
+   "ko_voice": true,
+   "price": "₩ 69,800",
    "discount": 0,
    "meta": null
   }

@@ -11,7 +11,7 @@ LLM 선택 (.env 또는 환경변수):
   LLM=ollama  OLLAMA_MODEL=qwen2.5:7b  # 로컬 무료
   LLM=none                         # LLM 없이 원문 제목/요약만 모음
 """
-import json, os, re, sys, html, hashlib, time, urllib.request, urllib.error, urllib.parse
+import json, os, re, sys, html, hashlib, time, unicodedata, urllib.request, urllib.error, urllib.parse
 import xml.etree.ElementTree as ET
 from email.utils import parsedate_to_datetime
 from datetime import datetime, timezone
@@ -114,7 +114,7 @@ def cluster(items):
 exhausted = set()  # 이번 실행에서 하루 한도가 끝난 모델
 
 
-def llm(prompt, prefer_lite=False):
+def llm(prompt, prefer_lite=False, search=False):
     mode = os.environ.get("LLM", "gemini" if os.environ.get("GEMINI_API_KEY") else "none")
     if mode == "gemini":
         models = [m for m in (os.environ.get("GEMINI_MODEL"), "gemini-flash-latest", "gemini-flash-lite-latest") if m]
@@ -126,14 +126,18 @@ def llm(prompt, prefer_lite=False):
             req = urllib.request.Request(
                 f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
                 data=json.dumps({"contents": [{"parts": [{"text": prompt}]}],
-                                 "generationConfig": {"responseMimeType": "application/json", "temperature": 0.4}}).encode(),
+                                 **({"tools": [{"google_search": {}}], "generationConfig": {"temperature": 0.2}} if search else
+                                    {"generationConfig": {"responseMimeType": "application/json", "temperature": 0.4}})}).encode(),
                 headers={"Content-Type": "application/json", "x-goog-api-key": os.environ["GEMINI_API_KEY"]})
             for attempt in range(3):
                 try:
                     t = time.time()
                     r = json.loads(urllib.request.urlopen(req, timeout=300).read())
                     print(f"    ({model}, {time.time() - t:.0f}초)")
-                    return json.loads(r["candidates"][0]["content"]["parts"][0]["text"])
+                    text = "".join(pt.get("text", "") for pt in r["candidates"][0]["content"]["parts"])
+                    if search:  # 검색 모드는 JSON 강제가 안 돼서 본문에서 JSON 만 꺼낸다
+                        text = text[text.find("{"):text.rfind("}") + 1]
+                    return json.loads(text)
                 except urllib.error.HTTPError as e:
                     msg = e.read().decode("utf-8", "ignore")
                     if e.code == 429 and "PerDay" in msg:  # 하루 한도 소진 → 재시도 무의미, 다음 모델로
@@ -260,6 +264,68 @@ def write_batch(cands):
     return out
 
 
+# ---------- 게임 공식 한글 표기 ----------
+# data/names.json: {"정규화된 영문명": {"en": 원문, "ko": 공식 한글명 또는 null, "src": 출처}}
+# 직접 고쳐도 되고(검수 때 발견한 표기), 새 게임은 Steam 한국어 이름 → 구글 검색 순으로 자동으로 채운다.
+NAMES_PROMPT = """다음 게임들의 '한국 공식 한글 표기명'을 구글에서 검색해 확인하라.
+기준: 한국 퍼블리셔·플랫폼(PlayStation Korea, 닌텐도 코리아, Xbox, Steam 한국어 페이지) 공식 표기 > 국내 주요 게임 매체(인벤, 디스이즈게임, 루리웹 등) 다수 표기.
+공식 한글명이 없거나 영문 그대로 쓰면 null. 추측해서 소리 나는 대로 옮기지 마라.
+JSON 하나만 출력: {{"names": [{{"en": "영문명", "ko": "공식 한글명 또는 null"}}]}}
+
+{names}"""
+
+
+def has_hangul(t):
+    return bool(re.search(r"[가-힣]", t or ""))
+
+
+def resolve_names(articles, cache):
+    """기사에 나온 게임의 공식 한글명을 확인해 제목·요약·본문의 표기를 바로잡는다."""
+    names = load_json(DATA / "names.json", {})
+    pairs = [(a, i, en) for a in articles for i, en in enumerate(a.get("games_en") or []) if en]
+    unknown = []
+    for _, _, en in pairs:
+        k = norm(en)
+        if k in names or not k:
+            continue
+        app = steam_find(en, cache)
+        steam_ko = (app or {}).get("name", "")
+        if has_hangul(steam_ko):  # Steam 한국어 페이지 이름 (예: "에이스 컴뱃 8: 시브의 날개 (ACE COMBAT 8...)")
+            ko = re.sub(r"\s*\([^)]*[A-Za-z][^)]*\)\s*$", "", steam_ko).replace("™", "").replace("®", "").strip()
+            ko = re.sub(r"(?<=[가-힣])\s+[A-Za-z][A-Za-z0-9 :'’&.-]*$", "", ko).strip()  # "니발리스 나이트 Nivalis Nights"
+            names[k] = {"en": en, "ko": ko, "src": "Steam"}
+        elif en not in unknown:
+            unknown.append(en)
+    if unknown:
+        try:
+            res = llm(NAMES_PROMPT.format(names="\n".join(f"- {n}" for n in unknown[:40])), prefer_lite=True, search=True) or {}
+            for r in res.get("names", []):
+                if r.get("en"):
+                    names[norm(r["en"])] = {"en": r["en"], "ko": r.get("ko") or None, "src": "검색"}
+        except Exception as e:
+            print(f"  ! 한글 표기 검색 실패: {e}")
+    fixed = 0
+    for a, i, en in pairs:
+        off = (names.get(norm(en)) or {}).get("ko")
+        games = a.get("games") or []
+        mine = games[i] if i < len(games) else None
+        if not off or not mine or norm(off) == norm(mine):
+            continue
+        swaps = [(mine, off)]
+        if ":" in mine and ":" in off:  # 본문에 부제 없이 쓴 경우도 ("마블 토콘" → "마블 투혼")
+            swaps.append((mine.split(":")[0].strip(), off.split(":")[0].strip()))
+        for old, new in swaps:
+            a["title"] = a["title"].replace(old, new)
+            a["why"] = (a.get("why") or "").replace(old, new)
+            a["tldr"] = [t.replace(old, new) for t in a.get("tldr", [])]
+            a["body"] = [t.replace(old, new) for t in a.get("body", [])]
+        games[i] = off
+        a.setdefault("fixes", []).append(f"게임명 표기 '{mine}' → '{off}'")
+        fixed += 1
+    save_json(DATA / "names.json", names)
+    print(f"한글 표기 교정 {fixed}건 (사전 {len(names)}개)")
+
+
 # ---------- 저장 ----------
 def load_json(p, default):
     return json.loads(p.read_text(encoding="utf-8")) if p.exists() else default
@@ -299,7 +365,7 @@ def run():
             failed = True
     articles += new
     cache = load_json(DATA / "steam_apps.json", {})
-    for step in (lambda: attach_images(articles, cache), lambda: collect_patches(cache), lambda: collect_calendar(cache),
+    for step in (lambda: resolve_names(new, cache), lambda: attach_images(articles, cache), lambda: collect_patches(cache), lambda: collect_calendar(cache),
                  lambda: collect_deals(cache), collect_all_deals):
         try:
             step()
@@ -328,7 +394,9 @@ def get_json(url, timeout=20):
 
 
 def norm(s):
-    return re.sub(r"[^0-9a-z가-힣]", "", (s or "").lower().replace("&", "and"))
+    s = "".join(c for c in unicodedata.normalize("NFKD", s or "") if not unicodedata.combining(c))
+    s = unicodedata.normalize("NFC", s)  # 한글은 다시 조합
+    return re.sub(r"[^0-9a-z가-힣]", "", s.lower().replace("&", "and"))
 
 
 def steam_info(d):
