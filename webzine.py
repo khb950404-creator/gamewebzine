@@ -716,6 +716,9 @@ header{background:color-mix(in srgb,var(--bg) 82%,transparent);-webkit-backdrop-
 .day.today .d{position:relative}.day.today .d::before{content:"";position:absolute;left:-12px;top:6px;width:6px;height:6px;border-radius:50%;background:var(--acc);animation:pulse 1.6s infinite}
 @media(max-width:640px){.lead{aspect-ratio:4/5}.lead .t{font-size:23px}.lead .lc{padding:18px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+.more{display:flex;justify-content:space-between;align-items:center;margin-top:16px;font-size:14px}
+.more button{border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:99px;padding:8px 22px;font:inherit;font-size:14px;cursor:pointer;transition:border-color .2s}
+.more button:hover{border-color:var(--mut)}.more a{color:var(--mut)}.more a:hover{color:var(--acc)}
 footer{color:var(--mut);font-size:12px;padding:40px 0;text-align:center}
 @media(max-width:640px){article h1{font-size:24px}.brief .t{font-size:17px}}
 """
@@ -1303,9 +1306,12 @@ def build():
 <h2 class="sec">오늘의 브리핑</h2>{lead_html}<div class="brief">{brief or '<p>아직 기사가 없습니다.</p>'}</div>
 {ad("ADSENSE_SLOT_HOME")}<h2 class="sec">최신 소식</h2><nav><button class="on" data-f="">전체</button>{filters}</nav>
 <div class="stream" id="st" style="margin-top:12px">{stream}</div>
-<script>document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{{
-document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x===b));const f=b.dataset.f;
-document.querySelectorAll('#st a').forEach(a=>a.style.display=!f||a.dataset.c===f||a.dataset.p.split(' ').includes(f)?'':'none')}})</script>""")
+<div class="more"><button id="more">더 보기</button><a href="search.html">지난 기사 검색 →</a></div>
+<script>(()=>{{const PAGE=15;let f='',n=PAGE;const items=[...document.querySelectorAll('#st a')],btn=document.getElementById('more');
+const ok=a=>!f||a.dataset.c===f||a.dataset.p.split(' ').includes(f);
+function show(){{let k=0;items.forEach(a=>{{const v=ok(a)&&k<n;if(ok(a))k++;a.style.display=v?'':'none';if(v)a.classList.add('in')}});btn.hidden=k<=n}}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{{document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x===b));f=b.dataset.f;n=PAGE;show()}});
+btn.onclick=()=>{{n+=PAGE;show()}};show()}})()</script>""")
     (SITE / "index.html").write_text(index.replace("{root}", ""), encoding="utf-8")
     repo = os.environ.get("GITHUB_REPOSITORY", "khb950404-creator/gamewebzine")
     (SITE / "review.html").write_text(
