@@ -1,5 +1,5 @@
 {
- "updated": "10.12 02:13",
+ "updated": "10.12 02:15",
  "deals": [
   {
    "appid": 1808500,
@@ -1943,10 +1943,31 @@
    "best": 25930
   },
   {
+   "appid": 1190970,
+   "name": "하우스 플리퍼 2",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1190970/a8c4bf872d073e27e96c2179e19a5cd9971bfd2e/header.jpg?t=1789125310",
+   "rank": 55,
+   "discount": 40,
+   "initial": 35000,
+   "final": 21000,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "캐주얼",
+    "인디",
+    "시뮬레이션"
+   ],
+   "meta": 79,
+   "shops": [],
+   "ever_low": 21000,
+   "best": 21000
+  },
+  {
    "appid": 2072450,
    "name": "용과 같이8",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2072450/header_koreana.jpg?t=1781262996",
-   "rank": 55,
+   "rank": 56,
    "discount": 75,
    "initial": 79800,
    "final": 19950,
@@ -1984,27 +2005,6 @@
    ],
    "ever_low": 19950,
    "best": 19950
-  },
-  {
-   "appid": 1190970,
-   "name": "하우스 플리퍼 2",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1190970/a8c4bf872d073e27e96c2179e19a5cd9971bfd2e/header.jpg?t=1789125310",
-   "rank": 56,
-   "discount": 40,
-   "initial": 35000,
-   "final": 21000,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "캐주얼",
-    "인디",
-    "시뮬레이션"
-   ],
-   "meta": 79,
-   "shops": [],
-   "ever_low": 21000,
-   "best": 21000
   },
   {
    "appid": 2138720,
@@ -3424,7 +3424,7 @@
    "discount": 25,
    "initial": 5000,
    "final": 3750,
-   "low": false,
+   "low": true,
    "ko": true,
    "ko_voice": false,
    "genres": [
