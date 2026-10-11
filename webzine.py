@@ -1747,10 +1747,26 @@ if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "run"
     if cmd in ("review", "approve", "reject"):
         review(cmd, sys.argv[2:])
-    elif cmd == "deals":  # 할인만 갱신 (LLM 미사용)
+    elif cmd == "deals":  # 할인 갱신 + 이미지 없는 기사 재검색 (LLM 미사용)
         cache = load_json(DATA / "steam_apps.json", {})
         collect_deals(cache)
         collect_all_deals()
+        arts = load_json(DATA / "articles.json", [])
+        for a in arts:
+            if not a.get("img"):
+                a.pop("img_v", None)
+        for k in [k for k in cache if k.startswith("ig:") and cache[k] is None]:
+            del cache[k]
+        state = load_json(DATA / "state.json", {})
+        try:
+            igdb("fields name; limit 1;")
+            state["igdb"] = "ok" if os.environ.get("IGDB_CLIENT_ID") else "키 없음"
+        except Exception as e:
+            state["igdb"] = f"{e} {getattr(e, 'read', lambda: b'')()[:200]}"
+        attach_images(arts, cache)
+        state["img_count"] = f"{sum(1 for a in arts if a.get('img'))}/{len(arts)}"
+        save_json(DATA / "state.json", state)
+        save_json(DATA / "articles.json", arts)
         save_json(DATA / "steam_apps.json", cache)
     elif cmd != "build":
         run()
