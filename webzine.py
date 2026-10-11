@@ -516,11 +516,15 @@ def collect_deals(cache):
                       "low": record and low is not None, "ko": i["ko"], "ko_voice": i["ko_voice"],
                       "genres": i["genres"], "meta": i.get("meta")})
     save_json(DATA / "price_hist.json", hist)
+    shop_status = "ok"
     try:
         (attach_shops_itad if os.environ.get("ITAD_API_KEY") else attach_shops)(deals, cache)
     except Exception as e:
-        print(f"  ! 판매처 가격: {e}")
-    save_json(DATA / "deals.json", {"updated": datetime.now().strftime("%m.%d %H:%M"), "deals": deals})
+        body = getattr(e, "read", lambda: b"")()[:300].decode("utf-8", "ignore")
+        shop_status = f"{type(e).__name__}: {e} {body}"
+        print(f"  ! 판매처 가격: {shop_status}")
+    save_json(DATA / "deals.json", {"updated": datetime.now().strftime("%m.%d %H:%M"), "deals": deals,
+                                    "shops_status": shop_status, "itad": bool(os.environ.get("ITAD_API_KEY"))})
     print(f"할인 {len(deals)}건")
 
 
@@ -582,6 +586,8 @@ def attach_shops_itad(deals, cache):
     for x in deals:
         x["best"] = min([x["final"]] + [s_["krw"] for s_ in x.get("shops", [])])
     print(f"판매처 가격 비교 {n}건 (ITAD, KR)")
+    if not n:
+        raise RuntimeError(f"ITAD 결과 없음: ids={len(ids)} res={len(res)} sample={json.dumps(res[:1], ensure_ascii=False)[:300]}")
 
 
 def attach_shops(deals, cache):
@@ -1203,7 +1209,6 @@ def build_deals():
     def badges(x):
         b = '<span class="kb">자막</span>' if x["ko"] else '<span class="kb no">한국어 X</span>'
         b += '<span class="kb">음성</span>' if x["ko_voice"] else ""
-        b += f'<span class="mc">{x["meta"]}</span>' if x.get("meta") else ""
         return b
 
     steam = lambda x: f"https://store.steampowered.com/app/{x['appid']}"
@@ -1226,11 +1231,13 @@ def build_deals():
         return head + more
 
     cards = "".join(
-        f'<div class="deal" data-d="{x["discount"]}" data-r="{x["rank"]}" data-p="{x.get("best", x["final"])}" '
+        f'<div class="deal" data-m="{x.get("meta") or 0}" data-d="{x["discount"]}" data-r="{x["rank"]}" data-p="{x.get("best", x["final"])}" '
         f'data-ko="{int(x["ko"])}" data-ch="{int(x.get("best", x["final"]) < x["final"] * 0.97)}" '
         f'data-g="{esc("|".join(x["genres"]))}"><a class="dimg" href="{steam(x)}" target="_blank" rel="noopener">'
         f'<img src="{esc(x["img"])}" alt="" loading="lazy">'
-        f'<span class="pct">-{x["discount"]}%</span>{"<span class=low>최저가</span>" if x.get("low") else ""}</a>'
+        f'<span class="pct">-{x["discount"]}%</span>{"<span class=low>최저가</span>" if x.get("low") else ""}'
+        + (f'<span class="ms {"g" if x["meta"] >= 75 else "y" if x["meta"] >= 50 else "r"}" title="메타크리틱 점수">'
+           f'<small>META</small>{x["meta"]}</span>' if x.get("meta") else "") + '</a>'
         f'<a class="dn" href="{steam(x)}" target="_blank" rel="noopener">{esc(x["name"])}</a>'
         f'<div class="dp"><s>{won(x["initial"])}</s><span>Steam</span><b>{won(x["final"])}</b></div>'
         f'<div class="cmp">{compare(x)}</div>'
@@ -1260,10 +1267,13 @@ background:rgba(31,157,85,.1);border:1px solid rgba(31,157,85,.35);transition:ba
 .cmp summary::before{{content:"▸ "}}.cmp details[open] summary::before{{content:"▾ "}}
 .cmp ul{{list-style:none;margin:6px 0 0;padding:0}}.cmp li a{{display:flex;justify-content:space-between;padding:4px 0;border-top:1px dashed var(--line)}}
 .cmp li a:hover{{color:var(--acc)}}.ever{{font-size:12px;color:var(--mut);margin-top:6px}}
+.ms{{position:absolute;left:8px;bottom:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+width:42px;height:42px;border-radius:8px;color:#fff;font-weight:900;font-size:18px;line-height:1;box-shadow:0 4px 12px rgba(0,0,0,.35)}}
+.ms small{{font-size:8px;letter-spacing:.5px;opacity:.9;margin-bottom:2px}}.ms.g{{background:#3fa72e}}.ms.y{{background:#d9a400}}.ms.r{{background:#e5484d}}
 .mc{{background:#66cc33;color:#fff;font-weight:800;border-radius:4px;padding:0 5px;font-size:11px}}.dg{{margin-left:auto}}
 </style>
 <h2 class="sec">Steam 할인 — 인기 판매 순위</h2>
-<div class="dbar"><select id="sort"><option value="r">인기순</option><option value="d">할인율 높은 순</option><option value="p">최저가 낮은 순</option></select>
+<div class="dbar"><select id="sort"><option value="r">인기순</option><option value="d">할인율 높은 순</option><option value="p">최저가 낮은 순</option><option value="m">메타스코어 높은 순</option></select>
 <label><input type="checkbox" id="ko"> 한국어 지원만</label>
 <label><input type="checkbox" id="ch"> Steam보다 싼 곳 있음</label>
 <select id="g"><option value="">전체 장르</option>{"".join(f"<option>{esc(g)}</option>" for g in genres)}</select></div>
@@ -1274,7 +1284,7 @@ background:rgba(31,157,85,.1);border:1px solid rgba(31,157,85,.35);transition:ba
 이미지 위 "최저가" 배지는 알트탭이 기록한 Steam 가격 중 가장 낮은 경우입니다.</p>
 <script>(()=>{{const g=document.getElementById('dg'),cs=[...g.children];
 function f(){{const s=document.getElementById('sort').value,ko=document.getElementById('ko').checked,ch=document.getElementById('ch').checked,ge=document.getElementById('g').value;
-cs.sort((a,b)=>s==='d'?b.dataset.d-a.dataset.d:s==='p'?a.dataset.p-b.dataset.p:a.dataset.r-b.dataset.r)
+cs.sort((a,b)=>s==='m'?b.dataset.m-a.dataset.m:s==='d'?b.dataset.d-a.dataset.d:s==='p'?a.dataset.p-b.dataset.p:a.dataset.r-b.dataset.r)
 .forEach(c=>{{c.style.display=(!ko||c.dataset.ko==='1')&&(!ch||c.dataset.ch==='1')&&(!ge||c.dataset.g.split('|').includes(ge))?'':'none';g.appendChild(c)}})}}
 ['sort','ko','ch','g'].forEach(i=>document.getElementById(i).onchange=f)}})()</script>""",
         path="deals.html", desc="Steam 인기 게임 할인 정보. 한국 가격, 할인율, 한국어 지원 여부, 최저가를 한눈에.").replace("{root}", ""),
