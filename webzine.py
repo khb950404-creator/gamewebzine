@@ -516,8 +516,73 @@ def collect_deals(cache):
                       "low": record and low is not None, "ko": i["ko"], "ko_voice": i["ko_voice"],
                       "genres": i["genres"], "meta": i.get("meta")})
     save_json(DATA / "price_hist.json", hist)
+    try:
+        attach_shops(deals, cache)
+    except Exception as e:
+        print(f"  ! 판매처 가격: {e}")
     save_json(DATA / "deals.json", {"updated": datetime.now().strftime("%m.%d %H:%M"), "deals": deals})
     print(f"할인 {len(deals)}건")
+
+
+# Steam 키를 파는 공인 판매처만 (GOG·Epic·Uplay 는 Steam 키가 아니라 제외)
+SHOPS = {"3": "Green Man Gaming", "11": "Humble", "15": "Fanatical", "21": "WinGameStore", "23": "GameBillet",
+         "27": "Gamesplanet", "28": "Gamesload", "30": "IndieGala", "2": "GamersGate"}
+CS_UA = {"User-Agent": "AltTabWebzine/1.0 (+https://github.com/khb950404-creator/gamewebzine)"}
+
+
+def cs_json(url):
+    return json.loads(urllib.request.urlopen(urllib.request.Request(url, headers=CS_UA), timeout=30).read())
+
+
+def attach_shops(deals, cache):
+    """CheapShark 로 공인 판매처 현재가(USD)·역대 최저가를 가져와 원화로 환산해 붙인다."""
+    rate = get_json("https://open.er-api.com/v6/latest/USD")["rates"]["KRW"]
+    krw = lambda usd: int(round(float(usd) * rate / 10) * 10)
+    gid, budget = {}, 20  # 요청 한도(429) 방지: 실행마다 새 게임은 20개까지만 조회해 캐시를 조금씩 채운다
+    for x in deals:  # steamAppID → CheapShark gameID (캐시)
+        k = f"cs:{x['appid']}"
+        if k not in cache:
+            if budget <= 0:
+                continue
+            budget -= 1
+            try:
+                r = cs_json(f"https://www.cheapshark.com/api/1.0/games?steamAppID={x['appid']}")
+                cache[k] = r[0]["gameID"] if r else None
+                time.sleep(1.5)
+            except urllib.error.HTTPError as e:
+                if e.code == 429:
+                    break
+                continue
+            except Exception:
+                continue
+        if cache.get(k):
+            gid[cache[k]] = x
+    ids = list(gid)
+    n = 0
+    for i in range(0, len(ids), 25):
+        try:
+            res = cs_json("https://www.cheapshark.com/api/1.0/games?ids=" + ",".join(ids[i:i + 25]))
+        except Exception as e:
+            print(f"  ! CheapShark: {e}")
+            continue
+        time.sleep(1.5)
+        for g, info in res.items():
+            x = gid.get(g)
+            if not x or not isinstance(info, dict):
+                continue
+            shops = sorted(({"shop": SHOPS[dl["storeID"]], "krw": krw(dl["price"]), "usd": float(dl["price"]),
+                             "cut": round(float(dl["savings"])),
+                             "url": "https://www.cheapshark.com/redirect?dealID=" + dl["dealID"]}
+                            for dl in info.get("deals", []) if dl["storeID"] in SHOPS), key=lambda s_: s_["krw"])
+            x["shops"] = shops[:4]
+            low = info.get("cheapestPriceEver") or {}
+            if low.get("price"):
+                x["ever_low"] = krw(low["price"])
+            n += 1
+    print(f"판매처 가격 비교 {n}건 (환율 {rate:,.0f}원)")
+    for x in deals:
+        x["best"] = min([x["final"]] + [s_["krw"] for s_ in x.get("shops", [])])
+    return rate
 
 
 # ---------- 출시 캘린더 (위키백과 출시 목록, CC BY-SA) ----------
@@ -1091,13 +1156,35 @@ def build_deals():
         b += f'<span class="mc">{x["meta"]}</span>' if x.get("meta") else ""
         return b
 
+    steam = lambda x: f"https://store.steampowered.com/app/{x['appid']}"
+
+    def compare(x):
+        shops = x.get("shops", [])
+        cheaper = [s_ for s_ in shops if s_["krw"] < x["final"] * 0.97]  # 3% 이상 싸야 의미 있게 표시
+        if cheaper:
+            b = cheaper[0]
+            head = (f'<a class="best" href="{esc(b["url"])}" target="_blank" rel="noopener sponsored">'
+                    f'<span>최저가 · {esc(b["shop"])}</span><b>{won(b["krw"])}</b>'
+                    f'<em>Steam보다 {round((1 - b["krw"] / x["final"]) * 100)}%↓</em></a>')
+        else:
+            head = f'<a class="best st" href="{steam(x)}" target="_blank" rel="noopener"><span>Steam이 최저가</span><b>{won(x["final"])}</b></a>'
+        rows = "".join(f'<li><a href="{esc(s_["url"])}" target="_blank" rel="noopener sponsored">{esc(s_["shop"])}'
+                       f'<span>{won(s_["krw"])}</span></a></li>' for s_ in shops)
+        rows = f'<li><a href="{steam(x)}" target="_blank" rel="noopener">Steam (한국)<span>{won(x["final"])}</span></a></li>' + rows
+        ever = f'<div class="ever">역대 최저 ≈ {won(x["ever_low"])}</div>' if x.get("ever_low") else ""
+        more = f'<details><summary>판매처 {len(shops) + 1}곳 가격 비교</summary><ul>{rows}</ul>{ever}</details>' if shops else ever
+        return head + more
+
     cards = "".join(
-        f'<a class="deal" href="https://store.steampowered.com/app/{x["appid"]}" target="_blank" rel="noopener" '
-        f'data-d="{x["discount"]}" data-r="{x["rank"]}" data-p="{x["final"]}" data-ko="{int(x["ko"])}" '
-        f'data-g="{esc("|".join(x["genres"]))}"><div class="dimg"><img src="{esc(x["img"])}" alt="" loading="lazy">'
-        f'<span class="pct">-{x["discount"]}%</span>{"<span class=low>최저가</span>" if x.get("low") else ""}</div>'
-        f'<div class="dn">{esc(x["name"])}</div><div class="dp"><s>{won(x["initial"])}</s><b>{won(x["final"])}</b></div>'
-        f'<div class="dm">{badges(x)}<span class="dg">{esc(" · ".join(x["genres"][:2]))}</span></div></a>' for x in d["deals"])
+        f'<div class="deal" data-d="{x["discount"]}" data-r="{x["rank"]}" data-p="{x.get("best", x["final"])}" '
+        f'data-ko="{int(x["ko"])}" data-ch="{int(x.get("best", x["final"]) < x["final"] * 0.97)}" '
+        f'data-g="{esc("|".join(x["genres"]))}"><a class="dimg" href="{steam(x)}" target="_blank" rel="noopener">'
+        f'<img src="{esc(x["img"])}" alt="" loading="lazy">'
+        f'<span class="pct">-{x["discount"]}%</span>{"<span class=low>최저가</span>" if x.get("low") else ""}</a>'
+        f'<a class="dn" href="{steam(x)}" target="_blank" rel="noopener">{esc(x["name"])}</a>'
+        f'<div class="dp"><s>{won(x["initial"])}</s><span>Steam</span><b>{won(x["final"])}</b></div>'
+        f'<div class="cmp">{compare(x)}</div>'
+        f'<div class="dm">{badges(x)}<span class="dg">{esc(" · ".join(x["genres"][:2]))}</span></div></div>' for x in d["deals"])
     genres = sorted({g for x in d["deals"] for g in x["genres"]}, key=lambda g: -sum(g in x["genres"] for x in d["deals"]))[:8]
     (SITE / "deals.html").write_text(page("게임 할인 — " + SITE_NAME, f"""
 <style>
@@ -1114,20 +1201,32 @@ def build_deals():
 .dn{{font-weight:800;padding:10px 12px 2px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}}
 .dp{{padding:2px 12px;display:flex;gap:8px;align-items:baseline}}.dp s{{color:var(--mut);font-size:13px}}.dp b{{font-size:17px}}
 .dm{{padding:6px 12px 12px;margin-top:auto;display:flex;gap:4px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--mut)}}
+.dp span{{font-size:12px;color:var(--mut);margin-left:auto}}
+.cmp{{padding:6px 12px 0}}.best{{display:grid;grid-template-columns:1fr auto;align-items:center;gap:0 8px;padding:7px 10px;border-radius:8px;
+background:rgba(31,157,85,.1);border:1px solid rgba(31,157,85,.35);transition:background .2s}}.best:hover{{background:rgba(31,157,85,.18)}}
+.best span{{font-size:12px;color:var(--ok);font-weight:700}}.best b{{font-size:16px;grid-row:span 2}}.best em{{font-style:normal;font-size:11px;color:var(--ok)}}
+.best.st{{background:none;border-color:var(--line)}}.best.st span{{color:var(--mut)}}
+.cmp details{{margin-top:6px;font-size:13px}}.cmp summary{{cursor:pointer;color:var(--mut);font-size:12px;list-style:none}}
+.cmp summary::before{{content:"▸ "}}.cmp details[open] summary::before{{content:"▾ "}}
+.cmp ul{{list-style:none;margin:6px 0 0;padding:0}}.cmp li a{{display:flex;justify-content:space-between;padding:4px 0;border-top:1px dashed var(--line)}}
+.cmp li a:hover{{color:var(--acc)}}.ever{{font-size:12px;color:var(--mut);margin-top:6px}}
 .mc{{background:#66cc33;color:#fff;font-weight:800;border-radius:4px;padding:0 5px;font-size:11px}}.dg{{margin-left:auto}}
 </style>
 <h2 class="sec">Steam 할인 — 인기 판매 순위</h2>
-<div class="dbar"><select id="sort"><option value="r">인기순</option><option value="d">할인율 높은 순</option><option value="p">가격 낮은 순</option></select>
+<div class="dbar"><select id="sort"><option value="r">인기순</option><option value="d">할인율 높은 순</option><option value="p">최저가 낮은 순</option></select>
 <label><input type="checkbox" id="ko"> 한국어 지원만</label>
+<label><input type="checkbox" id="ch"> Steam보다 싼 곳 있음</label>
 <select id="g"><option value="">전체 장르</option>{"".join(f"<option>{esc(g)}</option>" for g in genres)}</select></div>
 <div class="dgrid" id="dg">{cards or "<p>할인 정보를 불러오지 못했습니다.</p>"}</div>
 <p class="note">Steam 인기 판매 상위 100개 중 할인 중인 게임 · 한국 가격 기준 · 업데이트 {esc(d.get("updated", ""))}<br>
-"최저가"는 알트탭이 기록한 가격 중 가장 낮은 경우입니다. 실제 가격은 Steam에서 확인하세요.</p>
+판매처는 Steam 키를 판매하는 공인 상점만 비교합니다(가격 정보: CheapShark). 해외 상점 가격은 달러 가격을 오늘 환율로 환산한 값이며,
+결제 시 카드 해외결제 수수료가 붙을 수 있고 일부 게임은 한국 지역 제한이 있을 수 있으니 구매 전 확인하세요.<br>
+이미지 위 "최저가" 배지는 알트탭이 기록한 Steam 가격 중 가장 낮은 경우입니다.</p>
 <script>(()=>{{const g=document.getElementById('dg'),cs=[...g.children];
-function f(){{const s=document.getElementById('sort').value,ko=document.getElementById('ko').checked,ge=document.getElementById('g').value;
+function f(){{const s=document.getElementById('sort').value,ko=document.getElementById('ko').checked,ch=document.getElementById('ch').checked,ge=document.getElementById('g').value;
 cs.sort((a,b)=>s==='d'?b.dataset.d-a.dataset.d:s==='p'?a.dataset.p-b.dataset.p:a.dataset.r-b.dataset.r)
-.forEach(c=>{{c.style.display=(!ko||c.dataset.ko==='1')&&(!ge||c.dataset.g.split('|').includes(ge))?'':'none';g.appendChild(c)}})}}
-['sort','ko','g'].forEach(i=>document.getElementById(i).onchange=f)}})()</script>""",
+.forEach(c=>{{c.style.display=(!ko||c.dataset.ko==='1')&&(!ch||c.dataset.ch==='1')&&(!ge||c.dataset.g.split('|').includes(ge))?'':'none';g.appendChild(c)}})}}
+['sort','ko','ch','g'].forEach(i=>document.getElementById(i).onchange=f)}})()</script>""",
         path="deals.html", desc="Steam 인기 게임 할인 정보. 한국 가격, 할인율, 한국어 지원 여부, 최저가를 한눈에.").replace("{root}", ""),
         encoding="utf-8")
 
