@@ -865,7 +865,22 @@
   "appid": 730,
   "name": "Counter-Strike 2",
   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/730/162664aa5da85f418105350c5d67ca565f6c3713/header.jpg?t=1789251637",
-  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/730/9c8b8fd6ebb2c84a1c38541369e6c05db7f1fbe0/ss_9c8b8fd6ebb2c84a1c38541369e6c05db7f1fbe0.1920x1080.jpg?t=1789251637"
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/730/9c8b8fd6ebb2c84a1c38541369e6c05db7f1fbe0/ss_9c8b8fd6ebb2c84a1c38541369e6c05db7f1fbe0.1920x1080.jpg?t=1789251637",
+  "info": {
+   "date": "2012년 8월 21일",
+   "soon": false,
+   "genres": [
+    "액션",
+    "무료 플레이"
+   ],
+   "dev": "Valve",
+   "pub": "Valve",
+   "ko": true,
+   "ko_voice": false,
+   "price": "무료",
+   "discount": 0,
+   "meta": null
+  }
  },
  "id:3393110": null,
  "id:1422450": {
@@ -4779,5 +4794,130 @@
  "ig:yomawarithelongnightcollection": {
   "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar48w.jpg",
   "hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar48w.jpg"
- }
+ },
+ "q:eccredline": 5268340,
+ "id:5268340": {
+  "appid": 5268340,
+  "name": "극한전장(ECC: REDLINE)",
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5268340/d9ab840107c2caa40c25bd201929a8f84243c65c/header.jpg?t=1791536610",
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5268340/012c1f9ba571ad82ef59e131117044d32600d3a1/ss_012c1f9ba571ad82ef59e131117044d32600d3a1.1920x1080.jpg?t=1791536610",
+  "info": {
+   "date": "출시 예정",
+   "soon": true,
+   "genres": [
+    "액션",
+    "어드벤처",
+    "캐주얼"
+   ],
+   "dev": "NetEase Games",
+   "pub": "NetEase Games",
+   "ko": true,
+   "ko_voice": true,
+   "price": "무료",
+   "discount": 0,
+   "meta": null
+  }
+ },
+ "q:callofdutywarzone": null,
+ "q:nier": null,
+ "q:drakengard": null,
+ "q:counterstrike2": 730,
+ "q:destiny2": 1085660,
+ "id:1085660": {
+  "appid": 1085660,
+  "name": "데스티니 가디언즈",
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1085660/34e901dac9d959129d25c4b7ae8def80df99827e/header_koreana.jpg?t=1781815889",
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1085660/d7038cee22b9de60003e7bbc07d65069ad6044ab/ss_d7038cee22b9de60003e7bbc07d65069ad6044ab.1920x1080.jpg?t=1781815889",
+  "info": {
+   "date": "2019년 10월 1일",
+   "soon": false,
+   "genres": [
+    "액션",
+    "어드벤처",
+    "무료 플레이"
+   ],
+   "dev": "Bungie",
+   "pub": "Bungie",
+   "ko": true,
+   "ko_voice": true,
+   "price": "무료",
+   "discount": 0,
+   "meta": 83
+  }
+ },
+ "q:니어": null,
+ "q:드래그온드라군": null,
+ "ig:nier": {
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar7gy.jpg",
+  "hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar7gy.jpg"
+ },
+ "q:totalwarshogun2": null,
+ "q:toystory3": null,
+ "id:1139980": {
+  "appid": 1139980,
+  "name": "Travellers Rest",
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1139980/4f7daf4884589291ef49f35248d41f76e9b4d967/header.jpg?t=1789987425",
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1139980/ss_bc89e86af82c659884c0b1e85a2760c8a334724d.1920x1080.jpg?t=1789987425",
+  "info": {
+   "date": "2020년 7월 28일",
+   "soon": false,
+   "genres": [
+    "어드벤처",
+    "캐주얼",
+    "인디"
+   ],
+   "dev": "Isolated Games",
+   "pub": "Isolated Games",
+   "ko": true,
+   "ko_voice": false,
+   "price": "₩ 14,620",
+   "discount": 25,
+   "meta": null
+  }
+ },
+ "id:1562430": {
+  "appid": 1562430,
+  "name": "DREDGE",
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1562430/header.jpg?t=1780479732",
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1562430/ss_70f88014423ed93eaa111c0d0daca2c500f76908.1920x1080.jpg?t=1780479732",
+  "info": {
+   "date": "2023년 3월 30일",
+   "soon": false,
+   "genres": [
+    "어드벤처",
+    "RPG"
+   ],
+   "dev": "Black Salt Games",
+   "pub": "Team17",
+   "ko": true,
+   "ko_voice": false,
+   "price": "₩ 12,000",
+   "discount": 60,
+   "meta": null
+  }
+ },
+ "id:535930": {
+  "appid": 535930,
+  "name": "Two Point Hospital",
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/535930/header.jpg?t=1763648286",
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/535930/ss_513fe00a570aae8aa17f0c7c34441d900ecea67d.1920x1080.jpg?t=1763648286",
+  "info": {
+   "date": "2018년 8월 29일",
+   "soon": false,
+   "genres": [
+    "인디",
+    "시뮬레이션"
+   ],
+   "dev": "Two Point Studios",
+   "pub": "SEGA",
+   "ko": true,
+   "ko_voice": false,
+   "price": "₩ 9,500",
+   "discount": 75,
+   "meta": 83
+  }
+ },
+ "itad:1139980": "018d937f-2b1d-71bd-9662-5bdb3b0bde5b",
+ "itad:1562430": "018d937f-5288-7397-8712-586d47b31fab",
+ "itad:535930": "018d937f-0a1d-7114-bee5-c9d70e37be5f"
 }
