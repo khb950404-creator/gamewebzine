@@ -1207,6 +1207,12 @@ def related(a, pool, n=4):
 
 def related_html(a, pool):
     rel = related(a, pool)
+    # 연관 기사가 부족하면 같은 카테고리·플랫폼의 최근 기사로 채운다
+    if len(rel) < 4:
+        ids = {a["id"]} | {b["id"] for b in rel}
+        same = [b for b in pool if b["id"] not in ids and (b.get("category") == a.get("category")
+                or set(b.get("platforms", [])) & set(a.get("platforms", [])))]
+        rel += same[:4 - len(rel)]
     if not rel:
         return ""
     return ('<section class="relx"><h2 class="sec">관련 기사</h2><div class="grid">' + "".join(
