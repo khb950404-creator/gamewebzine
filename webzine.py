@@ -68,10 +68,15 @@ def fetch_feed(name, url, official):
             ts = parsedate_to_datetime(it.findtext("pubDate")).timestamp()
         except Exception:
             ts = time.time()
+        img = None
+        if official:  # 공식 출처만: 매체 사진은 저작권 문제로 쓰지 않는다
+            blob = ET.tostring(it, encoding="unicode")
+            m = re.search(r'(?:url|src)="(https?://[^"]+?\.(?:jpe?g|png|webp)[^"]*)"', html.unescape(blob), re.I)
+            img = m[1] if m else None
         items.append({
             "id": hashlib.md5(link.encode()).hexdigest()[:12],
             "source": name, "official": official, "title": title, "link": link,
-            "summary": strip_html(it.findtext("description"))[:600], "ts": ts,
+            "summary": strip_html(it.findtext("description"))[:600], "ts": ts, "img": img,
         })
     print(f"  {name}: {len(items)}건")
     return items
@@ -246,8 +251,8 @@ def write_batch(cands):
         review_all = os.environ.get("REVIEW_ALL") == "1"
         a["status"] = "pending" if review_all else "published"  # 일단 게시하고 검수 페이지에서 확인·수정
         a["id"] = hashlib.md5("".join(sorted(s["id"] for s in srcs)).encode()).hexdigest()[:10]
-        a["sources"] = [{"name": s["source"], "title": s["title"], "link": s["link"], "official": s["official"]}
-                        for s in srcs]
+        a["sources"] = [{"name": s["source"], "title": s["title"], "link": s["link"], "official": s["official"],
+                         **({"img": s["img"]} if s.get("img") else {})} for s in srcs]
         a["ts"] = max(s["ts"] for s in srcs)
         a["written"] = time.time()
         a.pop("issue", None)
@@ -381,18 +386,55 @@ def steam_find(title, cache):
     return cache.get(f"id:{cache[key]}") if cache.get(key) else None
 
 
+EDITION_RE = re.compile(r"\s*[-–:]?\s*(definitive|deluxe|ultimate|complete|gold|goty|game of the year|standard|"
+                        r"enhanced|remastered|director'?s cut)( edition)?\s*$", re.I)
+
+
+def itad_find(title, cache):
+    """ITAD 게임 검색으로 배너 이미지(정확히 같은 이름만). Steam 에 없는 PC 게임 보완용."""
+    if not os.environ.get("ITAD_API_KEY"):
+        return None
+    key = "itq:" + norm(title)
+    if key not in cache:
+        cache[key] = None
+        try:
+            for g in itad("/games/search/v1", title=title, results=5):
+                if norm(EDITION_RE.sub("", g.get("title", ""))) == norm(title) and (g.get("assets") or {}).get("banner600"):
+                    cache[key] = g["assets"]["banner600"]
+                    break
+        except Exception:
+            del cache[key]
+            return None
+    return cache.get(key)
+
+
 def attach_images(articles, cache):
     n = 0
     for a in articles:
-        if "img" in a:
+        if a.get("img") or a.get("img_v") == 2:  # 이미 있거나, 새 방식으로 찾아봤는데 없던 기사
             continue
-        a["img"] = None
-        for g in a.get("games_en") or a.get("games") or []:
+        a["img"], a["img_v"] = None, 2
+        names = []
+        for g in (a.get("games_en") or []) + (a.get("games") or []):
+            for v in (g, EDITION_RE.sub("", g)):
+                if v and v not in names:
+                    names.append(v)
+        for g in names:
             app = steam_find(g, cache)
             if app and app.get("img"):
-                a["img"], a["img_hd"], a["appid"] = app["img"], app.get("hd"), app["appid"]
-                n += 1
+                a["img"], a["img_hd"], a["appid"], a["img_src"] = app["img"], app.get("hd"), app["appid"], "Steam 스토어"
                 break
+        if not a["img"]:
+            for g in names:
+                im = itad_find(g, cache)
+                if im:
+                    a["img"], a["img_src"] = im, "IsThereAnyDeal"
+                    break
+        if not a["img"]:
+            off = next((s_ for s_ in a.get("sources", []) if s_.get("official") and s_.get("img")), None)
+            if off:
+                a["img"], a["img_src"] = off["img"], off["name"]
+        n += bool(a["img"])
     print(f"이미지 연결 {n}건")
 
 
@@ -836,7 +878,14 @@ mark{background:rgba(229,72,77,.22);color:inherit;border-radius:2px;padding:0 1p
 .brief a.hi{display:grid;grid-template-columns:1fr 220px;gap:18px;align-items:center}
 .th{width:100%;aspect-ratio:460/215;object-fit:cover;border-radius:8px;background:var(--line);display:block}
 .stream a.hi{grid-template-columns:64px 1fr 120px}.stream .th{border-radius:6px}
-.hero{margin:0 0 20px}.hero img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px;display:block;background:var(--line)}.hero figcaption{font-size:12px;color:var(--mut);margin-top:6px}
+.hero{margin:0 0 20px}.cover{aspect-ratio:16/9;border-radius:10px;display:flex;flex-direction:column;justify-content:flex-end;padding:28px;color:#fff;
+position:relative;overflow:hidden;background:radial-gradient(120% 90% at 85% 10%,var(--c1),transparent 60%),linear-gradient(135deg,var(--c2),#0b0b0e)}
+.cover::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.05) 0 2px,transparent 2px 22px);animation:cvs 18s linear infinite}
+@keyframes cvs{to{background-position:220px 0}}
+.cover b{font-size:clamp(26px,5vw,44px);font-weight:900;letter-spacing:-1px;line-height:1.1;position:relative}
+.cover .cv-k{position:absolute;top:22px;left:28px;font:700 15px ui-monospace,Consolas,monospace;opacity:.8}
+.cover .cv-p{font-size:13px;opacity:.75;margin-top:8px;position:relative}
+.hero img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px;display:block;background:var(--line)}.hero figcaption{font-size:12px;color:var(--mut);margin-top:6px}
 .pt{display:grid;grid-template-columns:184px 1fr;gap:16px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
 .pt .g{font-size:13px;color:var(--mut)}.pt .t{font-weight:800;margin:2px 0 6px}.pt ul{margin:0;padding-left:18px;font-size:14px}
 .pt .lk{font-size:12px;color:var(--mut);text-decoration:underline}
@@ -1426,6 +1475,19 @@ def related(a, pool, n=4):
     return [b for _, b in sorted(scored, key=lambda x: (-x[0], -x[1]["ts"]))[:n]]
 
 
+COVER_COLORS = {"신작": ("#e5484d", "#7c1d3f"), "업데이트": ("#2563eb", "#0f2a6b"), "업계": ("#7c3aed", "#2e1065"),
+                "하드웨어": ("#0f766e", "#042f2e"), "할인·이벤트": ("#d97706", "#5b2c06"), "e스포츠": ("#db2777", "#4a0d2a")}
+
+
+def cover_html(a):
+    """이미지가 없는 기사용 커버: 카테고리 색 + 게임명/플랫폼 타이포."""
+    c1, c2 = COVER_COLORS.get(a.get("category"), ("#3f3f46", "#0f0f12"))
+    name = (a.get("games") or a.get("games_en") or [a.get("category") or SITE_NAME])[0]
+    plats = " · ".join(a.get("platforms", []))
+    return (f'<figure class="hero"><div class="cover" style="--c1:{c1};--c2:{c2}"><span class="cv-k">alt+tab</span>'
+            f'<b>{esc(name)}</b><span class="cv-p">{esc(a.get("category") or "")}{" · " + esc(plats) if plats else ""}</span></div></figure>')
+
+
 def related_html(a, pool):
     rel = related(a, pool)
     # 연관 기사가 부족하면 같은 카테고리·플랫폼의 최근 기사로 채운다
@@ -1505,7 +1567,7 @@ def build():
               "author": {"@type": "Organization", "name": SITE_NAME}, "publisher": {"@type": "Organization", "name": SITE_NAME},
               **({"image": [img]} if img else {})}
         html_ = page(a["title"] + " — " + SITE_NAME, f"""<div class="apage"><article>{meta(a)}<h1>{esc(a["title"])}</h1>
-{f'<figure class="hero"><img src="{esc(a.get("img_hd") or a["img"])}" alt=""><figcaption>이미지: Steam 스토어</figcaption></figure>' if a.get("img") else ''}
+{f'<figure class="hero"><img src="{esc(a.get("img_hd") or a["img"])}" alt=""><figcaption>이미지: {esc(a.get("img_src") or "Steam 스토어")}</figcaption></figure>' if a.get("img") else cover_html(a)}
 {f'<div class="tldr"><ul>{tldr}</ul></div>' if tldr else ''}
 {f'<p class="why">{esc(a["why"])}</p>' if a.get("why") else ''}
 {body}{related_html(a, articles)}{ad("ADSENSE_SLOT_ARTICLE")}<div class="src"><b>출처</b><ul>{srcs}</ul></div><p class="note">{note}</p></article>{sidebar_html(a, articles, apps, patches, cal)}</div>""", desc=desc[:160], path=f"a/{a['id']}.html", img=img, ld=ld)
