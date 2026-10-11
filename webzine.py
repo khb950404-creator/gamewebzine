@@ -651,7 +651,6 @@ article{max-width:680px;margin:40px auto}
 .relx{margin-top:40px}.relx .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .relx a{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;transition:transform .25s,border-color .25s}
 .relx a:hover{transform:translateY(-3px);border-color:var(--mut)}.relx .t{font-weight:700;line-height:1.4}
-@media(min-width:1081px){.side .sticky{position:sticky;top:76px}}
 @media(max-width:1080px){.apage{grid-template-columns:minmax(0,680px);gap:0}.apage article{margin-bottom:0}.side{margin-top:32px}}
 @media(max-width:640px){.relx .grid{grid-template-columns:1fr}}article h1{font-size:30px;line-height:1.3;letter-spacing:-.6px;margin:8px 0 20px}
 .tldr{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--acc);border-radius:8px;padding:14px 18px}
@@ -1248,9 +1247,6 @@ def sidebar_html(a, pool, apps, patches, cal):
             + "</ul></div>")
     if not boxes:
         return ""
-    # 첫 박스(게임 정보)는 스크롤해도 따라오게
-    if "gcard" in boxes[0]:
-        return f'<aside class="side"><div class="sticky">{boxes[0]}</div>{"".join(boxes[1:])}</aside>'
     return f'<aside class="side">{"".join(boxes)}</aside>'
 
 
