@@ -32,8 +32,19 @@ FEEDS = [
     ("PC Gamer", "https://www.pcgamer.com/rss/", False),
     ("Eurogamer", "https://www.eurogamer.net/feed", False),
     ("Nintendo Life", "https://www.nintendolife.com/feeds/latest", False),
+    ("Steam News", "https://store.steampowered.com/feeds/news/", True),
+    ("Gematsu", "https://www.gematsu.com/feed", False),
+    ("Siliconera", "https://www.siliconera.com/feed/", False),
+    ("Push Square", "https://www.pushsquare.com/feeds/latest", False),
+    ("Pure Xbox", "https://www.purexbox.com/feeds/latest", False),
+    ("Rock Paper Shotgun", "https://www.rockpapershotgun.com/feed", False),
+    ("GamesRadar", "https://www.gamesradar.com/rss/", False),
+    ("Destructoid", "https://www.destructoid.com/feed/", False),
+    ("Polygon", "https://www.polygon.com/rss/index.xml", False),
+    ("Kotaku", "https://kotaku.com/rss", False),
+    ("Insider Gaming", "https://insider-gaming.com/feed/", False),
 ]
-MAX_ARTICLES_PER_RUN = int(os.environ.get("MAX_ARTICLES", 8))  # 무료 쿼터 보호
+MAX_ARTICLES_PER_RUN = int(os.environ.get("MAX_ARTICLES", 12))  # 무료 쿼터 보호
 CATEGORIES = ["신작", "업데이트", "업계", "하드웨어", "할인·이벤트", "e스포츠", "기타"]
 
 
@@ -497,7 +508,7 @@ def run():
     fresh = [i for i in items if i["id"] not in seen and time.time() - i["ts"] < 3 * 86400]
     print(f"새 항목 {len(fresh)}건")
     # 건너뛰는 이슈를 감안해 여유 있게 후보를 뽑고, 작성된 것 중 상위 MAX 건만 쓴다
-    cands = cluster(fresh)[:MAX_ARTICLES_PER_RUN + 4]
+    cands = cluster(fresh)[:MAX_ARTICLES_PER_RUN + 8]
     for c in cands:
         print(f"후보: {c['items'][0]['title'][:70]} (출처 {len(c['items'])}, 점수 {c['score']:.1f})")
     failed, new = False, []

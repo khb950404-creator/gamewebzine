@@ -25,7 +25,7 @@ env:
   ITAD_API_KEY: ${{ secrets.ITAD_API_KEY }}
   IGDB_CLIENT_ID: ${{ secrets.IGDB_CLIENT_ID }}
   IGDB_CLIENT_SECRET: ${{ secrets.IGDB_CLIENT_SECRET }}
-  MAX_ARTICLES: ${{ vars.MAX_ARTICLES || '8' }}
+  MAX_ARTICLES: ${{ vars.MAX_ARTICLES || '12' }}
   REVIEW_ALL: ${{ vars.REVIEW_ALL || '0' }}
   CONTACT_EMAIL: ${{ vars.CONTACT_EMAIL }}
   ADSENSE_CLIENT: ${{ vars.ADSENSE_CLIENT }}
