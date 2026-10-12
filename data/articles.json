@@ -4092,5 +4092,664 @@
   "img": null,
   "video_v": 1,
   "img_v": 2
+ },
+ {
+  "title": "기어스 오브 워: E-Day, 출시 첫 주말 디도스 공격으로 서버 장애 발생",
+  "tldr": [
+   "개발사 더 코얼리션, 주말 발생한 서버 접속 및 로그인 장애 원인으로 디도스 공격 지목",
+   "온라인 서비스를 겨냥한 표적 공격으로 확인되었으며 피해 상황 지속 모니터링 중",
+   "공격 수습 후 정상화 단계에 접어들었으나 초기 멀티플레이 이용에 차질 빚어져"
+  ],
+  "why": "오랜만에 복귀한 시리즈 신작의 출시 초기 온라인 서비스 안정성과 멀티플레이 이용에 직접적인 영향을 미친 사안입니다.",
+  "body": [
+   "더 코얼리션이 개발한 신작 슈터 '기어스 오브 워: E-Day'가 출시 후 첫 주말 동안 디도스(DDoS) 공격을 받아 온라인 서버 접속 장애를 겪었다. 일요일을 기점으로 이용자들 사이에서 간헐적인 연결 끊김 및 로그인 불가 현상이 잇따라 보고됐다.",
+   "개발사 더 코얼리션은 공식 커뮤니티 채널을 통해 이번 서버 장애의 원인이 온라인 서비스를 노린 분산 서비스 거부(DDoS) 공격 때문이었다고 공식 확인했다. 일부 이용자 사이에서는 서버 불안정으로 인해 비정상적인 게임 플레이 현상이 관측되기도 했다.",
+   "현재 개발팀은 서버 상황을 통제하고 있으며 공격으로 인한 피해 규모와 서비스 안정성을 면밀히 모니터링하고 있다고 밝혔다. 시리즈의 시작점으로 회귀해 기대를 모았던 신작인 만큼 초기 네트워크 관리가 주요 과제로 떠올랐다."
+  ],
+  "category": "업계",
+  "platforms": [
+   "PC",
+   "Xbox"
+  ],
+  "games": [
+   "기어스 오브 워: E-Day"
+  ],
+  "games_en": [
+   "Gears of War: E-Day"
+  ],
+  "video_q": null,
+  "trust": "공식",
+  "fixes": [],
+  "status": "published",
+  "id": "5da4a22b29",
+  "sources": [
+   {
+    "name": "VGC",
+    "title": "Gears of War E-Day suffered connection issues after being hit by a DDoS attack, The Coalition says",
+    "link": "https://www.videogameschronicle.com/news/gears-of-war-e-day-suffered-connection-issues-after-being-hit-by-a-ddos-attack-the-coalition-says/",
+    "official": false
+   },
+   {
+    "name": "Rock Paper Shotgun",
+    "title": "Gears of War: E-Day DDoS attacks are to blame for \"intermittent disconnects\" and \"login issues\", The Coalition confirm",
+    "link": "https://www.rockpapershotgun.com/gears-of-war-e-day-ddos-attacks-are-to-blame-for-intermittent-disconnects-and-login-issues-the-coalition-confirm",
+    "official": false
+   },
+   {
+    "name": "Steam News",
+    "title": "Gears of War: E-Day Monitoring Damage After DDoS Attack",
+    "link": "https://store.steampowered.com/news/group/1450625/view/699903960312450311",
+    "official": true,
+    "img": "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2026/10/gears-of-war-e-day-ddos-attacks.jpg"
+   },
+   {
+    "name": "Kotaku",
+    "title": "Gears Of War: E-Day Was Taken Down By DDoS Attack, Developers Confirm",
+    "link": "https://kotaku.com/gears-of-war-e-day-the-coalition-microsoft-ddos-attack-woke-2000744559",
+    "official": false
+   },
+   {
+    "name": "Pure Xbox",
+    "title": "Gears Of War: E-Day's Online Services Suffer DDoS Attack",
+    "link": "https://www.purexbox.com/news/2026/10/gears-of-war-e-days-online-services-suffer-ddos-attack",
+    "official": false
+   },
+   {
+    "name": "GamesRadar",
+    "title": "As Gears of War: E-Day servers suffer DDoS attack, the devs are \"continuing to monitor\" the damage",
+    "link": "https://www.gamesradar.com/games/gears-of-war/as-gears-of-war-e-day-servers-take-a-battering-following-ddos-attack-the-coalition-is-continuing-to-monitor-and-mitigate-the-damage/",
+    "official": false
+   }
+  ],
+  "ts": 1791817216.0,
+  "written": 1791817450.313271,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3010850/1abb0c5ef76c14f463dd6e3964adb64f984237d2/header.jpg?t=1791488050",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3010850/82631b6762963c60ad1ea684fac235686a10027b/ss_82631b6762963c60ad1ea684fac235686a10027b.1920x1080.jpg?t=1791488050",
+  "appid": 3010850,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "번아웃 출신 개발진의 신작 '스타워즈: 은하계 레이서', 도전적 난도로 승부",
+  "tldr": [
+   "번아웃 및 배틀프론트 베테랑들이 설립한 퓨즈 게임즈, 스타워즈 신작 레이싱 개발 비화 공개",
+   "루카스필름 게임즈에 초기 피칭을 거쳐 아케이드 레이싱 본연의 속도감과 거친 액션 추구",
+   "플레이어에게 강한 몰입을 요구하도록 기존작보다 더 높은 도전 과제와 난도 설계"
+  ],
+  "why": "고전 번아웃 시리즈의 감각적인 질주감과 공격적인 차량 전투를 스타워즈 세계관에서 기대하는 레이싱 게이머들에게 주목할 소식입니다.",
+  "body": [
+   "크라이테리온 게임즈에서 '번아웃' 시리즈와 '스타워즈 배틀프론트' 개발을 이끌었던 베테랑 개발진이 신작 '스타워즈: 은하계 레이서'로 아케이드 레이싱 장르의 부활을 선언했다.",
+   "개발사 퓨즈 게임즈(Fuse Games)의 맷 웹스터 대표는 설립 3주 만에 루카스필름 게임즈를 찾아 이번 프로젝트를 제안했다고 밝혔다. 제작진은 번아웃 시절 축적한 아케이드 레이싱 노하우와 스타워즈 IP에 대한 이해도를 결합해 속도감 넘치는 레이싱을 구현하고 있다.",
+   "특히 웹스터 대표는 현대 게이머들이 복합적인 정보 처리에 익숙한 만큼 과거 번아웃보다 더 까다로운 플레이를 요구하도록 게임을 설계했다고 강조했다. 극한의 속도 속에서 트랙 밖으로 밀어내려는 공격적인 경쟁자들을 돌파하는 팽팽한 긴장감이 핵심 재미로 자리 잡을 예정이다."
+  ],
+  "category": "신작",
+  "platforms": [],
+  "games": [
+   "스타워즈: 은하계 레이서"
+  ],
+  "games_en": [
+   "Star Wars: Galactic Racer"
+  ],
+  "video_q": null,
+  "trust": "공식",
+  "fixes": [
+   "개발사 대표의 인터뷰 발표 및 복수 매체(공식 Steam News 포함) 보도에 해당하므로 trust를 '보도'에서 '공식'으로 수정",
+   "게임명 표기 '스타워즈: 갤럭틱 레이서' → '스타워즈: 은하계 레이서'"
+  ],
+  "status": "published",
+  "id": "7046d1c79d",
+  "sources": [
+   {
+    "name": "Steam News",
+    "title": "After Burnout, Star Wars: Galactic Racer studio lead says \"games should challenge players\"",
+    "link": "https://store.steampowered.com/news/group/38509069/view/702155760121941292",
+    "official": true,
+    "img": "https://cdn.mos.cms.futurecdn.net/zm6FoKtkB2t2JkFRBUVGL6-1920-80.jpg"
+   },
+   {
+    "name": "GamesRadar",
+    "title": "After Burnout, Star Wars: Galactic Racer studio lead says \"games should challenge players\"",
+    "link": "https://www.gamesradar.com/games/racing/after-burnout-star-wars-galactic-racer-studio-lead-says-games-should-challenge-players-because-have-too-many-dopamine-hits-and-you-start-to-tune-it-out/",
+    "official": false
+   },
+   {
+    "name": "Steam News",
+    "title": "Ex-Burnout devs came full circle for Star Wars Galactic Racer to bring the edge back to racing games",
+    "link": "https://store.steampowered.com/news/group/38509069/view/702155760121941286",
+    "official": true,
+    "img": "https://cdn.mos.cms.futurecdn.net/2Hohf62j36jSik8SQ5sK88-1920-80.jpg"
+   },
+   {
+    "name": "GamesRadar",
+    "title": "Ex-Burnout devs came full circle for Star Wars Galactic Racer to bring the edge back to racing games",
+    "link": "https://www.gamesradar.com/games/racing/how-former-burnout-devs-came-full-circle-for-star-wars-galactic-racer-to-bring-the-edge-back-into-racing-games-arcade-is-not-the-absence-of-depth/",
+    "official": false
+   }
+  ],
+  "ts": 1791817024.0,
+  "written": 1791817450.3132923,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4078430/1baff812cfb8de999b7569197d2435f24fec5534/header_koreana.jpg?t=1791388584",
+  "img_v": 2,
+  "img_hd": null,
+  "appid": 4078430,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "턴제 전술 RPG '섀도 오브 더 로드', 2027년 3월 10일로 출시 연기",
+  "tldr": [
+   "유통사 아울캣 게임즈와 개발사 어나더 앵글 게임즈, 출시 일정 연기 공식 발표",
+   "스토리 중심 턴제 전략 RPG로 주목받았으나 2027년 3월 10일로 일정 재조정",
+   "완성도 향상을 위한 추가 개발 기간 확보 차원으로 해석"
+  ],
+  "why": "스토리 중심 전술 RPG를 기다려온 게이머들에게 장기적인 일정 변경 소식을 제공해 구매 및 출시 계획을 점검할 수 있게 돕습니다.",
+  "body": [
+   "유통사 아울캣 게임즈(Owlcat Games)와 개발사 어나더 앵글 게임즈(Another Angle Games)가 개발 중인 턴제 전술 RPG '섀도 오브 더 로드(Shadow of the Road)'의 출시 일정을 2027년 3월 10일로 연기했다.",
+   "본 작품은 깊이 있는 서사와 전략적인 턴제 전투 시스템을 결합해 게이머들의 관심을 모아온 신작이다. 개발사와 유통사는 완성도를 끌어올리기 위해 추가적인 개발 기간이 필요하다고 판단해 발매일을 조정한 것으로 알려졌다.",
+   "이에 따라 '섀도 오브 더 로드'를 기다려온 유저들은 게임을 정식으로 플레이하기까지 약 2년 이상의 시간을 더 기다리게 되었다."
+  ],
+  "category": "신작",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "섀도 오브 더 로드"
+  ],
+  "games_en": [
+   "Shadow of the Road"
+  ],
+  "video_q": null,
+  "trust": "공식",
+  "fixes": [],
+  "status": "published",
+  "id": "a99670f384",
+  "sources": [
+   {
+    "name": "Steam News",
+    "title": "Shadow of the Road has been delayed to March 10, 2027",
+    "link": "https://store.steampowered.com/news/group/6070552/view/670630562731396190",
+    "official": true,
+    "img": "https://assets.rpgsite.net/articles/images/000/021/551/original/shadow-of-the-road-release-delayed-march-2027-pc.png"
+   },
+   {
+    "name": "Gematsu",
+    "title": "Shadow of the Road delayed to March 10, 2027",
+    "link": "https://www.gematsu.com/2026/10/shadow-of-the-road-delayed-to-march-10-2027",
+    "official": false
+   }
+  ],
+  "ts": 1791816306.0,
+  "written": 1791817450.3133032,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1173980/6c1ef91b03a8585504ec3606088adccc6514d4d7/header.jpg?t=1791558499",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1173980/ss_73e0202466bcc3b5d0b7544978321d61c14195a2.1920x1080.jpg?t=1791558499",
+  "appid": 1173980,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "글렌 스코필드, '칼리스토 프로토콜' 조기 출시 압박과 86회 패치 비화 털어놔",
+  "tldr": [
+   "글렌 스코필드 감독, '칼리스토 프로토콜'이 예정보다 3개월 일찍 강제 출시되었다고 밝혀",
+   "출시 초기 미흡했던 완성도를 바로잡기 위해 발매 후 총 86회의 패치 단행",
+   "데드 스페이스 제작자의 차기작으로 기대를 모았으나 외부 요인으로 인한 험난했던 개발 과정 회고"
+  ],
+  "why": "출시 당시 엇갈린 평가를 받았던 대형 SF 호러 게임의 사후 지원 규모와 개발 뒷이야기를 파악할 수 있는 내부 증언입니다.",
+  "body": [
+   "'데드 스페이스'의 창시자 글렌 스코필드가 2022년 출시된 SF 서바이벌 호러 게임 '칼리스토 프로토콜'의 개발 비화를 공개했다.",
+   "최근 진행된 인터뷰에서 스코필드 감독은 게임이 당초 예정되어 있던 개발 일정보다 3개월 앞당겨져 강제로 출시되어야만 했던 상황을 털어놓았다. 이로 인해 출시 초기 최적화 및 완성도 측면에서 아쉬운 평가를 피하지 못했다는 설명이다.",
+   "스코필드는 원래 계획했던 품질 수준으로 게임을 되돌려 놓기 위해 출시 이후 개발팀이 무려 86차례에 걸쳐 패치를 단행하며 막대한 작업을 쏟아부어야 했다고 덧붙였다."
+  ],
+  "category": "업계",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "칼리스토 프로토콜"
+  ],
+  "games_en": [
+   "The Callisto Protocol"
+  ],
+  "video_q": null,
+  "trust": "공식",
+  "fixes": [
+   "원작자의 공식 인터뷰 발언 및 복수 매체(공식 Steam News 포함) 보도이므로 trust를 '보도'에서 '공식'으로 수정"
+  ],
+  "status": "published",
+  "id": "39cac5aa7e",
+  "sources": [
+   {
+    "name": "Steam News",
+    "title": "Dead Space creator put \"a lot\" of work into patching The Callisto Protocol after releasing it early",
+    "link": "https://store.steampowered.com/news/group/38509069/view/702155760121941290",
+    "official": true,
+    "img": "https://cdn.mos.cms.futurecdn.net/oBWM7rxbwcXFFeoEbpp9AR-1920-80.jpg"
+   },
+   {
+    "name": "GamesRadar",
+    "title": "Dead Space creator put \"a lot\" of work into patching The Callisto Protocol after releasing it early",
+    "link": "https://www.gamesradar.com/games/survival-horror/dead-space-creator-put-a-lot-of-work-into-patching-the-callisto-protocol-after-krafton-allegedly-forced-him-to-release-it-3-months-early-all-they-were-doing-was-complaining/",
+    "official": false
+   }
+  ],
+  "ts": 1791815823.0,
+  "written": 1791817450.3133123,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar1nxg.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar1nxg.jpg",
+  "img_src": "IGDB",
+  "video_v": 1
+ },
+ {
+  "title": "'노 맨즈 스카이' 용량 5GB 이하 압축 성공, 10월 28일 iOS 버전 출시",
+  "tldr": [
+   "헬로 게임즈, 우주 탐험 게임 '노 맨즈 스카이'의 iOS 버전 10월 28일 정식 출시",
+   "방대한 세계관을 5GB 이하로 경량화하면서도 콘텐츠 타협 없는 풀버전 이식 구현",
+   "2023년 Mac 이식 성공에 힘입어 모바일 환경 최적화 프로젝트 완성"
+  ],
+  "why": "콘솔과 PC를 아우르던 대규모 오픈월드 우주 게임이 휴대용 모바일 환경까지 확장되는 최적화 기술 성과를 보여줍니다.",
+  "body": [
+   "헬로 게임즈의 대표작 '노 맨즈 스카이'가 모바일 기기까지 영역을 넓힌다. 헬로 게임즈는 오는 10월 28일 iOS 버전 '노 맨즈 스카이'를 정식 출시할 예정이다.",
+   "이번 이식 작업은 2023년 Mac 버전 출시에 성공한 직후 시작되었다. 개발팀은 방대한 은하계를 탐험하는 게임의 설치 용량을 5GB 이하로 대폭 압축하는 데 성공했다.",
+   "숀 머레이 대표는 이번 모바일 버전이 기능을 축소한 라이트(Lite) 에디션이 아니며, 온전한 게임 경험을 담아낸 정식 버전임을 강조했다. 이용자들은 체험 후 구매를 결정할 수 있는 '무료 체험(free to try)' 방식으로 게임을 접할 수 있다."
+  ],
+  "category": "신작",
+  "platforms": [
+   "iOS"
+  ],
+  "games": [
+   "노 맨즈 스카이"
+  ],
+  "games_en": [
+   "No Man's Sky"
+  ],
+  "video_q": null,
+  "trust": "공식",
+  "fixes": [
+   "출처에 명시된 출시 대상 플랫폼인 iOS 누락 수정"
+  ],
+  "status": "published",
+  "id": "346b65723a",
+  "sources": [
+   {
+    "name": "Steam News",
+    "title": "No Man's Sky devs compress the survival game to under 5GB for \"free to try\" mobile launch",
+    "link": "https://store.steampowered.com/news/group/38509069/view/702155760121941288",
+    "official": true,
+    "img": "https://cdn.mos.cms.futurecdn.net/bYFCn3sr7hKYFa7MNBW8Qg-1920-80.jpg"
+   },
+   {
+    "name": "GamesRadar",
+    "title": "No Man's Sky devs compress the survival game to under 5GB for \"free to try\" mobile launch",
+    "link": "https://www.gamesradar.com/games/survival/no-mans-sky-devs-compress-the-survival-game-to-under-5gb-for-free-to-try-mobile-launch-overcoming-seemingly-impossible-technical-challenge-we-wanted-to-disprove/",
+    "official": false
+   }
+  ],
+  "ts": 1791815222.0,
+  "written": 1791817450.3133197,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/275850/2c6e38b43a5309dfcd3cc0f0134e222b0fa2d1b1/header_alt_assets_25.jpg?t=1789479023",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/275850/6c2ddcffe192b0e155a69aa2a1dd3f33b863033d/ss_6c2ddcffe192b0e155a69aa2a1dd3f33b863033d.1920x1080.jpg?t=1789479023",
+  "appid": 275850,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "닌텐도 \"패키지 게임 포기 계획 없다\", 차세대기에서도 실물 타이틀 유지",
+  "tldr": [
+   "닌텐도 남미 총괄 빌 반 질, 실물 패키지 게임 폐지 계획이 전혀 없다고 공식 언급",
+   "스위치 후속 기종에서도 디지털과 패키지 방식을 병행하는 유연한 접근법 고수",
+   "소니의 디지털 전환 움직임과 대비되는 소비자 중심 유통 전략 재확인"
+  ],
+  "why": "콘솔 패키지 수집과 중고 거래를 선호하는 콘솔 게이머들에게 차세대 스위치에서도 실물 카트리지가 유지됨을 확인해 줍니다.",
+  "body": [
+   "콘솔 업계 일각에서 디지털 전용 마켓으로의 전환 움직임이 나타나는 가운데, 닌텐도는 실물 패키지 게임을 계속해서 유지하겠다는 입장을 밝혔다.",
+   "닌텐도 라틴아메리카 총괄 빌 반 질 부사장은 현지 인터뷰를 통해 닌텐도가 역사적으로 소비자 선호에 맞추는 유연한 태도를 취해왔으며, 팬들이 패키지 게임을 얼마나 좋아하는지 잘 알고 있기에 이를 포기할 계획이 없다고 설명했다.",
+   "이는 닌텐도 스위치 후속 기종(스위치 2) 세대에서도 실물 카트리지와 디지털 다운로드 방식을 모두 지원하겠다는 의지로 풀이된다. 닌텐도는 게임 키 카드 등을 통해 격차를 메우며 유저들의 선택권을 폭넓게 보장할 방침이다."
+  ],
+  "category": "하드웨어",
+  "platforms": [
+   "Switch"
+  ],
+  "games": [],
+  "games_en": [],
+  "video_q": null,
+  "trust": "공식",
+  "fixes": [
+   "닌텐도 임원의 인터뷰 발언으로 회사 공식 입장을 전한 내용이며 3개 매체에서 보도되었으므로 trust를 '보도'에서 '공식'으로 수정"
+  ],
+  "status": "published",
+  "id": "90c6103fc7",
+  "sources": [
+   {
+    "name": "GameSpot",
+    "title": "Nintendo Says It Has No Plans To Ditch Physical Games Yet",
+    "link": "https://www.gamespot.com/articles/nintendo-says-it-has-no-plans-to-ditch-physical-games-yet/",
+    "official": false
+   },
+   {
+    "name": "Kotaku",
+    "title": "Unlike Sony, Nintendo Exec Says Switch 2 Maker Has No Plans To Abandon Physical: ‘We Know How Much Fans Enjoy It’",
+    "link": "https://kotaku.com/unlike-sony-nintendo-exec-says-switch-2-maker-has-no-plans-to-abandon-physical-we-know-how-much-fans-enjoy-it-2000744191",
+    "official": false
+   },
+   {
+    "name": "GamesRadar",
+    "title": "Nintendo has \"no plans to ditch physical games,\" exec says amid PlayStation disc backlash",
+    "link": "https://www.gamesradar.com/games/nintendo-has-no-plans-to-ditch-physical-games-exec-says-amid-playstation-disc-backlash-we-go-off-of-what-the-consumer-prefers/",
+    "official": false
+   }
+  ],
+  "ts": 1791815369.0,
+  "written": 1791817450.3133316,
+  "img": null,
+  "img_v": 2,
+  "video_v": 1
+ },
+ {
+  "title": "'소닉 레이싱 크로스월즈', 영구 가격 인하 및 2년 차 대형 DLC 발표 속 논란",
+  "tldr": [
+   "세가, '소닉 레이싱 크로스월즈' 기본판 영구 가격 인하 및 방대한 2년 차 콘텐츠 공개",
+   "디지털 디럭스 에디션 구매자들에게 약속된 '향후 모든 유료 DLC' 포함 조항 논란 촉발",
+   "2년 차 DLC 이용을 위해 별도 시즌 패스 구매가 요구되자 유저들의 무상 제공 요구 빗발쳐"
+  ],
+  "why": "시즌 패스 및 디럭스 패키지 상품의 사후 지원 범위에 관한 논란으로 기존 구매자와 신규 유저 모두에게 직접적인 영향을 미칩니다.",
+  "body": [
+   "세가가 크로스오버 레이싱 게임 '소닉 레이싱 크로스월드'의 본편 영구 가격 인하를 단행하고 대규모 2년 차 신규 DLC 및 업데이트 계획을 발표했다.",
+   "그러나 발표 직후 커뮤니티에서는 기존 디지털 디럭스 에디션 구매자들을 중심으로 거센 불만이 제기되고 있다. 과거 디지털 디럭스 에디션 판매 당시 '향후 출시될 모든 유료 DLC 포함'이라는 문구가 안내되었으나, 이번 2년 차 유료 콘텐츠는 별도의 두 번째 시즌 패스 구매를 요구하고 있기 때문이다.",
+   "이에 따라 기존 디럭스 에디션 구매자들은 약속대로 2년 차 DLC를 무료로 제공해야 한다며 강하게 반발하고 있어 향후 세가의 대응에 이목이 쏠린다."
+  ],
+  "category": "업데이트",
+  "platforms": [
+   "PS5"
+  ],
+  "games": [
+   "소닉 레이싱 크로스월드"
+  ],
+  "games_en": [
+   "Sonic Racing: CrossWorlds"
+  ],
+  "video_q": null,
+  "trust": "확인",
+  "fixes": [
+   "게임명 표기 '소닉 레이싱: 크로스월즈' → '소닉 레이싱 크로스월드'"
+  ],
+  "status": "published",
+  "id": "eb49e4fc91",
+  "sources": [
+   {
+    "name": "VGC",
+    "title": "Sonic Racing CrossWorlds players demand Year 2 for free after noting the Digital Deluxe Edition promised ‘all future paid DLC’",
+    "link": "https://www.videogameschronicle.com/news/sonic-racing-crossworlds-players-demand-year-2-for-free-after-noting-the-digital-deluxe-edition-promised-all-future-paid-dlc/",
+    "official": false
+   },
+   {
+    "name": "Push Square",
+    "title": "Sonic Racing: CrossWorlds Now Permanently Cheaper, and It's Going Absolutely Bananas with DLC in Year 2",
+    "link": "https://www.pushsquare.com/news/2026/10/sonic-racing-crossworlds-now-permanently-cheaper-and-its-going-absolutely-bananas-with-dlc-in-year-2",
+    "official": false
+   },
+   {
+    "name": "Gematsu",
+    "title": "Sonic Racing: CrossWorlds Year Two updates and DLC announced",
+    "link": "https://www.gematsu.com/2026/10/sonic-racing-crossworlds-year-two-updates-and-dlc-announced",
+    "official": false
+   }
+  ],
+  "ts": 1791807962.0,
+  "written": 1791817450.3133435,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2486820/41dd01ef2183416212137ef497c7124351eff542/header_alt_assets_15_koreana.jpg?t=1791580020",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2486820/3d0d2e2f1ec38bc6e5cb19766f104bfe1442e3c3/ss_3d0d2e2f1ec38bc6e5cb19766f104bfe1442e3c3.1920x1080.jpg?t=1791580020",
+  "appid": 2486820,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "'드래곤 퀘스트' 아버지 호리이 유지, AI로 30분 만에 제작한 신작 공개",
+  "tldr": [
+   "호리이 유지, AI 도구를 활용해 약 30분 만에 개발한 신작 텍스트 게임 공개",
+   "용의자를 심문해 자백을 이끌어내는 게임 '취조실 코미야' 링크 공유",
+   "명작 개발자의 적극적인 생성형 AI 기술 활용에 업계와 팬들의 엇갈린 관심 집중"
+  ],
+  "why": "전설적인 일본 RPG 거장이 상용 게임 개발 파이프라인과 실험에 생성형 AI를 직접 도입하는 흐름을 보여줍니다.",
+  "body": [
+   "'드래곤 퀘스트' 시리즈의 창시자 호리이 유지가 생성형 인공지능(AI)을 활용해 단 30분 만에 제작한 신작 미니 게임을 공개했다.",
+   "호리이 유지는 자신의 소셜 미디어를 통해 '취조실 코미야'라는 제목의 텍스트 기반 추리 게임을 공유했다. 플레이어가 텍스트 선택지를 골라 용의자로부터 범행 자백을 받아내는 구조로, 호리이 유지는 AI의 지시 수행 능력에 대해 놀라움을 표했다.",
+   "평소 AI 기술 도입에 긍정적인 입장을 보여온 호리이 유지의 이번 행보에 대해 업계의 관심이 쏠리는 한편, 차기 대작 프로젝트와의 연관성을 두고 게이머들 사이에서도 다양한 반응이 나오고 있다."
+  ],
+  "category": "업계",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "취조실 코미야"
+  ],
+  "games_en": [
+   "Interrogation Room Komiya"
+  ],
+  "video_q": null,
+  "trust": "확인",
+  "fixes": [
+   "3개 매체(GamesRadar, Nintendo Life, VGC)에서 보도되었으므로 trust를 '보도'에서 '확인'으로 수정"
+  ],
+  "status": "published",
+  "id": "2a75b4b7b2",
+  "sources": [
+   {
+    "name": "GamesRadar",
+    "title": "Dragon Quest creator continues love affair with AI as he releases a game he generated in 30 minutes",
+    "link": "https://www.gamesradar.com/games/dragon-quest/dragon-quest-creator-yuji-horii-continues-his-love-affair-with-ai-slop-as-he-releases-a-new-game-he-generated-in-30-minutes/",
+    "official": false
+   },
+   {
+    "name": "Nintendo Life",
+    "title": "\"It's Truly Astonishing\" - Dragon Quest Creator Yuji Horii Made An AI-Generated Game In 30 Minutes",
+    "link": "https://www.nintendolife.com/news/2026/10/its-truly-astonishing-dragon-quest-creator-yuji-horii-made-an-ai-generated-game-in-30-minutes",
+    "official": false
+   },
+   {
+    "name": "VGC",
+    "title": "The latest game from the creator of Dragon Quest was made in ‘about 30 minutes’ with AI",
+    "link": "https://www.videogameschronicle.com/news/the-lastest-game-from-the-creator-of-dragon-quest-was-made-in-about-30-minutes-with-ai/",
+    "official": false
+   }
+  ],
+  "ts": 1791806609.0,
+  "written": 1791817450.3133507,
+  "img": null,
+  "img_v": 2,
+  "video_v": 1
+ },
+ {
+  "title": "아이작 풍 인디 공포 FPS '페이퍼헤드', 스팀 긍정 평가 95% 기록하며 순항",
+  "tldr": [
+   "종이 공예풍 비주얼의 인디 호러 FPS '페이퍼헤드', 10월 9일 스팀 정식 출시",
+   "출시 직후 이용자 리뷰 95%의 긍정적 평가를 기록하며 '매우 긍정적' 달성",
+   "'아이작의 번제'를 연상시키는 어둡고 독특한 아트 스타일과 슈팅 액션 호평"
+  ],
+  "why": "독특한 아트를 내세운 소규모 인디 FPS 신작이 입소문을 타며 스팀에서 높은 유저 평가를 얻고 있습니다.",
+  "body": [
+   "종이 인형을 모티프로 한 독특한 아트 스타일의 인디 공포 FPS '페이퍼헤드(Paperhead)'가 스팀에 정식 출시되어 유저들의 호평을 받고 있다.",
+   "10월 9일 정식 발매된 이 작품은 출시 직후 약 240개의 리뷰 중 95%의 압도적인 긍정 비율을 기록하며 스팀 '매우 긍정적' 평가를 획득했다.",
+   "'아이작의 번제'를 연상시키는 기괴하면서도 아기자기한 종이 세계관과 긴장감 넘치는 1인칭 슈팅 액션이 결합되어 색다른 인디 슈터를 찾는 게이머들에게 긍정적인 반응을 얻고 있다."
+  ],
+  "category": "신작",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "페이퍼헤드"
+  ],
+  "games_en": [
+   "Paperhead"
+  ],
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [],
+  "status": "published",
+  "id": "b805ca8a7b",
+  "sources": [
+   {
+    "name": "Steam News",
+    "title": "Binding of Isaac-Like FPS on Steam Launches to 95% Positive Reviews",
+    "link": "https://store.steampowered.com/news/group/1450625/view/699903960312450286",
+    "official": true,
+    "img": "https://static0.gamerantimages.com/wordpress/wp-content/uploads/wm/2026/10/steam-paperhead-very-positive-reviews.jpg"
+   }
+  ],
+  "ts": 1791814041.0,
+  "written": 1791817450.313356,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2680280/0b30058f0a9d5ad4ed698367b19bad97001faa02/header.jpg?t=1791581527",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2680280/2b9ea7222a5ec9de63eb636217893c717ebc0443/ss_2b9ea7222a5ec9de63eb636217893c717ebc0443.1920x1080.jpg?t=1791581527",
+  "appid": 2680280,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "펄어비스 경영진, '붉은사막' 평가에 \"리뷰 빌드 탐험 시간 부족했다\"",
+  "tldr": [
+   "펄어비스 유럽 지사 파크 대표, 미디어 리뷰 점수와 유저 평가 간 차이에 대해 해명",
+   "비평가들이 플레이한 사전 빌드가 최종 출시 버전과 동일하지 않았다고 설명",
+   "방대한 세계관을 충분히 탐험하기에 리뷰 기간이 촉박했던 점을 아쉬운 평가 원인으로 지목"
+  ],
+  "why": "기대를 모았던 국내 대형 액션 어드벤처 신작의 평가 격차에 대한 개발사 고위 임원의 공식 입장입니다.",
+  "body": [
+   "펄어비스의 신작 오픈월드 액션 어드벤처 '붉은사막'의 비평가 점수를 둘러싸고 개발사 측이 입장을 밝혔다.",
+   "펄어비스 유럽 지사의 리비 파크(Lybee Park) 대표는 언론 인터뷰를 통해 비평가 평점과 유저 평점 사이에 차이가 발생한 주된 이유로 사전 리뷰 기간의 한계를 꼽았다. 비평가들이 리뷰 과정에서 플레이했던 빌드가 정식 출시 버전과 완전히 동일하지 않았으며, 게임의 방대한 세계를 온전히 탐험할 물리적 시간이 부족했다는 설명이다.",
+   "이에 따라 미디어 평가단이 게임이 제공하는 본래의 가치를 공정하게 파악하기 어려웠을 것이라고 밝혔으나, 촉박한 리뷰 환경 제공을 둘러싼 외신들의 비판적 시선도 함께 이어지고 있다."
+  ],
+  "category": "업계",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "붉은사막"
+  ],
+  "games_en": [
+   "Crimson Desert"
+  ],
+  "video_q": null,
+  "trust": "확인",
+  "fixes": [
+   "2개 매체(PC Gamer, Rock Paper Shotgun)에서 보도되었으므로 trust를 '보도'에서 '확인'으로 수정"
+  ],
+  "status": "published",
+  "id": "a114bfeebf",
+  "sources": [
+   {
+    "name": "PC Gamer",
+    "title": "Pearl Abyss goes easy on us critics for our Crimson Desert reviews: 'They had to play the build that is not the exact same version of the launched game'",
+    "link": "https://www.pcgamer.com/games/rpg/pearl-abyss-goes-easy-on-us-critics-for-our-crimson-desert-reviews-they-had-to-play-the-build-that-is-not-the-exact-same-version-of-the-launched-game/",
+    "official": false
+   },
+   {
+    "name": "Rock Paper Shotgun",
+    "title": "A Crimson Desert exec thinks critic review scores were lower because they didn't have enough time to play it, and boy oh boy I wonder whose fault that is",
+    "link": "https://www.rockpapershotgun.com/a-crimson-desert-exec-thinks-critic-review-scores-were-lower-because-they-didnt-have-enough-time-to-play-it-and-boy-oh-boy-i-wonder-whose-fault-that-is",
+    "official": false
+   }
+  ],
+  "ts": 1791812994.0,
+  "written": 1791817450.3133624,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar57ol.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar57ol.jpg",
+  "img_src": "IGDB",
+  "video_v": 1
+ },
+ {
+  "title": "횡스크롤 액션 '히맨과 우주의 지배자들', 2027년 2월 4일 출시 확정",
+  "tldr": [
+   "신작 벨트스크롤 액션 '히맨과 우주의 지배자들: 파괴의 드래곤 펄' 출시일 발표",
+   "공식 출시일은 2027년 2월 4일로 확정",
+   "고전 히맨 애니메이션 IP를 활용한 정통 횡스크롤 난투 액션 예고"
+  ],
+  "why": "클래식 애니메이션 IP를 기반으로 한 신작 아케이드 비트엠업 게임의 발매 일정이 확정되었습니다.",
+  "body": [
+   "고전 인기 애니메이션 IP를 기반으로 한 신작 횡스크롤 액션 게임 '히맨과 우주의 지배자들: 파괴의 드래곤 펄(He-Man and the Masters of the Universe: Dragon Pearl of Destruction)'의 출시일이 공개됐다.",
+   "제작진에 따르면 본 작품은 2027년 2월 4일 정식 출시될 예정이다. 사이드스크롤링 벨트스크롤 액션(Beat 'em up) 장르 특유의 호쾌한 타격감과 히맨 세계관의 캐릭터들을 현대적인 감각으로 재현하는 데 집중하고 있다.",
+   "출시일이 확정됨에 따라 고전 아케이드 액션 게임을 선호하는 유저들과 원작 프랜차이즈 팬들의 관심이 모이고 있다."
+  ],
+  "category": "신작",
+  "platforms": [],
+  "games": [
+   "히맨과 우주의 지배자들: 파괴의 드래곤 펄"
+  ],
+  "games_en": [
+   "He-Man and the Masters of the Universe: Dragon Pearl of Destruction"
+  ],
+  "video_q": null,
+  "trust": "확인",
+  "fixes": [],
+  "status": "published",
+  "id": "6cd778822a",
+  "sources": [
+   {
+    "name": "IGN",
+    "title": "He-Man and the Masters of the Universe: Dragon Pearl of Destruction Release Date Confirmed",
+    "link": "https://www.ign.com/articles/he-man-and-the-masters-of-the-universe-dragon-pearl-of-destruction-release-date-confirmed",
+    "official": false
+   },
+   {
+    "name": "Gematsu",
+    "title": "He-Man and the Masters of the Universe: Dragon Pearl of Destruction launches February 4, 2027",
+    "link": "https://www.gematsu.com/2026/10/he-man-and-the-masters-of-the-universe-dragon-pearl-of-destruction-launches-february-4-2027",
+    "official": false
+   }
+  ],
+  "ts": 1791812449.0,
+  "written": 1791817450.3133686,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar41bb.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar41bb.jpg",
+  "img_src": "IGDB",
+  "video_v": 1
+ },
+ {
+  "title": "스팀, 동시 접속자 수 4,300만 명 돌파… 7개월 만에 역대 최고 기록 경신",
+  "tldr": [
+   "밸브의 PC 게임 플랫폼 스팀, 10월 동시 접속자 수 4,300만 명 넘어서며 신기록",
+   "지난 기록 경신 후 불과 7개월 만에 역대 최고 수치 다시 갈아치워",
+   "실제 게임을 플레이 중인 인게임 동시 접속자 역시 50만 명 증가"
+  ],
+  "why": "PC 게이밍 생태계의 절대적인 지표인 스팀의 이용자 규모가 가파른 성장세를 이어가고 있음을 보여줍니다.",
+  "body": [
+   "밸브(Valve)의 PC 게임 플랫폼 스팀(Steam)이 사상 최초로 동시 접속자 수 4,300만 명을 돌파하며 플랫폼 역대 신기록을 달성했다.",
+   "이번 기록은 직전 최고치를 경신한 지 불과 7개월 만에 이루어진 성과다. 단순히 클라이언트에 접속해 있는 유저 수뿐만 아니라, 실제로 게임을 실행해 즐기고 있는 인게임 동시 접속자 수 역시 기존 기록 대비 50만 명 이상 증가한 것으로 나타났다.",
+   "글로벌 PC 게임 시장의 꾸준한 성장과 함께 주요 대작 및 인디 타이틀들의 흥행이 맞물리며 스팀의 지표가 연일 최고치를 경신하고 있다."
+  ],
+  "category": "업계",
+  "platforms": [
+   "PC"
+  ],
+  "games": [],
+  "games_en": [],
+  "video_q": null,
+  "trust": "확인",
+  "fixes": [],
+  "status": "published",
+  "id": "bfb0b45497",
+  "sources": [
+   {
+    "name": "Kotaku",
+    "title": "Steam Smashes Its Player Records, With Over 43 Million Concurrent Users In October",
+    "link": "https://kotaku.com/steam-valve-concurrent-users-record-in-game-epic-fortnite-roblox-2000744564",
+    "official": false
+   },
+   {
+    "name": "GamesRadar",
+    "title": "Steam hits new all-time high of over 43 million concurrent users just 7 months after its last record",
+    "link": "https://www.gamesradar.com/games/steam-hits-new-all-time-high-of-over-43-million-concurrent-users-just-7-months-after-its-last-record-as-wardogs-and-deadlock-surge-in-popularity/",
+    "official": false
+   }
+  ],
+  "ts": 1791810913.0,
+  "written": 1791817450.3133774,
+  "img": null,
+  "img_v": 2,
+  "video_v": 1
  }
 ]
