@@ -265,6 +265,9 @@ def write_batch(cands):
             a["fixes"] = ["팩트체크 미완료"]; a["force_review"] = True
         srcs = c["items"][:6]
         review_all = os.environ.get("REVIEW_ALL") == "1"
+        for k_, v_ in (("trust", "보도"), ("category", "기타"), ("tldr", []), ("body", []), ("why", ""), ("platforms", []), ("games", [])):
+            if not a.get(k_):
+                a[k_] = v_  # AI 가 필드를 빼먹어도 빌드가 멈추지 않게
         a["status"] = "pending" if review_all else "published"  # 일단 게시하고 검수 페이지에서 확인·수정
         a["id"] = hashlib.md5("".join(sorted(s["id"] for s in srcs)).encode()).hexdigest()[:10]
         a["sources"] = [{"name": s["source"], "title": s["title"], "link": s["link"], "official": s["official"],
@@ -1898,7 +1901,12 @@ def sidebar_html(a, pool, apps, patches, cal):
 
 
 def build():
-    every = sorted(load_json(DATA / "articles.json", []), key=lambda a: -a["ts"])
+    every = sorted(load_json(DATA / "articles.json", []), key=lambda a: -a.get("ts", 0))
+    for a in every:
+        for k_, v_ in (("trust", "보도"), ("category", "기타"), ("tldr", []), ("body", []), ("why", ""),
+                       ("platforms", []), ("games", []), ("sources", []), ("title", "(제목 없음)")):
+            if not a.get(k_):
+                a[k_] = v_
     articles = [a for a in every if a.get("status", "published") == "published"]
     pending = [a for a in every if a.get("status") == "pending"]
     (SITE / "a").mkdir(parents=True, exist_ok=True)
@@ -1906,30 +1914,33 @@ def build():
     patches = [x for x in load_json(DATA / "patches.json", []) if not x.get("skip")]
     cal = load_json(DATA / "calendar.json", {"releases": []})["releases"]
     for a in articles + pending:
-        tldr = "".join(f"<li>{esc(t)}</li>" for t in a.get("tldr", []))
-        body = "".join(f"<p>{esc(p)}</p>" for p in a.get("body", []))
-        srcs = "".join(f'<li>{"[공식] " if s["official"] else ""}{esc(s["name"])} — '
-                       f'<a href="{esc(s["link"])}" target="_blank" rel="noopener">{esc(s["title"])}</a></li>'
-                       for s in a["sources"])
-        note = "※ 아직 번역·재작성되지 않은 원문 요약입니다." if a.get("untranslated") else \
-            f"이 기사는 AI가 출처 {len(a['sources'])}건을 종합해 작성했습니다."              + (" 편집자가 검토·수정했습니다." if a.get("edited") else " 사실관계는 출처를 확인하세요.")
-        desc = " ".join(a.get("tldr", [])) or a.get("why", "") or a["title"]
-        img = a.get("img_hd") or a.get("img")
-        if img and not img.startswith("http"):  # 검수 페이지에서 업로드한 이미지 (media/...)
-            img = site_url() + img
-        ld = {"@context": "https://schema.org", "@type": "NewsArticle", "headline": a["title"][:110],
-              "description": desc[:300], "datePublished": datetime.fromtimestamp(a.get("written", a["ts"]), timezone.utc).isoformat(),
-              "dateModified": datetime.fromtimestamp(a.get("written", a["ts"]), timezone.utc).isoformat(),
-              "mainEntityOfPage": site_url() + f"a/{a['id']}.html", "inLanguage": "ko",
-              "author": {"@type": "Organization", "name": SITE_NAME}, "publisher": {"@type": "Organization", "name": SITE_NAME},
-              **({"image": [img]} if img else {})}
-        html_ = page(a["title"] + " — " + SITE_NAME, f"""<div class="apage"><article>{meta(a)}<h1>{esc(a["title"])}</h1>
-{f'<figure class="hero"><img src="{esc(rel_img(a.get("img_hd") or a["img"]))}" alt=""><figcaption>이미지: {esc(a.get("img_src") or "Steam 스토어")}</figcaption></figure>' if a.get("img") else cover_html(a)}
-{f'<div class="tldr"><ul>{tldr}</ul></div>' if tldr else ''}
-{video_html(a)}
-{f'<p class="why">{esc(a["why"])}</p>' if a.get("why") else ''}
-{body}{related_html(a, articles)}{ad("ADSENSE_SLOT_ARTICLE")}<div class="src"><b>출처</b><ul>{srcs}</ul></div><p class="note">{note}</p></article>{sidebar_html(a, articles, apps, patches, cal)}</div>""", desc=desc[:160], path=f"a/{a['id']}.html", img=img, ld=ld)
-        (SITE / "a" / f"{a['id']}.html").write_text(html_.replace("{root}", "../"), encoding="utf-8")
+        try:
+            tldr = "".join(f"<li>{esc(t)}</li>" for t in a.get("tldr", []))
+            body = "".join(f"<p>{esc(p)}</p>" for p in a.get("body", []))
+            srcs = "".join(f'<li>{"[공식] " if s["official"] else ""}{esc(s["name"])} — '
+                           f'<a href="{esc(s["link"])}" target="_blank" rel="noopener">{esc(s["title"])}</a></li>'
+                           for s in a["sources"])
+            note = "※ 아직 번역·재작성되지 않은 원문 요약입니다." if a.get("untranslated") else \
+                f"이 기사는 AI가 출처 {len(a['sources'])}건을 종합해 작성했습니다."              + (" 편집자가 검토·수정했습니다." if a.get("edited") else " 사실관계는 출처를 확인하세요.")
+            desc = " ".join(a.get("tldr", [])) or a.get("why", "") or a["title"]
+            img = a.get("img_hd") or a.get("img")
+            if img and not img.startswith("http"):  # 검수 페이지에서 업로드한 이미지 (media/...)
+                img = site_url() + img
+            ld = {"@context": "https://schema.org", "@type": "NewsArticle", "headline": a["title"][:110],
+                  "description": desc[:300], "datePublished": datetime.fromtimestamp(a.get("written", a["ts"]), timezone.utc).isoformat(),
+                  "dateModified": datetime.fromtimestamp(a.get("written", a["ts"]), timezone.utc).isoformat(),
+                  "mainEntityOfPage": site_url() + f"a/{a['id']}.html", "inLanguage": "ko",
+                  "author": {"@type": "Organization", "name": SITE_NAME}, "publisher": {"@type": "Organization", "name": SITE_NAME},
+                  **({"image": [img]} if img else {})}
+            html_ = page(a["title"] + " — " + SITE_NAME, f"""<div class="apage"><article>{meta(a)}<h1>{esc(a["title"])}</h1>
+    {f'<figure class="hero"><img src="{esc(rel_img(a.get("img_hd") or a["img"]))}" alt=""><figcaption>이미지: {esc(a.get("img_src") or "Steam 스토어")}</figcaption></figure>' if a.get("img") else cover_html(a)}
+    {f'<div class="tldr"><ul>{tldr}</ul></div>' if tldr else ''}
+    {video_html(a)}
+    {f'<p class="why">{esc(a["why"])}</p>' if a.get("why") else ''}
+    {body}{related_html(a, articles)}{ad("ADSENSE_SLOT_ARTICLE")}<div class="src"><b>출처</b><ul>{srcs}</ul></div><p class="note">{note}</p></article>{sidebar_html(a, articles, apps, patches, cal)}</div>""", desc=desc[:160], path=f"a/{a['id']}.html", img=img, ld=ld)
+            (SITE / "a" / f"{a['id']}.html").write_text(html_.replace("{root}", "../"), encoding="utf-8")
+        except Exception as e:  # 기사 한 건이 잘못돼도 사이트 빌드는 계속
+            print(f"  ! 기사 페이지 실패 {a.get('id')}: {e}")
 
     recent = [a for a in articles if time.time() - a["ts"] < 86400] or articles
     top = sorted(recent, key=lambda a: (-len(a["sources"]), a["trust"] != "공식", -a["ts"]))[:5]
