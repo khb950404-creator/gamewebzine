@@ -17916,5 +17916,566 @@
   "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar64ek.jpg",
   "img_src": "IGDB",
   "video_v": 1
+ },
+ {
+  "title": "자겍스, 신규 모드 '룬스케이프 리그나이티드' 발표 2주 만에 전격 취소",
+  "tldr": [
+   "자겍스가 신규 게임 모드 '룬스케이프 리그나이티드' 프로젝트를 공식 취소했다.",
+   "발표 이후 2주도 채 되지 않아 쏟아진 유저들의 거센 반발과 비판을 수용한 조치다.",
+   "개발진은 유저들의 기대에 부응하지 못하고 빗나갔음을 인정했다."
+  ],
+  "why": "오랜 팬층과 신규 유저 모두를 잡으려던 자겍스의 시도가 실패로 돌아가면서 향후 룬스케이프의 서비스 운영 방향성에 큰 변화가 생길 전망입니다.",
+  "body": [
+   "게임 개발사 자겍스(Jagex)가 신규 게임 모드로 기획했던 '룬스케이프 리그나이티드(RuneScape Reignited)'의 개발을 전격 취소했다. 프로젝트를 처음 공개한 지 채 2주도 지나지 않은 시점이다.",
+   "룬스케이프 리그나이티드는 기존 숙련 게이머와 신규 이용자 모두가 새롭게 시작할 수 있도록 설계된 신규 게임 모드였다. 그러나 공개 직후 커뮤니티에서는 거센 비판과 거센 역풍이 일어났다.",
+   "프로젝트 총괄을 맡은 크리에이티브 디렉터 모드 라이언(Mod Ryan)은 이용자들의 피드백을 확인한 뒤 프로젝트 중단을 결정했다고 밝혔다. 자겍스 측은 이번 기획이 게이머들의 눈높이와 방향성에 맞지 않았음을 인정하고 공식 사과했다."
+  ],
+  "category": "업계",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "룬스케이프 리그나이티드"
+  ],
+  "games_en": [
+   "RuneScape Reignited"
+  ],
+  "video_q": null,
+  "trust": "공식",
+  "fixes": [],
+  "status": "published",
+  "id": "945f2ec936",
+  "sources": [
+   {
+    "name": "Insider Gaming",
+    "title": "RuneScape Reignited Canceled by Jagex After Player Feedback",
+    "link": "https://insider-gaming.com/runescape-reignited-canceled/",
+    "official": false
+   },
+   {
+    "name": "Steam News",
+    "title": "Less than 2 weeks after announcing RuneScape Reignited, Jagex is scrapping the whole thing",
+    "link": "https://store.steampowered.com/news/group/1850/view/705534184444133717",
+    "official": true,
+    "img": "https://cdn.mos.cms.futurecdn.net/c3Khw6Jt6G6JFntqYeotUT-1920-80.png"
+   },
+   {
+    "name": "PC Gamer",
+    "title": "Less than 2 weeks after announcing RuneScape Reignited, Jagex is scrapping the whole thing",
+    "link": "https://www.pcgamer.com/games/mmo/less-than-2-weeks-after-announcing-runescape-reignited-jagex-is-scrapping-the-whole-thing/",
+    "official": false
+   },
+   {
+    "name": "IGN",
+    "title": "RuneScape Reignited Canceled Less Than Two Weeks After Being Announced",
+    "link": "https://www.ign.com/articles/runescape-reignited-cancelled-less-than-two-weeks-after-being-announced",
+    "official": false
+   }
+  ],
+  "ts": 1792107307.0,
+  "written": 1792107821.705293,
+  "img": "https://cdn.mos.cms.futurecdn.net/c3Khw6Jt6G6JFntqYeotUT-1920-80.png",
+  "img_v": 2,
+  "img_src": "Steam News",
+  "video_v": 1
+ },
+ {
+  "title": "무분별한 AI 디컴파일 범람에 주요 추적 사이트 'decomp.dev' 서비스 종료",
+  "tldr": [
+   "클래식 게임 코드 복원 과정을 추적해 온 유명 사이트 'decomp.dev'가 폐쇄된다.",
+   "저품질 AI 생성 코드가 무분별하게 쏟아지며 커뮤니티가 오염된 것이 주요 원인이다.",
+   "개발자는 악의적인 AI 오남용이 심각해짐에 따라 사이트를 닫기로 결정했다고 밝혔다."
+  ],
+  "why": "고전 게임 리버스 엔지니어링 및 PC 이식 프로젝트 생태계가 저품질 생성형 AI로 인해 심각한 타격을 입고 있음을 보여줍니다.",
+  "body": [
+   "클래식 비디오 게임의 디컴파일(역컴파일) 진척도를 기록해 온 대표적인 커뮤니티 사이트 'decomp.dev'가 서비스를 전격 종료한다. 개발자 루크 스트리트(Luke 'encounter' Street)는 인공지능(AI)이 커뮤니티에 미친 부정적인 영향을 이유로 사이트 폐쇄를 선언했다.",
+   "해당 사이트는 개발자들이 한 줄 한 줄 원본 게임의 함수를 분석하고 맞춰가는 지난한 과정을 추적해 100% 달성 여부를 확인하던 공간이었다. 그러나 최근 저품질 AI를 활용해 무분별하게 디컴파일 및 포팅을 시도하는 사례가 급증하면서 정상적인 프로젝트 추적이 불가능해졌다.",
+   "운영진은 일부 악의적인 사용자들이 AI를 활용해 시스템을 오남용하는 사례가 점점 심각해지고 있다고 지적하며, 고전 게임 보존과 분석을 목표로 하던 순수 커뮤니티의 취지가 퇴색된 점에 아쉬움을 표했다."
+  ],
+  "category": "업계",
+  "platforms": [],
+  "games": [],
+  "games_en": [],
+  "video_q": null,
+  "trust": "공식",
+  "fixes": [],
+  "status": "published",
+  "id": "5a6eab6a4a",
+  "sources": [
+   {
+    "name": "Steam News",
+    "title": "Low-effort AI slop sends a major community decompilation tool shutting down",
+    "link": "https://store.steampowered.com/news/group/38509069/view/692023294602249085",
+    "official": true,
+    "img": "https://cdn.mos.cms.futurecdn.net/959ktPUZGao3vDeLjLFUHX-1920-80.jpg"
+   },
+   {
+    "name": "GamesRadar",
+    "title": "Low-effort AI slop sends a major community decompilation tool shutting down",
+    "link": "https://www.gamesradar.com/games/the-community-aspect-of-decompilation-has-been-broken-by-a-wave-of-low-effort-ai-slop-and-now-a-major-community-tool-is-shutting-down/",
+    "official": false
+   },
+   {
+    "name": "IGN",
+    "title": "A Massive Decompilation Community Is Shutting Down, Thanks to the Deluge of AI Decomps and Ports",
+    "link": "https://www.ign.com/articles/a-massive-decompilation-community-is-shutting-down-thanks-to-the-deluge-of-ai-decomps-and-ports",
+    "official": false
+   }
+  ],
+  "ts": 1792098828.0,
+  "written": 1792107821.7053084,
+  "img": "https://cdn.mos.cms.futurecdn.net/959ktPUZGao3vDeLjLFUHX-1920-80.jpg",
+  "img_v": 2,
+  "img_src": "Steam News",
+  "video_v": 1
+ },
+ {
+  "title": "도타 2 프로 선수, 신원 증명 위해 경찰 앞에서 풀 매치 플레이",
+  "tldr": [
+   "십토 e스포츠 소속 23savage 선수가 경찰 급습 조사 중 신원 증명을 요구받았다.",
+   "부트캠프 현장에 들이닥친 경찰은 실제 프로 선수가 맞는지 확인을 요청했다.",
+   "선수는 수갑이 채워진 상황 속에서 직접 도타 2 게임 한 판을 플레이해 신원을 증명했다."
+  ],
+  "why": "e스포츠 선수들이 해외 부트캠프 과정에서 겪을 수 있는 기상천외한 치안 및 신원 확인 해프닝을 보여줍니다.",
+  "body": [
+   "도타 2 프로게이머가 본인의 직업과 신원을 증명하기 위해 경찰관들이 지켜보는 앞에서 직접 게임 한 판을 풀 플레이하는 초유의 사태가 발생했다.",
+   "십토 e스포츠(Xipto eSports) 소속의 하드 캐리 선수 누엥나라 '23savage' 티라마하나논은 자신의 SNS를 통해 팀의 쿠알라룸푸르 부트캠프 시설에 경찰이 들이닥쳤던 사건을 공개했다. 당시 경찰은 선수들을 구금하고 소지품을 압수하며 실제 프로게이머가 맞는지 강하게 추궁했다.",
+   "신원 확인 과정에서 현장 경찰관 중 한 명이 해당 게임을 인지하고 있었으며, 결국 23savage는 경찰들이 지켜보는 가운데 도타 2 매치를 끝까지 플레이해 실력을 증명한 뒤에야 의심을 벗을 수 있었다고 전했다."
+  ],
+  "category": "e스포츠",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "도타 2"
+  ],
+  "games_en": [
+   "Dota 2"
+  ],
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [],
+  "status": "published",
+  "id": "70d47d4c28",
+  "sources": [
+   {
+    "name": "Steam News",
+    "title": "Pro Dota 2 Player Claims He Had to Play a Full Match in Front of Police Officers to Prove His Identity",
+    "link": "https://store.steampowered.com/news/group/9869/view/693149194510140167",
+    "official": true,
+    "img": "https://assets-prd.ignimgs.com/2026/10/15/kez-1792100791294.jpg"
+   },
+   {
+    "name": "IGN",
+    "title": "Pro Dota 2 Player Claims He Had to Play a Full Match in Front of Police Officers to Prove His Identity",
+    "link": "https://www.ign.com/articles/pro-dota-2-player-claims-he-had-to-play-a-full-match-in-front-of-police-after-his-teams-boot-camp-was-raided",
+    "official": false
+   }
+  ],
+  "ts": 1792104257.0,
+  "written": 1792107821.705319,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/570/header.jpg?t=1791407503",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/570/ss_ad8eee787704745ccdecdfde3a5cd2733704898d.1920x1080.jpg?t=1791407503",
+  "appid": 570,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "'스타워즈: 은하계 레이서' 성우, 내 캐릭터 짜증 나는 것 잘 알고 있다",
+  "tldr": [
+   "게임 속 외계인 비디 블라스 역의 성우 리처드 서머스캘버트가 소감을 밝혔다.",
+   "그는 직접 게임을 즐기고 있으며 자신의 캐릭터가 얼마나 성가신지 잘 안다고 인정했다.",
+   "게임의 인기와 함께 캐릭터에 쏟아진 폭발적인 반응에 감사를 전했다."
+  ],
+  "why": "게임 속 독특한 캐릭터와 음성 연기가 게이머들 사이에서 밈으로 소비되며 커뮤니티에서 큰 화제를 모으고 있습니다.",
+  "body": [
+   "신작 레이싱 게임 '스타워즈: 은하계 레이서'에서 악어 형태의 외계인 캐릭터 '비디 블라스(Biddy Blas)'를 연기한 성우 리처드 서머스캘버트(Richard Summers-Calvert)가 캐릭터를 향한 유저들의 폭발적인 반응에 입을 열었다.",
+   "서머스캘버트는 엠파이어와의 인터뷰에서 유저들의 열띤 반응에 깊은 인상을 받았다며, 자신 역시 실제로 게임을 재미있게 플레이하고 있다고 전했다. 동시에 자신의 캐릭터 음성이 플레이어에게 얼마나 성가시고 거슬리게 느껴지는지도 충분히 체감하고 있다고 유쾌하게 인정했다.",
+   "스타워즈: 은하계 레이서는 아케이드 스타일의 긴장감 넘치는 액션 레이싱으로 호평받고 있는 가운데, 비디 블라스의 개성 넘치는 대사와 연기가 게임 외적으로도 큰 화제를 모으고 있다."
+  ],
+  "category": "기타",
+  "platforms": [],
+  "games": [
+   "스타워즈: 은하계 레이서"
+  ],
+  "games_en": [
+   "Star Wars: Galactic Racer"
+  ],
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [
+   "게임명 표기 '스타워즈: 갤럭틱 레이서' → '스타워즈: 은하계 레이서'"
+  ],
+  "status": "published",
+  "id": "7a23ffbf42",
+  "sources": [
+   {
+    "name": "Steam News",
+    "title": "Biddy Blas actor is playing Star Wars Galactic Racer and he knows how \"annoying\" his character is",
+    "link": "https://store.steampowered.com/news/group/38509069/view/692023294602249089",
+    "official": true,
+    "img": "https://cdn.mos.cms.futurecdn.net/gNWmi4hKBZFGPAwChJbuhB-1920-80.jpg"
+   },
+   {
+    "name": "GamesRadar",
+    "title": "Biddy Blas actor is playing Star Wars Galactic Racer and he knows how \"annoying\" his character is",
+    "link": "https://www.gamesradar.com/games/racing/biddy-blas-actor-is-playing-star-wars-galactic-racer-and-he-knows-how-annoying-his-character-is-i-love-him-so-much-i-want-to-throw-him-at-the-wall/",
+    "official": false
+   }
+  ],
+  "ts": 1792101230.0,
+  "written": 1792107821.7053287,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4078430/1baff812cfb8de999b7569197d2435f24fec5534/header_koreana.jpg?t=1791388584",
+  "img_v": 2,
+  "img_hd": null,
+  "appid": 4078430,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "북유럽 신화 오픈월드 생존 협동 '트롤하임: 놈스' 스팀 전용 공개",
+  "tldr": [
+   "신작 오픈월드 PvE 게임 '트롤하임: 놈스'가 공식 트레일러와 함께 첫 공개됐다.",
+   "최대 8인 협동 멀티플레이를 지원하며 북유럽 민담 세계관을 배경으로 한다.",
+   "자유로운 기지 건설과 생존, 신화 속 크리처 '베센'과의 전투를 담아 PC로 출시된다."
+  ],
+  "why": "북유럽 설화를 배경으로 8인 협동 생존과 기지 건설을 즐길 수 있는 신작 PC 전용 오픈월드 타이틀입니다.",
+  "body": [
+   "북유럽 민담을 테마로 한 오픈월드 협동 생존 게임 '트롤하임: 놈스(Trollheim: Gnomes)'가 첫 트레일러를 공개하며 공식 발표됐다.",
+   "이 게임은 최대 8명의 플레이어가 함께 팀을 이뤄 즐기는 PvE 중심 오픈월드 게임이다. 유저는 원하는 장소 어디에나 자유롭게 기지를 건설할 수 있으며, 자원을 채집하고 생존을 위협하는 트롤과 세이렌 등 북유럽 전설 속 크리처 '베센(Väsen)'에 맞서 싸워야 한다.",
+   "트롤하임: 놈스는 PC 플랫폼 전용으로 출시될 예정이며, 현재 스팀 상점 페이지를 통해 찜하기(Wishlist) 등록이 가능하다."
+  ],
+  "category": "신작",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "트롤하임: 놈스"
+  ],
+  "games_en": [
+   "Trollheim: Gnomes"
+  ],
+  "video_q": "Trollheim: Gnomes reveal trailer",
+  "trust": "공식",
+  "fixes": [],
+  "status": "published",
+  "id": "5a282be584",
+  "sources": [
+   {
+    "name": "Steam News",
+    "title": "New Open-World Fantasy Co-Op PvE Game Officially Unveiled",
+    "link": "https://store.steampowered.com/news/group/1450625/view/705534184444133731",
+    "official": true,
+    "img": "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2026/10/new-steam-open-world-fantasy-game-announced-trollheim-gnomes-gamerant.jpg"
+   }
+  ],
+  "ts": 1792103650.0,
+  "written": 1792107821.7053366,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4139890/b2d1931789c4fed61af14e376a6d7204248d01d6/header.jpg?t=1792075157",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4139890/adfb1711228c5db919c9b33a50aeb6800f1da045/ss_adfb1711228c5db919c9b33a50aeb6800f1da045.1920x1080.jpg?t=1792075157",
+  "appid": 4139890,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "미국 의회, '돈 내고 산 디지털 게임의 실제 소유권 보장' 법안 발의",
+  "tldr": [
+   "미국 민주당 리치 토레스 하원의원이 '파워 투 더 플레이어스 법안'을 발의했다.",
+   "디지털 게임 구매를 단순 이용권 라이선스가 아닌 실질적 소유권으로 보장하는 취지다.",
+   "\"돈을 지불했다면 소유한 것\"이라는 원칙 아래 디지털 유통 구조의 변화가 주목된다."
+  ],
+  "why": "플랫폼 폐쇄나 서비스 종료 시 구매한 디지털 게임을 잃을 위험에 노출된 게이머들의 권리를 법적으로 보장하려는 첫 주요 입법 시도입니다.",
+  "body": [
+   "디지털 마켓플레이스에서 구매한 비디오 게임을 단순 '이용권 대여'가 아닌 '실질적 소유권'으로 인정하도록 강제하는 법안이 미국 의회에 상정됐다.",
+   "미국 민주당 소속 리치 토레스(Ritchie Torres) 하원의원은 게이머들의 권리를 보호하기 위한 '파워 투 더 플레이어스 법안(Power To The Players Act)'을 공식 발의했다. 해당 법안은 소비자가 비용을 지불하고 내려받은 디지털 게임에 대해 배급사가 일방적으로 접근을 차단하거나 회수할 수 없도록 하는 데 초점을 맞추고 있다.",
+   "토레스 의원은 \"소비자가 정당하게 대가를 치렀다면 온전히 소유하는 것이 맞다\"며 디지털 라이선스 제도의 허점을 개선하겠다고 밝혔다. 법안이 통과될 경우 글로벌 PC 및 콘솔 다운로드 플랫폼의 판매 약관에 큰 영향을 미칠 것으로 전망된다."
+  ],
+  "category": "업계",
+  "platforms": [],
+  "games": [],
+  "games_en": [],
+  "video_q": null,
+  "trust": "공식",
+  "fixes": [],
+  "status": "published",
+  "id": "718912fd5e",
+  "sources": [
+   {
+    "name": "IGN",
+    "title": "Rep. Ritchie Torres Introduces Legislation to Ensure Gamers Own Their Digital Games",
+    "link": "https://www.ign.com/articles/rep-ritchie-torress-introduces-legislation-to-ensure-gamers-own-their-digital-games",
+    "official": false
+   },
+   {
+    "name": "Kotaku",
+    "title": "Rep. Ritchie Torres Announces Congressional Legislation To Protect Video Game Ownership: ‘If You Pay For It, You Own It’",
+    "link": "https://kotaku.com/rep-ritchie-torres-announces-congressional-legislation-to-protect-video-game-ownership-2000746395",
+    "official": false
+   }
+  ],
+  "ts": 1792106468.0,
+  "written": 1792107821.705345,
+  "img": null,
+  "img_v": 2,
+  "video_v": 1
+ },
+ {
+  "title": "'스턴트맨: 할리우드', 전격 Z작전 '키트' 등장 게임플레이 영상 공개",
+  "tldr": [
+   "세이버 인터랙티브가 '스턴트맨: 할리우드'의 신규 게임플레이 영상을 공개했다.",
+   "고전 인기 드라마 '전격 Z작전(Knight Rider)' 콘셉트의 세트장과 차량이 등장한다.",
+   "플레이어는 AI 자동차 키트(K.I.T.T.)를 직접 몰며 PC와 콘솔에서 스턴트 액션을 펼친다."
+  ],
+  "why": "고전 명작 드라마 속 대표 특수 차량인 키트를 직접 조작해 영화 같은 스턴트 주행을 즐길 수 있습니다.",
+  "body": [
+   "세이버 인터랙티브(Saber Interactive)가 싱글 플레이 액션 레이싱 게임 '스턴트맨: 할리우드(Stuntman: Hollywood)'의 신규 게임플레이 영상을 공개했다.",
+   "이번 영상에서는 80년대 인기 TV 시리즈 '전격 Z작전(Knight Rider)'에서 영감을 얻은 촬영 세트장이 처음으로 소개됐다. 유저는 작중 등장하는 상징적인 인공지능 슈퍼카 '키트(K.I.T.T.)'를 직접 운전하며 고난도 스턴트 임무를 수행하게 된다.",
+   "스턴트맨: 할리우드는 화려한 영화 촬영 현장을 배경으로 스턴트 드라이버의 활약을 담아낸 타이틀로, PC, PS5, Xbox 플랫폼으로 선보일 예정이다."
+  ],
+  "category": "신작",
+  "platforms": [
+   "PC",
+   "PS5",
+   "Xbox"
+  ],
+  "games": [
+   "스턴트맨: 할리우드"
+  ],
+  "games_en": [
+   "Stuntman: Hollywood"
+  ],
+  "video_q": "Stuntman: Hollywood Knight Rider gameplay reveal trailer",
+  "trust": "공식",
+  "fixes": [],
+  "status": "published",
+  "id": "98aa002b01",
+  "sources": [
+   {
+    "name": "Insider Gaming",
+    "title": "Stuntman: Hollywood Reveals Knight Rider Gameplay",
+    "link": "https://insider-gaming.com/stuntman-hollywood-knight-rider-gameplay/",
+    "official": false
+   },
+   {
+    "name": "Gematsu",
+    "title": "Stuntman: Hollywood ‘Knight Rider’ gameplay reveal trailer",
+    "link": "https://www.gematsu.com/2026/10/stuntman-hollywood-knight-rider-gameplay-reveal-trailer",
+    "official": false
+   }
+  ],
+  "ts": 1792105880.0,
+  "written": 1792107821.705353,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2487330/21f6e3394b6c3998aa477817e412c5109d3a19de/header.jpg?t=1792091608",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2487330/c861f98b492608e05b2f5824cef74857664ecbcf/ss_c861f98b492608e05b2f5824cef74857664ecbcf.1920x1080.jpg?t=1792091608",
+  "appid": 2487330,
+  "img_src": "Steam 스토어",
+  "video_v": 1,
+  "video": {
+   "id": "Kd0YtqPA3OQ",
+   "title": "Stuntman: Hollywood - Knight Rider Gameplay Trailer",
+   "channel": "Saber Interactive"
+  }
+ },
+ {
+  "title": "레메디 'CONTROL Resonant (컨트롤：레조넌트)', 3주 만에 100만 장 돌파하며 스튜디오 역대 최단 기록 경신",
+  "tldr": [
+   "'CONTROL Resonant (컨트롤：레조넌트)'가 출시 3주 만에 글로벌 판매량 100만 장을 돌파했다.",
+   "레메디 엔터테인먼트 역사상 역대 최단기간 판매 기록을 경신했다.",
+   "초기 흥행 성공을 통해 스튜디오의 향후 행보에 대한 기대감을 높이고 있다."
+  ],
+  "why": "레메디의 대표 IP가 초기 흥행에 성공하며 스튜디오의 확고한 입지를 입증했습니다.",
+  "body": [
+   "레메디 엔터테인먼트의 신작 'CONTROL Resonant (컨트롤：레조넌트)(Control Resonant)'가 출시 3주 만에 100만 장의 누적 판매고를 올렸다.",
+   "이번 기록은 레메디 스튜디오 역사상 가장 빠른 속도로 100만 장을 돌파한 타이틀이라는 점에서 의미가 깊다.",
+   "레메디 경영진은 시장의 뜨거운 성원에 감사를 표하며, 이번 성과가 스튜디오의 차기작 개발 및 프랜차이즈 확장의 탄탄한 원동력이 될 것이라고 평가했다."
+  ],
+  "category": "업계",
+  "platforms": [],
+  "games": [
+   "CONTROL Resonant (컨트롤：레조넌트)"
+  ],
+  "games_en": [
+   "Control Resonant"
+  ],
+  "video_q": null,
+  "trust": "공식",
+  "fixes": [
+   "출처 자료에 불법 복제나 해킹 언급이 없으므로 관련 내용을 수정하거나 삭제해야 합니다.",
+   "게임명 표기 '컨트롤 레조넌트' → 'CONTROL Resonant (컨트롤：레조넌트)'"
+  ],
+  "status": "published",
+  "id": "63de6bb5cd",
+  "sources": [
+   {
+    "name": "IGN",
+    "title": "Remedy Boss Reacts After Control Resonant Sells 1 Million Copies, Becoming Studio's Fastest-Selling Game",
+    "link": "https://www.ign.com/articles/remedy-boss-reacts-after-control-resonant-sells-1-million-copies-becoming-studios-fastest-selling-game",
+    "official": false
+   },
+   {
+    "name": "PC Gamer",
+    "title": "Control Resonant sells 1 million copies in 3 weeks to become Remedy's fastest-selling game ever",
+    "link": "https://www.pcgamer.com/games/action/control-resonant-sells-1-million-copies-in-3-weeks-to-become-remedys-fastest-selling-game-ever/",
+    "official": false
+   }
+  ],
+  "ts": 1792105478.0,
+  "written": 1792107821.7053607,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3669870/1e0c76e4253d347bb1304c3f213570251d924edf/header.jpg?t=1791013569",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3669870/422f3eed36d3033c4b0f4fde485c29b980e49454/ss_422f3eed36d3033c4b0f4fde485c29b980e49454.1920x1080.jpg?t=1791013569",
+  "appid": 3669870,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "익스트랙션 신작 '아크 레이더스', PvE 테스트 개시로 복귀 발판 마련",
+  "tldr": [
+   "엠바크 스튜디오의 '아크 레이더스'가 PvE 모드 테스트를 선보였다.",
+   "PvE 도입 이후 게이머들의 긍정적인 평가와 복귀 움직임이 이어지고 있다.",
+   "기존 PvPvE 구조에서 변화를 꾀하며 게임의 방향성에 긍정적 전환점이 될지 주목된다."
+  ],
+  "why": "PvP 피로도 때문에 망설이던 협동 슈터 게이머들에게 진입 장벽을 낮춰주는 유의미한 변화입니다.",
+  "body": [
+   "엠바크 스튜디오가 개발 중인 슈터 게임 '아크 레이더스(Arc Raiders)'가 신규 PvE 콘텐츠 테스트를 본격적으로 선보였다.",
+   "이번 PvE 테스트는 유저 간의 직접적인 경쟁과 교전 스트레스에서 벗어나 환경 및 기계 군단과의 사투에 집중할 수 있도록 구성됐다. 테스트에 참여한 게이머와 매체들은 복귀할 완벽한 이유가 생겼다며 PvE 모드에 대해 긍정적인 반응을 쏟아내고 있다.",
+   "출시 전 장르 변경과 PvPvE 구조 도입으로 엇갈린 평가를 받았던 아크 레이더스가 이번 협동 PvE 모드를 통해 유저층을 확장할 수 있을지 기대를 모은다."
+  ],
+  "category": "업데이트",
+  "platforms": [],
+  "games": [
+   "아크 레이더스"
+  ],
+  "games_en": [
+   "Arc Raiders"
+  ],
+  "video_q": null,
+  "trust": "확인",
+  "fixes": [],
+  "status": "published",
+  "id": "d80651e647",
+  "sources": [
+   {
+    "name": "Destructoid",
+    "title": "You win, Embark: I finally bought Arc Raiders because of PvE, and I’m having a blast",
+    "link": "https://www.destructoid.com/you-win-embark-i-finally-bought-arc-raiders-because-of-pve-and-im-having-a-blast/",
+    "official": false
+   },
+   {
+    "name": "PC Gamer",
+    "title": "Arc Raiders' PvE test is finally here and it's the perfect reason to jump back in",
+    "link": "https://www.pcgamer.com/games/third-person-shooter/arc-raiders-pve-test-is-finally-here-and-its-the-perfect-reason-to-jump-back-in/",
+    "official": false
+   }
+  ],
+  "ts": 1792101492.0,
+  "written": 1792107821.7053704,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1808500/29e8af9fbf06833558758f94cfb406746f338c45/header_alt_assets_8.jpg?t=1791401542",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1808500/1763664f3ea80080867eafa751685b7feec950c8/ss_1763664f3ea80080867eafa751685b7feec950c8.1920x1080.jpg?t=1791401542",
+  "appid": 1808500,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "'WWE 2K26', 캡콤 스트리트 파이터 콜라보 엘리트 팩 10월 28일 출격",
+  "tldr": [
+   "WWE 2K26의 첫 '스트리트 파이터' 크로스오버 DLC가 10월 28일 출시된다.",
+   "마텔의 콜라보 액션 피규어를 기반으로 한 5명의 슈퍼스타가 추가된다.",
+   "새로운 특수 기술과 전용 커스터마이징 파츠가 함께 제공된다."
+  ],
+  "why": "격투 게임의 전설 스트리트 파이터와 프로레슬링 게임이 결합된 독특한 콜라보레이션 콘텐츠를 즐길 수 있습니다.",
+  "body": [
+   "2K의 대표 프로레슬링 게임 'WWE 2K26'이 캡콤의 간판 대전 격투 프랜차이즈 '스트리트 파이터'와 맞손을 잡았다.",
+   "오는 10월 28일 출시되는 'WWE 2K26 X 스트리트 파이터 엘리트 팩'은 마텔(Mattel)의 크로스오버 액션 피규어 라인업에서 영감을 얻은 5명의 플레이어블 슈퍼스타를 게임 내에 추가한다.",
+   "이번 DLC에는 스트리트 파이터 시리즈 콘셉트의 특수 기술과 전용 코스튬 및 외형 부품들이 대거 포함되어 개성 넘치는 레슬러 커스터마이징을 지원할 예정이다."
+  ],
+  "category": "업데이트",
+  "platforms": [],
+  "games": [
+   "WWE 2K26",
+   "스트리트 파이터"
+  ],
+  "games_en": [
+   "WWE 2K26",
+   "Street Fighter"
+  ],
+  "video_q": null,
+  "trust": "공식",
+  "fixes": [
+   "출처에 연도가 2026년으로 명시되어 있지 않으므로 연도를 삭제하거나 출처에 맞게 수정해야 합니다."
+  ],
+  "status": "published",
+  "id": "1944f50bba",
+  "sources": [
+   {
+    "name": "Insider Gaming",
+    "title": "WWE 2K26 Street Fighter Elite Pack Arrives October 28",
+    "link": "https://insider-gaming.com/wwe-2k26-street-fighter-elite-pack/",
+    "official": false
+   },
+   {
+    "name": "VGC",
+    "title": "WWE 2K26 is collaborating with Capcom for a DLC pack adding five WWE wrestlers as Street Fighter action figures",
+    "link": "https://www.videogameschronicle.com/news/wwe-2k26-is-collaborating-with-capcom-for-a-dlc-pack-adding-five-wwe-wrestlers-as-street-fighter-action-figures/",
+    "official": false
+   }
+  ],
+  "ts": 1792098689.0,
+  "written": 1792107821.705379,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3717070/6e590c37107f7306ab9e42cc07d2aa92327625d1/header.jpg?t=1791395117",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3717070/9f01df4c6ab22dcec63781977b0643db390727a8/ss_9f01df4c6ab22dcec63781977b0643db390727a8.1920x1080.jpg?t=1791395117",
+  "appid": 3717070,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "인류 진화 시뮬 '앤세스터', 2026년 12월 8일 PS5 버전 출시",
+  "tldr": [
+   "'앤세스터: 인류의 여정'이 2026년 12월 8일 차세대 콘솔 네이티브 버전으로 나온다.",
+   "기존 PS4 버전 구매자에게는 PS5 무료 업그레이드가 지원된다.",
+   "개발사는 PS5와 함께 Xbox Series X|S 버전 출시를 공식화했다."
+  ],
+  "why": "독특한 진화 시뮬레이션을 즐겼던 콘솔 게이머들이 무료 업그레이드를 통해 최신 기기 환경에서 게임을 다시 즐길 수 있습니다.",
+  "body": [
+   "파나쉬 디지털 게임즈(Panache Digital Games)가 개발한 생존 시뮬레이션 '앤세스터: 인류의 여정(Ancestors: A Humankind Odyssey)'이 2026년 12월 8일 PS5 버전으로 출시된다.",
+   "이번 발표에 따르면 기존에 PS4 타이틀을 보유하고 있는 게이머들은 추가 비용 없이 PS5 네이티브 버전으로 무료 업그레이드를 받을 수 있다.",
+   "개발사는 이번 차세대 이식과 함께 Xbox Series X|S 전용 버전을 함께 선보이며 지원 플랫폼을 전면 확대할 예정이다."
+  ],
+  "category": "신작",
+  "platforms": [
+   "PS5",
+   "Xbox"
+  ],
+  "games": [
+   "앤세스터: 인류의 여정"
+  ],
+  "games_en": [
+   "Ancestors: A Humankind Odyssey"
+  ],
+  "video_q": null,
+  "trust": "공식",
+  "fixes": [
+   "출처 자료에 닌텐도 스위치 2 관련 언급이 없으므로 해당 내용을 삭제해야 합니다."
+  ],
+  "status": "published",
+  "id": "3ffc519c93",
+  "sources": [
+   {
+    "name": "Push Square",
+    "title": "Animal Evolution Sim Ancestors Gets Surprise PS5 Version, Free Upgrade for PS4 Owners",
+    "link": "https://www.pushsquare.com/news/2026/10/animal-evolution-sim-ancestors-gets-surprise-ps5-version-free-upgrade-for-ps4-owners",
+    "official": false
+   }
+  ],
+  "ts": 1792107000.0,
+  "written": 1792107821.7053878,
+  "img": null,
+  "img_v": 2,
+  "video_v": 1
  }
 ]
