@@ -8650,5 +8650,79 @@
  },
  "itad:3816030": "0197b1b2-f09a-70a4-b436-df789d50463d",
  "itad:3452720": "01987358-5c6b-73b9-b991-006696741461",
- "itad:2005010": "018d937f-6cc5-7079-b8f4-39ed8a06f1b4"
+ "itad:2005010": "018d937f-6cc5-7079-b8f4-39ed8a06f1b4",
+ "q:substructure": 3012600,
+ "id:3012600": {
+  "appid": 3012600,
+  "name": "Substructure 서브스트럭처",
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3012600/38a783bfe34a6f94a776e2388832fe43443bb55d/header_koreana.jpg?t=1792009374",
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3012600/5dda36d5aa6aef3979afa8b11b2e368ae21176cd/ss_5dda36d5aa6aef3979afa8b11b2e368ae21176cd.1920x1080.jpg?t=1792009374",
+  "info": {
+   "date": "출시 예정",
+   "soon": true,
+   "genres": [
+    "시뮬레이션",
+    "전략"
+   ],
+   "dev": "Dubious Design",
+   "pub": "Hooded Horse",
+   "ko": true,
+   "ko_voice": false,
+   "price": "",
+   "discount": 0,
+   "meta": null
+  }
+ },
+ "q:cyberpunk2": null,
+ "q:residentevilrequiem": 3764200,
+ "id:3764200": {
+  "appid": 3764200,
+  "name": "BIOHAZARD requiem",
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3764200/46a28870620bab1c2bc4de903bdcbcf4e423c58b/header_koreana.jpg?t=1779840172",
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3764200/08af4e9398b8e45152bfbedce3bc24d22e2c0990/ss_08af4e9398b8e45152bfbedce3bc24d22e2c0990.1920x1080.jpg?t=1779840172",
+  "info": {
+   "date": "2026년 2월 26일",
+   "soon": false,
+   "genres": [
+    "액션",
+    "어드벤처"
+   ],
+   "dev": "CAPCOM Co., Ltd.",
+   "pub": "CAPCOM Co., Ltd.",
+   "ko": true,
+   "ko_voice": false,
+   "price": "₩ 79,800",
+   "discount": 0,
+   "meta": 92
+  }
+ },
+ "q:사이버펑크2": null,
+ "ig:cyberpunk2": {
+  "img": "https://images.igdb.com/igdb/image/upload/t_cover_big/coaozc.jpg",
+  "hd": "https://images.igdb.com/igdb/image/upload/t_720p/coaozc.jpg",
+  "cover": true
+ },
+ "id:2967950": {
+  "appid": 2967950,
+  "name": "The Witch's Bakery",
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2967950/87f5e892a4f47f210aa7adfb1f0f2fd5b362d477/header.jpg?t=1791986240",
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2967950/ad8c45e82c9ce5d12c45ff86041cddf5d1d859ca/ss_ad8c45e82c9ce5d12c45ff86041cddf5d1d859ca.1920x1080.jpg?t=1791986240",
+  "info": {
+   "date": "2026년 10월 14일",
+   "soon": false,
+   "genres": [
+    "어드벤처",
+    "인디",
+    "RPG"
+   ],
+   "dev": "Sunny Lab",
+   "pub": "Silver Lining Interactive",
+   "ko": false,
+   "ko_voice": false,
+   "price": "₩ 21,600",
+   "discount": 10,
+   "meta": null
+  }
+ },
+ "itad:2967950": "018f70f7-8951-724a-9831-c1e7a5d6aaf4"
 }
