@@ -10,7 +10,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFilter
 
 from cards import ROOT, fetch_img, cover_fit
-from card_themes import BH, NB, NM, ANTON, grade, lines_of, HANDLE
+from card_themes import BH, NB, NM, ANTON, grade, lines_of, fit, HANDLE
 from carousel import LIME as RED, WHITE, SOFT, best_image
 from ig_post import to_card_tone
 
@@ -86,11 +86,7 @@ def zoomed(big, z):
 
 def hook_layer(text, accent, ink=WHITE):
     """화면 가운데 큰 훅 문구 + 강조 띠."""
-    f = BH(132)
-    ls = lines_of(PROBE, text, f, RW - 140, 3)
-    while len(ls) > 2 and f.size > 90:
-        f = BH(f.size - 12)
-        ls = lines_of(PROBE, text, f, RW - 140, 3)
+    f, ls = fit(PROBE, text, BH, 132, RW - 140, 2, 72)
     lh = int(f.size * 1.22)
     y0 = RH // 2 - len(ls) * lh // 2 - 60
 
@@ -153,23 +149,23 @@ def render(a, out_path, lang="ko", handle=None):
     shade = shade_mask()
 
     hook = hook_layer(default_hook(a, lang), RED)
-    tf = BH(104 if lang == "ko" else 92)
-    title = lines_of(PROBE, title_txt.replace("…", "..."), tf, RW - 152, 4)
-    y0 = RH - 520 - len(title) * 124
-    title_ls = [layer(lambda d, ln=ln, y=y0 + i * 124: d.text((76, y), ln, font=tf, fill=WHITE)) for i, ln in enumerate(title)]
+    tf, title = fit(PROBE, title_txt.replace("…", "..."), BH, 104 if lang == "ko" else 92, RW - 152, 4)
+    lh = int(tf.size * 1.19)
+    y0 = RH - 520 - len(title) * lh
+    title_ls = [layer(lambda d, ln=ln, y=y0 + i * lh: d.text((76, y), ln, font=tf, fill=WHITE)) for i, ln in enumerate(title)]
     label = layer(lambda d: d.text((76, y0 - 80), f"{a.get('trust')} · {a.get('category')}" if lang == "ko"
                                    else (a.get("category_en") or "GAME NEWS"), font=NB(40), fill=RED))
-    pf = NB(54 if lang == "ko" else 50)
     point_ls, y = [], 560
     for i, t in enumerate(points, 1):
-        ls = lines_of(PROBE, t, pf, RW - 260, 3)
+        pf, ls = fit(PROBE, t, NB, 54 if lang == "ko" else 50, RW - 260, 3)
+        plh = int(pf.size * 1.37)
 
-        def draw(d, i=i, ls=ls, y=y):
+        def draw(d, i=i, ls=ls, y=y, pf=pf, plh=plh):
             d.text((76, y - 6), f"{i:02d}", font=ANTON(78), fill=RED)
             for k, ln in enumerate(ls):
-                d.text((200, y + k * 74), ln, font=pf, fill=WHITE)
+                d.text((200, y + k * plh), ln, font=pf, fill=WHITE)
         point_ls.append(layer(draw))
-        y += len(ls) * 74 + 90
+        y += len(ls) * plh + 90
     head = layer(lambda d: (d.rectangle((76, 418, 92, 466), fill=RED), d.text((112, 410), T["key"], font=BH(60), fill=RED)))
     end = layer(lambda d: (d.text((RW // 2, 820), T["end1"], font=BH(84), fill=WHITE, anchor="mm"),
                            d.text((RW // 2, 930), T["end2"], font=NM(46), fill=SOFT, anchor="mm")))
@@ -224,9 +220,10 @@ def render_deals(deals, out_path, hook_text, key="deals", handle=None):
             d.rounded_rectangle((76, 1040, 76 + w + 60, 1250), 20, fill=GOLD)
             d.text((106, 1145), pct, font=ANTON(170), fill=INK, anchor="lm")
             y = 1300
-            for ln in lines_of(PROBE, x["name"].replace("™", "").replace("®", ""), BH(80), RW - 152, 2):
-                d.text((76, y), ln, font=BH(80), fill=WHITE)
-                y += 96
+            nf, nls = fit(PROBE, x["name"].replace("™", "").replace("®", ""), BH, 80, RW - 152, 2)
+            for ln in nls:
+                d.text((76, y), ln, font=nf, fill=WHITE)
+                y += int(nf.size * 1.2)
             o = f"₩{x['initial']:,}"
             d.text((76, y + 50), o, font=NM(46), fill=(150, 150, 158), anchor="lm")
             ow = d.textlength(o, font=NM(46))

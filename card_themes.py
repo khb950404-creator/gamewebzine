@@ -84,6 +84,19 @@ def lines_of(d, text, fnt, width, maxn):
     return ls
 
 
+def fit(d, text, font_fn, size, width, maxn, min_size=None):
+    """'…'로 자르지 않고, 글자 크기를 줄여 maxn 줄 안에 전부 넣는다 → (폰트, 줄 목록)."""
+    from cards import wrap
+    min_size = min_size or int(size * 0.6)
+    s_ = size
+    while True:
+        f = font_fn(s_)
+        ls = wrap(d, text, f, width)
+        if len(ls) <= maxn or s_ <= min_size:
+            return f, ls
+        s_ -= max(2, size // 20)
+
+
 def short_title(a, n=26):
     t = a["title"]
     return t if len(t) <= n else t.split(",")[0].split("…")[0]

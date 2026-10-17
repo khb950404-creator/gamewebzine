@@ -12,7 +12,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFilter
 
 from cards import W, H, ROOT, wrap
-from card_themes import BH, NB, NM, NR, ANTON, bg, shade, circle_text, dots, lines_of, HANDLE
+from card_themes import BH, NB, NM, NR, ANTON, bg, shade, circle_text, dots, lines_of, fit, HANDLE
 
 WHITE, SOFT = (255, 255, 255), (222, 222, 226)
 LIME = (229, 72, 77)  # 사이트와 같은 핑크빛 레드 (#e5484d)
@@ -53,13 +53,14 @@ def safe(t):
 def slide_title(a, total):
     img = shade(bg(a, bright=0.8), 0.40, 240)
     d = frame(img, 1, total, show_dots=True)
-    lines = lines_of(d, safe(a["title"]), BH(108), W - 150, 4)
-    y = H - 230 - len(lines) * 126
+    tf, lines = fit(d, safe(a["title"]), BH, 108, W - 150, 4)
+    lh = int(tf.size * 1.17)
+    y = H - 230 - len(lines) * lh
     label = f"{a.get('trust')} · {a.get('category')}" if LANG == "ko" else         f"{TRUST_EN.get(a.get('trust'), 'NEWS')} · {CAT_EN.get(a.get('category'), 'NEWS')}"
     d.text((76, y - 70), label, font=NB(34), fill=LIME)
     for ln in lines:
-        d.text((76, y), ln, font=BH(108), fill=WHITE)
-        y += 126
+        d.text((76, y), ln, font=tf, fill=WHITE)
+        y += lh
     return img
 
 
@@ -77,10 +78,11 @@ def slide_summary(a, total):
     pts = a.get("tldr", [])[:3] if LANG == "en" else [to_card_tone(x) for x in a.get("tldr", [])[:3]]
     for i, t in enumerate(pts, 1):
         d.text((76, y), f"{i:02d}", font=ANTON(64), fill=LIME)
-        ls = lines_of(d, t, NB(46), W - 250, 3)
+        pf, ls = fit(d, t, NB, 46, W - 250, 3)
+        plh = int(pf.size * 1.39)
         for k, ln in enumerate(ls):
-            d.text((180, y + 6 + k * 64), ln, font=NB(46), fill=WHITE)
-        y += max(1, len(ls)) * 64 + 60
+            d.text((180, y + 6 + k * plh), ln, font=pf, fill=WHITE)
+        y += max(1, len(ls)) * plh + 60
     if a.get("why"):
         y += 10
         d.line([(76, y), (W - 76, y)], fill=(70, 70, 76), width=2)
@@ -188,9 +190,10 @@ def build_weekly_top(arts, handle=None):
         d = frame(img, i + 1, total)
         d.text((76, 600), f"{i}", font=ANTON(200), fill=LIME)
         y = 840
-        for ln in lines_of(d, safe(a["title"]), BH(88), W - 152, 3):
-            d.text((76, y), ln, font=BH(88), fill=WHITE)
-            y += 104
+        tf2, tl2 = fit(d, safe(a["title"]), BH, 88, W - 152, 3)
+        for ln in tl2:
+            d.text((76, y), ln, font=tf2, fill=WHITE)
+            y += int(tf2.size * 1.18)
         if a.get("tldr"):
             for ln in lines_of(d, to_card_tone(a["tldr"][0]), NM(38), W - 152, 2):
                 d.text((76, y + 20), ln, font=NM(38), fill=SOFT)
