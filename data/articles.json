@@ -23457,5 +23457,623 @@
   "img": null,
   "video_v": 1,
   "img_v": 2
+ },
+ {
+  "title": "밸브, 스팀 머신 내 '제로 컴퍼니' 충돌 문제 해결",
+  "tldr": [
+   "밸브가 '제로 컴퍼니'의 대규모 업데이트 후 발생한 시스템 충돌 문제를 해결했다.",
+   "해당 오류는 스팀 머신과 리눅스 기반 SteamOS 환경에서 주로 발생했다.",
+   "밸브의 조치로 관련 운영체제 사용자의 게임 구동이 정상화되었다."
+  ],
+  "why": "리눅스나 SteamOS 환경에서 게임을 즐기는 PC 게이머가 겪던 치명적인 구동 오류가 해소되었다.",
+  "body": [
+   "최근 대규모 업데이트를 단행한 타이틀 '제로 컴퍼니(Zero Company)'에서 보고되던 치명적인 충돌 현상이 해결되었다.",
+   "해당 문제는 대규모 패치 적용 이후 스팀 머신 및 SteamOS, 리눅스 환경에서 게임이 비정상적으로 종료되는 형태로 발생했다. 리눅스 기반 게이밍 환경에 영향을 미치는 사안이었던 만큼 밸브가 신속히 개입해 오류 수정에 나섰다.",
+   "밸브 측의 조치가 적용됨에 따라 스팀 머신과 기타 호환 시스템을 이용하는 게이머들은 충돌 없이 안정적으로 게임을 플레이할 수 있게 되었다."
+  ],
+  "category": "업데이트",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "제로 컴퍼니"
+  ],
+  "games_en": [
+   "Zero Company"
+  ],
+  "hook": "스팀 머신 튕김 해결됐다",
+  "title_en": "Valve Fixes Zero Company Crash on Steam Machine",
+  "tldr_en": [
+   "Valve fixed a crash issue in Zero Company following a major update.",
+   "The problem primarily affected Steam Machine and SteamOS/Linux setups.",
+   "The fix restores stability for Linux and SteamOS players."
+  ],
+  "hook_en": "Zero Company Crash Fixed",
+  "video_q": null,
+  "trust": "공식",
+  "fixes": [],
+  "status": "published",
+  "id": "b3b1771646",
+  "sources": [
+   {
+    "name": "Steam News",
+    "title": "Valve fix Zero Company crashing on Steam Machine with the latest major game update",
+    "link": "https://store.steampowered.com/news/group/4218320/view/669505296465396819",
+    "official": true,
+    "img": "https://www.gamingonlinux.com/uploads/articles/tagline_images/1142594432id29995gol.webp"
+   }
+  ],
+  "ts": 1792222638.0,
+  "written": 1792227792.1077538,
+  "img": "https://www.gamingonlinux.com/uploads/articles/tagline_images/1142594432id29995gol.webp",
+  "img_v": 2,
+  "img_src": "Steam News",
+  "video_v": 1
+ },
+ {
+  "title": "스팀 클라이언트 베타, 프로그램 실행 속도 개선",
+  "tldr": [
+   "밸브가 10월 16일 스팀 클라이언트 베타 업데이트를 배포했다.",
+   "이번 업데이트는 클라이언트 시작 성능 향상에 초점을 맞췄다.",
+   "스토어 간 경쟁 속에 플랫폼 구동 속도 최적화가 지속되고 있다."
+  ],
+  "why": "PC 게이머가 스팀 플랫폼을 실행할 때 발생하는 대기 시간이 단축되어 전반적인 편의성이 향상된다.",
+  "body": [
+   "밸브가 10월 16일 스팀 클라이언트 베타의 신규 버전을 공개하며 플랫폼 실행 성능 최적화에 나섰다.",
+   "이번 베타 업데이트는 스팀 클라이언트가 켜지는 초기 구동 성능을 개선하는 데 중점을 두었다. 밸브는 이용자 편의성을 높이기 위해 시작 속도를 꾸준히 다듬어 왔다.",
+   "타 PC 게임 유통 플랫폼과의 경쟁이 이어지는 가운데, 밸브의 연속적인 구동 성능 개선 패치가 런처 사용 경험을 더욱 쾌적하게 만들고 있다."
+  ],
+  "category": "업데이트",
+  "platforms": [
+   "PC"
+  ],
+  "games": [],
+  "games_en": [],
+  "hook": "스팀 실행 속도 더 빨라진다",
+  "title_en": "Steam Client Beta Improves Startup Performance",
+  "tldr_en": [
+   "Valve rolled out a Steam Client Beta update on October 16.",
+   "The update focuses on boosting client startup performance.",
+   "Ongoing optimizations aim to provide a faster launcher experience."
+  ],
+  "hook_en": "Faster Steam Startup Arrives",
+  "video_q": null,
+  "trust": "공식",
+  "fixes": [],
+  "status": "published",
+  "id": "56ef5e8025",
+  "sources": [
+   {
+    "name": "Steam News",
+    "title": "Steam Client Beta for October 16 brings another round of startup performance improvements",
+    "link": "https://store.steampowered.com/news/group/4218320/view/669505296465396817",
+    "official": true,
+    "img": "https://www.gamingonlinux.com/uploads/tagline_gallery/steam_plain_2025.jpg"
+   }
+  ],
+  "ts": 1792222038.0,
+  "written": 1792227792.1077816,
+  "img": "https://www.gamingonlinux.com/uploads/tagline_gallery/steam_plain_2025.jpg",
+  "img_v": 2,
+  "img_src": "Steam News",
+  "video_v": 1
+ },
+ {
+  "title": "SteamOS 3.9.3 베타, 스팀 프레임 무선 어댑터 지원 강화",
+  "tldr": [
+   "밸브가 SteamOS 3.9.3 베타 버전을 새롭게 배포했다.",
+   "이번 패치로 스팀 프레임 무선 어댑터 관련 지원이 개선되었다.",
+   "스팀 머신과 스팀 프레임 간의 무선 연결 편의성이 한층 향상될 전망이다."
+  ],
+  "why": "SteamOS 기반 하드웨어 및 전용 무선 기기를 연동해 사용하는 게이머들의 연결 안정성이 강화된다.",
+  "body": [
+   "밸브가 최신 운영체제 업데이트인 SteamOS 3.9.3 베타를 공식 공개했다.",
+   "이번 베타 패치에는 스팀 프레임(Steam Frame) 무선 어댑터에 대한 지원 개선 작업이 주요 변경점으로 포함되었다.",
+   "이번 업데이트를 통해 스팀 머신과 스팀 프레임 장치 간의 무선 연결 상태가 한층 원활해질 것으로 기대된다."
+  ],
+  "category": "업데이트",
+  "platforms": [
+   "PC"
+  ],
+  "games": [],
+  "games_en": [],
+  "hook": "SteamOS 베타 업데이트 배포",
+  "title_en": "SteamOS 3.9.3 Beta Upgrades Steam Frame Adapter Support",
+  "tldr_en": [
+   "Valve released the SteamOS 3.9.3 Beta update.",
+   "The patch brings improved support for the Steam Frame wireless adapter.",
+   "Wireless connectivity with Steam Machine is now enhanced."
+  ],
+  "hook_en": "SteamOS Beta Released",
+  "video_q": null,
+  "trust": "공식",
+  "fixes": [],
+  "status": "published",
+  "id": "b614090aca",
+  "sources": [
+   {
+    "name": "Steam News",
+    "title": "SteamOS 3.9.3 Beta arrives with improved support for Steam Frame wireless adapter",
+    "link": "https://store.steampowered.com/news/group/4218320/view/669505296465396813",
+    "official": true,
+    "img": "https://www.gamingonlinux.com/uploads/tagline_gallery/steam-hardware-family-steamos_gol2_4c8c9b9c.webp"
+   }
+  ],
+  "ts": 1792221437.0,
+  "written": 1792227792.1077967,
+  "img": "https://www.gamingonlinux.com/uploads/tagline_gallery/steam-hardware-family-steamos_gol2_4c8c9b9c.webp",
+  "img_v": 2,
+  "img_src": "Steam News",
+  "video_v": 1
+ },
+ {
+  "title": "와인 11.20 공개, 윈도우 앱 호환성 기능 추가 개선",
+  "tldr": [
+   "윈도우 호환 레이어 와인 11.20 개발 버전이 정식 공개되었다.",
+   "ARM64EC 및 XML 유효성 검사, CDROM 관련 기능이 개선되었다.",
+   "리눅스 및 SteamOS 환경의 윈도우 소프트웨어 구동 환경이 강화된다."
+  ],
+  "why": "리눅스나 SteamOS 기반 기기에서 윈도우 기반 PC 게임과 프로그램을 실행하는 호환성이 더욱 높아진다.",
+  "body": [
+   "리눅스 및 SteamOS 환경에서 윈도우 응용 프로그램을 구동할 수 있게 돕는 호환성 도구 '와인(Wine)'의 11.20 개발 버전이 배포되었다.",
+   "이번 개발 버전에서는 ARM64EC 지원을 비롯해 XML 유효성 검사, CDROM 관련 처리 성능 등 기술적인 요소들이 다수 보강되었다.",
+   "와인의 기반 개선 작업은 리눅스 생태계 전반의 게이밍 성능 및 윈도우 소프트웨어 호환성 증대로 직결된다."
+  ],
+  "category": "업데이트",
+  "platforms": [
+   "PC"
+  ],
+  "games": [],
+  "games_en": [],
+  "hook": "와인 11.20 개발 버전 공개",
+  "title_en": "Wine 11.20 Brings Improvements for ARM64EC and CDROMs",
+  "tldr_en": [
+   "Wine 11.20 development release has been officially launched.",
+   "The update improves ARM64EC, XML validation, and CDROM handling.",
+   "Windows game compatibility on Linux and SteamOS continues to grow."
+  ],
+  "hook_en": "Wine 11.20 Released",
+  "video_q": null,
+  "trust": "공식",
+  "fixes": [],
+  "status": "published",
+  "id": "8bf75e52f5",
+  "sources": [
+   {
+    "name": "Steam News",
+    "title": "Wine 11.20 brings more improvements for ARM64EC, XML validation and CDROMs",
+    "link": "https://store.steampowered.com/news/group/4218320/view/669505296465396815",
+    "official": true,
+    "img": "https://www.gamingonlinux.com/uploads/tagline_gallery/wine-generic.jpg"
+   }
+  ],
+  "ts": 1792221437.0,
+  "written": 1792227792.1078107,
+  "img": "https://www.gamingonlinux.com/uploads/tagline_gallery/wine-generic.jpg",
+  "img_v": 2,
+  "img_src": "Steam News",
+  "video_v": 1
+ },
+ {
+  "title": "Beyond These Stars 비욘드 디스 스타즈, 핫픽스 2 배포로 파티클 및 튜토리얼 수정",
+  "tldr": [
+   "'Beyond These Stars 비욘드 디스 스타즈'에 두 번째 핫픽스 패치가 적용되었다.",
+   "연기와 건설 파티클 미표시 및 튜토리얼 체크박스 오작동 오류를 수정했다.",
+   "건물 이동 관련 추가 예외 상황도 함께 개선되었다."
+  ],
+  "why": "신규 플레이어가 겪던 설정 버그와 시각 효과 오류가 수정되어 플레이 흐름이 원활해졌다.",
+  "body": [
+   "우주 도시 건설 게임 'Beyond These Stars 비욘드 디스 스타즈(Beyond These Stars)'에 각종 버그를 수정한 두 번째 핫픽스 패치가 적용되었다.",
+   "이번 패치를 통해 게임 내 연기 및 건설 시 나타나는 파티클 효과가 출력되지 않던 현상이 정상화되었다. 또한 신규 게임 생성 시 튜토리얼 체크박스를 끈 뒤 난이도 설정으로 이동하면 다시 활성화되던 오류와 건물 이동 기능의 추가 예외 버그가 수정되었다.",
+   "개발진은 업데이트와 함께 스팀 이용자 평가를 통한 피드백 전달을 당부하며 지속적인 개선 의지를 내비쳤다."
+  ],
+  "category": "업데이트",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "Beyond These Stars 비욘드 디스 스타즈"
+  ],
+  "games_en": [
+   "Beyond These Stars"
+  ],
+  "hook": "핫픽스 2로 버그 잡았다",
+  "title_en": "Beyond These Stars Hotfix #2 Fixes Particles and Tutorial",
+  "tldr_en": [
+   "Beyond These Stars received its second hotfix patch.",
+   "The update fixes missing particle effects and a tutorial checkbox bug.",
+   "An additional fix for moving buildings was also included."
+  ],
+  "hook_en": "Hotfix 2 Now Live",
+  "video_q": null,
+  "trust": "공식",
+  "fixes": [
+   "게임명 표기 '비욘드 디즈 스타즈' → 'Beyond These Stars 비욘드 디스 스타즈'"
+  ],
+  "status": "published",
+  "id": "b61783897a",
+  "sources": [
+   {
+    "name": "Steam News",
+    "title": "Hotfix #2 - Particle Effects Fix, Tutorial Checkbox and Move Building Fix",
+    "link": "https://store.steampowered.com/news/app/2295060/view/667253496651712320",
+    "official": true,
+    "img": "https://clan.fastly.steamstatic.com/images/43645631/32dc8101a5ece80b6455a2c9d5a809beadca21da.png"
+   }
+  ],
+  "ts": 1792218877.0,
+  "written": 1792227792.1078327,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2295060/e36bd6eb8fc399e52149d19679119c8ff3716416/header_koreana.jpg?t=1792173673",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2295060/e0398fa4f5e0e28f15028b829350cfb292b98c74/ss_e0398fa4f5e0e28f15028b829350cfb292b98c74.1920x1080.jpg?t=1792173673",
+  "appid": 2295060,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "아트 오브 랠리 후속작 '오버 더 힐', 느림과 명상에 집중",
+  "tldr": [
+   "'아트 오브 랠리'의 후속작 '오버 더 힐'이 레이싱 요소를 전면 배제했다.",
+   "속도 경쟁 대신 여유로운 탐험과 수집 등 명상적 드라이빙에 집중했다.",
+   "전작의 자유 주행 모드가 지닌 고유한 매력을 핵심 구조로 발전시켰다."
+  ],
+  "why": "치열한 경쟁에서 벗어나 탐험과 힐링을 선호하는 드라이빙 게임 팬들에게 색다른 선택지를 제공한다.",
+  "body": [
+   "인기 드라이빙 게임 '아트 오브 랠리(Art of Rally)'의 후속작 '오버 더 힐(Over the Hill)'이 기존의 레이싱 문법을 과감하게 탈피했다.",
+   "본작은 속도를 겨루는 서킷 경쟁을 완전히 내려놓고 명상적인 템포의 주행을 채택했다. 게임의 도입부에서 황금 불상이 기본 조작을 안내하는 등 여유로운 분위기를 전면에 내세운다.",
+   "전작에서 호평받았던 자유 주행과 맵 탐험, 수집 요소의 즐거움을 한층 극대화해 플레이어에게 마음을 달래는 드라이빙 경험을 선사한다."
+  ],
+  "category": "신작",
+  "platforms": [],
+  "games": [
+   "오버 더 힐",
+   "아트 오브 랠리"
+  ],
+  "games_en": [
+   "Over the Hill",
+   "Art of Rally"
+  ],
+  "hook": "경쟁 버린 레이싱 신작?",
+  "title_en": "Art of Rally Successor Over the Hill Embraces Slow Driving",
+  "tldr_en": [
+   "Over the Hill shifts completely away from competitive racing.",
+   "The game emphasizes slow exploration and meditative driving.",
+   "It expands on the beloved free-roam elements of Art of Rally."
+  ],
+  "hook_en": "Slow Driving Game Revealed",
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [],
+  "status": "published",
+  "id": "d1807d1de9",
+  "sources": [
+   {
+    "name": "Eurogamer",
+    "title": "Art of Rally follow-up Over the Hill's biggest success is finding a way to be a driving game that asks you to take it slow",
+    "link": "https://www.eurogamer.net/over-the-hill-now-playing",
+    "official": false
+   }
+  ],
+  "ts": 1792227600.0,
+  "written": 1792227792.107842,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2929250/header.jpg?t=1791994837",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2929250/d115bf36d8c9e850dac67f55735e897641155fd9/ss_d115bf36d8c9e850dac67f55735e897641155fd9.1920x1080.jpg?t=1791994837",
+  "appid": 2929250,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "컬트 오브 더 램, 스위치 2 버전 출시 및 무료 업그레이드 지원",
+  "tldr": [
+   "'컬트 오브 더 램'이 스위치 2 플랫폼 버전을 공식 발표했다.",
+   "개발사 매시브 몬스터는 기존 이용자를 위한 무료 업그레이드를 지원한다.",
+   "출시 일정은 다음 주로 확정되었다."
+  ],
+  "why": "기존 스위치 플랫폼 유저가 추가 비용 없이 차세대 기기용으로 향상된 버전을 즐길 수 있게 된다.",
+  "body": [
+   "인디 히트작 '컬트 오브 더 램(Cult of the Lamb)'이 닌텐도 스위치 2 지원 소식을 알렸다.",
+   "개발사 매시브 몬스터는 공식 발표를 통해 스위치 2 전용 버전을 공개하고, 기존 버전을 보유한 게이머를 대상으로 무료 업그레이드 경로를 제공한다고 확인했다.",
+   "스위치 출시 이후 다양한 사후 업데이트를 이어오던 본작의 스위치 2 버전은 다음 주 정식 합류할 예정이다."
+  ],
+  "category": "신작",
+  "platforms": [
+   "Switch"
+  ],
+  "games": [
+   "컬트 오브 더 램"
+  ],
+  "games_en": [
+   "Cult of the Lamb"
+  ],
+  "hook": "스위치 2 무료 업글 확정!",
+  "title_en": "Cult of the Lamb Confirms Switch 2 Version with Free Upgrade",
+  "tldr_en": [
+   "Cult of the Lamb is arriving on Nintendo Switch 2 next week.",
+   "Developer Massive Monster confirmed a free upgrade path for players.",
+   "The game continues its long run of post-launch platform expansions."
+  ],
+  "hook_en": "Free Switch 2 Upgrade",
+  "video_q": null,
+  "trust": "공식",
+  "fixes": [],
+  "status": "published",
+  "id": "b52aca926d",
+  "sources": [
+   {
+    "name": "Nintendo Life",
+    "title": "Cult Of The Lamb Summons A Switch 2 Version, Free Upgrade Path Confirmed",
+    "link": "https://www.nintendolife.com/news/2026/10/cult-of-the-lamb-summons-a-switch-2-version-free-upgrade-path-confirmed",
+    "official": false
+   }
+  ],
+  "ts": 1792224000.0,
+  "written": 1792227792.107851,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1313140/19f32bb477a6e9d058e05193b4e282149bd70644/header.jpg?t=1786554901",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1313140/ss_3bda2c2e740660fcde8c42eafab4cb7574ab54e6.1920x1080.jpg?t=1786554901",
+  "appid": 1313140,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "드래곤 퀘스트 몬스터즈 신작, 온라인 멀티 및 배틀 아레나 공개",
+  "tldr": [
+   "'드래곤 퀘스트 몬스터즈 4 메마른 나라의 비앙카와 플로라'의 콘텐츠 상세 정보가 공개되었다.",
+   "온라인 멀티플레이 기능과 오프라인 배틀 아레나가 포함된다.",
+   "오프라인 배틀 아레나에는 로그라이크 모드가 탑재된다."
+  ],
+  "why": "드래곤 퀘스트 몬스터즈 팬들이 즐길 수 있는 새로운 대전 및 로그라이크 콘텐츠 정보가 확인되었다.",
+  "body": [
+   "'드래곤 퀘스트 몬스터즈 4 메마른 나라의 비앙카와 플로라(Dragon Quest Monsters: The Withered World)'의 주요 게임 모드에 대한 구체적인 세부 사항이 전해졌다.",
+   "이번 작품에는 다른 게이머와 승부를 겨룰 수 있는 온라인 멀티플레이가 공식 탑재된다.",
+   "아울러 오프라인 환경에서 즐길 수 있는 '배틀 아레나'가 마련되며, 해당 콘텐츠에는 로그라이크 방식의 진행 모드가 지원될 예정이다."
+  ],
+  "category": "신작",
+  "platforms": [],
+  "games": [
+   "드래곤 퀘스트 몬스터즈 4 메마른 나라의 비앙카와 플로라"
+  ],
+  "games_en": [
+   "Dragon Quest Monsters: The Withered World"
+  ],
+  "hook": "로그라이크 모드 탑재된다",
+  "title_en": "Dragon Quest Monsters: The Withered World Details Modes",
+  "tldr_en": [
+   "Dragon Quest Monsters: The Withered World detailed its gameplay features.",
+   "The game includes online multiplayer and an offline Battle Arena.",
+   "A roguelike mode will be available within the offline Battle Arena."
+  ],
+  "hook_en": "New Modes Detailed",
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [
+   "게임명 표기 '드래곤 퀘스트 몬스터즈: 더 위더드 월드' → '드래곤 퀘스트 몬스터즈 4 메마른 나라의 비앙카와 플로라'"
+  ],
+  "status": "published",
+  "id": "6e649c4886",
+  "sources": [
+   {
+    "name": "Siliconera",
+    "title": "Dragon Quest Monsters: The Withered World Online Multiplayer Detailed",
+    "link": "https://www.siliconera.com/dragon-quest-monsters-the-withered-world-online-multiplayer-detailed/",
+    "official": false
+   }
+  ],
+  "ts": 1792170000.0,
+  "written": 1792227792.107859,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3681610/5efa9e62d38c12d3fbb0e3c52c6c89622d537bfc/header_koreana.jpg?t=1788967398",
+  "img_v": 2,
+  "img_hd": null,
+  "appid": 3681610,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "모던 워페어 4 내러티브 리드, 영화 '시카리오' 등에서 영감",
+  "tldr": [
+   "'콜 오브 듀티: 모던 워페어 4'의 서사가 영화 '시카리오'의 영향을 받았다.",
+   "내러티브 리드는 '블랙 호크 다운'과 '제로 다크 서티'도 주요 영감으로 꼽았다.",
+   "밀리터리 스릴러 특유의 현실감 넘치는 긴장감이 서사에 반영될 전망이다."
+  ],
+  "why": "차기 모던 워페어 타이틀이 지향하는 캠페인 스토리의 톤앤매너와 현실주의적 연출 방향을 가늠할 수 있다.",
+  "body": [
+   "'콜 오브 듀티: 모던 워페어 4(CoD: Modern Warfare 4)'의 내러티브 총괄이 스토리 연출의 주요 기준점으로 영화 '시카리오'를 언급했다.",
+   "내러티브 리드는 드니 빌뇌브 감독의 범죄 스릴러 '시카리오'를 작업 중 항상 비교 기준으로 삼고 있다고 밝혔다. 이와 함께 고증과 긴장감으로 호평받은 전쟁 영화 '블랙 호크 다운'과 '제로 다크 서티' 역시 연출 구성에 영향을 주었다고 설명했다.",
+   "이에 따라 차기작의 캠페인 서사는 특수작전의 잔혹한 현실과 무거운 긴장감을 중심으로 깊이 있게 전개될 것으로 보인다."
+  ],
+  "category": "신작",
+  "platforms": [],
+  "games": [
+   "콜 오브 듀티: 모던 워페어 4"
+  ],
+  "games_en": [
+   "CoD: Modern Warfare 4"
+  ],
+  "hook": "시카리오 감성 담긴다?",
+  "title_en": "Modern Warfare 4 Narrative Lead Cites Sicario as Major Influence",
+  "tldr_en": [
+   "CoD: Modern Warfare 4's narrative lead cited Sicario as a key reference.",
+   "Black Hawk Down and Zero Dark Thirty also inspired the project.",
+   "The game is aiming for a gritty and realistic tactical tone."
+  ],
+  "hook_en": "Modern Warfare 4 Influences",
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [
+   "단일 매체(GamesRadar)의 취재 보도이므로 신뢰도를 '공식'에서 '보도'로 수정했습니다."
+  ],
+  "status": "published",
+  "id": "45043fb2ce",
+  "sources": [
+   {
+    "name": "GamesRadar",
+    "title": "CoD: Modern Warfare 4 narrative lead says Denis Villeneuve's Sicario is an influence \"I'm always checking against\"",
+    "link": "https://www.gamesradar.com/games/call-of-duty/call-of-duty-modern-warfare-4-narrative-lead-says-denis-villeneuves-sicario-is-an-influence-im-always-checking-against-but-john-wick-has-some-obvious-presence-too/",
+    "official": false
+   }
+  ],
+  "ts": 1792170000.0,
+  "written": 1792227792.1078665,
+  "img": null,
+  "img_v": 2,
+  "video_v": 1
+ },
+ {
+  "title": "횡스크롤 액션 '톡식 크루세이더', 신규 게임플레이 영상 공개",
+  "tldr": [
+   "레트로웨어가 '톡식 크루세이더'의 신규 게임플레이 트레일러를 선보였다.",
+   "본작은 고전 감성을 살린 횡스크롤 벨트스크롤 액션 장르다.",
+   "원작 특유의 캐릭터 액션과 전투 연출이 트레일러에 담겼다."
+  ],
+  "why": "고전 오락실 스타일의 벨트스크롤 액션 게임을 기다리는 팬들에게 최신 인게임 플레이 모습을 전달한다.",
+  "body": [
+   "유통사 레트로웨어(Retroware)가 개발 중인 액션 타이틀 '톡식 크루세이더(Toxic Crusaders)'의 신규 게임플레이 트레일러를 배포했다.",
+   "이번 영상에서는 레트로 아케이드 스타일의 횡스크롤 난투 액션과 개성 넘치는 캐릭터들의 고유 기술이 상세히 소개되었다.",
+   "원작 특유의 유쾌한 B급 감성과 복고풍 타격감을 결합해 클래식 아케이드 게이머들의 기대를 모으고 있다."
+  ],
+  "category": "신작",
+  "platforms": [],
+  "games": [
+   "톡식 크루세이더"
+  ],
+  "games_en": [
+   "Toxic Crusaders"
+  ],
+  "hook": "복고풍 액션 신규 영상",
+  "title_en": "Toxic Crusaders Reveals New Gameplay Trailer",
+  "tldr_en": [
+   "Retroware published a brand-new gameplay trailer for Toxic Crusaders.",
+   "The game is a retro-styled side-scrolling beat 'em up.",
+   "The footage highlights arcade-inspired combat and character moves."
+  ],
+  "hook_en": "New Gameplay Trailer Out",
+  "video_q": "Toxic Crusaders Gameplay trailer",
+  "trust": "공식",
+  "fixes": [],
+  "status": "published",
+  "id": "8de9b95400",
+  "sources": [
+   {
+    "name": "Gematsu",
+    "title": "Toxic Crusaders ‘Gameplay’ trailer",
+    "link": "https://www.gematsu.com/2026/10/toxic-crusaders-gameplay-trailer",
+    "official": false
+   }
+  ],
+  "ts": 1792169746.0,
+  "written": 1792227792.1078744,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2303850/620fc6abf701b34a21133c92b5a784bd63b452e7/header.jpg?t=1781288408",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2303850/ss_31c5050cf4b4a3c858e2ef1bc42f6f3f7b2718eb.1920x1080.jpg?t=1781288408",
+  "appid": 2303850,
+  "img_src": "Steam 스토어",
+  "video_v": 1,
+  "video": {
+   "id": "r5Wo6lzA6DU",
+   "title": "Toxic Crusaders - Gameplay Trailer",
+   "channel": "Gematsu"
+  }
+ },
+ {
+  "title": "생성형 AI 복제 우려에 신작 게임 공개 데모 전격 취소",
+  "tldr": [
+   "'드렁큰 가디스 리플럭스' 개발진이 예정됐던 공개 데모 배포를 취소했다.",
+   "출시 전 생성형 AI로 게임을 무단 복제해 먼저 내놓는 행위를 우려했다.",
+   "게임 업계 내 생성형 AI 기술 악용에 대한 경계심이 수면 위로 올랐다."
+  ],
+  "why": "인디 개발사가 생성형 AI 악용을 막기 위해 공개 체험판 배포 자체를 포기하는 새로운 업계 흐름이 나타났다.",
+  "body": [
+   "신작 '드렁큰 가디스 리플럭스(Drunken Goddess Reflux)'의 제작진이 정식 출시 전 예정되어 있던 공개 데모 배포 일정을 전격 취소했다.",
+   "취소 결정의 주요 배경은 생성형 AI를 활용한 표절 위협이다. 개발진은 데모가 공개될 경우 도용범들이 생성형 AI 툴을 이용해 게임의 에셋과 시스템을 빠르게 복제한 뒤, 정식 출시보다 앞서 복제작을 시장에 유통할 수 있다는 점을 깊이 우려했다.",
+   "이번 사태는 기술 발전 이면에서 인디 개발 생태계가 생성형 AI 악용에 취약해지고 있음을 단적으로 보여주는 사례로 주목받고 있다."
+  ],
+  "category": "업계",
+  "platforms": [],
+  "games": [
+   "드렁큰 가디스 리플럭스"
+  ],
+  "games_en": [
+   "Drunken Goddess Reflux"
+  ],
+  "hook": "AI 복제 무서워 데모 취소",
+  "title_en": "Dev Cancels Game Demo Over Generative AI Copycat Fears",
+  "tldr_en": [
+   "Drunken Goddess Reflux creators cancelled their planned public demo.",
+   "The team cited fears of copycats cloning the game with generative AI.",
+   "The move highlights rising industry anxieties over AI-driven piracy."
+  ],
+  "hook_en": "Demo Cancelled Over AI",
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [],
+  "status": "published",
+  "id": "84550c6436",
+  "sources": [
+   {
+    "name": "Rock Paper Shotgun",
+    "title": "We have reached a new threshold in genAI gloom, with a game dev cancelling a demo for fear of copycats ripping them off before release",
+    "link": "https://www.rockpapershotgun.com/we-have-reached-a-new-threshold-in-genai-gloom-with-a-game-dev-cancelling-a-demo-for-fear-of-copycats-ripping-them-off-before-release",
+    "official": false
+   }
+  ],
+  "ts": 1792169400.0,
+  "written": 1792227792.1078823,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4150720/7d4ab50bd6073a912094cb2b17d0617415e002d3/header.jpg?t=1778427552",
+  "img_v": 2,
+  "img_hd": null,
+  "appid": 4150720,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "추억의 게임 '슈렉 2', 리마스터 버전 출시 예정",
+  "tldr": [
+   "과거 출시되었던 '슈렉 2'의 리마스터 버전이 준비 중이다.",
+   "오랜 기간 소문으로 돌던 리마스터 소식이 공식화 국면에 접어들었다.",
+   "추억의 라이선스 어드벤처 타이틀이 현대 플랫폼으로 복귀한다."
+  ],
+  "why": "2000년대 명작 라이선스 게임으로 꼽히던 슈렉 2를 현대적 그래픽과 환경으로 다시 즐길 기회가 열렸다.",
+  "body": [
+   "2000년대 선풍적인 인기를 끌었던 라이선스 어드벤처 게임 '슈렉 2(Shrek 2)'가 리마스터 버전으로 돌아온다.",
+   "외신 보도에 따르면 그동안 게임 커뮤니티 사이에서 제기되던 슈렉 2 리마스터 출시 소식이 실제로 제작 단계에 들어선 것으로 확인되었다.",
+   "고전 플랫폼 게임 팬들에게 향수를 불러일으키는 프로젝트인 만큼 구체적인 개선점과 발매 스펙에 관심이 쏠리고 있다."
+  ],
+  "category": "신작",
+  "platforms": [],
+  "games": [
+   "슈렉 2"
+  ],
+  "games_en": [
+   "Shrek 2"
+  ],
+  "hook": "슈렉 2가 리마스터된다",
+  "title_en": "Shrek 2 Remaster Officially in the Works",
+  "tldr_en": [
+   "A remaster of the classic Shrek 2 game is currently in development.",
+   "Long-running rumors surrounding the licensed title proved true.",
+   "The project brings the 2000s adventure back to modern gamers."
+  ],
+  "hook_en": "Shrek 2 Remaster Coming",
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [],
+  "status": "published",
+  "id": "d6e1f6e750",
+  "sources": [
+   {
+    "name": "Kotaku",
+    "title": "The Prophecy Was True: A Shrek 2 Remaster Is Coming, For Some Reason",
+    "link": "https://kotaku.com/shrek-2-remaster-announcement-trailer-screenshots-2000746791",
+    "official": false
+   }
+  ],
+  "ts": 1792169056.0,
+  "written": 1792227792.1078906,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar5og8.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar5og8.jpg",
+  "img_src": "IGDB",
+  "video_v": 1
  }
 ]
