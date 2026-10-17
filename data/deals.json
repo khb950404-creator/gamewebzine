@@ -1,5 +1,5 @@
 {
- "updated": "10.17 14:29",
+ "updated": "10.17 14:36",
  "deals": [
   {
    "appid": 1091500,
@@ -2084,31 +2084,10 @@
    "best": 8900
   },
   {
-   "appid": 4964110,
-   "name": "Darkest Dungeon®: The Fire's Edge",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4964110/3f8e34ea4124cd88cae82b38e6291e2804fa0292/header.jpg?t=1787078198",
-   "rank": 62,
-   "discount": 20,
-   "initial": 7500,
-   "final": 6000,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "인디",
-    "RPG",
-    "전략"
-   ],
-   "meta": null,
-   "shops": [],
-   "ever_low": 6000,
-   "best": 6000
-  },
-  {
    "appid": 2537590,
    "name": "Microsoft Flight Simulator 2024",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2537590/header.jpg?t=1791557822",
-   "rank": 63,
+   "rank": 62,
    "discount": 30,
    "initial": 80000,
    "final": 56000,
@@ -2139,10 +2118,67 @@
    "best": 56000
   },
   {
+   "appid": 4964110,
+   "name": "Darkest Dungeon®: The Fire's Edge",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4964110/3f8e34ea4124cd88cae82b38e6291e2804fa0292/header.jpg?t=1787078198",
+   "rank": 63,
+   "discount": 20,
+   "initial": 7500,
+   "final": 6000,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "인디",
+    "RPG",
+    "전략"
+   ],
+   "meta": null,
+   "shops": [],
+   "ever_low": 6000,
+   "best": 6000
+  },
+  {
+   "appid": 1129580,
+   "name": "Medieval Dynasty",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1129580/header.jpg?t=1790889732",
+   "rank": 64,
+   "discount": 50,
+   "initial": 27900,
+   "final": 13950,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "액션",
+    "어드벤처",
+    "인디"
+   ],
+   "meta": 73,
+   "shops": [
+    {
+     "shop": "GamersGate",
+     "krw": 41949,
+     "cut": 10,
+     "url": "https://itad.link/018d9386-940c-738b-b4a7-53857080a5e2/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "Humble Store",
+     "krw": 46715,
+     "cut": 0,
+     "url": "https://itad.link/018d9386-940b-7349-9d57-f0ada7ecc7f1/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 13950,
+   "best": 13950
+  },
+  {
    "appid": 1139980,
    "name": "Travellers Rest",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1139980/4f7daf4884589291ef49f35248d41f76e9b4d967/header.jpg?t=1789987425",
-   "rank": 64,
+   "rank": 65,
    "discount": 25,
    "initial": 19500,
    "final": 14620,
@@ -2187,42 +2223,6 @@
    ],
    "ever_low": 13060,
    "best": 14620
-  },
-  {
-   "appid": 1129580,
-   "name": "Medieval Dynasty",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1129580/header.jpg?t=1790889732",
-   "rank": 65,
-   "discount": 50,
-   "initial": 27900,
-   "final": 13950,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "액션",
-    "어드벤처",
-    "인디"
-   ],
-   "meta": 73,
-   "shops": [
-    {
-     "shop": "GamersGate",
-     "krw": 41949,
-     "cut": 10,
-     "url": "https://itad.link/018d9386-940c-738b-b4a7-53857080a5e2/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "Humble Store",
-     "krw": 46715,
-     "cut": 0,
-     "url": "https://itad.link/018d9386-940b-7349-9d57-f0ada7ecc7f1/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 13950,
-   "best": 13950
   },
   {
    "appid": 2950340,
@@ -2834,30 +2834,10 @@
    "best": 5800
   },
   {
-   "appid": 1040200,
-   "name": "Crime Scene Cleaner",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1040200/a305a7831bee10a091625950d6cd3cdb97f72a22/header.jpg?t=1790922726",
-   "rank": 83,
-   "discount": 27,
-   "initial": 31000,
-   "final": 22630,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "액션",
-    "시뮬레이션"
-   ],
-   "meta": null,
-   "shops": [],
-   "ever_low": 17250,
-   "best": 22630
-  },
-  {
    "appid": 1361210,
    "name": "Warhammer 40,000: Darktide",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1361210/6f8919b0183f24d271650c6dca958fb91edd5849/header_alt_assets_20.jpg?t=1790691939",
-   "rank": 84,
+   "rank": 83,
    "discount": 75,
    "initial": 44000,
    "final": 11000,
@@ -2902,6 +2882,26 @@
    ],
    "ever_low": 8910,
    "best": 11000
+  },
+  {
+   "appid": 1040200,
+   "name": "Crime Scene Cleaner",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1040200/a305a7831bee10a091625950d6cd3cdb97f72a22/header.jpg?t=1790922726",
+   "rank": 84,
+   "discount": 27,
+   "initial": 31000,
+   "final": 22630,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "액션",
+    "시뮬레이션"
+   ],
+   "meta": null,
+   "shops": [],
+   "ever_low": 17250,
+   "best": 22630
   },
   {
    "appid": 2124120,
@@ -3439,7 +3439,7 @@
    "discount": 60,
    "initial": 31000,
    "final": 12400,
-   "low": false,
+   "low": true,
    "ko": true,
    "ko_voice": true,
    "genres": [
