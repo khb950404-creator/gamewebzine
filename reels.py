@@ -9,7 +9,7 @@ from PIL import Image, ImageDraw, ImageFilter
 from cards import ROOT, fetch_img, cover_fit
 from card_themes import BH, NB, NM, ANTON, grade, lines_of, HANDLE
 from carousel import LIME as RED, WHITE, SOFT, best_image
-from ig_post import to_news_tone
+from ig_post import to_card_tone
 
 RW, RH, FPS = 1080, 1920, 24
 T_TITLE, T_POINTS, T_END = 3.5, 5.6, 2.0  # 장면 길이(초)
@@ -69,7 +69,7 @@ def render(a, out_path):
         title_layers.append(text_layer(lambda d, ln=ln, y=y0 + i * 124: d.text((76, y), ln, font=BH(104), fill=WHITE)))
     label = text_layer(lambda d: d.text((76, y0 - 80), f"{a.get('trust')} · {a.get('category')}", font=NB(40), fill=RED))
 
-    points = [to_news_tone(t) for t in a.get("tldr", [])[:3]]
+    points = [to_card_tone(t) for t in a.get("tldr", [])[:3]]
     point_layers, y = [], 560
     for i, t in enumerate(points, 1):
         ls = lines_of(ImageDraw.Draw(Image.new("RGB", (1, 1))), t, NB(54), RW - 260, 3)

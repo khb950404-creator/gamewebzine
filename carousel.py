@@ -61,7 +61,8 @@ def slide_summary(a, total):
     img = text_bg(a)
     d = frame(img, 2, total)
     y = slide_heading(d, 300, "핵심 요약")
-    for i, t in enumerate(a.get("tldr", [])[:3], 1):
+    from ig_post import to_card_tone
+    for i, t in enumerate([to_card_tone(x) for x in a.get("tldr", [])[:3]], 1):
         d.text((76, y), f"{i:02d}", font=ANTON(64), fill=LIME)
         ls = lines_of(d, t, NB(46), W - 250, 3)
         for k, ln in enumerate(ls):
