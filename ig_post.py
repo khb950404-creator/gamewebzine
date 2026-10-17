@@ -221,7 +221,20 @@ def prepare():
     posted = load(POSTED, {})
     queue = [q for q in load(QUEUE, []) if q["id"] not in posted]
     queued = {q["id"] for q in queue}
+    today = datetime.now().strftime("%Y-%m-%d")
+    reels_today = sum(1 for p in posted.values() if p.get("kind") == "reel" and p.get("date") == today)         + sum(1 for q in queue if q.get("kind") == "reel")
     for a in pick([a for a in arts if a["id"] not in queued], posted, int(os.environ.get("IG_PER_RUN", 1)), queued):
+        if reels_today < int(os.environ.get("IG_REELS_DAILY", 2)):
+            try:  # 릴스: 도달이 가장 넓은 형식 → 하루 상위 기사 몇 건은 영상으로
+                from reels import render
+                (SITE / "ig" / a["id"]).mkdir(parents=True, exist_ok=True)
+                render(a, SITE / "ig" / a["id"] / "reel.mp4")
+                queue.append({"id": a["id"], "kind": "reel", "files": ["reel.mp4"], "caption": caption(a)})
+                reels_today += 1
+                print(f"인스타 준비(릴스): {a['title']}")
+                continue
+            except Exception as e:
+                print(f"  ! 릴스 생성 실패, 캐러셀로: {e}")
         slides = build_carousel(a)[:10]  # 캐러셀 최대 10장
         names = []
         for i, im in enumerate(slides, 1):
@@ -241,13 +254,20 @@ def prepare():
         save(DATA / "state.json", st)
     # 이미 대기 중인 기사의 이미지도 다시 만들어 배포본에 포함 (사이트는 매번 새로 빌드되므로)
     for q in queue:
+        if q.get("kind") == "reel" and not (SITE / "ig" / q["id"] / "reel.mp4").exists():
+            a = next((x for x in arts if x["id"] == q["id"]), None)
+            if a:
+                from reels import render
+                (SITE / "ig" / q["id"]).mkdir(parents=True, exist_ok=True)
+                render(a, SITE / "ig" / q["id"] / "reel.mp4")
+            continue
         if q.get("kind") in ("deal", "story") and not (SITE / "ig" / q["id"]).exists():
             try:
                 rebuild_deal(q)
             except Exception as e:
                 print(f"  ! 할인 이미지 재생성 실패 {q['id']}: {e}")
     for q in queue:
-        if not (SITE / "ig" / q["id"]).exists():
+        if q.get("kind", "news") == "news" and not (SITE / "ig" / q["id"]).exists():
             a = next((x for x in arts if x["id"] == q["id"]), None)
             if a:
                 for i, im in enumerate(build_carousel(a)[:10], 1):
@@ -307,7 +327,7 @@ def wait_url(url, tries=24):
     for _ in range(tries):
         try:
             r = urllib.request.urlopen(urllib.request.Request(url + f"?v={int(time.time())}", method="HEAD"), timeout=15)
-            if r.status == 200 and "image" in r.headers.get("Content-Type", ""):
+            if r.status == 200 and any(k in r.headers.get("Content-Type", "") for k in ("image", "video")):
                 return True
         except Exception:
             pass
@@ -315,8 +335,8 @@ def wait_url(url, tries=24):
     return False
 
 
-def wait_ready(cid):
-    for _ in range(30):
+def wait_ready(cid, tries=30):
+    for _ in range(tries):
         st = api("GET", cid, fields="status_code").get("status_code")
         if st == "FINISHED":
             return
@@ -342,6 +362,15 @@ def publish():
             for f in q["files"]:
                 if not wait_url(f"{site_url()}ig/{q['id']}/{f}"):
                     raise RuntimeError(f"이미지가 사이트에 없음: ig/{q['id']}/{f}")
+            if kind == "reel":
+                c = api("POST", f"{uid}/media", media_type="REELS", video_url=f"{site_url()}ig/{q['id']}/reel.mp4",
+                        caption=q["caption"], share_to_feed="true")["id"]
+                wait_ready(c, tries=60)  # 영상 처리는 1~3분 걸림
+                mid = api("POST", f"{uid}/media_publish", creation_id=c)["id"]
+                posted[q["id"]] = {"media": mid, "kind": kind, "date": datetime.now().strftime("%Y-%m-%d"), "ts": time.time()}
+                queue.remove(q)
+                print(f"인스타 릴스 게시: {q['id']}")
+                continue
             if kind == "story":
                 c = api("POST", f"{uid}/media", image_url=f"{site_url()}ig/{q['id']}/{q['files'][0]}", media_type="STORIES")["id"]
                 wait_ready(c)

@@ -25,8 +25,6 @@ def frame(img, page, total, show_dots=False):
     d.rectangle((cx - L, cy - t, cx + L, cy + t), fill=LIME)
     d.rectangle((cx - t, cy - L, cx + t, cy + L), fill=LIME)
     d.text((W - 56, 70), f"{page}/{total}", font=NB(30), fill=LIME, anchor="ra")
-    if show_dots:
-        dots(d, W - 56 - 5 * 22, 150, 6, 6, 22, LIME)
     d.text((W - 56, H - 70), HANDLE, font=NB(32), fill=LIME, anchor="ra")
     return d
 
