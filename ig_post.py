@@ -218,7 +218,11 @@ def prepare():
     try:
         prepare_deals(queue, posted)
     except Exception as e:
+        import traceback
         print(f"  ! 할인 게시물 준비 실패: {e}")
+        st = load(DATA / "state.json", {})
+        st["ig_deals_err"] = traceback.format_exc()[-600:]
+        save(DATA / "state.json", st)
     # 이미 대기 중인 기사의 이미지도 다시 만들어 배포본에 포함 (사이트는 매번 새로 빌드되므로)
     queue[:] = [q for q in queue if q.get("kind", "news") == "news" or (SITE / "ig" / q["id"]).exists()]
     for q in queue:
@@ -296,6 +300,7 @@ def publish():
         except Exception as e:
             print(f"  ! 인스타 게시 실패 {q['id']}: {e}")
             q["fail"] = q.get("fail", 0) + 1
+            q["err"] = str(e)[:300]
             if q["fail"] >= 3:  # 세 번 실패하면 포기
                 queue.remove(q)
         time.sleep(5)
