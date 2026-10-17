@@ -87,11 +87,14 @@ def render(a, out_path):
         d.text((RW // 2, RH - 110), HANDLE, font=NB(40), fill=RED, anchor="mm")
 
     n_title, n_points, n_end = int(T_TITLE * FPS), int(T_POINTS * FPS), int(T_END * FPS)
+    from bgm import make as make_bgm  # 직접 합성한 잔잔한 배경음 (저작권 걱정 없음)
+    music = Path(out_path).with_suffix(".wav")
+    make_bgm(music, seconds=T_TITLE + T_POINTS + T_END + 0.5, key=a["id"])
     total = n_title + n_points + n_end
     cmd = [ffmpeg_bin(), "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{RW}x{RH}", "-r", str(FPS),
-           "-i", "-", "-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo", "-shortest",
+           "-i", "-", "-i", str(music), "-shortest",
            "-c:v", "libx264", "-pix_fmt", "yuv420p", "-preset", "medium", "-crf", "21", "-profile:v", "high",
-           "-c:a", "aac", "-b:a", "96k", "-movflags", "+faststart", str(out_path)]
+           "-c:a", "aac", "-b:a", "128k", "-ar", "44100", "-movflags", "+faststart", str(out_path)]
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     for f in range(total):
         t = f / FPS
@@ -130,6 +133,7 @@ def render(a, out_path):
         proc.stdin.write(im.tobytes())
     proc.stdin.close()
     proc.wait()
+    music.unlink(missing_ok=True)
     return out_path
 
 
