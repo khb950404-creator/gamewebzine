@@ -76,7 +76,7 @@ def pick_deals(n=7):
     return chosen
 
 
-def slide_cover(deals, total):
+def slide_cover(deals, total, line1="이번 주 Steam", line2="역대 최저가", sub="한국어 지원 · 할인율 · 마감일 한 번에"):
     img = Image.new("RGB", (W, H), (10, 10, 12))
     ims = [fetch_img(x["hd"]) for x in deals[:4]]
     for k, im in enumerate(i for i in ims if i):
@@ -84,10 +84,10 @@ def slide_cover(deals, total):
     img = shade(img, 0.15, 235)
     d = frame(img, 1, total)
     d.text((76, 600), datetime.now().strftime("%m.%d") + " 기준", font=NB(36), fill=RED)
-    d.text((76, 660), "이번 주 Steam", font=BH(104), fill=WHITE)
-    d.text((76, 894), "역대 최저가", font=BH(104), fill=WHITE, anchor="ls")
-    d.text((76 + d.textlength("역대 최저가 ", font=BH(104)), 900), str(len(deals)), font=ANTON(170), fill=RED, anchor="ls")
-    d.text((76, 960), "한국어 지원 · 할인율 · 마감일 한 번에", font=NM(36), fill=SOFT)
+    d.text((76, 660), line1, font=BH(104), fill=WHITE)
+    d.text((76, 894), line2, font=BH(104), fill=WHITE, anchor="ls")
+    d.text((76 + d.textlength(line2 + " ", font=BH(104)), 900), str(len(deals)), font=ANTON(170), fill=RED, anchor="ls")
+    d.text((76, 960), sub, font=NM(36), fill=SOFT)
     d.text((76, H - 80), "넘겨서 보기 →", font=NB(32), fill=WHITE, anchor="lm")
     return img
 
@@ -164,10 +164,52 @@ def slide_end(deals, total):
     return img
 
 
-def build(n=7):
-    deals = pick_deals(n)
+def story(x):
+    """오늘의 딜: 인스타 스토리 1장 (9:16)."""
+    SW, SH = 1080, 1920
+    img = Image.new("RGB", (SW, SH), (12, 12, 14))
+    im = fetch_img(x["hd"])
+    if im:
+        top = grade(cover_fit(im, SW, 1100), mono=0.2, bright=0.9, contrast=1.05)
+        img.paste(top, (0, 0))
+        fade = Image.new("L", (1, 1100))
+        for yy in range(1100):
+            fade.putpixel((0, yy), int(max(0, (yy - 650) / 450) ** 1.3 * 255))
+        img.paste(Image.new("RGB", (SW, 1100), (12, 12, 14)), (0, 0), fade.resize((SW, 1100)))
+    d = ImageDraw.Draw(img)
+    plus(d, 100, 180)
+    d.text((150, 180), "오늘의 딜", font=BH(56), fill=WHITE, anchor="lm", stroke_width=3, stroke_fill=(10, 10, 12))
+    pct = f"-{x['discount']}%"
+    d.rounded_rectangle((76, 960, 76 + d.textlength(pct, font=ANTON(150)) + 56, 1160), 18, fill=RED)
+    d.text((104, 1060), pct, font=ANTON(150), fill=WHITE, anchor="lm")
+    y = 1210
+    for ln in lines_of(d, x["name"].replace("™", "").replace("®", ""), BH(84), SW - 152, 2):
+        d.text((76, y), ln, font=BH(84), fill=WHITE)
+        y += 104
+    orig = f"₩{x['initial']:,}"
+    d.text((76, y + 50), orig, font=NM(48), fill=(150, 150, 158), anchor="lm")
+    ow = d.textlength(orig, font=NM(48))
+    d.line([(76, y + 52), (76 + ow, y + 52)], fill=(150, 150, 158), width=3)
+    d.text((76 + ow + 100, y + 50), f"₩{x['final']:,}", font=BH(100), fill=WHITE, anchor="lm")
+    d.text((76 + ow + 30, y + 50), "→", font=NM(48), fill=(150, 150, 158), anchor="lm")
+    y += 140
+    bx = 76
+    if x.get("record"):
+        bx = badge(d, bx, y, "역대 최저가", RED, f=NB(36))
+    if x.get("ko"):
+        bx = badge(d, bx, y, "한국어 지원", GREEN, f=NB(36))
+    if x.get("meta"):
+        badge(d, bx, y, f"메타 {x['meta']}", (60, 60, 68), f=NB(36))
+    if x.get("expiry"):
+        d.text((76, y + 110), f"{int(x['expiry'][5:7])}월 {int(x['expiry'][8:10])}일까지", font=NM(40), fill=SOFT)
+    d.text((SW // 2, SH - 120), HANDLE, font=NB(38), fill=RED, anchor="mm")
+    return img
+
+
+def build(n=7, skip=(), **cover):
+    deals = [x for x in pick_deals(n + len(skip)) if x["appid"] not in skip][:n]
     total = len(deals) + 2
-    return [slide_cover(deals, total)] + [slide_deal(x, i + 2, total) for i, x in enumerate(deals)] + [slide_end(deals, total)], deals
+    return [slide_cover(deals, total, **cover)] + [slide_deal(x, i + 2, total) for i, x in enumerate(deals)] + [slide_end(deals, total)], deals
 
 
 if __name__ == "__main__":

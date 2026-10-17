@@ -29,6 +29,7 @@ env:
   IG_USER_ID: ${{ secrets.IG_USER_ID }}
   IG_ENABLED: ${{ vars.IG_ENABLED }}
   IG_DAILY: ${{ vars.IG_DAILY || '4' }}
+  IG_FORCE: ${{ contains(github.event.head_commit.message, '[ig-now]') && '1' || '' }}
   IGDB_CLIENT_SECRET: ${{ secrets.IGDB_CLIENT_SECRET }}
   MAX_ARTICLES: ${{ vars.MAX_ARTICLES || '12' }}
   REVIEW_ALL: ${{ vars.REVIEW_ALL || '0' }}
@@ -101,7 +102,7 @@ jobs:
 
   instagram:
     needs: deploy                # 이미지가 사이트에 올라간 뒤에 게시
-    if: github.event_name != 'push'
+    if: github.event_name != 'push' || contains(github.event.head_commit.message, '[ig-now]')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

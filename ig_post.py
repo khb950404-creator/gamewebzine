@@ -94,7 +94,7 @@ def refresh_if_needed():
 # ---------- 준비: 기사 고르기 + 이미지 ----------
 def pick(arts, posted, n, queued_ids=()):
     today = datetime.now().strftime("%Y-%m-%d")
-    done_today = sum(1 for p in posted.values() if p.get("date") == today)
+    done_today = sum(1 for p in posted.values() if p.get("date") == today and p.get("kind", "news") == "news")
     room = min(n, int(os.environ.get("IG_DAILY", 4)) - done_today)
     if room <= 0:
         return []
@@ -120,6 +120,85 @@ def pick(arts, posted, n, queued_ids=()):
     return out
 
 
+# ---------- 할인 게시물: 주간 최저가 · 대형 세일 특집 · 오늘의 딜 ----------
+MAJOR_SALE = [("summer", "여름 세일"), ("autumn", "가을 세일"), ("fall", "가을 세일"), ("winter", "겨울 세일"),
+              ("spring", "봄 세일"), ("lunar", "설날 세일"), ("halloween", "핼러윈 세일")]
+
+
+def detect_major_sale():
+    """Steam 메인 스포트라이트에서 대형 시즌 세일을 찾는다 → (키, 한국어 이름) 또는 None."""
+    try:
+        d = json.loads(urllib.request.urlopen(urllib.request.Request(
+            "https://store.steampowered.com/api/featuredcategories?cc=kr&l=english",
+            headers={"User-Agent": "Mozilla/5.0"}), timeout=20).read())
+    except Exception:
+        return None
+    for v in d.values():
+        if not isinstance(v, dict) or v.get("name") != "Spotlights":
+            continue
+        for it in v.get("items", []):
+            text = f"{it.get('name', '')} {it.get('url', '')}".lower()
+            if "/sale/" not in text and "sale" not in text:
+                continue
+            for k, ko in MAJOR_SALE:
+                if k in text:
+                    return f"{k}-{datetime.now().year}", ko
+    return None
+
+
+def save_slides(key, slides):
+    (SITE / "ig" / key).mkdir(parents=True, exist_ok=True)
+    names = []
+    for i, im in enumerate(slides[:10], 1):
+        im.convert("RGB").save(SITE / "ig" / key / f"{i:02d}.jpg", quality=88)
+        names.append(f"{i:02d}.jpg")
+    return names
+
+
+def featured_recent(posted, days=7):
+    return {a for p in posted.values() if time.time() - p.get("ts", 0) < days * 86400 for a in p.get("appids", [])}
+
+
+def deal_caption(deals, head):
+    lines = [head, ""] + [f"▪ {x['name'].replace('™', '')} -{x['discount']}% ₩{x['final']:,}" for x in deals]
+    lines += ["", "세일 끝나기 전에 저장해두세요 📌", "가격은 게시 시점 Steam 한국 가격 기준", "",
+              "#스팀할인 #스팀세일 #게임할인 #역대최저가 #PC게임 #게임추천 #알트탭"]
+    return "\n".join(lines)
+
+
+def prepare_deals(queue, posted):
+    if not (DATA / "deals.json").exists():
+        return
+    import deals_carousel as dc
+    now = datetime.now()
+    keys = set(posted) | {q["id"] for q in queue}
+    skip = featured_recent(posted)
+    # ① 대형 세일 특집 (세일당 한 번)
+    sale = detect_major_sale()
+    if sale and f"sale-{sale[0]}" not in keys:
+        slides, deals = dc.build(10, line1=f"스팀 {sale[1]}", line2="지금 살 게임", sub="역대 최저가 · 한국어 지원 위주로 골랐습니다")
+        key = f"sale-{sale[0]}"
+        queue.append({"id": key, "kind": "deal", "files": save_slides(key, slides), "appids": [x["appid"] for x in deals],
+                      "caption": deal_caption(deals, f"🔥 스팀 {sale[1]} 시작! 지금 사야 할 게임 {len(deals)}")})
+        print(f"인스타 준비: 대형 세일 특집 {sale[1]}")
+    # ② 주간 역대 최저가 (금요일 17시 이후, 주 1회)
+    wk = f"deals-{now.isocalendar()[0]}-{now.isocalendar()[1]:02d}"
+    force = os.environ.get("IG_FORCE") == "1"  # 수동 즉시 게시 (요일·시간 조건 무시)
+    if (force or (now.weekday() == 4 and now.hour >= 17)) and wk not in keys:
+        slides, deals = dc.build(7, skip=skip)
+        queue.append({"id": wk, "kind": "deal", "files": save_slides(wk, slides), "appids": [x["appid"] for x in deals],
+                      "caption": deal_caption(deals, f"💸 이번 주 Steam 역대 최저가 {len(deals)}")})
+        print("인스타 준비: 주간 할인")
+    # ③ 오늘의 딜 스토리 (매일 9시 이후 하루 한 번, 최근 7일 소개한 게임 제외)
+    sk = f"story-{now.strftime('%Y-%m-%d')}"
+    if (force or now.hour >= 9) and sk not in keys:
+        cand = [x for x in dc.pick_deals(30) if x["appid"] not in skip]
+        if cand:
+            x = cand[0]
+            queue.append({"id": sk, "kind": "story", "files": save_slides(sk, [dc.story(x)]), "appids": [x["appid"]]})
+            print(f"인스타 준비: 오늘의 딜 {x['name']}")
+
+
 def prepare():
     from carousel import build_carousel
     arts = load(DATA / "articles.json", [])
@@ -136,7 +215,12 @@ def prepare():
             names.append(name)
         queue.append({"id": a["id"], "files": names, "caption": caption(a)})
         print(f"인스타 준비: {a['title']} ({len(names)}장)")
+    try:
+        prepare_deals(queue, posted)
+    except Exception as e:
+        print(f"  ! 할인 게시물 준비 실패: {e}")
     # 이미 대기 중인 기사의 이미지도 다시 만들어 배포본에 포함 (사이트는 매번 새로 빌드되므로)
+    queue[:] = [q for q in queue if q.get("kind", "news") == "news" or (SITE / "ig" / q["id"]).exists()]
     for q in queue:
         if not (SITE / "ig" / q["id"]).exists():
             a = next((x for x in arts if x["id"] == q["id"]), None)
@@ -186,6 +270,16 @@ def publish():
             queue.remove(q)
             continue
         try:
+            kind = q.get("kind", "news")
+            if kind == "story":
+                c = api("POST", f"{uid}/media", image_url=f"{site_url()}ig/{q['id']}/{q['files'][0]}", media_type="STORIES")["id"]
+                wait_ready(c)
+                mid = api("POST", f"{uid}/media_publish", creation_id=c)["id"]
+                posted[q["id"]] = {"media": mid, "kind": kind, "appids": q.get("appids", []),
+                                   "date": datetime.now().strftime("%Y-%m-%d"), "ts": time.time()}
+                queue.remove(q)
+                print(f"인스타 스토리 게시: {q['id']}")
+                continue
             children = []
             for f in q["files"]:
                 url = f"{site_url()}ig/{q['id']}/{f}"
@@ -195,7 +289,8 @@ def publish():
             parent = api("POST", f"{uid}/media", media_type="CAROUSEL", children=",".join(children), caption=q["caption"])["id"]
             wait_ready(parent)
             mid = api("POST", f"{uid}/media_publish", creation_id=parent)["id"]
-            posted[q["id"]] = {"media": mid, "date": datetime.now().strftime("%Y-%m-%d"), "ts": time.time()}
+            posted[q["id"]] = {"media": mid, "kind": q.get("kind", "news"), "appids": q.get("appids", []),
+                               "date": datetime.now().strftime("%Y-%m-%d"), "ts": time.time()}
             queue.remove(q)
             print(f"인스타 게시 완료: {q['id']} → {mid}")
         except Exception as e:
