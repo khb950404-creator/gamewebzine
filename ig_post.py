@@ -166,6 +166,21 @@ def deal_caption(deals, head):
     return "\n".join(lines)
 
 
+def rebuild_deal(q):
+    import deals_carousel as dc
+    pool = {x["appid"]: x for x in dc.pick_deals(200)}
+    deals = [pool[a] for a in q.get("appids", []) if a in pool]
+    if not deals:
+        return
+    if q["kind"] == "story":
+        save_slides(q["id"], [dc.story(deals[0])])
+    else:
+        total = len(deals) + 2
+        cover = q.get("cover") or {}
+        slides = [dc.slide_cover(deals, total, **cover)] + [dc.slide_deal(x, i + 2, total) for i, x in enumerate(deals)]             + [dc.slide_end(deals, total)]
+        save_slides(q["id"], slides)
+
+
 def prepare_deals(queue, posted):
     if not (DATA / "deals.json").exists():
         return
@@ -176,9 +191,10 @@ def prepare_deals(queue, posted):
     # ① 대형 세일 특집 (세일당 한 번)
     sale = detect_major_sale()
     if sale and f"sale-{sale[0]}" not in keys:
-        slides, deals = dc.build(10, line1=f"스팀 {sale[1]}", line2="지금 살 게임", sub="역대 최저가 · 한국어 지원 위주로 골랐습니다")
+        cover = dict(line1=f"스팀 {sale[1]}", line2="지금 살 게임", sub="역대 최저가 · 한국어 지원 위주로 골랐습니다")
+        slides, deals = dc.build(10, **cover)
         key = f"sale-{sale[0]}"
-        queue.append({"id": key, "kind": "deal", "files": save_slides(key, slides), "appids": [x["appid"] for x in deals],
+        queue.append({"id": key, "kind": "deal", "cover": cover, "files": save_slides(key, slides), "appids": [x["appid"] for x in deals],
                       "caption": deal_caption(deals, f"🔥 스팀 {sale[1]} 시작! 지금 사야 할 게임 {len(deals)}")})
         print(f"인스타 준비: 대형 세일 특집 {sale[1]}")
     # ② 주간 역대 최저가 (금요일 17시 이후, 주 1회)
@@ -224,7 +240,12 @@ def prepare():
         st["ig_deals_err"] = traceback.format_exc()[-600:]
         save(DATA / "state.json", st)
     # 이미 대기 중인 기사의 이미지도 다시 만들어 배포본에 포함 (사이트는 매번 새로 빌드되므로)
-    queue[:] = [q for q in queue if q.get("kind", "news") == "news" or (SITE / "ig" / q["id"]).exists()]
+    for q in queue:
+        if q.get("kind") in ("deal", "story") and not (SITE / "ig" / q["id"]).exists():
+            try:
+                rebuild_deal(q)
+            except Exception as e:
+                print(f"  ! 할인 이미지 재생성 실패 {q['id']}: {e}")
     for q in queue:
         if not (SITE / "ig" / q["id"]).exists():
             a = next((x for x in arts if x["id"] == q["id"]), None)
