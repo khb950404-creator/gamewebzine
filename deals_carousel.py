@@ -29,16 +29,25 @@ def frame(img, page, total):
 
 
 def key_art(appid, fallback):
-    """글자 없는 공식 키아트(library_hero) 우선. 스크린샷 첫 장은 홍보용 인포그래픽인 경우가 있다."""
-    import urllib.request
-    for u in (f"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/{appid}/library_hero.jpg",
-              f"https://cdn.akamai.steamstatic.com/steam/apps/{appid}/library_hero.jpg"):
-        try:
-            r = urllib.request.urlopen(urllib.request.Request(u, method="HEAD", headers={"User-Agent": "Mozilla/5.0"}), timeout=10)
-            if r.status == 200:
-                return u
-        except Exception:
-            pass
+    """글자 없는 공식 키아트(library_hero) 우선. Steam StoreBrowse API 로 정확한 주소를 얻는다."""
+    import urllib.request, urllib.parse
+    q = json.dumps({"ids": [{"appid": int(appid)}], "context": {"country_code": "KR"},
+                    "data_request": {"include_assets": True, "include_screenshots": True}})
+    try:
+        r = json.loads(urllib.request.urlopen(urllib.request.Request(
+            "https://api.steampowered.com/IStoreBrowseService/GetItems/v1/?input_json=" + urllib.parse.quote(q),
+            headers={"User-Agent": "Mozilla/5.0"}), timeout=15).read())
+        it = r["response"]["store_items"][0]
+        assets = it.get("assets") or {}
+        fmt = assets.get("asset_url_format", "")
+        for k in ("library_hero_2x", "library_hero", "page_background"):
+            if assets.get(k) and fmt:
+                return "https://shared.akamai.steamstatic.com/store_item_assets/" + fmt.replace("${FILENAME}", assets[k])
+        shots = (it.get("screenshots") or {}).get("all_ages_screenshots") or []
+        if shots:
+            return "https://shared.akamai.steamstatic.com/store_item_assets/" + shots[0]["filename"]
+    except Exception:
+        pass
     return fallback
 
 

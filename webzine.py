@@ -189,7 +189,7 @@ JSON 하나만 출력:
 {{"articles": [
  {{"issue": 이슈 번호,
   "title": "한국어 헤드라인(40자 이내, 낚시 금지)",
-  "tldr": ["핵심 요약 1", "핵심 요약 2", "핵심 요약 3"],
+  "tldr": ["핵심 요약 1", "핵심 요약 2", "핵심 요약 3"] (각각 '~했다', '~이다'로 끝나는 기사체 완결 문장),
   "why": "PC·콘솔 게이머에게 왜 중요한가 (1~2문장)",
   "body": ["문단1", "문단2", "문단3"],
   "category": "{cats} 중 하나",
@@ -596,6 +596,15 @@ def steam_info(d):
             "meta": (d.get("metacritic") or {}).get("score")}
 
 
+def library_hero(appid):
+    u = f"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/{appid}/library_hero.jpg"
+    try:
+        urllib.request.urlopen(urllib.request.Request(u, method="HEAD", headers=UA), timeout=10)
+        return u
+    except Exception:
+        return None
+
+
 def steam_app(appid, cache):
     """appid → {name, img}. data/steam_apps.json 에 캐시."""
     key = f"id:{appid}"
@@ -604,7 +613,7 @@ def steam_app(appid, cache):
             d = get_json(f"https://store.steampowered.com/api/appdetails?appids={appid}&cc=kr&l=koreana")[str(appid)]
             d = d.get("data") if d.get("success") else None
             # hd: 첫 번째 공식 스크린샷(1920x1080) — 기사 대표 이미지용
-            shots = (d or {}).get("screenshots") or [{}]
+            shots = (d or {}).get("screenshots") or [{"path_full": library_hero(appid)}]
             cache[key] = {"appid": appid, "name": d["name"], "img": d.get("header_image"),
                           "hd": shots[0].get("path_full") or d.get("header_image"), "info": steam_info(d)} if d else None
             time.sleep(0.3)

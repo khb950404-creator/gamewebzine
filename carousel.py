@@ -132,7 +132,17 @@ def slide_end(a, total):
     return img
 
 
+def best_image(a):
+    """카드 배경은 크게 늘어나므로 고해상도 우선: 스크린샷(1920) > Steam 키아트(3840) > 기존 이미지."""
+    hd = a.get("img_hd") or a.get("img") or ""
+    if a.get("appid") and ("1920x1080" not in hd):
+        from deals_carousel import key_art
+        return key_art(a["appid"], hd)
+    return hd
+
+
 def build_carousel(a):
+    a = {**a, "img_hd": best_image(a)}
     pages = body_pages(a)
     total = 2 + len(pages) + 1
     slides = [slide_title(a, total), slide_summary(a, total)]

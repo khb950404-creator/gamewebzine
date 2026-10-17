@@ -161,7 +161,7 @@ def featured_recent(posted, days=7):
 
 def deal_caption(deals, head):
     lines = [head, ""] + [f"▪ {x['name'].replace('™', '')} -{x['discount']}% ₩{x['final']:,}" for x in deals]
-    lines += ["", "세일 끝나기 전에 저장해두세요 📌", "가격은 게시 시점 Steam 한국 가격 기준", "",
+    lines += ["", "할인은 게임별 마감일까지 진행된다. 가격은 게시 시점 Steam 한국 가격 기준이다.", "",
               "#스팀할인 #스팀세일 #게임할인 #역대최저가 #PC게임 #게임추천 #알트탭"]
     return "\n".join(lines)
 
@@ -256,14 +256,44 @@ def prepare():
     save(QUEUE, queue)
 
 
+ENDINGS = [("됨", "됐다"), ("함", "했다"), ("임", "이다"), ("짐", "졌다"), ("음", "었다"), ("냄", "냈다"), ("둠", "뒀다"),
+           ("줌", "줬다"), ("봄", "봤다"), ("옴", "왔다"), ("감", "갔다"), ("섬", "섰다")]
+
+
+# 대상이 주어인 경우가 많은 명사는 '~됐다', 상태는 '~한다'
+NOUN_END = {"출시": "됐다", "공개": "됐다", "탑재": "됐다", "추가": "됐다", "적용": "됐다", "연기": "됐다", "확정": "됐다",
+            "인하": "됐다", "인상": "됐다", "종료": "됐다", "개시": "됐다", "도입": "됐다", "유출": "됐다", "지원": "한다", "제공": "된다"}
+NOUN_IS = ("예정", "계획", "방침", "전망", "상황", "상태", "중", "가능성", "목표", "방향", "수준", "규모", "전략")
+
+
+def to_news_tone(t):
+    """'~시작됨', '~출시' 같은 개조식 끝맺음을 기사체('~시작됐다.', '~출시했다.')로."""
+    t = t.strip().rstrip(".")
+    if t.endswith("다"):
+        return t + "."
+    for a_, b_ in ENDINGS:
+        if t.endswith(a_):
+            return t[: -len(a_)] + b_ + "."
+    if t.endswith(NOUN_IS):
+        return t + "이다."
+    for n_, e_ in NOUN_END.items():
+        if t.endswith(n_):
+            return t + e_ + "."
+    if t and "가" <= t[-1] <= "힣":
+        return t + "했다."
+    return t + "."
+
+
 def caption(a):
     tags = ["게임뉴스", "게임소식", "알트탭"]
     tags += [HASHTAG[a["category"]]] if a.get("category") in HASHTAG else []
     tags += [p.replace(" ", "") for p in a.get("platforms", [])]
     tags += ["".join(ch for ch in g if ch.isalnum()) for g in (a.get("games") or [])[:2]]
-    lines = [a["title"], ""] + [f"▪ {t}" for t in a.get("tldr", [])[:3]]
-    lines += ["", "넘겨서 자세히 보기 👉", "매일 게임 소식 3줄, 팔로우하고 받아보세요.", "",
-              " ".join("#" + t for t in dict.fromkeys(t for t in tags if t))]
+    srcs = [s_["name"] for s_ in a.get("sources", [])]
+    lines = [a["title"], ""] + [to_news_tone(t) for t in a.get("tldr", [])[:3]]
+    if srcs:
+        lines += ["", "출처: " + srcs[0] + (f" 외 {len(srcs) - 1}곳" if len(srcs) > 1 else "")]
+    lines += ["", " ".join("#" + t for t in dict.fromkeys(t for t in tags if t))]
     return "\n".join(lines)[:2100]
 
 
