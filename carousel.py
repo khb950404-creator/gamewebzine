@@ -50,7 +50,6 @@ def slide_title(a, total):
     for ln in lines:
         d.text((76, y), ln, font=BH(108), fill=WHITE)
         y += 126
-    d.text((76, H - 80), "넘겨서 보기 →", font=NB(32), fill=WHITE, anchor="lm")
     return img
 
 

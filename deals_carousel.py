@@ -98,7 +98,6 @@ def slide_cover(deals, total, line1="이번 주 Steam", line2="역대 최저가"
     d.text((76, 894), line2, font=BH(104), fill=WHITE, anchor="ls")
     d.text((76 + d.textlength(line2 + " ", font=BH(104)), 900), str(len(deals)), font=ANTON(170), fill=GOLD, anchor="ls")
     d.text((76, 960), sub, font=NM(36), fill=SOFT)
-    d.text((76, H - 80), "넘겨서 보기 →", font=NB(32), fill=WHITE, anchor="lm")
     return img
 
 
