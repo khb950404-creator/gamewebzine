@@ -1,4 +1,4 @@
-"""기사 1건 → 인스타 캐러셀 (A 네온 테마).
+"""기사 1건 → 인스타 캐러셀 (알트탭 레드 테마).
 
   1장  썸네일: 이미지 + 제목만
   2장  핵심 요약 (3줄)
@@ -12,9 +12,10 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFilter
 
 from cards import W, H, ROOT, wrap
-from card_themes import LIME, BH, NB, NM, NR, ANTON, bg, shade, circle_text, dots, lines_of, HANDLE
+from card_themes import BH, NB, NM, NR, ANTON, bg, shade, circle_text, dots, lines_of, HANDLE
 
 WHITE, SOFT = (255, 255, 255), (222, 222, 226)
+LIME = (229, 72, 77)  # 사이트와 같은 핑크빛 레드 (#e5484d)
 
 
 def frame(img, page, total, show_dots=False):
@@ -122,8 +123,8 @@ def slide_end(a, total):
         d.text((76, y), f"이미지: {a['img_src']}", font=NR(28), fill=(150, 150, 158))
     # 행동 유도
     d.rounded_rectangle((76, H - 330, W - 76, H - 170), 24, fill=LIME)
-    d.text((W // 2, H - 280), "전체 기사·영상은", font=NB(40), fill=(15, 15, 15), anchor="mm")
-    d.text((W // 2, H - 220), "프로필 링크에서", font=BH(56), fill=(15, 15, 15), anchor="mm")
+    d.text((W // 2, H - 280), "전체 기사·영상은", font=NB(40), fill=WHITE, anchor="mm")
+    d.text((W // 2, H - 220), "프로필 링크에서", font=BH(56), fill=WHITE, anchor="mm")
     return img
 
 
