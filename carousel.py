@@ -20,7 +20,10 @@ LIME = (229, 72, 77)  # 사이트와 같은 핑크빛 레드 (#e5484d)
 
 def frame(img, page, total, show_dots=False):
     d = ImageDraw.Draw(img)
-    d.text((96, 104), "+", font=ANTON(96), fill=LIME, anchor="mm")  # 디자인 포인트 (로고의 +)
+    # 디자인 포인트: 로고의 '+' (가늘게 — 굵으면 의료용 십자가처럼 보임)
+    cx, cy, L, t = 100, 100, 26, 4
+    d.rectangle((cx - L, cy - t, cx + L, cy + t), fill=LIME)
+    d.rectangle((cx - t, cy - L, cx + t, cy + L), fill=LIME)
     d.text((W - 56, 70), f"{page}/{total}", font=NB(30), fill=LIME, anchor="ra")
     if show_dots:
         dots(d, W - 56 - 5 * 22, 150, 6, 6, 22, LIME)
