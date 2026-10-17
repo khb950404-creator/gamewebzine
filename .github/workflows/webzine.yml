@@ -82,11 +82,12 @@ jobs:
 
       - name: 데이터 커밋
         if: always()
+        continue-on-error: true   # 동시에 다른 커밋이 들어와 충돌해도 배포는 진행
         run: |
           git config user.name "webzine-bot"
           git config user.email "webzine-bot@users.noreply.github.com"
           git add data
-          git diff --cached --quiet || (git commit -m "새 기사 $(date '+%m-%d %H:%M')" && git pull --rebase && git push)
+          git diff --cached --quiet || (git commit -m "새 기사 $(date '+%m-%d %H:%M')" && (git pull --rebase -X theirs || (git rebase --abort; git pull --no-rebase -X ours)) && git push)
 
       - name: 실패 알림 (이슈 생성 → 이메일)
         if: failure()
