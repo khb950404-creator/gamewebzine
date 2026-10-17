@@ -251,6 +251,19 @@ def site_url():
     return os.environ.get("SITE_URL", "https://khb950404-creator.github.io/gamewebzine/").rstrip("/") + "/"
 
 
+def wait_url(url, tries=24):
+    """배포 직후엔 CDN 에 아직 없을 수 있다 → 이미지가 실제로 열릴 때까지 대기 (최대 약 4분)."""
+    for _ in range(tries):
+        try:
+            r = urllib.request.urlopen(urllib.request.Request(url + f"?v={int(time.time())}", method="HEAD"), timeout=15)
+            if r.status == 200 and "image" in r.headers.get("Content-Type", ""):
+                return True
+        except Exception:
+            pass
+        time.sleep(10)
+    return False
+
+
 def wait_ready(cid):
     for _ in range(30):
         st = api("GET", cid, fields="status_code").get("status_code")
@@ -275,6 +288,9 @@ def publish():
             continue
         try:
             kind = q.get("kind", "news")
+            for f in q["files"]:
+                if not wait_url(f"{site_url()}ig/{q['id']}/{f}"):
+                    raise RuntimeError(f"이미지가 사이트에 없음: ig/{q['id']}/{f}")
             if kind == "story":
                 c = api("POST", f"{uid}/media", image_url=f"{site_url()}ig/{q['id']}/{q['files'][0]}", media_type="STORIES")["id"]
                 wait_ready(c)
