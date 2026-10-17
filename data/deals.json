@@ -1,5 +1,5 @@
 {
- "updated": "10.17 17:10",
+ "updated": "10.17 17:21",
  "deals": [
   {
    "appid": 1091500,
@@ -3556,25 +3556,54 @@
    "best": 12800
   },
   {
-   "appid": 3816030,
-   "name": "DayZ Badlands",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3816030/a14cce662d9a779789852279c1d2006e48a1cb03/header.jpg?t=1792059040",
+   "appid": 4538960,
+   "name": "제노니아 1: 기억의 실타래",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4538960/f25c2ff778bf89922cba126556625d47a8a30ffa/header.jpg?t=1791337760",
    "rank": 100,
-   "discount": 10,
-   "initial": 31500,
-   "final": 28350,
+   "discount": 20,
+   "initial": 9900,
+   "final": 7920,
    "low": true,
-   "ko": false,
+   "ko": true,
    "ko_voice": false,
    "genres": [
     "액션",
     "어드벤처",
-    "대규모 멀티플레이어"
+    "인디"
    ],
    "meta": null,
-   "shops": [],
-   "ever_low": 28350,
-   "best": 28350
+   "shops": [
+    {
+     "shop": "GreenManGaming",
+     "krw": 9900,
+     "cut": 0,
+     "url": "https://itad.link/01a0570c-d33e-7222-9646-3b146fb1601e/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GamesPlanet US",
+     "krw": 12670,
+     "cut": 5,
+     "url": "https://itad.link/01a056a5-2637-7344-9485-5014adfdaed8/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GameBillet",
+     "krw": 13338,
+     "cut": 0,
+     "url": "https://itad.link/01a037e2-89a3-729a-b339-2e95d6fcf93b/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "DLGamer",
+     "krw": 13338,
+     "cut": 0,
+     "url": "https://itad.link/01a08bed-1068-7316-9b8c-e34a1c17e379/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 7920,
+   "best": 7920
   }
  ],
  "shops_status": "ok",
