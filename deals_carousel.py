@@ -10,21 +10,22 @@ from PIL import Image, ImageDraw, ImageFilter
 from cards import W, H, ROOT, fetch_img, cover_fit
 from card_themes import BH, NB, NM, NR, ANTON, grade, shade, lines_of, HANDLE
 from carousel import LIME as RED, WHITE, SOFT
+GOLD, INK = (245, 178, 51), (18, 16, 12)  # 할인 테마: 알트탭 레드와 어울리는 웜 골드, 그 위 글자는 진한 먹색
 
 DATA = ROOT / "data"
 GREEN = (31, 157, 85)
 
 
 def plus(d, cx=100, cy=100, L=26, t=4):
-    d.rectangle((cx - L, cy - t, cx + L, cy + t), fill=RED)
-    d.rectangle((cx - t, cy - L, cx + t, cy + L), fill=RED)
+    d.rectangle((cx - L, cy - t, cx + L, cy + t), fill=GOLD)
+    d.rectangle((cx - t, cy - L, cx + t, cy + L), fill=GOLD)
 
 
 def frame(img, page, total):
     d = ImageDraw.Draw(img)
     plus(d)
-    d.text((W - 56, 70), f"{page}/{total}", font=NB(30), fill=RED, anchor="ra", stroke_width=3, stroke_fill=(10, 10, 12))
-    d.text((W - 56, H - 70), HANDLE, font=NB(32), fill=RED, anchor="ra")
+    d.text((W - 56, 70), f"{page}/{total}", font=NB(30), fill=GOLD, anchor="ra", stroke_width=3, stroke_fill=(10, 10, 12))
+    d.text((W - 56, H - 70), HANDLE, font=NB(32), fill=GOLD, anchor="ra")
     return d
 
 
@@ -92,10 +93,10 @@ def slide_cover(deals, total, line1="이번 주 Steam", line2="역대 최저가"
         img.paste(grade(cover_fit(im, W // 2, H // 2), bright=0.75), ((k % 2) * W // 2, (k // 2) * H // 2))
     img = shade(img, 0.15, 235)
     d = frame(img, 1, total)
-    d.text((76, 600), datetime.now().strftime("%m.%d") + " 기준", font=NB(36), fill=RED)
+    d.text((76, 600), datetime.now().strftime("%m.%d") + " 기준", font=NB(36), fill=GOLD)
     d.text((76, 660), line1, font=BH(104), fill=WHITE)
     d.text((76, 894), line2, font=BH(104), fill=WHITE, anchor="ls")
-    d.text((76 + d.textlength(line2 + " ", font=BH(104)), 900), str(len(deals)), font=ANTON(170), fill=RED, anchor="ls")
+    d.text((76 + d.textlength(line2 + " ", font=BH(104)), 900), str(len(deals)), font=ANTON(170), fill=GOLD, anchor="ls")
     d.text((76, 960), sub, font=NM(36), fill=SOFT)
     d.text((76, H - 80), "넘겨서 보기 →", font=NB(32), fill=WHITE, anchor="lm")
     return img
@@ -122,8 +123,8 @@ def slide_deal(x, page, total):
     d = frame(img, page, total)
     # 할인율: 큰 레드 블록
     pct = f"-{x['discount']}%"
-    d.rounded_rectangle((76, 560, 76 + d.textlength(pct, font=ANTON(120)) + 48, 720), 16, fill=RED)
-    d.text((100, 640), pct, font=ANTON(120), fill=WHITE, anchor="lm")
+    d.rounded_rectangle((76, 560, 76 + d.textlength(pct, font=ANTON(120)) + 48, 720), 16, fill=GOLD)
+    d.text((100, 640), pct, font=ANTON(120), fill=INK, anchor="lm")
     # 게임명
     y = 760
     for ln in lines_of(d, x["name"].replace("™", "").replace("®", ""), BH(72), W - 152, 2):
@@ -141,7 +142,7 @@ def slide_deal(x, page, total):
     y += 110
     bx = 76
     if x.get("record"):
-        bx = badge(d, bx, y, "역대 최저가", RED)
+        bx = badge(d, bx, y, "역대 최저가", GOLD, INK)
     if x.get("ko"):
         bx = badge(d, bx, y, "한국어 " + ("자막·음성" if x.get("ko_voice") else "자막"), GREEN)
     if x.get("meta"):
@@ -164,12 +165,12 @@ def slide_end(deals, total):
     img = Image.blend(img, Image.new("RGB", (W, H), (10, 10, 12)), 0.55)
     d = frame(img, total, total)
     d.text((76, 380), "세일 끝나기 전에", font=BH(84), fill=WHITE)
-    d.text((76, 480), "저장해두세요", font=BH(84), fill=RED)
+    d.text((76, 480), "저장해두세요", font=BH(84), fill=GOLD)
     d.text((76, 610), "가격은 게시 시점 Steam 한국 가격 기준이며", font=NR(32), fill=SOFT)
     d.text((76, 660), "할인 기간·가격은 바뀔 수 있습니다.", font=NR(32), fill=SOFT)
-    d.rounded_rectangle((76, H - 330, W - 76, H - 170), 24, fill=RED)
-    d.text((W // 2, H - 280), "매주 금요일 할인 정리", font=NB(40), fill=WHITE, anchor="mm")
-    d.text((W // 2, H - 220), "팔로우하고 받아보기", font=BH(56), fill=WHITE, anchor="mm")
+    d.rounded_rectangle((76, H - 330, W - 76, H - 170), 24, fill=GOLD)
+    d.text((W // 2, H - 280), "매주 금요일 할인 정리", font=NB(40), fill=INK, anchor="mm")
+    d.text((W // 2, H - 220), "팔로우하고 받아보기", font=BH(56), fill=INK, anchor="mm")
     return img
 
 
@@ -189,8 +190,8 @@ def story(x):
     plus(d, 100, 180)
     d.text((150, 180), "오늘의 딜", font=BH(56), fill=WHITE, anchor="lm", stroke_width=3, stroke_fill=(10, 10, 12))
     pct = f"-{x['discount']}%"
-    d.rounded_rectangle((76, 960, 76 + d.textlength(pct, font=ANTON(150)) + 56, 1160), 18, fill=RED)
-    d.text((104, 1060), pct, font=ANTON(150), fill=WHITE, anchor="lm")
+    d.rounded_rectangle((76, 960, 76 + d.textlength(pct, font=ANTON(150)) + 56, 1160), 18, fill=GOLD)
+    d.text((104, 1060), pct, font=ANTON(150), fill=INK, anchor="lm")
     y = 1210
     for ln in lines_of(d, x["name"].replace("™", "").replace("®", ""), BH(84), SW - 152, 2):
         d.text((76, y), ln, font=BH(84), fill=WHITE)
@@ -204,14 +205,14 @@ def story(x):
     y += 140
     bx = 76
     if x.get("record"):
-        bx = badge(d, bx, y, "역대 최저가", RED, f=NB(36))
+        bx = badge(d, bx, y, "역대 최저가", GOLD, INK, f=NB(36))
     if x.get("ko"):
         bx = badge(d, bx, y, "한국어 지원", GREEN, f=NB(36))
     if x.get("meta"):
         badge(d, bx, y, f"메타 {x['meta']}", (60, 60, 68), f=NB(36))
     if x.get("expiry"):
         d.text((76, y + 110), f"{int(x['expiry'][5:7])}월 {int(x['expiry'][8:10])}일까지", font=NM(40), fill=SOFT)
-    d.text((SW // 2, SH - 120), HANDLE, font=NB(38), fill=RED, anchor="mm")
+    d.text((SW // 2, SH - 120), HANDLE, font=NB(38), fill=GOLD, anchor="mm")
     return img
 
 
