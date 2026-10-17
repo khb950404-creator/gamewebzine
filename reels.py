@@ -181,7 +181,7 @@ def render(a, out_path, lang="ko", handle=None):
         t = f / FPS
         if t < T_HOOK:  # 첫 1.3초: 훅 문구로 멈춰 세우기
             im = Image.composite(dark, zoomed(big, 1.12 - 0.04 * t / T_HOOK), Image.new("L", (RW, RH), 150)).convert("RGBA")
-            show(im, hook, ease(t / 0.15), scale=pop(t / 0.5))
+            show(im, hook, 1.0, scale=pop(t / 0.5))  # 첫 프레임부터 보이게 (썸네일)
         elif t < T_HOOK + T_TITLE:
             tt = t - T_HOOK
             im = Image.composite(dark, zoomed(big, 1.0 + 0.08 * tt / T_TITLE), shade).convert("RGBA")
@@ -246,7 +246,7 @@ def render_deals(deals, out_path, hook_text, key="deals", handle=None):
         t = f / FPS
         if t < T_HOOK:
             im = Image.composite(dark, zoomed(first, 1.1), Image.new("L", (RW, RH), 160)).convert("RGBA")
-            show(im, hook, ease(t / 0.15), scale=pop(t / 0.5))
+            show(im, hook, 1.0, scale=pop(t / 0.5))  # 첫 프레임부터 보이게 (썸네일)
         elif t < T_HOOK + T_G * len(games):
             k = int((t - T_HOOK) // T_G)
             tt = t - T_HOOK - k * T_G

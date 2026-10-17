@@ -561,7 +561,7 @@ def _publish():
                     raise RuntimeError(f"이미지가 사이트에 없음: ig/{q['id']}/{f}")
             if kind == "reel":
                 c = api("POST", f"{uid}/media", media_type="REELS", video_url=f"{site_url()}{IGDIR}/{q['id']}/reel.mp4",
-                        caption=q["caption"], share_to_feed="true")["id"]
+                        caption=q["caption"], share_to_feed="true", thumb_offset="800")["id"]  # 훅 문구가 꽉 찬 순간을 썸네일로
                 wait_ready(c, tries=60)  # 영상 처리는 1~3분 걸림
                 mid = api("POST", f"{uid}/media_publish", creation_id=c)["id"]
                 posted[q["id"]] = {"media": mid, "kind": kind, "date": datetime.now().strftime("%Y-%m-%d"), "ts": time.time()}
