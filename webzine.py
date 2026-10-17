@@ -218,6 +218,26 @@ JSON 하나만 출력 (입력의 모든 기사를 같은 issue 번호로):
 {articles}"""
 
 
+def clean_article(a):
+    """AI 출력 형식 바로잡기. 제목이 글자가 아니면(건너뛸 글 표시가 섞인 경우 등) None."""
+    if not isinstance(a.get("title"), str) or not a["title"].strip() or a.get("skip"):
+        return None
+    for k_ in ("why", "trust", "category", "video_q"):
+        if k_ in a and a[k_] is not None and not isinstance(a[k_], str):
+            a[k_] = str(a[k_]) if not isinstance(a[k_], (dict, list)) else ""
+    for k_ in ("tldr", "body", "platforms", "games", "games_en"):
+        v_ = a.get(k_)
+        if isinstance(v_, str):
+            v_ = [v_]
+        a[k_] = [x for x in (v_ or []) if isinstance(x, str) and x.strip()]
+    for k_, d_ in (("trust", "보도"), ("category", "기타"), ("why", "")):
+        if not a.get(k_):
+            a[k_] = d_
+    if a["trust"] not in ("공식", "확인", "보도", "루머"):
+        a["trust"] = "보도"
+    return a
+
+
 class LLMDown(Exception):
     pass
 
@@ -275,7 +295,9 @@ def write_batch(cands):
         a["ts"] = max(s["ts"] for s in srcs)
         a["written"] = time.time()
         a.pop("issue", None)
-        out.append(a)
+        a = clean_article(a)
+        if a:
+            out.append(a)
     return out
 
 
@@ -1901,7 +1923,7 @@ def sidebar_html(a, pool, apps, patches, cal):
 
 
 def build():
-    every = sorted(load_json(DATA / "articles.json", []), key=lambda a: -a.get("ts", 0))
+    every = sorted([a for a in load_json(DATA / "articles.json", []) if clean_article(a)], key=lambda a: -a.get("ts", 0))
     for a in every:
         for k_, v_ in (("trust", "보도"), ("category", "기타"), ("tldr", []), ("body", []), ("why", ""),
                        ("platforms", []), ("games", []), ("sources", []), ("title", "(제목 없음)")):
@@ -1979,11 +2001,11 @@ btn.onclick=()=>{{n+=PAGE;show()}};show()}})()</script>""")
     if (ROOT / "media").exists():  # 검수 페이지에서 업로드한 이미지
         import shutil
         shutil.copytree(ROOT / "media", SITE / "media", dirs_exist_ok=True)
-    build_search(articles)
-    build_feeds(articles)
-    build_patches()
-    build_calendar()
-    build_deals()
+    for step in (lambda: build_search(articles), lambda: build_feeds(articles), build_patches, build_calendar, build_deals):
+        try:
+            step()
+        except Exception as e:  # 한 페이지가 실패해도 나머지는 배포
+            print(f"  ! 빌드 단계 실패: {e}")
     print(f"사이트 빌드 완료: {SITE / 'index.html'} (기사 {len(articles)}건)")
 
 
