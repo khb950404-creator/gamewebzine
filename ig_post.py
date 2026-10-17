@@ -92,10 +92,10 @@ def refresh_if_needed():
 
 
 # ---------- 준비: 기사 고르기 + 이미지 ----------
-def pick(arts, posted, n, queued_ids=()):
+def pick(arts, posted, n, queued_ids=(), cap=True):
     today = datetime.now().strftime("%Y-%m-%d")
     done_today = sum(1 for p in posted.values() if p.get("date") == today and p.get("kind", "news") == "news")
-    room = min(n, int(os.environ.get("IG_DAILY", 4)) - done_today)
+    room = min(n, int(os.environ.get("IG_DAILY", 4)) - done_today) if cap else n
     if room <= 0:
         return []
     cand = [a for a in arts if a.get("status", "published") == "published" and a.get("img")
@@ -223,8 +223,13 @@ def prepare():
     queued = {q["id"] for q in queue}
     today = datetime.now().strftime("%Y-%m-%d")
     reels_today = sum(1 for p in posted.values() if p.get("kind") == "reel" and p.get("date") == today)         + sum(1 for q in queue if q.get("kind") == "reel")
-    for a in pick([a for a in arts if a["id"] not in queued], posted, int(os.environ.get("IG_PER_RUN", 1)), queued):
-        if reels_today < int(os.environ.get("IG_REELS_DAILY", 2)):
+    # 릴스는 캐러셀 한도와 별도로 하루 IG_REELS_DAILY 건
+    want_reel = reels_today < int(os.environ.get("IG_REELS_DAILY", 2))
+    cands = pick([a for a in arts if a["id"] not in queued], posted, 1, queued, cap=False) if want_reel else []
+    cands += [a for a in pick([a for a in arts if a["id"] not in queued], posted, int(os.environ.get("IG_PER_RUN", 1)), queued)
+              if not cands or a["id"] != cands[0]["id"]]
+    for a in cands:
+        if want_reel and reels_today < int(os.environ.get("IG_REELS_DAILY", 2)):
             try:  # 릴스: 도달이 가장 넓은 형식 → 하루 상위 기사 몇 건은 영상으로
                 from reels import render
                 (SITE / "ig" / a["id"]).mkdir(parents=True, exist_ok=True)
