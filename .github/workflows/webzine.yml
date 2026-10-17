@@ -11,6 +11,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
   pages: write
   id-token: write
 
@@ -65,6 +66,13 @@ jobs:
           git config user.email "webzine-bot@users.noreply.github.com"
           git add data
           git diff --cached --quiet || (git commit -m "새 기사 $(date '+%m-%d %H:%M')" && git pull --rebase && git push)
+
+      - name: 실패 알림 (이슈 생성 → 이메일)
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue list --state open --label build-failure --json number --jq length | grep -qx 0 &&           gh issue create --title "⚠️ 알트탭 실행 실패 $(date '+%m-%d %H:%M')" --label build-failure             --body "실행 로그: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" ||           gh label create build-failure --color d73a4a 2>/dev/null &&           gh issue create --title "⚠️ 알트탭 실행 실패 $(date '+%m-%d %H:%M')" --label build-failure             --body "실행 로그: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" || true
 
       - uses: actions/upload-pages-artifact@v3
         with:
