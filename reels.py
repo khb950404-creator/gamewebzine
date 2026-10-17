@@ -28,7 +28,11 @@ def ffmpeg_bin():
     for p in (shutil.which("ffmpeg"), "D:/ffmpeg-master/bin/ffmpeg.exe"):
         if p and Path(p).exists():
             return p
-    raise FileNotFoundError("ffmpeg")
+    try:  # 서버에 ffmpeg 가 없으면 pip 패키지(imageio-ffmpeg)의 정적 바이너리
+        import imageio_ffmpeg
+        return imageio_ffmpeg.get_ffmpeg_exe()
+    except ImportError:
+        raise FileNotFoundError("ffmpeg")
 
 
 def ease(t):

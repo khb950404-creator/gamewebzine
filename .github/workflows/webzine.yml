@@ -74,7 +74,7 @@ jobs:
       - name: 인스타 준비 (캐러셀 이미지 생성)
         continue-on-error: true
         run: |
-          pip install -q pillow numpy
+          pip install -q pillow numpy imageio-ffmpeg
           ffmpeg -version | head -1
           python -u ig_post.py prepare
           if [ -n "$IG_EN_USER_ID" ]; then IG_PROFILE=en python -u ig_post.py prepare; fi

@@ -321,6 +321,30 @@ def ensure_hook(a, lang="ko"):
         print(f"  ! 훅 생성 실패: {e}")
 
 
+def regen_one(q, arts):
+    from carousel import build_carousel
+    kind = q.get("kind", "news")
+    folder = SITE / IGDIR / q["id"]
+    a = next((x for x in arts if x["id"] == q["id"]), None)
+    if kind == "reel":
+        if (folder / "reel.mp4").exists():
+            return
+        folder.mkdir(parents=True, exist_ok=True)
+        if a:
+            from reels import render
+            a = {**a, "hook": a.get("hook") or q.get("hook"), "hook_en": a.get("hook_en") or q.get("hook_en")}
+            render(a, folder / "reel.mp4", lang=PROFILE, handle=HANDLE_P)
+        elif q.get("appids"):  # 할인 릴스
+            rebuild_deal(q)
+    elif kind in ("deal", "story", "series"):
+        if not folder.exists():
+            rebuild_deal(q)
+    elif not folder.exists() and a:
+        for i, im in enumerate(build_carousel(a, lang=PROFILE, handle=HANDLE_P)[:10], 1):
+            folder.mkdir(parents=True, exist_ok=True)
+            im.convert("RGB").save(folder / f"{i:02d}.jpg", quality=88)
+
+
 def prepare():
     from carousel import build_carousel
     arts = load(DATA / "articles.json", [])
@@ -351,7 +375,11 @@ def prepare():
                 continue
             except Exception as e:
                 print(f"  ! 릴스 생성 실패, 캐러셀로: {e}")
-        slides = build_carousel(a, lang=PROFILE, handle=HANDLE_P)[:10]  # 캐러셀 최대 10장
+        try:
+            slides = build_carousel(a, lang=PROFILE, handle=HANDLE_P)[:10]  # 캐러셀 최대 10장
+        except Exception as e:
+            print(f"  ! 캐러셀 생성 실패 {a['id']}: {e}")
+            continue
         names = []
         for i, im in enumerate(slides, 1):
             name = f"{i:02d}.jpg"
@@ -369,30 +397,12 @@ def prepare():
         st = load(DATA / "state.json", {})
         st["ig_deals_err"] = traceback.format_exc()[-600:]
         save(DATA / "state.json", st)
-    # 이미 대기 중인 기사의 이미지도 다시 만들어 배포본에 포함 (사이트는 매번 새로 빌드되므로)
+    # 이미 대기 중인 게시물의 이미지·영상도 다시 만들어 배포본에 포함 (사이트는 매번 새로 빌드되므로)
     for q in queue:
-        if q.get("kind") == "reel" and not (SITE / IGDIR / q["id"] / "reel.mp4").exists():
-            a = next((x for x in arts if x["id"] == q["id"]), None)
-            if a:
-                a = {**a, "hook": a.get("hook") or q.get("hook"), "hook_en": a.get("hook_en") or q.get("hook_en")}
-                from reels import render
-                (SITE / IGDIR / q["id"]).mkdir(parents=True, exist_ok=True)
-                render(a, SITE / IGDIR / q["id"] / "reel.mp4", lang=PROFILE, handle=HANDLE_P)
-            elif q.get("appids"):  # 할인 릴스
-                rebuild_deal(q)
-            continue
-        if q.get("kind") in ("deal", "story", "series") and not (SITE / IGDIR / q["id"]).exists():
-            try:
-                rebuild_deal(q)
-            except Exception as e:
-                print(f"  ! 할인 이미지 재생성 실패 {q['id']}: {e}")
-    for q in queue:
-        if q.get("kind", "news") == "news" and not (SITE / IGDIR / q["id"]).exists():
-            a = next((x for x in arts if x["id"] == q["id"]), None)
-            if a:
-                for i, im in enumerate(build_carousel(a, lang=PROFILE, handle=HANDLE_P)[:10], 1):
-                    (SITE / IGDIR / a["id"]).mkdir(parents=True, exist_ok=True)
-                    im.convert("RGB").save(SITE / IGDIR / a["id"] / f"{i:02d}.jpg", quality=88)
+        try:
+            regen_one(q, arts)
+        except Exception as e:  # 하나가 실패해도 나머지는 준비
+            print(f"  ! 재생성 실패 {q['id']}: {e}")
     save(QUEUE, queue)
 
 
