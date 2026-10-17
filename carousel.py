@@ -20,8 +20,7 @@ LIME = (229, 72, 77)  # 사이트와 같은 핑크빛 레드 (#e5484d)
 
 def frame(img, page, total, show_dots=False):
     d = ImageDraw.Draw(img)
-    circle_text(d, 120, 120, 76, "ALT+TAB · GAME NEWS · ", NB(24), LIME)
-    d.text((120, 120), "+", font=ANTON(54), fill=LIME, anchor="mm")
+    d.text((96, 104), "+", font=ANTON(96), fill=LIME, anchor="mm")  # 디자인 포인트 (로고의 +)
     d.text((W - 56, 70), f"{page}/{total}", font=NB(30), fill=LIME, anchor="ra")
     if show_dots:
         dots(d, W - 56 - 5 * 22, 150, 6, 6, 22, LIME)
@@ -114,6 +113,8 @@ def slide_end(a, total):
     d = frame(img, total, total)
     y = slide_heading(d, 300, "출처")
     for s in a.get("sources", [])[:4]:
+        if y > H - 520:  # 아래 버튼과 겹치지 않게
+            break
         d.text((76, y), ("[공식] " if s.get("official") else "") + s["name"], font=NB(38), fill=WHITE)
         for ln in lines_of(d, s["title"], NR(30), W - 152, 2):
             y += 48
