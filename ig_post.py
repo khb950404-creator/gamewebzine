@@ -92,7 +92,7 @@ def refresh_if_needed():
 
 
 # ---------- 준비: 기사 고르기 + 이미지 ----------
-def pick(arts, posted, n):
+def pick(arts, posted, n, queued_ids=()):
     today = datetime.now().strftime("%Y-%m-%d")
     done_today = sum(1 for p in posted.values() if p.get("date") == today)
     room = min(n, int(os.environ.get("IG_DAILY", 4)) - done_today)
@@ -103,7 +103,21 @@ def pick(arts, posted, n):
             and time.time() - a.get("written", a["ts"]) < 24 * 3600 and len(a.get("body", [])) >= 2]
     # 화제성: 출처 수 > 공식 발표 > 최신
     cand.sort(key=lambda a: (-len(a.get("sources", [])), a.get("trust") != "공식", -a["ts"]))
-    return cand[:room]
+    # 이틀 안에 올렸거나 대기 중인 게임과 겹치면 건너뜀 (같은 소식을 매체별로 따로 쓴 기사 중복 방지)
+    byid = {a["id"]: a for a in arts}
+    recent = [byid[i] for i, p in posted.items() if i in byid and time.time() - p.get("ts", 0) < 2 * 86400]
+    recent += [byid[i] for i in queued_ids if i in byid]
+    used = {g.lower() for a in recent for g in (a.get("games_en") or [])}
+    out = []
+    for a in cand:
+        gs = {g.lower() for g in (a.get("games_en") or [])}
+        if gs & used:
+            continue
+        out.append(a)
+        used |= gs
+        if len(out) >= room:
+            break
+    return out
 
 
 def prepare():
@@ -112,7 +126,7 @@ def prepare():
     posted = load(POSTED, {})
     queue = [q for q in load(QUEUE, []) if q["id"] not in posted]
     queued = {q["id"] for q in queue}
-    for a in pick([a for a in arts if a["id"] not in queued], posted, int(os.environ.get("IG_PER_RUN", 1))):
+    for a in pick([a for a in arts if a["id"] not in queued], posted, int(os.environ.get("IG_PER_RUN", 1)), queued):
         slides = build_carousel(a)[:10]  # 캐러셀 최대 10장
         names = []
         for i, im in enumerate(slides, 1):
