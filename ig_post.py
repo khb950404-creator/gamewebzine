@@ -528,6 +528,19 @@ def publish():
     if os.environ.get(ENABLED_ENV) != "1" or not os.environ.get(UID_ENV):
         print(f"{ENABLED_ENV} 가 1이 아니거나 계정 정보가 없어 게시하지 않음 ({PROFILE})")
         return
+    # 동시에 두 번 실행돼 같은 게시물이 중복으로 올라가는 것을 막는 잠금 (20분 지나면 무효)
+    lock = DATA / f".ig_publish{SUF}.lock"
+    if lock.exists() and time.time() - lock.stat().st_mtime < 20 * 60:
+        print("다른 게시 작업이 진행 중이라 건너뜀")
+        return
+    lock.write_text(str(os.getpid()))
+    try:
+        _publish()
+    finally:
+        lock.unlink(missing_ok=True)
+
+
+def _publish():
     refresh_if_needed()
     refresh_threads()
     uid = os.environ[UID_ENV]
