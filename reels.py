@@ -1,8 +1,11 @@
-"""기사 1건 → 인스타 릴스 영상 (1080x1920, 약 11초, 무음).
+"""인스타 릴스 영상 (1080x1920, 배경음 포함).
 
-  python reels.py [기사ID]   # out/reels/<ID>.mp4
+  render(기사, 경로, lang="ko")   뉴스 릴스 ~12초: 훅(1.3초) → 제목 → 핵심 3줄 → 마무리
+  render_deals(딜목록, 경로)       할인 릴스: 훅 → 게임별 1.6초씩 → 마무리 (골드 테마)
+
+  python reels.py [기사ID]        # out/reels/ 샘플
 """
-import json, os, shutil, subprocess, sys
+import json, re, shutil, subprocess, sys
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFilter
 
@@ -12,8 +15,13 @@ from carousel import LIME as RED, WHITE, SOFT, best_image
 from ig_post import to_card_tone
 
 RW, RH, FPS = 1080, 1920, 24
-T_TITLE, T_POINTS, T_END = 3.5, 5.6, 2.0  # 장면 길이(초)
 BG = (12, 12, 14)
+GOLD, INK = (245, 178, 51), (18, 16, 12)
+TXT = {
+    "ko": {"key": "핵심 요약", "end1": "매일 게임 소식 3줄", "end2": "업무 중 잠깐, Alt+Tab"},
+    "en": {"key": "KEY POINTS", "end1": "Game news in 3 lines", "end2": "Every day · Alt+Tab"},
+}
+PROBE = ImageDraw.Draw(Image.new("RGB", (1, 1)))
 
 
 def ffmpeg_bin():
@@ -23,126 +31,248 @@ def ffmpeg_bin():
     raise FileNotFoundError("ffmpeg")
 
 
-def ease(t):  # 0~1 → 부드러운 감속
+def ease(t):
     t = max(0.0, min(1.0, t))
     return 1 - (1 - t) ** 3
 
 
-def plus(d, cx=100, cy=150, L=26, t=4):
-    d.rectangle((cx - L, cy - t, cx + L, cy + t), fill=RED)
-    d.rectangle((cx - t, cy - L, cx + t, cy + L), fill=RED)
+def pop(t):  # 살짝 튀어나왔다 들어가는 크기 변화 (훅 문구용)
+    t = max(0.0, min(1.0, t))
+    return 1 + 0.18 * (1 - t) ** 2 - 0.18 * (1 - t) ** 6
 
 
-def text_layer(draw_fn):
-    layer = Image.new("RGBA", (RW, RH), (0, 0, 0, 0))
-    draw_fn(ImageDraw.Draw(layer))
-    return layer
+def plus(d, color, cx=100, cy=150, L=26, t=4):
+    d.rectangle((cx - L, cy - t, cx + L, cy + t), fill=color)
+    d.rectangle((cx - t, cy - L, cx + t, cy + L), fill=color)
 
 
-def fade_in(layer, alpha, dy):
-    """레이어를 alpha(0~1) 만큼 보이게, dy 픽셀 아래에서 올라오게."""
+def layer(fn):
+    im = Image.new("RGBA", (RW, RH), (0, 0, 0, 0))
+    fn(ImageDraw.Draw(im))
+    return im
+
+
+def show(base, lay, alpha=1.0, dy=0, scale=1.0):
     if alpha <= 0:
-        return None
-    a = layer.getchannel("A").point(lambda v: int(v * alpha))
-    layer = layer.copy()
-    layer.putalpha(a)
-    out = Image.new("RGBA", (RW, RH), (0, 0, 0, 0))
-    out.paste(layer, (0, int(dy)), layer)
-    return out
+        return
+    if scale != 1.0:
+        w, h = int(RW * scale), int(RH * scale)
+        lay = lay.resize((w, h), Image.BILINEAR).crop(((w - RW) // 2, (h - RH) // 2, (w - RW) // 2 + RW, (h - RH) // 2 + RH))
+    if alpha < 1:
+        lay = lay.copy()
+        lay.putalpha(lay.getchannel("A").point(lambda v: int(v * alpha)))
+    if dy:
+        moved = Image.new("RGBA", (RW, RH), (0, 0, 0, 0))
+        moved.paste(lay, (0, int(dy)), lay)
+        lay = moved
+    base.alpha_composite(lay)
 
 
-def render(a, out_path):
-    src = fetch_img(best_image(a)) or Image.new("RGB", (RW, RH), (40, 40, 44))
-    big = grade(cover_fit(src, int(RW * 1.15), int(RH * 1.15)), mono=0.35, bright=0.8)
-    blurred = Image.blend(grade(cover_fit(src, RW, RH), bright=0.5).filter(ImageFilter.GaussianBlur(22)),
-                          Image.new("RGB", (RW, RH), BG), 0.55)
-    # 아래쪽 어둡게
-    shade = Image.new("L", (1, RH))
+def shade_mask(start=0.28, strength=245):
+    m = Image.new("L", (1, RH))
     for y in range(RH):
-        shade.putpixel((0, y), int(max(0, (y / RH - 0.28) / 0.72) ** 1.1 * 245))
-    shade = shade.resize((RW, RH))
+        m.putpixel((0, y), int(max(0, (y / RH - start) / (1 - start)) ** 1.1 * strength))
+    return m.resize((RW, RH))
 
-    title = [ln for ln in lines_of(ImageDraw.Draw(Image.new("RGB", (1, 1))), a["title"].replace("…", "..."), BH(104), RW - 152, 4)]
-    title_layers = []
+
+def zoomed(big, z):
+    w, h = int(RW * z), int(RH * z)
+    return big.resize((w, h), Image.BILINEAR).crop(((w - RW) // 2, (h - RH) // 2, (w - RW) // 2 + RW, (h - RH) // 2 + RH))
+
+
+def hook_layer(text, accent, ink=WHITE):
+    """화면 가운데 큰 훅 문구 + 강조 띠."""
+    f = BH(132)
+    ls = lines_of(PROBE, text, f, RW - 140, 3)
+    while len(ls) > 2 and f.size > 90:
+        f = BH(f.size - 12)
+        ls = lines_of(PROBE, text, f, RW - 140, 3)
+    lh = int(f.size * 1.22)
+    y0 = RH // 2 - len(ls) * lh // 2 - 60
+
+    def draw(d):
+        for i, ln in enumerate(ls):
+            w = d.textlength(ln, font=f)
+            x = (RW - w) / 2
+            y = y0 + i * lh
+            d.rectangle((x - 22, y + f.size * 0.15, x + w + 22, y + f.size * 1.12), fill=accent)
+            d.text((x, y), ln, font=f, fill=ink)
+    return layer(draw)
+
+
+class Video:
+    def __init__(self, out_path, seconds, key):
+        from bgm import make as make_bgm  # 직접 합성한 잔잔한 배경음 (저작권 걱정 없음)
+        self.music = Path(out_path).with_suffix(".wav")
+        make_bgm(self.music, seconds=seconds + 0.5, key=key)
+        cmd = [ffmpeg_bin(), "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{RW}x{RH}",
+               "-r", str(FPS), "-i", "-", "-i", str(self.music), "-shortest",
+               "-c:v", "libx264", "-pix_fmt", "yuv420p", "-preset", "medium", "-crf", "21", "-profile:v", "high",
+               "-c:a", "aac", "-b:a", "128k", "-ar", "44100", "-movflags", "+faststart", str(out_path)]
+        self.proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
+
+    def write(self, im):
+        self.proc.stdin.write(im.convert("RGB").tobytes())
+
+    def close(self):
+        self.proc.stdin.close()
+        self.proc.wait()
+        self.music.unlink(missing_ok=True)
+
+
+def default_hook(a, lang):
+    if lang == "en":
+        return (a.get("hook_en") or (a.get("title_en") or a["title"]).split(":")[0][:40]).replace("…", "...")
+    if a.get("hook"):
+        return a["hook"].replace("…", "...")
+    # 훅이 없는 예전 기사: '게임명 + 제목 끝 핵심어' (예: '캐슬바니아 출시')
+    game = re.split(r"[:：\-–]", (a.get("games") or [""])[0])[0].strip()
+    last = re.sub(r"[^가-힣A-Za-z0-9]", " ", a["title"]).split()
+    last = last[-1] if last else ""
+    if game and last and last not in game:
+        return f"{game} {last}"
+    t = re.split(r"[,…·]", a["title"])[0].strip()
+    return t if len(t) <= 16 else t[:16]
+
+
+def render(a, out_path, lang="ko", handle=None):
+    T = TXT[lang]
+    handle = handle or HANDLE
+    title_txt = (a.get("title_en") if lang == "en" else None) or a["title"]
+    tldr = (a.get("tldr_en") if lang == "en" else None) or a.get("tldr", [])
+    points = tldr[:3] if lang == "en" else [to_card_tone(t) for t in tldr[:3]]
+
+    src = fetch_img(best_image(a)) or Image.new("RGB", (RW, RH), (40, 40, 44))
+    big = grade(cover_fit(src, int(RW * 1.2), int(RH * 1.2)), mono=0.35, bright=0.8)
+    dark = Image.new("RGB", (RW, RH), BG)
+    blurred = Image.blend(grade(cover_fit(src, RW, RH), bright=0.5).filter(ImageFilter.GaussianBlur(22)), dark, 0.55)
+    shade = shade_mask()
+
+    hook = hook_layer(default_hook(a, lang), RED)
+    tf = BH(104 if lang == "ko" else 92)
+    title = lines_of(PROBE, title_txt.replace("…", "..."), tf, RW - 152, 4)
     y0 = RH - 520 - len(title) * 124
-    for i, ln in enumerate(title):
-        title_layers.append(text_layer(lambda d, ln=ln, y=y0 + i * 124: d.text((76, y), ln, font=BH(104), fill=WHITE)))
-    label = text_layer(lambda d: d.text((76, y0 - 80), f"{a.get('trust')} · {a.get('category')}", font=NB(40), fill=RED))
-
-    points = [to_card_tone(t) for t in a.get("tldr", [])[:3]]
-    point_layers, y = [], 560
+    title_ls = [layer(lambda d, ln=ln, y=y0 + i * 124: d.text((76, y), ln, font=tf, fill=WHITE)) for i, ln in enumerate(title)]
+    label = layer(lambda d: d.text((76, y0 - 80), f"{a.get('trust')} · {a.get('category')}" if lang == "ko"
+                                   else (a.get("category_en") or "GAME NEWS"), font=NB(40), fill=RED))
+    pf = NB(54 if lang == "ko" else 50)
+    point_ls, y = [], 560
     for i, t in enumerate(points, 1):
-        ls = lines_of(ImageDraw.Draw(Image.new("RGB", (1, 1))), t, NB(54), RW - 260, 3)
+        ls = lines_of(PROBE, t, pf, RW - 260, 3)
+
         def draw(d, i=i, ls=ls, y=y):
             d.text((76, y - 6), f"{i:02d}", font=ANTON(78), fill=RED)
             for k, ln in enumerate(ls):
-                d.text((200, y + k * 74), ln, font=NB(54), fill=WHITE)
-        point_layers.append(text_layer(draw))
+                d.text((200, y + k * 74), ln, font=pf, fill=WHITE)
+        point_ls.append(layer(draw))
         y += len(ls) * 74 + 90
-    head = text_layer(lambda d: (d.rectangle((76, 418, 92, 466), fill=RED), d.text((112, 410), "핵심 요약", font=BH(60), fill=RED)))
+    head = layer(lambda d: (d.rectangle((76, 418, 92, 466), fill=RED), d.text((112, 410), T["key"], font=BH(60), fill=RED)))
+    end = layer(lambda d: (d.text((RW // 2, 820), T["end1"], font=BH(84), fill=WHITE, anchor="mm"),
+                           d.text((RW // 2, 930), T["end2"], font=NM(46), fill=SOFT, anchor="mm")))
 
-    def frame_static(img, page):
-        d = ImageDraw.Draw(img)
-        plus(d)
-        d.text((RW // 2, RH - 110), HANDLE, font=NB(40), fill=RED, anchor="mm")
-
-    n_title, n_points, n_end = int(T_TITLE * FPS), int(T_POINTS * FPS), int(T_END * FPS)
-    from bgm import make as make_bgm  # 직접 합성한 잔잔한 배경음 (저작권 걱정 없음)
-    music = Path(out_path).with_suffix(".wav")
-    make_bgm(music, seconds=T_TITLE + T_POINTS + T_END + 0.5, key=a["id"])
-    total = n_title + n_points + n_end
-    cmd = [ffmpeg_bin(), "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{RW}x{RH}", "-r", str(FPS),
-           "-i", "-", "-i", str(music), "-shortest",
-           "-c:v", "libx264", "-pix_fmt", "yuv420p", "-preset", "medium", "-crf", "21", "-profile:v", "high",
-           "-c:a", "aac", "-b:a", "128k", "-ar", "44100", "-movflags", "+faststart", str(out_path)]
-    proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
-    for f in range(total):
+    T_HOOK, T_TITLE, T_POINTS, T_END = 1.3, 3.2, 5.4, 1.8
+    total = T_HOOK + T_TITLE + T_POINTS + T_END
+    v = Video(out_path, total, a["id"] + lang)
+    for f in range(int(total * FPS)):
         t = f / FPS
-        if f < n_title:  # 장면 1: 이미지 확대 + 제목 등장
-            z = 1 + 0.10 * (f / n_title)
-            w, h = int(RW * z), int(RH * z)
-            im = big.resize((w, h), Image.BILINEAR).crop(((w - RW) // 2, (h - RH) // 2, (w - RW) // 2 + RW, (h - RH) // 2 + RH))
-            im = Image.composite(Image.new("RGB", (RW, RH), BG), im, shade).convert("RGBA")
-            for lay, start in [(label, 0.2)] + [(l, 0.45 + i * 0.22) for i, l in enumerate(title_layers)]:
-                e = ease((t - start) / 0.5)
-                o = fade_in(lay, e, (1 - e) * 60)
-                if o:
-                    im.alpha_composite(o)
-        elif f < n_title + n_points:  # 장면 2: 요약 3줄 순서대로
-            tt = t - T_TITLE
+        if t < T_HOOK:  # 첫 1.3초: 훅 문구로 멈춰 세우기
+            im = Image.composite(dark, zoomed(big, 1.12 - 0.04 * t / T_HOOK), Image.new("L", (RW, RH), 150)).convert("RGBA")
+            show(im, hook, ease(t / 0.15), scale=pop(t / 0.5))
+        elif t < T_HOOK + T_TITLE:
+            tt = t - T_HOOK
+            im = Image.composite(dark, zoomed(big, 1.0 + 0.08 * tt / T_TITLE), shade).convert("RGBA")
+            show(im, label, ease((tt - 0.1) / 0.4), (1 - ease((tt - 0.1) / 0.4)) * 60)
+            for i, l in enumerate(title_ls):
+                e = ease((tt - 0.25 - i * 0.2) / 0.45)
+                show(im, l, e, (1 - e) * 60)
+        elif t < T_HOOK + T_TITLE + T_POINTS:
+            tt = t - T_HOOK - T_TITLE
             im = blurred.convert("RGBA")
-            o = fade_in(head, ease(tt / 0.4), 0)
-            if o:
-                im.alpha_composite(o)
-            for i, lay in enumerate(point_layers):
-                e = ease((tt - 0.3 - i * 1.5) / 0.5)
-                o = fade_in(lay, e, (1 - e) * 50)
-                if o:
-                    im.alpha_composite(o)
-        else:  # 장면 3: 마무리
-            tt = t - T_TITLE - T_POINTS
+            show(im, head, ease(tt / 0.4))
+            for i, l in enumerate(point_ls):
+                e = ease((tt - 0.3 - i * 1.45) / 0.5)
+                show(im, l, e, (1 - e) * 50)
+        else:
+            tt = t - T_HOOK - T_TITLE - T_POINTS
             im = blurred.convert("RGBA")
             e = ease(tt / 0.5)
-            end = text_layer(lambda d: (d.text((RW // 2, 820), "매일 게임 소식 3줄", font=BH(84), fill=WHITE, anchor="mm"),
-                                        d.text((RW // 2, 930), "업무 중 잠깐, Alt+Tab", font=NM(46), fill=SOFT, anchor="mm")))
-            o = fade_in(end, e, (1 - e) * 40)
-            if o:
-                im.alpha_composite(o)
-        im = im.convert("RGB")
-        frame_static(im, None)
-        proc.stdin.write(im.tobytes())
-    proc.stdin.close()
-    proc.wait()
-    music.unlink(missing_ok=True)
+            show(im, end, e, (1 - e) * 40)
+        d = ImageDraw.Draw(im)
+        plus(d, RED)
+        d.text((RW // 2, RH - 110), handle, font=NB(40), fill=RED, anchor="mm")
+        v.write(im)
+    v.close()
+    return out_path
+
+
+def render_deals(deals, out_path, hook_text, key="deals", handle=None):
+    """할인 릴스 (골드): 훅 → 게임마다 키아트 + 할인율 + 가격 → 마무리."""
+    handle = handle or HANDLE
+    dark = Image.new("RGB", (RW, RH), BG)
+    games = []
+    for x in deals:
+        src = fetch_img(x.get("hd") or x["img"]) or Image.new("RGB", (RW, RH), (40, 40, 44))
+        big = grade(cover_fit(src, int(RW * 1.15), int(RH * 1.15)), mono=0.2, bright=0.85)
+        pct = f"-{x['discount']}%"
+
+        def draw(d, x=x, pct=pct):
+            w = d.textlength(pct, font=ANTON(170))
+            d.rounded_rectangle((76, 1040, 76 + w + 60, 1250), 20, fill=GOLD)
+            d.text((106, 1145), pct, font=ANTON(170), fill=INK, anchor="lm")
+            y = 1300
+            for ln in lines_of(PROBE, x["name"].replace("™", "").replace("®", ""), BH(80), RW - 152, 2):
+                d.text((76, y), ln, font=BH(80), fill=WHITE)
+                y += 96
+            o = f"₩{x['initial']:,}"
+            d.text((76, y + 50), o, font=NM(46), fill=(150, 150, 158), anchor="lm")
+            ow = d.textlength(o, font=NM(46))
+            d.line([(76, y + 52), (76 + ow, y + 52)], fill=(150, 150, 158), width=3)
+            d.text((76 + ow + 30, y + 50), "→", font=NM(46), fill=(150, 150, 158), anchor="lm")
+            d.text((76 + ow + 96, y + 50), f"₩{x['final']:,}", font=BH(96), fill=WHITE, anchor="lm")
+        games.append((big, layer(draw)))
+    hook = hook_layer(hook_text, GOLD, INK)
+    end = layer(lambda d: (d.text((RW // 2, 820), "세일 끝나기 전에", font=BH(84), fill=WHITE, anchor="mm"),
+                           d.text((RW // 2, 930), "저장해두세요", font=BH(84), fill=GOLD, anchor="mm")))
+    shade = shade_mask(0.3)
+    T_HOOK, T_G, T_END = 1.4, 1.7, 1.8
+    total = T_HOOK + T_G * len(games) + T_END
+    v = Video(out_path, total, key)
+    first = games[0][0] if games else dark
+    for f in range(int(total * FPS)):
+        t = f / FPS
+        if t < T_HOOK:
+            im = Image.composite(dark, zoomed(first, 1.1), Image.new("L", (RW, RH), 160)).convert("RGBA")
+            show(im, hook, ease(t / 0.15), scale=pop(t / 0.5))
+        elif t < T_HOOK + T_G * len(games):
+            k = int((t - T_HOOK) // T_G)
+            tt = t - T_HOOK - k * T_G
+            big, info = games[k]
+            im = Image.composite(dark, zoomed(big, 1.0 + 0.06 * tt / T_G), shade).convert("RGBA")
+            e = ease(tt / 0.35)
+            show(im, info, e, (1 - e) * 50)
+            ImageDraw.Draw(im).text((RW - 70, 150), f"{k + 1}/{len(games)}", font=ANTON(64), fill=GOLD, anchor="rm")
+        else:
+            tt = t - T_HOOK - T_G * len(games)
+            im = Image.composite(dark, zoomed(first, 1.05), Image.new("L", (RW, RH), 200)).convert("RGBA")
+            e = ease(tt / 0.5)
+            show(im, end, e, (1 - e) * 40)
+        d = ImageDraw.Draw(im)
+        plus(d, GOLD)
+        d.text((RW // 2, RH - 110), handle, font=NB(40), fill=GOLD, anchor="mm")
+        v.write(im)
+    v.close()
     return out_path
 
 
 if __name__ == "__main__":
     sys.stdout.reconfigure(encoding="utf-8")
     arts = {a["id"]: a for a in json.loads((ROOT / "data/articles.json").read_text(encoding="utf-8"))}
-    ids = sys.argv[1:] or ["5e9b636987"]
     out = ROOT / "out" / "reels"
     out.mkdir(parents=True, exist_ok=True)
-    for i in ids:
+    for i in sys.argv[1:] or ["5e9b636987"]:
         p = render(arts[i], out / f"{i}.mp4")
+        print(p, f"{p.stat().st_size / 1e6:.1f}MB")
+    if len(sys.argv) == 1:
+        import deals_carousel as dc
+        p = render_deals(dc.pick_deals(5), out / "deals.mp4", "이번 주 역대 최저가 5")
         print(p, f"{p.stat().st_size / 1e6:.1f}MB")

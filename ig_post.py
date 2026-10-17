@@ -15,7 +15,14 @@ from pathlib import Path
 ROOT = Path(__file__).parent
 DATA, SITE = ROOT / "data", ROOT / "site"
 API = "https://graph.instagram.com/v23.0"
-QUEUE, POSTED, TOKEN_FILE = DATA / "ig_queue.json", DATA / "ig_posted.json", DATA / "ig_token.enc"
+PROFILE = os.environ.get("IG_PROFILE", "ko")  # ko | en
+SUF = "" if PROFILE == "ko" else "_" + PROFILE
+QUEUE, POSTED, TOKEN_FILE = DATA / f"ig_queue{SUF}.json", DATA / f"ig_posted{SUF}.json", DATA / f"ig_token{SUF}.enc"
+TOKEN_ENV = "IG_ACCESS_TOKEN" if PROFILE == "ko" else "IG_EN_ACCESS_TOKEN"
+UID_ENV = "IG_USER_ID" if PROFILE == "ko" else "IG_EN_USER_ID"
+ENABLED_ENV = "IG_ENABLED" if PROFILE == "ko" else "IG_EN_ENABLED"
+HANDLE_P = "@webzinealttab" if PROFILE == "ko" else os.environ.get("IG_EN_HANDLE", "@alttab.en")
+IGDIR = "ig" if PROFILE == "ko" else "ig_" + PROFILE
 HASHTAG = {"신작": "신작게임", "업데이트": "게임업데이트", "업계": "게임업계", "하드웨어": "게임기",
            "할인·이벤트": "게임할인", "e스포츠": "e스포츠"}
 
@@ -42,7 +49,7 @@ def _crypt(data, key):
 
 
 def token():
-    base = os.environ.get("IG_ACCESS_TOKEN", "")
+    base = os.environ.get(TOKEN_ENV, "")
     key = hashlib.sha256(("alttab-ig:" + base).encode()).digest()  # 처음 넣은 Secret 이 열쇠
     t = load(TOKEN_FILE, None)
     if t and t.get("for") == hashlib.sha256(base.encode()).hexdigest()[:12]:
@@ -54,7 +61,7 @@ def token():
 
 
 def save_token(new):
-    base = os.environ.get("IG_ACCESS_TOKEN", "")
+    base = os.environ.get(TOKEN_ENV, "")
     key = hashlib.sha256(("alttab-ig:" + base).encode()).digest()
     save(TOKEN_FILE, {"for": hashlib.sha256(base.encode()).hexdigest()[:12],
                       "v": _crypt(new.encode(), key).hex(), "refreshed": time.time()})
@@ -189,10 +196,10 @@ def detect_major_sale():
 
 
 def save_slides(key, slides):
-    (SITE / "ig" / key).mkdir(parents=True, exist_ok=True)
+    (SITE / IGDIR / key).mkdir(parents=True, exist_ok=True)
     names = []
     for i, im in enumerate(slides[:10], 1):
-        im.convert("RGB").save(SITE / "ig" / key / f"{i:02d}.jpg", quality=88)
+        im.convert("RGB").save(SITE / IGDIR / key / f"{i:02d}.jpg", quality=88)
         names.append(f"{i:02d}.jpg")
     return names
 
@@ -204,6 +211,7 @@ def featured_recent(posted, days=7):
 def deal_caption(deals, head):
     lines = [head, ""] + [f"▪ {x['name'].replace('™', '')} -{x['discount']}% ₩{x['final']:,}" for x in deals]
     lines += ["", "할인은 게임별 마감일까지 진행된다. 가격은 게시 시점 Steam 한국 가격 기준이다.", "",
+              "이번에 장바구니에 담을 게임은?", "",
               "#스팀할인 #스팀세일 #게임할인 #역대최저가 #PC게임 #게임추천 #알트탭"]
     return "\n".join(lines)
 
@@ -216,6 +224,10 @@ def rebuild_deal(q):
         return
     if q["kind"] == "story":
         save_slides(q["id"], [dc.story(deals[0])])
+    elif q["kind"] == "reel":
+        from reels import render_deals
+        (SITE / IGDIR / q["id"]).mkdir(parents=True, exist_ok=True)
+        render_deals(deals, SITE / IGDIR / q["id"] / "reel.mp4", q.get("hook") or "이번 주 역대 최저가", key=q["id"])
     else:
         total = len(deals) + 2
         cover = q.get("cover") or {}
@@ -247,6 +259,37 @@ def prepare_deals(queue, posted):
         queue.append({"id": wk, "kind": "deal", "files": save_slides(wk, slides), "appids": [x["appid"] for x in deals],
                       "caption": deal_caption(deals, f"💸 이번 주 Steam 역대 최저가 {len(deals)}")})
         print("인스타 준비: 주간 할인")
+        # 같은 날 할인 릴스도 (도달용)
+        from reels import render_deals
+        rk = wk + "-reel"
+        (SITE / IGDIR / rk).mkdir(parents=True, exist_ok=True)
+        hook = f"이번 주 역대 최저가 {min(5, len(deals))}"
+        render_deals(deals[:5], SITE / IGDIR / rk / "reel.mp4", hook, key=rk)
+        queue.append({"id": rk, "kind": "reel", "files": ["reel.mp4"], "appids": [x["appid"] for x in deals[:5]],
+                      "hook": hook, "caption": deal_caption(deals[:5], f"💸 {hook}")})
+    # ④ 일요일 시리즈: 이번 주 게임 뉴스 TOP5 (일요일 18시 이후, 주 1회)
+    tk = f"top-{now.isocalendar()[0]}-{now.isocalendar()[1]:02d}"
+    if (force or (now.weekday() == 6 and now.hour >= 18)) and tk not in keys:
+        from carousel import build_weekly_top
+        arts = [a for a in load(DATA / "articles.json", []) if a.get("img") and a.get("trust") != "루머"
+                and time.time() - a.get("written", a["ts"]) < 7 * 86400]
+        top, used = [], set()
+        for a in sorted(arts, key=lambda a: -popularity(a)):
+            gs = {g.lower() for g in (a.get("games_en") or [])} or {a["id"]}
+            if gs & used:
+                continue
+            top.append(a)
+            used |= gs
+            if len(top) == 5:
+                break
+        if len(top) >= 3:
+            queue.append({"id": tk, "kind": "series", "files": save_slides(tk, build_weekly_top(top)),
+                          "arts": [a["id"] for a in top],
+                          "caption": "\n".join(["📰 이번 주 게임 뉴스 TOP" + str(len(top)), ""]
+                                               + [f"{i}. {a['title']}" for i, a in enumerate(top, 1)]
+                                               + ["", "가장 놀라운 소식은 몇 번인가요?", "",
+                                                  "#게임뉴스 #주간게임뉴스 #게임소식 #알트탭"])})
+            print("인스타 준비: 주간 TOP5")
     # ③ 오늘의 딜 스토리 (매일 9시 이후 하루 한 번, 최근 7일 소개한 게임 제외)
     sk = f"story-{now.strftime('%Y-%m-%d')}"
     if (force or now.hour >= 9) and sk not in keys:
@@ -257,42 +300,69 @@ def prepare_deals(queue, posted):
             print(f"인스타 준비: 오늘의 딜 {x['name']}")
 
 
+def ensure_hook(a, lang="ko"):
+    """릴스 첫 화면 훅 문구가 없으면 AI 로 짧게 만든다 (가벼운 모델 1회)."""
+    k = "hook" if lang == "ko" else "hook_en"
+    if a.get(k):
+        return
+    try:
+        import webzine
+        webzine.load_env()
+        if lang == "ko":
+            q = ("다음 게임 기사로 인스타 릴스 첫 화면에 크게 띄울 훅 문구를 8~16자로 만들어라. "
+                 '궁금증·숫자·반전을 살리고 과장·낚시는 금지. JSON: {"hook": "..."}\n제목: ' + a["title"])
+        else:
+            q = ('Write a 3-6 word Instagram Reel hook for this game news. No clickbait lies. JSON: {"hook": "..."}\n'
+                 "Title: " + (a.get("title_en") or a["title"]))
+        r = webzine.llm(q, prefer_lite=True) or {}
+        if isinstance(r.get("hook"), str) and r["hook"].strip():
+            a[k] = r["hook"].strip()
+    except Exception as e:
+        print(f"  ! 훅 생성 실패: {e}")
+
+
 def prepare():
     from carousel import build_carousel
     arts = load(DATA / "articles.json", [])
+    if PROFILE == "en":  # 영문 계정: 영문 제목·요약이 있는 기사만
+        arts = [a for a in arts if a.get("title_en") and a.get("tldr_en")]
     posted = load(POSTED, {})
     queue = [q for q in load(QUEUE, []) if q["id"] not in posted]
     queued = {q["id"] for q in queue}
     today = datetime.now().strftime("%Y-%m-%d")
     reels_today = sum(1 for p in posted.values() if p.get("kind") == "reel" and p.get("date") == today)         + sum(1 for q in queue if q.get("kind") == "reel")
     # 릴스는 캐러셀 한도와 별도로 하루 IG_REELS_DAILY 건
-    want_reel = reels_today < int(os.environ.get("IG_REELS_DAILY", 2))
+    want_reel = reels_today < int(os.environ.get("IG_REELS_DAILY", 3))
     cands = pick([a for a in arts if a["id"] not in queued], posted, 1, queued, cap=False, by_pop=True) if want_reel else []
     cands += [a for a in pick([a for a in arts if a["id"] not in queued], posted, int(os.environ.get("IG_PER_RUN", 1)), queued)
               if not cands or a["id"] != cands[0]["id"]]
     for a in cands:
-        if want_reel and reels_today < int(os.environ.get("IG_REELS_DAILY", 2)):
+        if want_reel and reels_today < int(os.environ.get("IG_REELS_DAILY", 3)):
             try:  # 릴스: 도달이 가장 넓은 형식 → 하루 상위 기사 몇 건은 영상으로
                 from reels import render
-                (SITE / "ig" / a["id"]).mkdir(parents=True, exist_ok=True)
-                render(a, SITE / "ig" / a["id"] / "reel.mp4")
-                queue.append({"id": a["id"], "kind": "reel", "files": ["reel.mp4"], "caption": caption(a)})
+                ensure_hook(a, PROFILE)
+                (SITE / IGDIR / a["id"]).mkdir(parents=True, exist_ok=True)
+                render(a, SITE / IGDIR / a["id"] / "reel.mp4", lang=PROFILE, handle=HANDLE_P)
+                queue.append({"id": a["id"], "kind": "reel", "files": ["reel.mp4"],
+                              "caption": caption(a) if PROFILE == "ko" else caption_en(a),
+                              "hook": a.get("hook"), "hook_en": a.get("hook_en")})
                 reels_today += 1
                 print(f"인스타 준비(릴스): {a['title']}")
                 continue
             except Exception as e:
                 print(f"  ! 릴스 생성 실패, 캐러셀로: {e}")
-        slides = build_carousel(a)[:10]  # 캐러셀 최대 10장
+        slides = build_carousel(a, lang=PROFILE, handle=HANDLE_P)[:10]  # 캐러셀 최대 10장
         names = []
         for i, im in enumerate(slides, 1):
             name = f"{i:02d}.jpg"
-            (SITE / "ig" / a["id"]).mkdir(parents=True, exist_ok=True)
-            im.convert("RGB").save(SITE / "ig" / a["id"] / name, quality=88)
+            (SITE / IGDIR / a["id"]).mkdir(parents=True, exist_ok=True)
+            im.convert("RGB").save(SITE / IGDIR / a["id"] / name, quality=88)
             names.append(name)
-        queue.append({"id": a["id"], "files": names, "caption": caption(a)})
+        queue.append({"id": a["id"], "files": names, "caption": caption(a) if PROFILE == "ko" else caption_en(a)})
         print(f"인스타 준비: {a['title']} ({len(names)}장)")
     try:
-        prepare_deals(queue, posted)
+        if PROFILE == "ko":  # 할인·시리즈는 한국어 계정만 (원화 가격)
+            prepare_deals(queue, posted)
     except Exception as e:
         import traceback
         print(f"  ! 할인 게시물 준비 실패: {e}")
@@ -301,25 +371,28 @@ def prepare():
         save(DATA / "state.json", st)
     # 이미 대기 중인 기사의 이미지도 다시 만들어 배포본에 포함 (사이트는 매번 새로 빌드되므로)
     for q in queue:
-        if q.get("kind") == "reel" and not (SITE / "ig" / q["id"] / "reel.mp4").exists():
+        if q.get("kind") == "reel" and not (SITE / IGDIR / q["id"] / "reel.mp4").exists():
             a = next((x for x in arts if x["id"] == q["id"]), None)
             if a:
+                a = {**a, "hook": a.get("hook") or q.get("hook"), "hook_en": a.get("hook_en") or q.get("hook_en")}
                 from reels import render
-                (SITE / "ig" / q["id"]).mkdir(parents=True, exist_ok=True)
-                render(a, SITE / "ig" / q["id"] / "reel.mp4")
+                (SITE / IGDIR / q["id"]).mkdir(parents=True, exist_ok=True)
+                render(a, SITE / IGDIR / q["id"] / "reel.mp4", lang=PROFILE, handle=HANDLE_P)
+            elif q.get("appids"):  # 할인 릴스
+                rebuild_deal(q)
             continue
-        if q.get("kind") in ("deal", "story") and not (SITE / "ig" / q["id"]).exists():
+        if q.get("kind") in ("deal", "story", "series") and not (SITE / IGDIR / q["id"]).exists():
             try:
                 rebuild_deal(q)
             except Exception as e:
                 print(f"  ! 할인 이미지 재생성 실패 {q['id']}: {e}")
     for q in queue:
-        if q.get("kind", "news") == "news" and not (SITE / "ig" / q["id"]).exists():
+        if q.get("kind", "news") == "news" and not (SITE / IGDIR / q["id"]).exists():
             a = next((x for x in arts if x["id"] == q["id"]), None)
             if a:
-                for i, im in enumerate(build_carousel(a)[:10], 1):
-                    (SITE / "ig" / a["id"]).mkdir(parents=True, exist_ok=True)
-                    im.convert("RGB").save(SITE / "ig" / a["id"] / f"{i:02d}.jpg", quality=88)
+                for i, im in enumerate(build_carousel(a, lang=PROFILE, handle=HANDLE_P)[:10], 1):
+                    (SITE / IGDIR / a["id"]).mkdir(parents=True, exist_ok=True)
+                    im.convert("RGB").save(SITE / IGDIR / a["id"] / f"{i:02d}.jpg", quality=88)
     save(QUEUE, queue)
 
 
@@ -370,6 +443,18 @@ def to_card_tone(t):
     return t
 
 
+QUESTIONS = {"신작": ["출시되면 바로 해볼 생각 있으신가요?", "이 게임 기대되시나요?"],
+             "업데이트": ["이번 업데이트 어떻게 보시나요?", "가장 반가운 변화는 무엇인가요?"],
+             "업계": ["이 소식 어떻게 보시나요?", "업계에 어떤 영향이 있을까요?"],
+             "하드웨어": ["구매 의향 있으신가요?", "이 가격 어떻게 보시나요?"],
+             "할인·이벤트": ["이번에 장바구니에 담을 게임은?"], "e스포츠": ["누가 이길 것 같나요?"]}
+
+
+def question(a):
+    qs = QUESTIONS.get(a.get("category"), ["이 소식 어떻게 보시나요?"])
+    return qs[int(hashlib.md5(a["id"].encode()).hexdigest(), 16) % len(qs)]
+
+
 def caption(a):
     tags = ["게임뉴스", "게임소식", "알트탭"]
     tags += [HASHTAG[a["category"]]] if a.get("category") in HASHTAG else []
@@ -379,7 +464,24 @@ def caption(a):
     lines = [a["title"], ""] + [to_news_tone(t) for t in a.get("tldr", [])[:3]]
     if srcs:
         lines += ["", "출처: " + srcs[0] + (f" 외 {len(srcs) - 1}곳" if len(srcs) > 1 else "")]
-    lines += ["", " ".join("#" + t for t in dict.fromkeys(t for t in tags if t))]
+    lines += ["", question(a), "", " ".join("#" + t for t in dict.fromkeys(t for t in tags if t))]
+    return "\n".join(lines)[:2100]
+
+
+TAG_EN = {"신작": "newgame", "업데이트": "gameupdate", "업계": "gamingindustry", "하드웨어": "gaminghardware",
+          "할인·이벤트": "gamedeals", "e스포츠": "esports"}
+
+
+def caption_en(a):
+    tags = ["gamingnews", "gamenews", "gaming", "videogames", "alttab"]
+    tags += [TAG_EN[a["category"]]] if a.get("category") in TAG_EN else []
+    tags += [p.replace(" ", "").lower() for p in a.get("platforms", [])]
+    tags += ["".join(ch for ch in g if ch.isalnum()).lower() for g in (a.get("games_en") or [])[:2]]
+    srcs = [s_["name"] for s_ in a.get("sources", [])]
+    lines = [a.get("title_en") or a["title"], ""] + [f"▪ {t.rstrip('.')}." for t in (a.get("tldr_en") or [])[:3]]
+    if srcs:
+        lines += ["", "Source: " + srcs[0] + (f" +{len(srcs) - 1} more" if len(srcs) > 1 else "")]
+    lines += ["", "Which game are you watching? 👇", "", " ".join("#" + t for t in dict.fromkeys(t for t in tags if t))]
     return "\n".join(lines)[:2100]
 
 
@@ -413,32 +515,40 @@ def wait_ready(cid, tries=30):
 
 
 def publish():
-    if os.environ.get("IG_ENABLED") != "1":
-        print("IG_ENABLED 가 1이 아니라 게시하지 않음 (준비만)")
+    if os.environ.get(ENABLED_ENV) != "1" or not os.environ.get(UID_ENV):
+        print(f"{ENABLED_ENV} 가 1이 아니거나 계정 정보가 없어 게시하지 않음 ({PROFILE})")
         return
     refresh_if_needed()
-    uid = os.environ["IG_USER_ID"]
+    refresh_threads()
+    uid = os.environ[UID_ENV]
     queue, posted = load(QUEUE, []), load(POSTED, {})
+    order = {"reel": 0, "series": 1, "deal": 2, "news": 3}
+    queue.sort(key=lambda q: order.get(q.get("kind", "news"), 4))
+    budget = int(os.environ.get("IG_PUBLISH_MAX", 99))  # 시간대 실행에서는 2건씩
     for q in list(queue):
+        if q.get("kind") != "story" and budget <= 0:
+            continue
         if q["id"] in posted:
             queue.remove(q)
             continue
         try:
             kind = q.get("kind", "news")
             for f in q["files"]:
-                if not wait_url(f"{site_url()}ig/{q['id']}/{f}"):
+                if not wait_url(f"{site_url()}{IGDIR}/{q['id']}/{f}"):
                     raise RuntimeError(f"이미지가 사이트에 없음: ig/{q['id']}/{f}")
             if kind == "reel":
-                c = api("POST", f"{uid}/media", media_type="REELS", video_url=f"{site_url()}ig/{q['id']}/reel.mp4",
+                c = api("POST", f"{uid}/media", media_type="REELS", video_url=f"{site_url()}{IGDIR}/{q['id']}/reel.mp4",
                         caption=q["caption"], share_to_feed="true")["id"]
                 wait_ready(c, tries=60)  # 영상 처리는 1~3분 걸림
                 mid = api("POST", f"{uid}/media_publish", creation_id=c)["id"]
                 posted[q["id"]] = {"media": mid, "kind": kind, "date": datetime.now().strftime("%Y-%m-%d"), "ts": time.time()}
                 queue.remove(q)
+                budget -= 1
                 print(f"인스타 릴스 게시: {q['id']}")
+                post_threads(q)
                 continue
             if kind == "story":
-                c = api("POST", f"{uid}/media", image_url=f"{site_url()}ig/{q['id']}/{q['files'][0]}", media_type="STORIES")["id"]
+                c = api("POST", f"{uid}/media", image_url=f"{site_url()}{IGDIR}/{q['id']}/{q['files'][0]}", media_type="STORIES")["id"]
                 wait_ready(c)
                 mid = api("POST", f"{uid}/media_publish", creation_id=c)["id"]
                 posted[q["id"]] = {"media": mid, "kind": kind, "appids": q.get("appids", []),
@@ -448,7 +558,7 @@ def publish():
                 continue
             children = []
             for f in q["files"]:
-                url = f"{site_url()}ig/{q['id']}/{f}"
+                url = f"{site_url()}{IGDIR}/{q['id']}/{f}"
                 c = api("POST", f"{uid}/media", image_url=url, is_carousel_item="true")["id"]
                 wait_ready(c)
                 children.append(c)
@@ -458,7 +568,9 @@ def publish():
             posted[q["id"]] = {"media": mid, "kind": q.get("kind", "news"), "appids": q.get("appids", []),
                                "date": datetime.now().strftime("%Y-%m-%d"), "ts": time.time()}
             queue.remove(q)
+            budget -= 1
             print(f"인스타 게시 완료: {q['id']} → {mid}")
+            post_threads(q)
         except Exception as e:
             print(f"  ! 인스타 게시 실패 {q['id']}: {e}")
             q["fail"] = q.get("fail", 0) + 1
@@ -470,16 +582,91 @@ def publish():
     save(POSTED, posted)
 
 
+# ---------- 스레드 (Threads API) ----------
+TH_API = "https://graph.threads.net/v1.0"
+
+
+def th_api(method, path, **params):
+    params["access_token"] = os.environ["THREADS_ACCESS_TOKEN"]
+    url = f"{TH_API}/{path}"
+    data = None
+    if method == "GET":
+        url += "?" + urllib.parse.urlencode(params)
+    else:
+        data = urllib.parse.urlencode(params).encode()
+    try:
+        return json.loads(urllib.request.urlopen(urllib.request.Request(url, data=data, method=method), timeout=60).read())
+    except urllib.error.HTTPError as e:
+        raise RuntimeError(f"threads {e.code} {e.read()[:300].decode('utf-8', 'ignore')}")
+
+
+def th_wait(cid, tries=40):
+    for _ in range(tries):
+        st = th_api("GET", cid, fields="status").get("status")
+        if st == "FINISHED":
+            return
+        if st in ("ERROR", "EXPIRED"):
+            raise RuntimeError(f"threads 컨테이너 {st}")
+        time.sleep(4)
+
+
+def post_threads(q):
+    """인스타에 올린 것과 같은 내용을 스레드에도 (한국어 계정만, 500자 제한)."""
+    if PROFILE != "ko" or not (os.environ.get("THREADS_ACCESS_TOKEN") and os.environ.get("THREADS_USER_ID")):
+        return
+    done = load(DATA / "threads_posted.json", {})
+    if q["id"] in done:
+        return
+    uid = os.environ["THREADS_USER_ID"]
+    text = q.get("caption", "")
+    if len(text) > 500:  # 해시태그를 줄여 500자 안으로
+        body, _, tags = text.rpartition("\n\n")
+        text = (body[:480] + "…") if len(body) > 480 else body
+    base = f"{site_url()}{IGDIR}/{q['id']}/"
+    try:
+        if q.get("kind") == "reel":
+            c = th_api("POST", f"{uid}/threads", media_type="VIDEO", video_url=base + "reel.mp4", text=text)["id"]
+        else:
+            kids = [th_api("POST", f"{uid}/threads", media_type="IMAGE", image_url=base + f, is_carousel_item="true")["id"]
+                    for f in q["files"][:20]]
+            for k in kids:
+                th_wait(k)
+            c = th_api("POST", f"{uid}/threads", media_type="CAROUSEL", children=",".join(kids), text=text)["id"]
+        th_wait(c)
+        mid = th_api("POST", f"{uid}/threads_publish", creation_id=c)["id"]
+        done[q["id"]] = {"media": mid, "ts": time.time()}
+        save(DATA / "threads_posted.json", done)
+        print(f"스레드 게시: {q['id']}")
+    except Exception as e:
+        print(f"  ! 스레드 게시 실패 {q['id']}: {e}")
+
+
+def refresh_threads():
+    """스레드 토큰도 60일 → 주 1회 연장 (연장된 토큰은 같은 값이 유지되는 경우가 많아 기록만)."""
+    if not os.environ.get("THREADS_ACCESS_TOKEN"):
+        return
+    st = load(DATA / "state.json", {})
+    if time.time() - st.get("threads_refreshed", 0) < 7 * 86400:
+        return
+    try:
+        urllib.request.urlopen("https://graph.threads.net/refresh_access_token?grant_type=th_refresh_token&access_token="
+                               + urllib.parse.quote(os.environ["THREADS_ACCESS_TOKEN"]), timeout=30).read()
+        st["threads_refreshed"] = time.time()
+        save(DATA / "state.json", st)
+    except Exception as e:
+        print(f"  ! 스레드 토큰 연장 실패: {e}")
+
+
 def check():
     state = load(DATA / "state.json", {})
     try:
         me = api("GET", "me", fields="user_id,username,account_type,media_count")
-        state["ig"] = f"ok @{me.get('username')} ({me.get('account_type')}, 게시물 {me.get('media_count')})"
-        state["ig_user_id_match"] = str(me.get("user_id")) == os.environ.get("IG_USER_ID", "")
+        state["ig" + SUF] = f"ok @{me.get('username')} ({me.get('account_type')}, 게시물 {me.get('media_count')})"
+        state["ig_user_id_match"] = str(me.get("user_id")) == os.environ.get(UID_ENV, "")
     except Exception as e:
-        state["ig"] = f"오류: {e}"
+        state["ig" + SUF] = f"오류: {e}"
     save(DATA / "state.json", state)
-    print("인스타:", state["ig"])
+    print("인스타:", state["ig" + SUF])
 
 
 if __name__ == "__main__":

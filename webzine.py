@@ -196,6 +196,10 @@ JSON 하나만 출력:
   "platforms": ["PC","PS5","Xbox","Switch" 중 출처에 명시된 것만],
   "games": ["관련 게임명"],
   "games_en": ["관련 게임의 영문 공식 제목 (Steam 검색용, 출처에 나온 표기 그대로)"],
+  "hook": "릴스 첫 화면용 한 줄 훅 (8~16자, 궁금증·숫자·반전. 예: 'GTA 6 또 연기?', '90% 할인 실화')",
+  "title_en": "영문 헤드라인 (게임 매체 스타일, 60자 이내)",
+  "tldr_en": ["English key point 1", "English key point 2", "English key point 3"],
+  "hook_en": "English reel hook (3~6 words)",
   "video_q": "이 기사 주제에 딱 맞는 공식 영상을 YouTube 에서 찾을 영문 검색어 (예: 'Fortnite Sonic collaboration trailer'). 트레일러·영상 공개 기사가 아니면 null",
   "trust": "공식|확인|보도|루머"}}
 ]}}
@@ -222,10 +226,10 @@ def clean_article(a):
     """AI 출력 형식 바로잡기. 제목이 글자가 아니면(건너뛸 글 표시가 섞인 경우 등) None."""
     if not isinstance(a.get("title"), str) or not a["title"].strip() or a.get("skip"):
         return None
-    for k_ in ("why", "trust", "category", "video_q"):
+    for k_ in ("why", "trust", "category", "video_q", "hook", "title_en", "hook_en"):
         if k_ in a and a[k_] is not None and not isinstance(a[k_], str):
             a[k_] = str(a[k_]) if not isinstance(a[k_], (dict, list)) else ""
-    for k_ in ("tldr", "body", "platforms", "games", "games_en"):
+    for k_ in ("tldr", "body", "platforms", "games", "games_en", "tldr_en"):
         v_ = a.get(k_)
         if isinstance(v_, str):
             v_ = [v_]
