@@ -92,7 +92,46 @@ def refresh_if_needed():
 
 
 # ---------- 준비: 기사 고르기 + 이미지 ----------
-def pick(arts, posted, n, queued_ids=(), cap=True):
+# 이름만으로 클릭되는 대형 IP (정규화한 영문/한글 일부)
+BIG_IP = ["gta", "grandtheftauto", "그랜드테프트오토", "callofduty", "콜오브듀티", "zelda", "젤다", "pokemon", "포켓몬",
+          "mario", "마리오", "eldenring", "엘든링", "fromsoftware", "marvel", "마블", "starwars", "스타워즈", "battlefield",
+          "배틀필드", "assassinscreed", "어쌔신크리드", "residentevil", "레지던트이블", "바이오하자드", "monsterhunter",
+          "몬스터헌터", "finalfantasy", "파이널판타지", "cyberpunk", "사이버펑크", "witcher", "위쳐", "halo", "헤일로",
+          "godofwar", "갓오브워", "spiderman", "스파이더맨", "minecraft", "마인크래프트", "fortnite", "포트나이트",
+          "valorant", "발로란트", "leagueoflegends", "리그오브레전드", "overwatch", "오버워치", "diablo", "디아블로",
+          "starcraft", "스타크래프트", "pubg", "배틀그라운드", "lostark", "로스트아크", "streetfighter", "스트리트파이터",
+          "tekken", "철권", "silenthill", "사일런트힐", "metalgear", "메탈기어", "nintendo", "닌텐도", "switch2", "스위치2",
+          "playstation", "플레이스테이션", "ps6", "xbox", "steamdeck", "스팀덱", "valve", "밸브", "halflife", "하프라이프"]
+_TOP_PLAYED = None
+
+
+def top_played():
+    """Steam 동시접속 상위 100 appid (한 번만 조회)."""
+    global _TOP_PLAYED
+    if _TOP_PLAYED is None:
+        try:
+            r = json.loads(urllib.request.urlopen(
+                "https://api.steampowered.com/ISteamChartsService/GetMostPlayedGames/v1/", timeout=20).read())
+            _TOP_PLAYED = {x["appid"] for x in r["response"]["ranks"][:100]}
+        except Exception:
+            _TOP_PLAYED = set()
+    return _TOP_PLAYED
+
+
+def popularity(a):
+    import re as _re
+    text = _re.sub(r"[^0-9a-z가-힣]", "", " ".join([a["title"]] + (a.get("games_en") or []) + (a.get("games") or [])).lower())
+    s_ = 3 * len(a.get("sources", []))
+    s_ += 5 if a.get("appid") in top_played() else 0
+    s_ += 5 if any(k in text for k in BIG_IP) else 0
+    s_ += 2 if a.get("trust") == "공식" else 0
+    s_ += 2 if a.get("category") == "신작" or "트레일러" in a["title"] or "공개" in a["title"] else 0
+    s_ += 2 if a.get("video") else 0
+    s_ -= (time.time() - a.get("written", a["ts"])) / 3600 * 0.3  # 오래될수록 감점
+    return s_
+
+
+def pick(arts, posted, n, queued_ids=(), cap=True, by_pop=False):
     today = datetime.now().strftime("%Y-%m-%d")
     done_today = sum(1 for p in posted.values() if p.get("date") == today and p.get("kind", "news") == "news")
     room = min(n, int(os.environ.get("IG_DAILY", 4)) - done_today) if cap else n
@@ -102,7 +141,10 @@ def pick(arts, posted, n, queued_ids=(), cap=True):
             and a["id"] not in posted and a.get("trust") != "루머"
             and time.time() - a.get("written", a["ts"]) < 24 * 3600 and len(a.get("body", [])) >= 2]
     # 화제성: 출처 수 > 공식 발표 > 최신
-    cand.sort(key=lambda a: (-len(a.get("sources", [])), a.get("trust") != "공식", -a["ts"]))
+    if by_pop:  # 릴스: 가장 화제가 될 만한 순
+        cand.sort(key=lambda a: -popularity(a))
+    else:
+        cand.sort(key=lambda a: (-len(a.get("sources", [])), a.get("trust") != "공식", -a["ts"]))
     # 이틀 안에 올렸거나 대기 중인 게임과 겹치면 건너뜀 (같은 소식을 매체별로 따로 쓴 기사 중복 방지)
     byid = {a["id"]: a for a in arts}
     recent = [byid[i] for i, p in posted.items() if i in byid and time.time() - p.get("ts", 0) < 2 * 86400]
@@ -225,7 +267,7 @@ def prepare():
     reels_today = sum(1 for p in posted.values() if p.get("kind") == "reel" and p.get("date") == today)         + sum(1 for q in queue if q.get("kind") == "reel")
     # 릴스는 캐러셀 한도와 별도로 하루 IG_REELS_DAILY 건
     want_reel = reels_today < int(os.environ.get("IG_REELS_DAILY", 2))
-    cands = pick([a for a in arts if a["id"] not in queued], posted, 1, queued, cap=False) if want_reel else []
+    cands = pick([a for a in arts if a["id"] not in queued], posted, 1, queued, cap=False, by_pop=True) if want_reel else []
     cands += [a for a in pick([a for a in arts if a["id"] not in queued], posted, int(os.environ.get("IG_PER_RUN", 1)), queued)
               if not cands or a["id"] != cands[0]["id"]]
     for a in cands:
