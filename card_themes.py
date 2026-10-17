@@ -142,7 +142,7 @@ def edit_frame(img):
     d.text((56, 52), HANDLE, font=NM(28), fill=(235, 235, 235))
     d.text((W - 56, 52), "GAME NEWS", font=NB(28), fill=(235, 235, 235), anchor="ra")
     d.line([(56, H - 96), (W - 260, H - 96)], fill=(235, 235, 235), width=2)
-    d.text((W - 56, H - 112), "프로필 링크 →", font=NB(30), fill=(255, 255, 255), anchor="ra")
+    d.text((W - 56, H - 112), "팔로우 →", font=NB(30), fill=(255, 255, 255), anchor="ra")
     return d
 
 

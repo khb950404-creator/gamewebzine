@@ -3,7 +3,7 @@
   1장  썸네일: 이미지 + 제목만
   2장  핵심 요약 (3줄)
   3~N  본문 상세 (길면 여러 장)
-  끝장  출처 + 프로필 링크 안내
+  끝장  출처 + 팔로우 안내 (사이트 주소는 노출하지 않음)
 
   python carousel.py [기사ID]   # out/carousel/<ID>/ 에 생성
 """
@@ -123,8 +123,8 @@ def slide_end(a, total):
         d.text((76, y), f"이미지: {a['img_src']}", font=NR(28), fill=(150, 150, 158))
     # 행동 유도
     d.rounded_rectangle((76, H - 330, W - 76, H - 170), 24, fill=LIME)
-    d.text((W // 2, H - 280), "전체 기사·영상은", font=NB(40), fill=WHITE, anchor="mm")
-    d.text((W // 2, H - 220), "프로필 링크에서", font=BH(56), fill=WHITE, anchor="mm")
+    d.text((W // 2, H - 280), "매일 게임 소식 3줄", font=NB(40), fill=WHITE, anchor="mm")
+    d.text((W // 2, H - 220), "팔로우하고 받아보기", font=BH(56), fill=WHITE, anchor="mm")
     return img
 
 

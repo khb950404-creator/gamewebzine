@@ -143,7 +143,7 @@ def news_card(a, idx, total):
     src = a.get("img_src") or ""
     d.text((56, H - 88), f"출처 {a['sources'][0]['name'] if a.get('sources') else ''}" + (f" · 이미지 {src}" if src else ""),
            font=F("r", 26), fill=MUT)
-    more = "전체 기사는 프로필 링크 →"
+    more = "매일 게임 소식은 팔로우 →"
     d.text((W - 56 - d.textlength(more, font=F("m", 26)), H - 88), more, font=F("m", 26), fill=FG)
     return card
 
@@ -201,7 +201,7 @@ def deal_card(deals):
         if x.get("ko"):
             badge(d, W - 56 - 92, y + 6, "한글", (31, 157, 85), F("b", 26))
         y += 190
-    d.text((56, H - 88), "가격은 게시 시점 기준 · 전체 할인은 프로필 링크", font=F("r", 26), fill=MUT)
+    d.text((56, H - 88), "가격은 게시 시점 기준", font=F("r", 26), fill=MUT)
     return card
 
 
