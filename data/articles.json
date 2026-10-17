@@ -22874,5 +22874,447 @@
   "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar57t1.jpg",
   "img_src": "IGDB",
   "video_v": 1
+ },
+ {
+  "title": "아이온 2, 작업장 및 비정상 거래 계정 제재 진행",
+  "tldr": [
+   "운영 정책 위반한 다수 계정에 제재 조치 단행",
+   "매크로·봇을 이용한 골드 파밍 및 현금 거래 단속",
+   "게임 내 비정상 거래 등 경제 시스템 교란 행위 차단"
+  ],
+  "why": "공정한 게임 플레이 환경 유지 및 인게임 경제 안정화를 위한 개발진의 단속 조치입니다.",
+  "body": [
+   "아이온 2 개발진이 공정한 서비스 환경 조성을 위해 운영 정책을 위반한 이용자 계정을 대거 제재했다.",
+   "이번 제재는 매크로와 봇 등 불법 프로그램을 활용한 자동 사냥과 골드 파밍, 현금 거래(RMT)를 목적으로 한 조직적 플레이 패턴에 집중 적용됐다.",
+   "아울러 게임 내 경제 질서를 어지럽히는 비정상적인 거래 행위 역시 단속 대상에 포함됐으며, 운영진은 면밀한 조사를 거쳐 관련 계정에 제한 조치를 취했다고 밝혔다."
+  ],
+  "category": "업계",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "아이온 2"
+  ],
+  "games_en": [
+   "AION 2"
+  ],
+  "video_q": null,
+  "trust": "공식",
+  "fixes": [],
+  "status": "published",
+  "id": "70005573fe",
+  "sources": [
+   {
+    "name": "Steam News",
+    "title": "Account Restrictions | 16 Oct (PDT) / 17 Oct (CEST)",
+    "link": "https://store.steampowered.com/news/app/3393110/view/670631196372239441",
+    "official": true,
+    "img": "https://clan.fastly.steamstatic.com/images/46074831/bdbc6a516755d3ba1d4f644f5254f69cee2f972f.png"
+   }
+  ],
+  "ts": 1792209838.0,
+  "written": 1792216878.0289724,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar6mdj.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar6mdj.jpg",
+  "img_src": "IGDB",
+  "video_v": 1
+ },
+ {
+  "title": "Beyond These Stars 비욘드 디스 스타즈, 1차 핫픽스로 한국어 표기 오류 수정",
+  "tldr": [
+   "언어 선택 메뉴 내 한국어 표기 오류 수정",
+   "발전기 선택 시 오염 범위 대신 전력 공급 범위 표시",
+   "주민 행동 취소로 인한 건물 이동 불가 버그 개선"
+  ],
+  "why": "국내 이용자 편의성을 높이는 한국어 표기 오류 수정 및 주요 기능 인터페이스가 개선되었습니다.",
+  "body": [
+   "우주 생존 시뮬레이션 게임 'Beyond These Stars 비욘드 디스 스타즈'에 시스템 오류 및 표기 문제를 해결하는 첫 번째 핫픽스 패치가 적용됐다.",
+   "이번 패치를 통해 게임 내 언어 드롭다운 메뉴에서 발생하던 한국어 관련 표기 오류가 수정되어 국내 이용자 편의가 개선됐다.",
+   "이와 함께 발전기 선택 시 기존에 노출되던 오염 범위 대신 전력 범위가 표시되도록 인터페이스를 개편했으며, 건물 철거나 오염 등으로 주민의 이동 지원 행동이 취소될 때 건물이 막히던 버그도 함께 고쳤다."
+  ],
+  "category": "업데이트",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "Beyond These Stars 비욘드 디스 스타즈"
+  ],
+  "games_en": [
+   "Beyond These Stars"
+  ],
+  "video_q": null,
+  "trust": "공식",
+  "fixes": [
+   "게임명 표기 '비욘드 디즈 스타즈' → 'Beyond These Stars 비욘드 디스 스타즈'"
+  ],
+  "status": "published",
+  "id": "b0a0d768a4",
+  "sources": [
+   {
+    "name": "Steam News",
+    "title": "Hotfix #1 - Building Move Fix, Power Generator Range & Korean Localization",
+    "link": "https://store.steampowered.com/news/app/2295060/view/667253496651712309",
+    "official": true,
+    "img": "https://clan.fastly.steamstatic.com/images/43645631/32dc8101a5ece80b6455a2c9d5a809beadca21da.png"
+   }
+  ],
+  "ts": 1792203340.0,
+  "written": 1792216878.028995,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2295060/e36bd6eb8fc399e52149d19679119c8ff3716416/header_koreana.jpg?t=1792173673",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2295060/e0398fa4f5e0e28f15028b829350cfb292b98c74/ss_e0398fa4f5e0e28f15028b829350cfb292b98c74.1920x1080.jpg?t=1792173673",
+  "appid": 2295060,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "힐링 파밍 시뮬레이션 '코랄 아일랜드', 닌텐도 차세대기 출시 확정",
+  "tldr": [
+   "코랄 아일랜드 스위치 2 버전 공식 출시 발표",
+   "2026년 겨울 무료 1.4 업데이트와 함께 출시 예정",
+   "'키즈 그로우 업' 등 대형 신규 콘텐츠 동시 적용"
+  ],
+  "why": "많은 콘솔 유저들이 기대하던 닌텐도 차세대 플랫폼으로의 출시 시점 및 신규 콘텐츠 계획이 구체화되었습니다.",
+  "body": [
+   "힐링 협동 파밍 시뮬레이션 게임 '코랄 아일랜드'가 닌텐도의 차세대 콘솔인 스위치 2 플랫폼으로 정식 출시된다.",
+   "개발사 스테어웨이 게임즈와 배급사 발로 게임즈는 '더 믹스 가을 쇼케이스'를 통해 스위치 2 버전의 발매 계획을 공식 확인했다.",
+   "스위치 2 버전은 오는 2026년 겨울 대규모 무료 업데이트인 1.4 버전 '키즈 그로우 업'과 함께 출시될 예정이다."
+  ],
+  "category": "신작",
+  "platforms": [
+   "Switch"
+  ],
+  "games": [
+   "코랄 아일랜드"
+  ],
+  "games_en": [
+   "Coral Island"
+  ],
+  "video_q": "Coral Island Switch trailer",
+  "trust": "루머",
+  "fixes": [],
+  "status": "published",
+  "id": "64700ae95f",
+  "sources": [
+   {
+    "name": "Nintendo Life",
+    "title": "The Cosy Coastal Farming Sim Coral Island Is Officially On Its Way To Switch 2 This Winter",
+    "link": "https://www.nintendolife.com/news/2026/10/the-cosy-coastal-farming-sim-coral-island-is-officially-on-its-way-to-switch-2-this-winter",
+    "official": false
+   }
+  ],
+  "ts": 1792209900.0,
+  "written": 1792216878.0290077,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1158160/header.jpg?t=1781768008",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1158160/05227142ef1e3ed7cc4074b23680de1d7764f19f/ss_05227142ef1e3ed7cc4074b23680de1d7764f19f.1920x1080.jpg?t=1781768008",
+  "appid": 1158160,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "소닉 레이싱 크로스월드, 1년 차 마지막 콘텐츠 배포",
+  "tldr": [
+   "소닉 레이싱 크로스월드 1년 차 마지막 콘텐츠 업데이트",
+   "10월 13일 콘텐츠 정식 배포 완료",
+   "향후 지속적인 콘텐츠 확장 이어질 전망"
+  ],
+  "why": "레이싱 게임 이용자들이 즐길 수 있는 1년 차 로드맵의 최종 콘텐츠가 정식 적용되었습니다.",
+  "body": [
+   "세가가 개발 및 서비스하는 레이싱 게임 '소닉 레이싱 크로스월드'의 1년 차 마지막 신규 콘텐츠가 정식 배포됐다.",
+   "해당 업데이트는 10월 13일을 기점으로 적용되었으며, 지난 1년 동안 진행되어 온 사후 지원의 주요 주기를 매듭짓는 내용을 담고 있다.",
+   "개발진은 이번 대규모 콘텐츠 드롭 이후에도 레이스가 완전히 끝난 것은 아니라며 추가적인 지원을 시사했다."
+  ],
+  "category": "업데이트",
+  "platforms": [
+   "PC",
+   "PS5",
+   "Xbox",
+   "Switch"
+  ],
+  "games": [
+   "소닉 레이싱 크로스월드"
+  ],
+  "games_en": [
+   "Sonic Racing: CrossWorlds"
+  ],
+  "video_q": "Sonic Racing: CrossWorlds trailer",
+  "trust": "루머",
+  "fixes": [
+   "게임명 표기 '소닉 레이싱: 크로스월즈' → '소닉 레이싱 크로스월드'"
+  ],
+  "status": "published",
+  "id": "35ba6b35dc",
+  "sources": [
+   {
+    "name": "Nintendo Life",
+    "title": "Reminder: Sonic Racing: CrossWorlds \"Final Content Drop Of Year One\" Is Now Available",
+    "link": "https://www.nintendolife.com/news/2026/10/reminder-sonic-racing-crossworlds-final-content-drop-of-year-one-is-now-available",
+    "official": false
+   }
+  ],
+  "ts": 1792197000.0,
+  "written": 1792216878.0290184,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2486820/41dd01ef2183416212137ef497c7124351eff542/header_alt_assets_15_koreana.jpg?t=1791580020",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2486820/3d0d2e2f1ec38bc6e5cb19766f104bfe1442e3c3/ss_3d0d2e2f1ec38bc6e5cb19766f104bfe1442e3c3.1920x1080.jpg?t=1791580020",
+  "appid": 2486820,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "소니, PS6 겨냥 독자 프레임 생성 기술 특허 출원",
+  "tldr": [
+   "소니의 독자적인 프레임 생성 기술 관련 신규 특허 확인",
+   "차세대 콘솔 PS6 탑재 가능성 부각",
+   "콘솔 그래픽 처리 및 프레임 성능 향상 기대"
+  ],
+  "why": "차세대 콘솔 PS6의 핵심 그래픽 구동 기술과 성능 향상 방향을 가늠할 수 있는 단서입니다.",
+  "body": [
+   "소니가 차세대 콘솔 기기 플레이스테이션 6(PS6)를 염두에 둔 독자적인 프레임 생성 기술 관련 신규 특허를 출원한 것으로 나타났다.",
+   "프레임 생성은 최근 PC 및 콘솔 게임 환경에서 보편화되고 있는 성능 향상 기술로, 소니 역시 차세대 기기 적용을 적극적으로 모색하고 있다.",
+   "이번 특허 문서를 통해 소니가 구상 중인 프레임 보간 기술의 구체적인 작동 방식과 차세대 기기의 그래픽 처리 역량을 엿볼 수 있다."
+  ],
+  "category": "하드웨어",
+  "platforms": [
+   "PS5"
+  ],
+  "games": [],
+  "games_en": [],
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [],
+  "status": "published",
+  "id": "5f2829bf0b",
+  "sources": [
+   {
+    "name": "IGN",
+    "title": "PlayStation 6 Will Likely Have Sony's Own Take on Frame Generation, According to Latest Patent",
+    "link": "https://www.ign.com/articles/playstation-6-will-likely-have-sonys-own-take-on-frame-generation-according-to-latest-patent",
+    "official": false
+   }
+  ],
+  "ts": 1792180977.0,
+  "written": 1792216878.0290287,
+  "img": null,
+  "img_v": 2,
+  "video_v": 1
+ },
+ {
+  "title": "닌텐도, 일본 내 스위치 및 차세대기 수리 비용 인상",
+  "tldr": [
+   "닌텐도 스위치 및 스위치 2 일본 본체 수리 비용 인상",
+   "주변기기 수리 비용은 기존 가격 유지",
+   "하드웨어 유지보수 비용 부담 소폭 증가 전망"
+  ],
+  "why": "콘솔 본체 수리 정책 변경으로 향후 하드웨어 유지 비용에 변화가 생깁니다.",
+  "body": [
+   "닌텐도가 일본 지역 내 닌텐도 스위치 및 스위치 2 본체에 대한 공인 수리 비용을 인상한다.",
+   "이번 가격 조정은 본체 수리 비용에 국한되어 적용되며, 컨트롤러 등 각종 주변기기의 수리 비용은 기존과 동일하게 유지된다.",
+   "이에 따라 일본 현지 이용자들의 하드웨어 파손 및 고장 시 지출해야 하는 A/S 부담이 다소 늘어날 것으로 보인다."
+  ],
+  "category": "하드웨어",
+  "platforms": [
+   "Switch"
+  ],
+  "games": [],
+  "games_en": [],
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [],
+  "status": "published",
+  "id": "be74118664",
+  "sources": [
+   {
+    "name": "Siliconera",
+    "title": "Switch and Switch 2 Repairs Will Be More Expensive in Japan",
+    "link": "https://www.siliconera.com/switch-and-switch-2-repairs-will-be-more-expensive-in-japan/",
+    "official": false
+   }
+  ],
+  "ts": 1792180800.0,
+  "written": 1792216878.029039,
+  "img": null,
+  "img_v": 2,
+  "video_v": 1
+ },
+ {
+  "title": "고스트 오브 요테이, 전작 대비 완만하나 PS5서 순항",
+  "tldr": [
+   "고스트 오브 요테이 초기 판매 속도, 쓰시마보다 완만",
+   "애널리스트 추산치 기준 PS5 플랫폼에서 견조한 성적",
+   "전작의 높은 기대치 속 준수한 판매량 유지"
+  ],
+  "why": "PS5 대표 기대작의 초기 시장 반응과 상업적 성과를 확인할 수 있는 최신 지표입니다.",
+  "body": [
+   "플레이스테이션 5 신작 '고스트 오브 요테이'가 전작 '고스트 오브 쓰시마'의 초기 성적에는 다소 못 미치고 있으나, 여전히 강력한 판매세를 이어가고 있는 것으로 나타났다.",
+   "애널리스트 추산에 따르면 요테이의 판매 추이는 쓰시마 대비 다소 느린 편이지만, PS5 단일 플랫폼 내에서는 매우 높은 수치를 기록 중이다.",
+   "전작의 대흥행에 따른 높은 기준선에도 불구하고 신작 역시 안정적인 이용자 유입과 흥행 지표를 확보하고 있는 것으로 평가된다."
+  ],
+  "category": "업계",
+  "platforms": [
+   "PS5"
+  ],
+  "games": [
+   "고스트 오브 요테이"
+  ],
+  "games_en": [
+   "Ghost of Yotei"
+  ],
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [],
+  "status": "published",
+  "id": "40ff830ad2",
+  "sources": [
+   {
+    "name": "IGN",
+    "title": "Ghost of Yotei Sales Lag Behind Tsushima but Are Still Strong on PS5, Analyst Estimates Show",
+    "link": "https://www.ign.com/articles/ghost-of-yotei-sales-lagging-behind-tsushima-but-still-strong-on-ps5-analyst-estimates-show",
+    "official": false
+   }
+  ],
+  "ts": 1792180785.0,
+  "written": 1792216878.029047,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar4u71.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar4u71.jpg",
+  "img_src": "IGDB",
+  "video_v": 1
+ },
+ {
+  "title": "워독스 시즌 2 개막 하루 만에 '블루팀 매수 보너스' 철회",
+  "tldr": [
+   "워독스 시즌 2 시작 하루 만에 블루팀 뇌물 보너스 삭제",
+   "블루팀 지원 효과가 지나쳐 게임 밸런스 붕괴 야기",
+   "개발사 벌크헤드 공식적으로 설계 과오 인정"
+  ],
+  "why": "시즌 업데이트 직후 발생한 치명적인 진영 밸런스 불균형을 신속히 조정했습니다.",
+  "body": [
+   "전술 슈팅 게임 '워독스'가 시즌 2를 시작한 지 단 하루 만에 논란이 된 블루팀 관련 보너스 시스템을 전격 삭제했다.",
+   "개발사 벌크헤드는 불리한 입장이었던 블루팀을 돕기 위해 도입한 '뇌물 보너스'가 지나치게 강력하게 작동하면서 진영 간 균형이 무너졌다고 인정했다.",
+   "개발진은 예상 밖의 부작용을 확인한 직후 즉각 시스템을 제거하며 밸런스 수습에 나섰다."
+  ],
+  "category": "업데이트",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "워독스"
+  ],
+  "games_en": [
+   "Wardogs"
+  ],
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [],
+  "status": "published",
+  "id": "5d42a3e4c1",
+  "sources": [
+   {
+    "name": "PC Gamer",
+    "title": "'We f**ked up': 1 day into Wardogs Season 2, the Blue team bribery bonus is being dropped",
+    "link": "https://www.pcgamer.com/games/fps/we-f-ked-up-1-day-into-wardogs-season-2-the-blue-team-bribery-bonus-is-being-dropped/",
+    "official": false
+   }
+  ],
+  "ts": 1792179772.0,
+  "written": 1792216878.0290556,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1867240/59d4daf753bd5d982e6675f7eee363bc817c574e/header.jpg?t=1790774170",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1867240/13fbc7cb084ec25c20ad031c7e888a9459cd8e77/ss_13fbc7cb084ec25c20ad031c7e888a9459cd8e77.1920x1080.jpg?t=1790774170",
+  "appid": 1867240,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "월드 오브 워크래프트: 포에버, 10월 19일 무료 스트레스 테스트",
+  "tldr": [
+   "와우: 포에버 서버 부하 테스트 다음 주 한시적 무료 진행",
+   "한국 시간 10월 20일 오전 6시 시작(태평양 19일 오후 2시)",
+   "유료 베타 권한이나 정액제 구독 없이 누구나 참여 가능"
+  ],
+  "why": "60달러 상당의 베타 권한이나 월 정액 없이도 차기 빌드를 미리 체험해볼 수 있는 기회입니다.",
+  "body": [
+   "블리자드 엔터테인먼트가 구버전 기반의 클래식 MMORPG '월드 오브 워크래프트: 포에버'의 대규모 스트레스 테스트를 무료로 진행한다.",
+   "이번 테스트는 태평양 표준시 기준 10월 19일 오후 2시부터 시작되며, 기존 60달러 상당의 베타 이용권이나 게임 이용권(정액제)을 구매하지 않은 이용자도 자유롭게 참여할 수 있다.",
+   "블리자드는 공식 출시 전 서버 부하와 안정성을 검증하기 위한 조치라며, 이용자 참여를 통해 론칭 시 발생할 수 있는 문제를 사전 점검하겠다고 전했다."
+  ],
+  "category": "할인·이벤트",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "월드 오브 워크래프트: 포에버"
+  ],
+  "games_en": [
+   "World of Warcraft: Forever"
+  ],
+  "video_q": null,
+  "trust": "공식",
+  "fixes": [],
+  "status": "published",
+  "id": "b668a3e27a",
+  "sources": [
+   {
+    "name": "GameSpot",
+    "title": "You Can Play WoW: Forever For Free Next Week (But There’s A Catch)",
+    "link": "https://www.gamespot.com/articles/you-can-play-wow-forever-for-free-next-week-but-theres-a-catch/",
+    "official": false
+   }
+  ],
+  "ts": 1792176344.0,
+  "written": 1792216878.029065,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar6lm8.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar6lm8.jpg",
+  "img_src": "IGDB",
+  "video_v": 1
+ },
+ {
+  "title": "드렁큰 가디스 리플럭스, AI 도용 우려로 스팀 데모 취소",
+  "tldr": [
+   "애니메이션 도박 공포 게임 스팀 무료 데모 배포 취소",
+   "AI를 통한 게임 리소스 무단 도용 우려가 결정적 원인",
+   "공개 데모 대신 비공개 베타(CBT)로 개발 방향 선회"
+  ],
+  "why": "생성형 AI 기술의 도용 문제로 인해 인디 게임의 스팀 데모 배포 방식이 변화하고 있습니다.",
+  "body": [
+   "애니메이션 스타일의 도박 공포 게임 '드렁큰 가디스 리플럭스'가 스팀 무료 데모 배포 계획을 전면 취소했다.",
+   "개발진은 공개 데모 배포 시 인공지능(AI) 기술에 의해 독창적인 리소스와 에셋이 무단 복제되거나 도용될 위험이 크다고 판단해 이 같은 결정을 내렸다.",
+   "이에 따라 개발사는 누구나 다운로드 가능한 공개 체험판 대신 참가자를 선별하는 비공개 베타 테스트를 진행하기로 노선을 변경했다."
+  ],
+  "category": "업계",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "드렁큰 가디스 리플럭스"
+  ],
+  "games_en": [
+   "Drunken Goddess Reflux"
+  ],
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [],
+  "status": "published",
+  "id": "822877b671",
+  "sources": [
+   {
+    "name": "Kotaku",
+    "title": "Anime Gambling Horror Game Ditches Free Steam Demo So It Doesn’t Get Ripped Off By AI",
+    "link": "https://kotaku.com/anime-gambling-horror-game-ditches-free-steam-demo-over-fears-of-getting-ripped-off-by-ai-2000746794",
+    "official": false
+   }
+  ],
+  "ts": 1792175400.0,
+  "written": 1792216878.0290737,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4150720/7d4ab50bd6073a912094cb2b17d0617415e002d3/header.jpg?t=1778427552",
+  "img_v": 2,
+  "img_hd": null,
+  "appid": 4150720,
+  "img_src": "Steam 스토어",
+  "video_v": 1
  }
 ]

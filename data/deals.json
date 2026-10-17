@@ -1,5 +1,5 @@
 {
- "updated": "10.17 14:58",
+ "updated": "10.17 15:02",
  "deals": [
   {
    "appid": 1091500,
@@ -2122,10 +2122,31 @@
    "best": 28800
   },
   {
+   "appid": 4964110,
+   "name": "Darkest Dungeon®: The Fire's Edge",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4964110/3f8e34ea4124cd88cae82b38e6291e2804fa0292/header.jpg?t=1787078198",
+   "rank": 63,
+   "discount": 20,
+   "initial": 7500,
+   "final": 6000,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "인디",
+    "RPG",
+    "전략"
+   ],
+   "meta": null,
+   "shops": [],
+   "ever_low": 6000,
+   "best": 6000
+  },
+  {
    "appid": 3196440,
    "name": "Vacation Cafe Simulator",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3196440/399e3b9c7d919cf8293ea97a27ba6f1e2226bc03/header.jpg?t=1790589409",
-   "rank": 63,
+   "rank": 64,
    "discount": 25,
    "initial": 21000,
    "final": 15750,
@@ -2146,7 +2167,7 @@
    "appid": 2781620,
    "name": "리스크 오브 레인 2: 합금의 집합체",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2781620/bc21dbd883483c2d2bc440ca2e89f091f43914be/header.jpg?t=1763508164",
-   "rank": 64,
+   "rank": 65,
    "discount": 35,
    "initial": 15000,
    "final": 9750,
@@ -2183,27 +2204,6 @@
    ],
    "ever_low": 8900,
    "best": 8900
-  },
-  {
-   "appid": 4964110,
-   "name": "Darkest Dungeon®: The Fire's Edge",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4964110/3f8e34ea4124cd88cae82b38e6291e2804fa0292/header.jpg?t=1787078198",
-   "rank": 65,
-   "discount": 20,
-   "initial": 7500,
-   "final": 6000,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "인디",
-    "RPG",
-    "전략"
-   ],
-   "meta": null,
-   "shops": [],
-   "ever_low": 6000,
-   "best": 6000
   },
   {
    "appid": 1151340,
@@ -3464,10 +3464,46 @@
    "best": 16140
   },
   {
+   "appid": 2484130,
+   "name": "Fruitbus",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2484130/header_koreana.jpg?t=1774944219",
+   "rank": 99,
+   "discount": 50,
+   "initial": 27000,
+   "final": 13500,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "어드벤처",
+    "캐주얼",
+    "인디"
+   ],
+   "meta": null,
+   "shops": [
+    {
+     "shop": "Fanatical",
+     "krw": 29893,
+     "cut": 10,
+     "url": "https://itad.link/01992dbd-7190-71fe-ac13-9c043b1eb23a/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "Humble Store",
+     "krw": 33364,
+     "cut": 0,
+     "url": "https://itad.link/0199b9e5-ed5d-7016-a903-d9236d372508/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 13500,
+   "best": 13500
+  },
+  {
    "appid": 356190,
    "name": "Middle-earth™: Shadow of War™",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/356190/header_koreana.jpg?t=1780594801",
-   "rank": 99,
+   "rank": 100,
    "discount": 90,
    "initial": 53000,
    "final": 5300,
@@ -3512,42 +3548,6 @@
    ],
    "ever_low": 4300,
    "best": 5300
-  },
-  {
-   "appid": 2484130,
-   "name": "Fruitbus",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2484130/header_koreana.jpg?t=1774944219",
-   "rank": 100,
-   "discount": 50,
-   "initial": 27000,
-   "final": 13500,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "어드벤처",
-    "캐주얼",
-    "인디"
-   ],
-   "meta": null,
-   "shops": [
-    {
-     "shop": "Fanatical",
-     "krw": 29893,
-     "cut": 10,
-     "url": "https://itad.link/01992dbd-7190-71fe-ac13-9c043b1eb23a/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "Humble Store",
-     "krw": 33364,
-     "cut": 0,
-     "url": "https://itad.link/0199b9e5-ed5d-7016-a903-d9236d372508/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 13500,
-   "best": 13500
   }
  ],
  "shops_status": "ok",
