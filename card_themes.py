@@ -15,7 +15,7 @@ from cards import W, H, ROOT, fetch_img, cover_fit, wrap
 
 FD = ROOT / "fonts"
 WIN = Path("C:/Windows/Fonts")
-HANDLE = "@alttab.gg"
+HANDLE = "@webzinealttab"
 
 
 def ft(name, size):

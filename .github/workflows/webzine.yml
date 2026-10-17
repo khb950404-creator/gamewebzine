@@ -25,6 +25,10 @@ env:
   GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
   ITAD_API_KEY: ${{ secrets.ITAD_API_KEY }}
   IGDB_CLIENT_ID: ${{ secrets.IGDB_CLIENT_ID }}
+  IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+  IG_USER_ID: ${{ secrets.IG_USER_ID }}
+  IG_ENABLED: ${{ vars.IG_ENABLED }}
+  IG_DAILY: ${{ vars.IG_DAILY || '4' }}
   IGDB_CLIENT_SECRET: ${{ secrets.IGDB_CLIENT_SECRET }}
   MAX_ARTICLES: ${{ vars.MAX_ARTICLES || '12' }}
   REVIEW_ALL: ${{ vars.REVIEW_ALL || '0' }}
@@ -59,6 +63,13 @@ jobs:
       - name: 사이트 빌드
         run: python webzine.py build
 
+      - name: 인스타 준비 (캐러셀 이미지 생성)
+        continue-on-error: true
+        run: |
+          pip install -q pillow
+          python -u ig_post.py prepare
+          if [ "${{ github.event_name }}" = "push" ]; then python -u ig_post.py check; fi
+
       - name: 데이터 커밋
         if: always()
         run: |
@@ -87,3 +98,25 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  instagram:
+    needs: deploy                # 이미지가 사이트에 올라간 뒤에 게시
+    if: github.event_name != 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: 인스타 게시
+        continue-on-error: true
+        run: python -u ig_post.py publish
+      - name: 게시 기록 커밋
+        run: |
+          git config user.name "webzine-bot"
+          git config user.email "webzine-bot@users.noreply.github.com"
+          git add data
+          git diff --cached --quiet || (git commit -m "인스타 게시 기록" && git pull --rebase && git push)
