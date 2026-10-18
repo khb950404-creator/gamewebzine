@@ -449,21 +449,28 @@ CARD_MAP = [("졌다", "짐"), ("났다", "남"), ("왔다", "옴"), ("섰다", 
 
 
 def to_card_tone(t):
+    """기사체 → 개조식. '공개했다'→'공개', '전했다'→'전함', '중심이 됐다'→'중심이 됨', '이어졌다'→'이어짐'."""
     t = t.strip().rstrip(".").strip()
-    for c in CARD_CUT:
-        if t.endswith(c) and len(t) > len(c):
-            return t[: -len(c)].rstrip()
+    head, _, last = t.rpartition(" ")
+    pre = (head + " ") if head else ""
+    rules = [  # (어미, 명사 뒤면 떼고, 짧은 동사면 붙일 말)
+        (("하였습니다", "했습니다", "합니다", "하였다", "했다", "한다"), "함"),
+        (("되었습니다", "됐습니다", "됩니다", "되었다", "됐다", "된다"), "됨"),
+        (("입니다", "이다"), "임"),
+    ]
+    for ends, short in rules:
+        for e in ends:
+            if last.endswith(e):
+                stem = last[: -len(e)]
+                if not stem:            # '중심이 됐다' 처럼 띄어 쓴 경우
+                    return pre + short
+                if len(stem) >= 2:      # '공개했다' → '공개', '출시됐다' → '출시'
+                    return pre + stem
+                return pre + stem + short  # '전했다' → '전함'
     for a_, b_ in CARD_MAP:
-        if t.endswith(a_):
-            return t[: -len(a_)] + b_
+        if last.endswith(a_):
+            return pre + last[: -len(a_)] + b_
     return t
-
-
-QUESTIONS = {"신작": ["출시되면 바로 해볼 생각 있으신가요?", "이 게임 기대되시나요?"],
-             "업데이트": ["이번 업데이트 어떻게 보시나요?", "가장 반가운 변화는 무엇인가요?"],
-             "업계": ["이 소식 어떻게 보시나요?", "업계에 어떤 영향이 있을까요?"],
-             "하드웨어": ["구매 의향 있으신가요?", "이 가격 어떻게 보시나요?"],
-             "할인·이벤트": ["이번에 장바구니에 담을 게임은?"], "e스포츠": ["누가 이길 것 같나요?"]}
 
 
 def question(a):

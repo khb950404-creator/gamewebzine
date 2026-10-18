@@ -87,9 +87,10 @@ def slide_summary(a, total):
         y += 10
         d.line([(76, y), (W - 76, y)], fill=(70, 70, 76), width=2)
         y += 30
-        for ln in lines_of(d, a["why"], NM(36), W - 152, 2 if y > 1050 else 3):
-            d.text((76, y), ln, font=NM(36), fill=SOFT)
-            y += 54
+        wf, wl = fit(d, a["why"], NM, 36, W - 152, 2 if y > 1050 else 3, 24)
+        for ln in wl:
+            d.text((76, y), ln, font=wf, fill=SOFT)
+            y += int(wf.size * 1.5)
     return img
 
 
@@ -132,9 +133,10 @@ def slide_end(a, total):
         if y > H - 520:  # 아래 버튼과 겹치지 않게
             break
         d.text((76, y), (L[LANG]["official"] if s.get("official") else "") + s["name"], font=NB(38), fill=WHITE)
-        for ln in lines_of(d, s["title"], NR(30), W - 152, 2):
-            y += 48
-            d.text((76, y), ln, font=NR(30), fill=(170, 170, 178))
+        sf, sl = fit(d, s["title"], NR, 30, W - 152, 2, 22)
+        for ln in sl:
+            y += int(sf.size * 1.6)
+            d.text((76, y), ln, font=sf, fill=(170, 170, 178))
         y += 80
     if a.get("img_src"):
         d.text((76, y), f"{L[LANG]['img']}: {a['img_src']}", font=NR(28), fill=(150, 150, 158))
@@ -195,9 +197,10 @@ def build_weekly_top(arts, handle=None):
             d.text((76, y), ln, font=tf2, fill=WHITE)
             y += int(tf2.size * 1.18)
         if a.get("tldr"):
-            for ln in lines_of(d, to_card_tone(a["tldr"][0]), NM(38), W - 152, 2):
-                d.text((76, y + 20), ln, font=NM(38), fill=SOFT)
-                y += 56
+            tf3, tl3 = fit(d, to_card_tone(a["tldr"][0]), NM, 38, W - 152, 2, 26)
+            for ln in tl3:
+                d.text((76, y + 20), ln, font=tf3, fill=SOFT)
+                y += int(tf3.size * 1.47)
         slides.append(img)
     end = text_bg(arts[0])
     d = frame(end, total, total)

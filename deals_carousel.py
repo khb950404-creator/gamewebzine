@@ -8,7 +8,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFilter
 
 from cards import W, H, ROOT, fetch_img, cover_fit
-from card_themes import BH, NB, NM, NR, ANTON, grade, shade, lines_of, HANDLE
+from card_themes import BH, NB, NM, NR, ANTON, grade, shade, lines_of, fit, HANDLE
 from carousel import LIME as RED, WHITE, SOFT
 GOLD, INK = (245, 178, 51), (18, 16, 12)  # 할인 테마: 알트탭 레드와 어울리는 웜 골드, 그 위 글자는 진한 먹색
 
@@ -126,9 +126,10 @@ def slide_deal(x, page, total):
     d.text((100, 640), pct, font=ANTON(120), fill=INK, anchor="lm")
     # 게임명
     y = 760
-    for ln in lines_of(d, x["name"].replace("™", "").replace("®", ""), BH(72), W - 152, 2):
-        d.text((76, y), ln, font=BH(72), fill=WHITE)
-        y += 88
+    nf, nl = fit(d, x["name"].replace("™", "").replace("®", ""), BH, 72, W - 152, 2, 44)
+    for ln in nl:
+        d.text((76, y), ln, font=nf, fill=WHITE)
+        y += int(nf.size * 1.22)
     # 가격
     y += 20
     orig = f"₩{x['initial']:,}"
@@ -192,9 +193,10 @@ def story(x):
     d.rounded_rectangle((76, 960, 76 + d.textlength(pct, font=ANTON(150)) + 56, 1160), 18, fill=GOLD)
     d.text((104, 1060), pct, font=ANTON(150), fill=INK, anchor="lm")
     y = 1210
-    for ln in lines_of(d, x["name"].replace("™", "").replace("®", ""), BH(84), SW - 152, 2):
-        d.text((76, y), ln, font=BH(84), fill=WHITE)
-        y += 104
+    nf, nl = fit(d, x["name"].replace("™", "").replace("®", ""), BH, 84, SW - 152, 2, 50)
+    for ln in nl:
+        d.text((76, y), ln, font=nf, fill=WHITE)
+        y += int(nf.size * 1.24)
     orig = f"₩{x['initial']:,}"
     d.text((76, y + 50), orig, font=NM(48), fill=(150, 150, 158), anchor="lm")
     ow = d.textlength(orig, font=NM(48))
