@@ -35,7 +35,7 @@ env:
   THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
   IG_ENABLED: ${{ vars.IG_ENABLED }}
   IG_DAILY: ${{ vars.IG_DAILY || '4' }}
-  IG_REELS_DAILY: ${{ vars.IG_REELS_DAILY || '2' }}
+  IG_REELS_DAILY: ${{ vars.IG_REELS_DAILY || '4' }}
   IG_FORCE: ${{ contains(github.event.head_commit.message, '[ig-now]') && '1' || '' }}
   IGDB_CLIENT_SECRET: ${{ secrets.IGDB_CLIENT_SECRET }}
   MAX_ARTICLES: ${{ vars.MAX_ARTICLES || '12' }}
