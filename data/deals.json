@@ -1,5 +1,5 @@
 {
- "updated": "10.18 23:41",
+ "updated": "10.18 23:44",
  "deals": [
   {
    "appid": 1091500,
@@ -2231,10 +2231,58 @@
    "best": 18400
   },
   {
+   "appid": 924970,
+   "name": "Back 4 Blood",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/924970/header.jpg?t=1780594976",
+   "rank": 63,
+   "discount": 90,
+   "initial": 68800,
+   "final": 6880,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "액션"
+   ],
+   "meta": 77,
+   "shops": [
+    {
+     "shop": "GamersGate",
+     "krw": 61920,
+     "cut": 10,
+     "url": "https://itad.link/018d9386-2c98-725b-a50b-38c48f1dbf25/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GameBillet",
+     "krw": 66408,
+     "cut": 17,
+     "url": "https://itad.link/018d9386-2c98-725b-a50b-38c489f68d94/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GreenManGaming",
+     "krw": 68800,
+     "cut": 0,
+     "url": "https://itad.link/018d9386-2c98-725b-a50b-38c4858e9f51/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "PlanetPlay",
+     "krw": 72010,
+     "cut": 10,
+     "url": "https://itad.link/019f13d4-fd87-71dd-8b05-5d10cdea48ad/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 3440,
+   "best": 6880
+  },
+  {
    "appid": 1139980,
    "name": "Travellers Rest",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1139980/4f7daf4884589291ef49f35248d41f76e9b4d967/header.jpg?t=1789987425",
-   "rank": 63,
+   "rank": 64,
    "discount": 25,
    "initial": 19500,
    "final": 14620,
@@ -2279,54 +2327,6 @@
    ],
    "ever_low": 13060,
    "best": 14620
-  },
-  {
-   "appid": 924970,
-   "name": "Back 4 Blood",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/924970/header.jpg?t=1780594976",
-   "rank": 64,
-   "discount": 90,
-   "initial": 68800,
-   "final": 6880,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "액션"
-   ],
-   "meta": 77,
-   "shops": [
-    {
-     "shop": "GamersGate",
-     "krw": 61920,
-     "cut": 10,
-     "url": "https://itad.link/018d9386-2c98-725b-a50b-38c48f1dbf25/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GameBillet",
-     "krw": 66408,
-     "cut": 17,
-     "url": "https://itad.link/018d9386-2c98-725b-a50b-38c489f68d94/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GreenManGaming",
-     "krw": 68800,
-     "cut": 0,
-     "url": "https://itad.link/018d9386-2c98-725b-a50b-38c4858e9f51/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "PlanetPlay",
-     "krw": 72010,
-     "cut": 10,
-     "url": "https://itad.link/019f13d4-fd87-71dd-8b05-5d10cdea48ad/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 3440,
-   "best": 6880
   },
   {
    "appid": 2781620,
