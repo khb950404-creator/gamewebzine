@@ -574,7 +574,7 @@ def caption_en(a):
 
 # ---------- 게시 ----------
 def site_url():
-    return os.environ.get("SITE_URL", "https://khb950404-creator.github.io/gamewebzine/").rstrip("/") + "/"
+    return (os.environ.get("SITE_URL") or "https://khb950404-creator.github.io/gamewebzine/").rstrip("/") + "/"
 
 
 def wait_url(url, tries=24):
