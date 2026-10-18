@@ -141,17 +141,17 @@ def popularity(a):
 def pick(arts, posted, n, queued_ids=(), cap=True, by_pop=False):
     today = datetime.now().strftime("%Y-%m-%d")
     done_today = sum(1 for p in posted.values() if p.get("date") == today and p.get("kind", "news") == "news")
-    room = min(n, int(os.environ.get("IG_DAILY", 4)) - done_today) if cap else n
+    room = min(n, int(os.environ.get("IG_DAILY", 3)) - done_today) if cap else n
     if room <= 0:
         return []
     cand = [a for a in arts if a.get("status", "published") == "published" and a.get("img")
             and a["id"] not in posted and a.get("trust") != "루머"
             and time.time() - a.get("written", a["ts"]) < 24 * 3600 and len(a.get("body", [])) >= 2]
     # 화제성: 출처 수 > 공식 발표 > 최신
-    if by_pop:  # 릴스: 가장 화제가 될 만한 순
-        cand.sort(key=lambda a: -popularity(a))
-    else:
-        cand.sort(key=lambda a: (-len(a.get("sources", [])), a.get("trust") != "공식", -a["ts"]))
+    # 화제성 높은 기사만 (출처 1곳짜리 소소한 소식·마이너 게임은 제외)
+    min_pop = float(os.environ.get("IG_MIN_POP", 8))
+    cand = [a for a in cand if popularity(a) >= min_pop]
+    cand.sort(key=lambda a: -popularity(a))
     # 이틀 안에 올렸거나 대기 중인 게임과 겹치면 건너뜀 (같은 소식을 매체별로 따로 쓴 기사 중복 방지)
     byid = {a["id"]: a for a in arts}
     recent = [byid[i] for i, p in posted.items() if i in byid and time.time() - p.get("ts", 0) < 2 * 86400]
@@ -300,6 +300,61 @@ def prepare_deals(queue, posted):
             print(f"인스타 준비: 오늘의 딜 {x['name']}")
 
 
+PROOF_PROMPT = """너는 한국 게임 매체의 교열 기자다. 아래 기사가 인스타그램에 나가기 전 마지막 검수를 한다.
+반드시 확인하고 고쳐라:
+1. 게임·회사·캐릭터 이름: 국내 게이머와 게임 매체(인벤, 루리웹, 디스이즈게임)에서 실제로 쓰는 한글 표기.
+   예: Deadlock=데드락, MARVEL Tōkon=마블 투혼, Ocarina of Time=시간의 오카리나. 아래 '표기 사전'에 있으면 그것을 따른다.
+2. 맞춤법·띄어쓰기·오탈자
+3. 어색하거나 끊긴 문장 (주어·서술어 호응)
+4. 출처 제목과 숫자·날짜·플랫폼이 다르면 출처에 맞게
+의미를 바꾸지 말고 틀린 부분만 고친다. 고칠 게 없으면 그대로 돌려준다.
+
+표기 사전: {names}
+
+입력(JSON): {art}
+
+JSON 하나만 출력: {{"title": ..., "tldr": [...], "why": ..., "hook": ..., "games": [...], "fixes": ["무엇을 왜 고쳤는지"]}}"""
+
+
+def proofread(a):
+    """인스타 게시 직전 교열: 게임명 표기·맞춤법·어색한 문장·숫자. 고친 내용은 기사에도 반영."""
+    if a.get("proofread"):
+        return a
+    try:
+        import webzine
+        webzine.load_env()
+        names = {v["en"]: v["ko"] for v in load(DATA / "names.json", {}).values() if v.get("ko")}
+        art = {k: a.get(k) for k in ("title", "tldr", "why", "hook", "games", "games_en")}
+        art["sources"] = [s_["title"] for s_ in a.get("sources", [])][:4]
+        r = webzine.llm(PROOF_PROMPT.format(names=json.dumps(names, ensure_ascii=False)[:3000],
+                                            art=json.dumps(art, ensure_ascii=False))) or {}
+        changed = []
+        for k in ("title", "why", "hook"):
+            if isinstance(r.get(k), str) and r[k].strip() and r[k] != a.get(k):
+                a[k] = r[k].strip(); changed.append(k)
+        for k in ("tldr", "games"):
+            if isinstance(r.get(k), list) and r[k] and all(isinstance(x, str) for x in r[k]) and r[k] != a.get(k):
+                a[k] = r[k]; changed.append(k)
+        a["proofread"] = time.time()
+        if r.get("fixes"):
+            a.setdefault("fixes", []).extend(f"[교열] {f}" for f in r["fixes"] if isinstance(f, str))
+        # 기사 원본에도 반영 (사이트 기사도 같이 고쳐지게)
+        arts = load(DATA / "articles.json", [])
+        for x in arts:
+            if x["id"] == a["id"]:
+                for k in changed + ["proofread", "fixes"]:
+                    if k in a:
+                        x[k] = a[k]
+                if changed:
+                    x["edited"] = time.time()
+        save(DATA / "articles.json", arts)
+        if changed:
+            print(f"  교열: {a['title'][:30]} ({', '.join(changed)})")
+    except Exception as e:
+        print(f"  ! 교열 실패: {e}")
+    return a
+
+
 def ensure_hook(a, lang="ko"):
     """릴스 첫 화면 훅 문구가 없으면 AI 로 짧게 만든다 (가벼운 모델 1회)."""
     k = "hook" if lang == "ko" else "hook_en"
@@ -367,6 +422,8 @@ def prepare():
     cands += [a for a in pick([a for a in arts if a["id"] not in queued], posted, int(os.environ.get("IG_PER_RUN", 1)), queued)
               if not cands or a["id"] != cands[0]["id"]]
     for a in cands:
+        if PROFILE == "ko":
+            proofread(a)  # 게시 전 교열 (게임명·맞춤법·어색한 문장)
         if want_reel and reels_today < int(os.environ.get("IG_REELS_DAILY", 3)):
             try:  # 릴스: 도달이 가장 넓은 형식 → 하루 상위 기사 몇 건은 영상으로
                 from reels import render
@@ -540,7 +597,7 @@ def wait_ready(cid, tries=30):
             return
         if st in ("ERROR", "EXPIRED"):
             raise RuntimeError(f"컨테이너 {cid} 상태 {st}")
-        time.sleep(4)
+        time.sleep(8)  # 너무 자주 확인하면 API 호출 한도에 걸린다
     raise RuntimeError("컨테이너 준비 시간 초과")
 
 
@@ -599,7 +656,7 @@ def _publish():
             if kind == "reel":
                 c = api("POST", f"{uid}/media", media_type="REELS", video_url=f"{site_url()}{IGDIR}/{q['id']}/reel.mp4",
                         caption=q["caption"], share_to_feed="true", thumb_offset="800")["id"]  # 훅 문구가 꽉 찬 순간을 썸네일로
-                wait_ready(c, tries=60)  # 영상 처리는 1~3분 걸림
+                wait_ready(c, tries=30)  # 영상 처리는 1~3분 걸림
                 mid = api("POST", f"{uid}/media_publish", creation_id=c)["id"]
                 posted[q["id"]] = {"media": mid, "kind": kind, "date": datetime.now().strftime("%Y-%m-%d"), "ts": time.time()}
                 queue.remove(q)
