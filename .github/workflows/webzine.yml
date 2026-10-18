@@ -112,8 +112,8 @@ jobs:
 
   instagram:
     needs: deploy                # 이미지가 사이트에 올라간 뒤에 게시
-    # 평소 게시는 시간대별 ig.yml 이 한다. 여기서는 '[ig-now]' 커밋으로 즉시 게시할 때만
-    if: contains(github.event.head_commit.message, '[ig-now]')
+    # 3시간마다 실행될 때 2건씩 게시 (10~23시만, ig_post.py 가 시간 확인). '[ig-now]' 커밋은 즉시 게시
+    if: github.event_name != 'push' || contains(github.event.head_commit.message, '[ig-now]')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -125,7 +125,11 @@ jobs:
           python-version: "3.12"
       - name: 인스타 게시
         continue-on-error: true
-        run: python -u ig_post.py publish
+        env:
+          IG_PUBLISH_MAX: ${{ vars.IG_PUBLISH_MAX || '2' }}
+        run: |
+          python -u ig_post.py publish
+          if [ -n "$IG_EN_USER_ID" ]; then IG_PROFILE=en python -u ig_post.py publish; fi
       - name: 게시 기록 커밋
         run: |
           git config user.name "webzine-bot"

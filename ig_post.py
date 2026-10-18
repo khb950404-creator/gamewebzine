@@ -541,10 +541,27 @@ def publish():
 
 
 def _publish():
+    # 게시 시간대 (한국 시간): 기본 10~23시. 밤·새벽에는 쌓아두기만
+    lo, hi = (int(x) for x in os.environ.get("IG_HOURS", "10-23").split("-"))
+    if not (lo <= datetime.now().hour < hi) and os.environ.get("IG_FORCE") != "1":
+        print(f"게시 시간대({lo}~{hi}시)가 아니라 건너뜀")
+        return
     refresh_if_needed()
     refresh_threads()
     uid = os.environ[UID_ENV]
     queue, posted = load(QUEUE, []), load(POSTED, {})
+    # 오래된 대기열 정리: 뉴스·릴스는 기사 작성 후 30시간, 스토리는 그날만
+    arts = {a["id"]: a for a in load(DATA / "articles.json", [])}
+    today = datetime.now().strftime("%Y-%m-%d")
+    def fresh(q):
+        if q.get("kind") == "story":
+            return q["id"].endswith(today)
+        a = arts.get(q["id"])
+        return a is None or time.time() - a.get("written", a["ts"]) < 30 * 3600
+    dropped = [q["id"] for q in queue if not fresh(q)]
+    queue = [q for q in queue if fresh(q)]
+    if dropped:
+        print(f"오래된 대기 {len(dropped)}건 정리")
     order = {"reel": 0, "series": 1, "deal": 2, "news": 3}
     queue.sort(key=lambda q: order.get(q.get("kind", "news"), 4))
     budget = int(os.environ.get("IG_PUBLISH_MAX", 99))  # 시간대 실행에서는 2건씩
