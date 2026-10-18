@@ -214,7 +214,23 @@
  "id:2124490": {
   "appid": 2124490,
   "name": "SILENT HILL 2",
-  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2124490/header.jpg?t=1744248682"
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2124490/header.jpg?t=1744248682",
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2124490/ss_1fdda21610fa23d0ce20b5c44fab8aebd509c5cb.1920x1080.jpg?t=1744248682",
+  "info": {
+   "date": "2024년 10월 7일",
+   "soon": false,
+   "genres": [
+    "액션",
+    "어드벤처"
+   ],
+   "dev": "Bloober Team SA",
+   "pub": "KONAMI",
+   "ko": true,
+   "ko_voice": false,
+   "price": "₩ 87,700",
+   "discount": 0,
+   "meta": null
+  }
  },
  "id:4078430": {
   "appid": 4078430,
@@ -11632,5 +11648,7 @@
    "meta": 80
   }
  },
- "itad:1084600": "018d937f-4878-707e-b855-53d54a91dd0e"
+ "itad:1084600": "018d937f-4878-707e-b855-53d54a91dd0e",
+ "q:silenthill2": 2124490,
+ "q:onyxthedarkgroup": null
 }
