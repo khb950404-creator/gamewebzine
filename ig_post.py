@@ -724,4 +724,11 @@ def check():
 
 if __name__ == "__main__":
     sys.stdout.reconfigure(encoding="utf-8")
-    {"prepare": prepare, "publish": publish, "check": check}[sys.argv[1]]()
+    try:
+        {"prepare": prepare, "publish": publish, "check": check}[sys.argv[1]]()
+    except Exception:  # GitHub 로그 없이도 원인을 볼 수 있게 기록
+        import traceback
+        st = load(DATA / "state.json", {})
+        st[f"ig_{sys.argv[1]}_error{SUF}"] = traceback.format_exc()[-1500:]
+        save(DATA / "state.json", st)
+        raise
