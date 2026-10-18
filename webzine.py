@@ -87,7 +87,7 @@ def fetch_feed(name, url, official):
         items.append({
             "id": hashlib.md5(link.encode()).hexdigest()[:12],
             "source": name, "official": official, "title": title, "link": link,
-            "summary": strip_html(it.findtext("description"))[:600], "ts": ts, "img": img,
+            "summary": strip_html(it.findtext("description"))[:2500], "ts": ts, "img": img,
         })
     print(f"  {name}: {len(items)}건")
     return items
@@ -182,6 +182,17 @@ PROMPT = """너는 PC·콘솔 게이머를 위한 한국어 게임 웹진 기자
 - "루머": 유출, 데이터마이닝, 익명 소식통, "~라고 알려졌다/~할 수도" 같은 추측, 미확인 소문
 대부분의 게임 뉴스는 공식 발표를 전하는 기사다. 루머는 정말 확인되지 않은 정보에만 붙여라.
 
+기사 작성 기준 (전문 게임 기자처럼 성의 있게):
+- 본문은 4~6문단, 문단마다 3~4문장. 출처 '본문'의 구체적 정보(수치, 날짜, 가격, 인물 발언, 새 기능·모드·콘텐츠, 개발 배경)를 최대한 살려라.
+- 1문단: 무엇이 언제 발표됐나 (리드). 2~4문단: 세부 내용, 핵심 발언 인용("...라고 밝혔다"), 전작·경쟁작과의 맥락.
+  마지막 문단: 출시일·업데이트 일정 등 게이머가 체크할 점 (출처에 있는 것만).
+- 같은 말 반복, "기대를 모으고 있다", "귀추가 주목된다" 같은 상투적 마무리 금지. 문장마다 새 정보가 있어야 한다.
+
+뉴스 가치 판단 (엄격하게): 게이머가 "오, 이건 알아야지" 할 소식만 쓴다.
+신작 발표·출시일·연기, 대형 업데이트·확장팩, 판매/동접 기록, 업계 사건(인수·해고·폐업·소송), 주요 논란, 하드웨어 소식, 큰 할인 정도.
+아래는 전부 skip: 성우·캐스팅 잡담, 개인 인터뷰 속 사소한 회고, 마이너 인디의 소소한 소식, 코스튬·스킨 하나 추가,
+유튜버/커뮤니티 반응 모음, 리스트형 기사("~할 게임 10선"), 가이드·공략, 리뷰 점수 단독 나열, 이미 다룬 소식의 재탕.
+
 PC·콘솔 비디오게임과 무관하거나(보드·카드게임, 게임과 연결 약한 영화·드라마 소식 등)
 광고/딜 나열/퀴즈/팟캐스트 같은 저가치 글은 {{"issue": 번호, "skip": true}} 로만 표시하라.
 
@@ -191,7 +202,7 @@ JSON 하나만 출력:
   "title": "한국어 헤드라인(40자 이내, 낚시 금지)",
   "tldr": ["핵심 요약 1", "핵심 요약 2", "핵심 요약 3"] (각각 '~했다', '~이다'로 끝나는 기사체 완결 문장),
   "why": "PC·콘솔 게이머에게 왜 중요한가 (1~2문장)",
-  "body": ["문단1", "문단2", "문단3"],
+  "body": ["문단1", "문단2", "문단3", "문단4", "문단5"],
   "category": "{cats} 중 하나",
   "platforms": ["PC","PS5","Xbox","Switch" 중 출처에 명시된 것만],
   "games": ["관련 게임명"],
@@ -246,10 +257,30 @@ class LLMDown(Exception):
     pass
 
 
+def full_text(url, limit=3000):
+    """원문 페이지 본문(<p>)을 가져온다. RSS 요약만으론 기사가 얕아서."""
+    try:
+        req = urllib.request.Request(url, headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36",
+            "Accept": "text/html,application/xhtml+xml", "Accept-Language": "en-US,en;q=0.9"})
+        h = urllib.request.urlopen(req, timeout=10).read().decode("utf-8", "ignore")
+        h = re.sub(r"(?is)<(script|style|nav|footer|aside|header)[^>]*>.*?</\1>", " ", h)
+        ps = [strip_html(p) for p in re.findall(r"(?is)<p[^>]*>(.*?)</p>", h)]
+        return "\n".join(p for p in ps if len(p) > 60)[:limit]
+    except Exception:
+        return ""
+
+
 def issue_text(n, c):
-    return f"=== 이슈 {n} ===\n" + "\n".join(
-        f"- {s['source']} (official={str(s['official']).lower()})\n  제목: {s['title']}\n  요약: {s['summary']}"
-        for s in c["items"][:6])
+    out = []
+    for i, s in enumerate(c["items"][:6]):
+        body = ""
+        if i < 2:  # 앞의 두 출처는 원문 본문까지
+            body = s.get("full") or full_text(s.get("link", ""))
+            s["full"] = body
+        out.append(f"- {s['source']} (official={str(s['official']).lower()})\n  제목: {s['title']}\n  요약: {s['summary']}"
+                   + (f"\n  본문: {body}" if body else ""))
+    return f"=== 이슈 {n} ===\n" + "\n".join(out)
 
 
 def write_batch(cands):
