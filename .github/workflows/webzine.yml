@@ -80,6 +80,12 @@ jobs:
           if [ -n "$IG_EN_USER_ID" ]; then IG_PROFILE=en python -u ig_post.py prepare; fi
           if [ "${{ github.event_name }}" = "push" ]; then python -u ig_post.py check; fi
 
+      - name: 인스타 인사이트 (하루 한 번 수집, 페이지는 매번)
+        continue-on-error: true
+        run: |
+          if [ "$IG_ENABLED" = "1" ] && { [ ! -f data/insights.json ] || [ $(( $(date +%s) - $(python -c "import json;print(int(json.load(open('data/insights.json'))['updated']))") )) -gt 72000 ]; }; then python -u insights.py collect; fi
+          python -u insights.py page
+
       - name: 데이터 커밋
         if: always()
         continue-on-error: true   # 동시에 다른 커밋이 들어와 충돌해도 배포는 진행

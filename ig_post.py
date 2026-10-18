@@ -135,7 +135,21 @@ def popularity(a):
     s_ += 2 if a.get("category") == "신작" or "트레일러" in a["title"] or "공개" in a["title"] else 0
     s_ += 2 if a.get("video") else 0
     s_ -= (time.time() - a.get("written", a["ts"])) / 3600 * 0.3  # 오래될수록 감점
+    # 인사이트 학습값: 반응 좋았던 카테고리·게임은 가점, 약했던 건 감점 (insights.py)
+    lr = learned()
+    s_ += 3 * (lr.get("category") or {}).get(a.get("category"), 0)
+    s_ += 3 * max([(lr.get("game") or {}).get(g_.lower(), 0) for g_ in (a.get("games_en") or [])] or [0])
     return s_
+
+
+_LEARN = None
+
+
+def learned():
+    global _LEARN
+    if _LEARN is None:
+        _LEARN = load(DATA / "ig_learn.json", {})
+    return _LEARN
 
 
 def pick(arts, posted, n, queued_ids=(), cap=True, by_pop=False):
@@ -642,6 +656,10 @@ def _publish():
     order = {"reel": 0, "series": 1, "deal": 2, "news": 3}
     queue.sort(key=lambda q: order.get(q.get("kind", "news"), 4))
     budget = int(os.environ.get("IG_PUBLISH_MAX", 99))  # 시간대 실행에서는 2건씩
+    # 인사이트 학습: 반응 좋은 시간대엔 1건 더, 약한 시간대엔 1건 덜 (강제 게시 땐 그대로)
+    hr = (learned().get("hour") or {}).get(str(datetime.now().hour))
+    if hr is not None and os.environ.get("IG_FORCE") != "1" and budget < 50:
+        budget = budget + 1 if hr > 0.3 else max(1, budget - 1) if hr < -0.3 else budget
     for q in list(queue):
         if q.get("kind") != "story" and budget <= 0:
             continue
