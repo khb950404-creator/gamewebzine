@@ -336,7 +336,13 @@ def regen_one(q, arts):
             render(a, folder / "reel.mp4", lang=PROFILE, handle=HANDLE_P)
         elif q.get("appids"):  # 할인 릴스
             rebuild_deal(q)
-    elif kind in ("deal", "story", "series"):
+    elif kind == "series":
+        if not folder.exists() and q.get("arts"):
+            from carousel import build_weekly_top
+            top = [x for i in q["arts"] for x in arts if x["id"] == i]
+            if top:
+                save_slides(q["id"], build_weekly_top(top))
+    elif kind in ("deal", "story"):
         if not folder.exists():
             rebuild_deal(q)
     elif not folder.exists() and a:
@@ -573,9 +579,9 @@ def _publish():
             continue
         try:
             kind = q.get("kind", "news")
-            for f in q["files"]:
-                if not wait_url(f"{site_url()}{IGDIR}/{q['id']}/{f}"):
-                    raise RuntimeError(f"이미지가 사이트에 없음: ig/{q['id']}/{f}")
+            if not wait_url(f"{site_url()}{IGDIR}/{q['id']}/{q['files'][0]}", tries=6):
+                print(f"  ! 사이트에 아직 파일 없음, 다음 기회에: {q['id']}")  # 오래 기다리지 않음 (시간 초과 방지)
+                continue
             if kind == "reel":
                 c = api("POST", f"{uid}/media", media_type="REELS", video_url=f"{site_url()}{IGDIR}/{q['id']}/reel.mp4",
                         caption=q["caption"], share_to_feed="true", thumb_offset="800")["id"]  # 훅 문구가 꽉 찬 순간을 썸네일로
