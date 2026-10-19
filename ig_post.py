@@ -226,7 +226,7 @@ def deal_caption(deals, head):
     lines = [head, ""] + [f"▪ {x['name'].replace('™', '')} -{x['discount']}% ₩{x['final']:,}" for x in deals]
     lines += ["", "할인은 게임별 마감일까지 진행된다. 가격은 게시 시점 Steam 한국 가격 기준이다.", "",
               "이번에 장바구니에 담을 게임은?", "",
-              "#스팀할인 #스팀세일 #게임할인 #역대최저가 #PC게임 #게임추천 #알트탭"]
+              "#스팀할인 #스팀세일 #게임할인 #역대최저가 #PC게임 #게임추천 #알트탭 #steamsale #steamdeals #pcgaming #gamedeals"]
     return "\n".join(lines)
 
 
@@ -302,7 +302,7 @@ def prepare_deals(queue, posted):
                           "caption": "\n".join(["📰 이번 주 게임 뉴스 TOP" + str(len(top)), ""]
                                                + [f"{i}. {a['title']}" for i, a in enumerate(top, 1)]
                                                + ["", "가장 놀라운 소식은 몇 번인가요?", "",
-                                                  "#게임뉴스 #주간게임뉴스 #게임소식 #알트탭"])})
+                                                  "#게임뉴스 #주간게임뉴스 #게임소식 #알트탭 #gamingnews #gaming #videogames"])})
             print("인스타 준비: 주간 TOP5")
     # ③ 오늘의 딜 스토리 (매일 9시 이후 하루 한 번, 최근 7일 소개한 게임 제외)
     sk = f"story-{now.strftime('%Y-%m-%d')}"
@@ -561,6 +561,10 @@ def caption(a):
     tags += [HASHTAG[a["category"]]] if a.get("category") in HASHTAG else []
     tags += [p.replace(" ", "") for p in a.get("platforms", [])]
     tags += ["".join(ch for ch in g if ch.isalnum()) for g in (a.get("games") or [])[:2]]
+    # 영어 해시태그 (해외 노출용)
+    tags += ["gaming", "gamingnews", "videogames"]
+    tags += [TAG_EN[a["category"]]] if a.get("category") in TAG_EN else []
+    tags += ["".join(ch for ch in g if ch.isalnum()) for g in (a.get("games_en") or [])[:2]]
     srcs = [s_["name"] for s_ in a.get("sources", [])]
     lines = [a["title"], ""] + [to_news_tone(t) for t in a.get("tldr", [])[:3]]
     if srcs:
