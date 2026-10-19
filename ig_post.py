@@ -125,6 +125,12 @@ def top_played():
     return _TOP_PLAYED
 
 
+def is_big(a):
+    import re as _re
+    text = _re.sub(r"[^0-9a-z가-힣]", "", " ".join([a["title"]] + (a.get("games_en") or []) + (a.get("games") or [])).lower())
+    return any(k in text for k in BIG_IP)
+
+
 def popularity(a):
     import re as _re
     text = _re.sub(r"[^0-9a-z가-힣]", "", " ".join([a["title"]] + (a.get("games_en") or []) + (a.get("games") or [])).lower())
@@ -175,7 +181,7 @@ def pick(arts, posted, n, queued_ids=(), cap=True, by_pop=False):
     out = []
     for a in cand:
         gs = {g.lower() for g in (a.get("games_en") or [])}
-        if gs & used:
+        if gs & used and not is_big(a):  # 대형 프랜차이즈는 소식이 많아 같은 게임이어도 올린다
             continue
         out.append(a)
         used |= gs
