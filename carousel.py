@@ -8,6 +8,7 @@
   python carousel.py [기사ID]   # out/carousel/<ID>/ 에 생성
 """
 import json, sys
+from datetime import datetime
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFilter
 
@@ -233,3 +234,49 @@ if __name__ == "__main__":
             sheet.paste(im.resize((s, int(s * 1.25))), (10 + i * (s + 10), 10))
         sheet.save(out / "strip.jpg", quality=88)
         print(a["id"], len(slides), "장 →", out)
+
+
+def build_weekly_releases(games, title_top="이번 주", handle=None):
+    """월요일 시리즈: 이번 주 출시 게임 — 표지 + 게임별 1장(날짜·이름·플랫폼·장르) + 저장 안내."""
+    global LANG
+    LANG = "ko"
+    HANDLE_NOW[0] = handle or HANDLE
+    total = len(games) + 2
+    wd = "월화수목금토일"
+    def g2a(g):
+        return {"img": g.get("img_hd") or g.get("img"), "img_hd": g.get("img_hd") or g.get("img")}
+    cover = shade(bg(g2a(games[0]), bright=0.7), 0.25, 240)
+    d = frame(cover, 1, total)
+    d.text((76, 640), title_top, font=BH(110), fill=WHITE)
+    d.text((76, 770), "출시 게임", font=BH(110), fill=WHITE)
+    d.text((76 + d.textlength("출시 게임 ", font=BH(110)), 910), str(len(games)), font=ANTON(150), fill=LIME, anchor="ls")
+    d.text((76, 960), "저장해두고 하나씩 체크하세요", font=NM(36), fill=SOFT)
+    slides = [cover]
+    for i, g in enumerate(games, 1):
+        img = shade(bg(g2a(g), bright=0.8), 0.35, 242)
+        d = frame(img, i + 1, total)
+        dt = datetime.strptime(g["date"], "%Y-%m-%d")
+        d.text((76, 790), f"{dt.month}/{dt.day}", font=ANTON(150), fill=LIME, anchor="ls")
+        d.text((76 + d.textlength(f"{dt.month}/{dt.day} ", font=ANTON(150)), 790), f"{wd[dt.weekday()]}요일",
+               font=BH(60), fill=LIME, anchor="ls")
+        y = 840
+        tf2, tl2 = fit(d, safe(g["name"]), BH, 92, W - 152, 3)
+        for ln in tl2:
+            d.text((76, y), ln, font=tf2, fill=WHITE)
+            y += int(tf2.size * 1.18)
+        info = " / ".join(g.get("platforms") or [])
+        if info:
+            tf3, tl3 = fit(d, info, NM, 38, W - 152, 2, 26)
+            for ln in tl3:
+                d.text((76, y + 20), ln, font=tf3, fill=SOFT)
+                y += int(tf3.size * 1.47)
+        slides.append(img)
+    end = text_bg(g2a(games[0]))
+    d = frame(end, total, total)
+    d.text((76, 420), "매주 월요일", font=BH(90), fill=WHITE)
+    d.text((76, 530), "출시 게임 정리", font=BH(90), fill=LIME)
+    d.rounded_rectangle((76, H - 330, W - 76, H - 170), 24, fill=LIME)
+    d.text((W // 2, H - 280), "저장하고 출시일 놓치지 말기", font=NB(40), fill=WHITE, anchor="mm")
+    d.text((W // 2, H - 220), L["ko"]["cta2"], font=BH(56), fill=WHITE, anchor="mm")
+    slides.append(end)
+    return slides

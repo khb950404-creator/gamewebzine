@@ -9,7 +9,7 @@
           IG_PER_RUN(기본 1), IG_DAILY(기본 4)
 """
 import hashlib, json, os, sys, time, urllib.error, urllib.parse, urllib.request
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 ROOT = Path(__file__).parent
@@ -249,6 +249,51 @@ def rebuild_deal(q):
         save_slides(q["id"], slides)
 
 
+def weekly_releases(now, n=6):
+    """이번 주(월~일) 출시 게임 중 화제성 높은 순: 최근 기사 언급 > 대형 IP > 플랫폼 수."""
+    import re as _re
+    from webzine import norm
+    cal = load(DATA / "calendar.json", {}).get("releases", [])
+    mon = (now - timedelta(days=now.weekday())).strftime("%Y-%m-%d")
+    sun = (now + timedelta(days=6 - now.weekday())).strftime("%Y-%m-%d")
+    names = load(DATA / "names.json", {})
+    recent = [a for a in load(DATA / "articles.json", []) if time.time() - a.get("written", a["ts"]) < 60 * 86400]
+    talk = " ".join(norm(g) for a in recent for g in (a.get("games_en") or []))
+    out = []
+    for r in cal:
+        if not (mon <= r.get("date", "") <= sun) or not r.get("title"):
+            continue
+        # 이식·재출시판(… Edition, Remaster)은 기사에서 다룬 게 아니면 제외 — 새 게임 위주로
+        if _re.search(r"(edition|remaster(ed)?|port)\s*$", r["title"], _re.I) and norm(r["title"]) not in talk:
+            continue
+        k = norm(r["title"])
+        sc = 6 * talk.count(k) if len(k) >= 4 else 0
+        sc += 8 if any(b in _re.sub(r"[^0-9a-z]", "", r["title"].lower()) for b in BIG_IP) else 0
+        sc += len(r.get("platforms") or [])
+        ko = (names.get(k) or {}).get("ko")
+        if not ko and r.get("appid"):  # 스팀 한국어 공식 이름
+            try:
+                j = json.loads(urllib.request.urlopen(
+                    f"https://store.steampowered.com/api/appdetails?appids={r['appid']}&l=koreana&cc=kr&filters=basic",
+                    timeout=10).read())
+                ko = j[str(r["appid"])]["data"]["name"]
+            except Exception:
+                pass
+        ko = (ko or r["title"]).replace("™", "").replace("®", "")
+        out.append({**r, "name": ko, "score": sc})
+    out.sort(key=lambda r: -r["score"])
+    out = [r for r in out if r["score"] >= 3][:n]
+    for r in out:
+        r["img_hd"] = r.get("img")
+        if r.get("appid"):
+            try:
+                from deals_carousel import key_art
+                r["img_hd"] = key_art(r["appid"], r.get("img"))
+            except Exception:
+                pass
+    return sorted(out, key=lambda r: r["date"])
+
+
 def prepare_deals(queue, posted):
     if not (DATA / "deals.json").exists():
         return
@@ -304,6 +349,21 @@ def prepare_deals(queue, posted):
                                                + ["", "가장 놀라운 소식은 몇 번인가요?", "",
                                                   "#게임뉴스 #주간게임뉴스 #게임소식 #알트탭 #gamingnews #gaming #videogames"])})
             print("인스타 준비: 주간 TOP5")
+    # ⑤ 월요일 시리즈: 이번 주 출시 게임 (월요일 9시 이후, 주 1회) — 저장 유도형
+    rk_ = f"rel-{now.isocalendar()[0]}-{now.isocalendar()[1]:02d}"
+    if (force or (now.weekday() == 0 and now.hour >= 9)) and rk_ not in keys:
+        games = weekly_releases(now)
+        if len(games) >= 3:
+            from carousel import build_weekly_releases
+            queue.append({"id": rk_, "kind": "series", "files": save_slides(rk_, build_weekly_releases(games)),
+                          "rel": games,
+                          "caption": "\n".join(["🎮 이번 주 출시 게임 " + str(len(games)), ""]
+                                               + [f"{datetime.strptime(g['date'], '%Y-%m-%d').strftime('%m/%d')} {g['name']}"
+                                                  + (f" ({', '.join(g['platforms'])})" if g.get("platforms") else "")
+                                                  for g in games]
+                                               + ["", "이 중에 바로 살 게임 있나요?", "",
+                                                  "#신작게임 #출시예정 #게임추천 #알트탭 #newgames #gamereleases #gaming"])})
+            print(f"인스타 준비: 이번 주 출시 게임 {len(games)}")
     # ③ 오늘의 딜 스토리 (매일 9시 이후 하루 한 번, 최근 7일 소개한 게임 제외)
     sk = f"story-{now.strftime('%Y-%m-%d')}"
     if (force or now.hour >= 9) and sk not in keys:
@@ -411,6 +471,9 @@ def regen_one(q, arts):
             top = [x for i in q["arts"] for x in arts if x["id"] == i]
             if top:
                 save_slides(q["id"], build_weekly_top(top))
+        elif not folder.exists() and q.get("rel"):
+            from carousel import build_weekly_releases
+            save_slides(q["id"], build_weekly_releases(q["rel"]))
     elif kind in ("deal", "story"):
         if not folder.exists():
             rebuild_deal(q)
@@ -432,23 +495,32 @@ def prepare():
     reels_today = sum(1 for p in posted.values() if p.get("kind") == "reel" and p.get("date") == today)         + sum(1 for q in queue if q.get("kind") == "reel")
     # 릴스는 캐러셀 한도와 별도로 하루 IG_REELS_DAILY 건
     want_reel = reels_today < int(os.environ.get("IG_REELS_DAILY", 3))
-    cands = pick([a for a in arts if a["id"] not in queued], posted, 1, queued, cap=False, by_pop=True) if want_reel else []
+    # 속보: 6시간 안에 쓴 초대형 소식(화제성 IG_BREAK_POP 이상)은 하루 한도와 상관없이 바로 릴스로
+    brk_pop = float(os.environ.get("IG_BREAK_POP", 16))
+    breaking = [a for a in pick([a for a in arts if a["id"] not in queued], posted, 3, queued, cap=False, by_pop=True)
+                if popularity(a) >= brk_pop and time.time() - a.get("written", a["ts"]) < 6 * 3600][:1]
+    cands = breaking[:]
+    cands += [a for a in (pick([a for a in arts if a["id"] not in queued], posted, 1, queued, cap=False, by_pop=True)
+                          if want_reel else []) if a["id"] not in {b["id"] for b in cands}]
     cands += [a for a in pick([a for a in arts if a["id"] not in queued], posted, int(os.environ.get("IG_PER_RUN", 1)), queued)
-              if not cands or a["id"] != cands[0]["id"]]
+              if a["id"] not in {c["id"] for c in cands}]
     for a in cands:
         if PROFILE == "ko":
             proofread(a)  # 게시 전 교열 (게임명·맞춤법·어색한 문장)
-        if want_reel and reels_today < int(os.environ.get("IG_REELS_DAILY", 3)):
+        is_brk = a in breaking
+        if is_brk or (want_reel and reels_today < int(os.environ.get("IG_REELS_DAILY", 3))):
             try:  # 릴스: 도달이 가장 넓은 형식 → 하루 상위 기사 몇 건은 영상으로
                 from reels import render
                 ensure_hook(a, PROFILE)
                 (SITE / IGDIR / a["id"]).mkdir(parents=True, exist_ok=True)
                 render(a, SITE / IGDIR / a["id"] / "reel.mp4", lang=PROFILE, handle=HANDLE_P)
-                queue.append({"id": a["id"], "kind": "reel", "files": ["reel.mp4"],
-                              "caption": caption(a) if PROFILE == "ko" else caption_en(a),
-                              "hook": a.get("hook"), "hook_en": a.get("hook_en")})
-                reels_today += 1
-                print(f"인스타 준비(릴스): {a['title']}")
+                cap_ = caption(a) if PROFILE == "ko" else caption_en(a)
+                if is_brk:
+                    cap_ = ("🚨 [속보] " if PROFILE == "ko" else "🚨 BREAKING: ") + cap_
+                queue.append({"id": a["id"], "kind": "reel", "files": ["reel.mp4"], "caption": cap_,
+                              "hook": a.get("hook"), "hook_en": a.get("hook_en"), "breaking": is_brk})
+                reels_today += 0 if is_brk else 1
+                print(f"인스타 준비({'속보 ' if is_brk else ''}릴스): {a['title']}")
                 continue
             except Exception as e:
                 print(f"  ! 릴스 생성 실패, 캐러셀로: {e}")
@@ -658,7 +730,7 @@ def _publish():
     if dropped:
         print(f"오래된 대기 {len(dropped)}건 정리")
     order = {"reel": 0, "series": 1, "deal": 2, "news": 3}
-    queue.sort(key=lambda q: order.get(q.get("kind", "news"), 4))
+    queue.sort(key=lambda q: (not q.get("breaking"), order.get(q.get("kind", "news"), 4)))  # 속보가 맨 앞
     budget = int(os.environ.get("IG_PUBLISH_MAX", 99))  # 시간대 실행에서는 2건씩
     # 인사이트 학습: 반응 좋은 시간대엔 1건 더, 약한 시간대엔 1건 덜 (강제 게시 땐 그대로)
     hr = (learned().get("hour") or {}).get(str(datetime.now().hour))
