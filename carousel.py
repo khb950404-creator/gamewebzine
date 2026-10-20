@@ -79,16 +79,16 @@ def slide_summary(a, total):
     pts = a.get("tldr", [])[:3] if LANG == "en" else [to_card_tone(x) for x in a.get("tldr", [])[:3]]
     for i, t in enumerate(pts, 1):
         d.text((76, y), f"{i:02d}", font=ANTON(64), fill=LIME)
-        pf, ls = fit(d, t, NB, 46, W - 250, 3)
+        pf, ls = fit(d, t, NB, 46, W - 250, 5)  # 정보 전달 우선: 줄이지 말고 줄 수를 늘린다
         plh = int(pf.size * 1.39)
         for k, ln in enumerate(ls):
             d.text((180, y + 6 + k * plh), ln, font=pf, fill=WHITE)
         y += max(1, len(ls)) * plh + 60
-    if a.get("why"):
+    if a.get("why") and y < H - 330:  # 요약이 길어 자리가 없으면 '왜 중요한가'는 생략 (본문·캡션에 있음)
         y += 10
         d.line([(76, y), (W - 76, y)], fill=(70, 70, 76), width=2)
         y += 30
-        wf, wl = fit(d, a["why"], NM, 36, W - 152, 2 if y > 1050 else 3, 24)
+        wf, wl = fit(d, a["why"], NM, 36, W - 152, max(1, min(3, (H - 200 - y) // 54)), 24)
         for ln in wl:
             d.text((76, y), ln, font=wf, fill=SOFT)
             y += int(wf.size * 1.5)
@@ -110,7 +110,7 @@ def body_pages(a):
         y += need
     if cur:
         pages.append(cur)
-    return pages[:3]  # 최대 3장
+    return pages[:6]  # 본문 최대 6장 (표지·요약·마무리 포함 10장 이내)
 
 
 def slide_body(a, paras, page, total, idx, n):

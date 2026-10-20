@@ -159,7 +159,7 @@ def render(a, out_path, lang="ko", handle=None):
                                    else (a.get("category_en") or "GAME NEWS"), font=NB(40), fill=RED))
     point_ls, y = [], 560
     for i, t in enumerate(points, 1):
-        pf, ls = fit(PROBE, t, NB, 54 if lang == "ko" else 50, RW - 260, 3)
+        pf, ls = fit(PROBE, t, NB, 54 if lang == "ko" else 50, RW - 260, 5)
         plh = int(pf.size * 1.37)
 
         def draw(d, i=i, ls=ls, y=y, pf=pf, plh=plh):
@@ -173,7 +173,7 @@ def render(a, out_path, lang="ko", handle=None):
                            d.text((RW // 2, 930), T["end2"], font=NM(46), fill=SOFT, anchor="mm")))
 
     # 훅 화면은 제목과 내용이 겹쳐서 뺐다 — 첫 프레임부터 제목이 보이게 (썸네일 겸 멈춰 세우기)
-    T_HOOK, T_TITLE, T_POINTS, T_END = 0, 3.0, 5.4, 1.8
+    T_HOOK, T_TITLE, T_POINTS, T_END = 0, 3.0, 8.0, 1.8  # 요약은 읽을 시간 충분히
     total = T_HOOK + T_TITLE + T_POINTS + T_END
     v = Video(out_path, total, a["id"] + lang)
     for f in range(int(total * FPS)):
@@ -192,7 +192,7 @@ def render(a, out_path, lang="ko", handle=None):
             im = blurred.convert("RGBA")
             show(im, head, ease(tt / 0.4))
             for i, l in enumerate(point_ls):
-                e = ease((tt - 0.3 - i * 1.45) / 0.5)
+                e = ease((tt - 0.3 - i * 2.2) / 0.5)
                 show(im, l, e, (1 - e) * 50)
         else:
             tt = t - T_HOOK - T_TITLE - T_POINTS
