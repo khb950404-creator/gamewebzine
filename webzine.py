@@ -125,6 +125,33 @@ def cluster(items):
 exhausted = set()  # 이번 실행에서 하루 한도가 끝난 모델
 
 
+def loads_loose(text):
+    """LLM 이 가끔 내놓는 깨진 JSON(끝 쉼표, 주석, 잘린 끝, 제어문자)을 고쳐서 읽는다."""
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        pass
+    t = text.strip().strip("`")
+    t = t[t.find("{"):] if "{" in t else t
+    t = re.sub(r",\s*([}\]])", r"\1", t)  # 끝 쉼표
+    t = re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f]", " ", t)  # 제어문자
+    try:
+        return json.loads(t, strict=False)
+    except json.JSONDecodeError:
+        pass
+    # 끝이 잘렸으면 마지막으로 완결된 객체까지만 살린다
+    for cut in range(len(t) - 1, 0, -1):
+        if t[cut] == "}":
+            cand = t[:cut + 1]
+            ob, oc = cand.count("[") - cand.count("]"), cand.count("{") - cand.count("}")
+            if ob >= 0 and oc >= 0:
+                try:
+                    return json.loads(cand + "]" * ob + "}" * oc, strict=False)
+                except json.JSONDecodeError:
+                    continue
+    raise json.JSONDecodeError("복구 실패", text, 0)
+
+
 def llm(prompt, prefer_lite=False, search=False):
     mode = os.environ.get("LLM", "gemini" if os.environ.get("GEMINI_API_KEY") else "none")
     if mode == "gemini":
@@ -148,7 +175,7 @@ def llm(prompt, prefer_lite=False, search=False):
                     text = "".join(pt.get("text", "") for pt in r["candidates"][0]["content"]["parts"])
                     if search:  # 검색 모드는 JSON 강제가 안 돼서 본문에서 JSON 만 꺼낸다
                         text = text[text.find("{"):text.rfind("}") + 1]
-                    return json.loads(text)
+                    return loads_loose(text)
                 except urllib.error.HTTPError as e:
                     msg = e.read().decode("utf-8", "ignore")
                     if e.code == 429 and "PerDay" in msg:  # 하루 한도 소진 → 재시도 무의미, 다음 모델로
