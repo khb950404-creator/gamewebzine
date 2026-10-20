@@ -95,7 +95,9 @@ def hook_layer(text, accent, ink=WHITE):
             w = d.textlength(ln, font=f)
             x = (RW - w) / 2
             y = y0 + i * lh
-            d.rectangle((x - 22, y + f.size * 0.15, x + w + 22, y + f.size * 1.12), fill=accent)
+            l, t, r, b = d.textbbox((x, y), ln, font=f)  # 실제 글자 영역에 맞춰 띠를 그린다
+            pad = int(f.size * 0.16)
+            d.rectangle((l - pad * 1.4, t - pad, r + pad * 1.4, b + pad), fill=accent)
             d.text((x, y), ln, font=f, fill=ink)
     return layer(draw)
 
