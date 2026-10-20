@@ -555,7 +555,23 @@
  "id:3247750": {
   "appid": 3247750,
   "name": "Mycopunk: 곰팡이 버스터즈",
-  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3247750/8942779bb6b901ccea4bb6fa275891207dbaef8e/header_alt_assets_3.jpg?t=1791555016"
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3247750/67b1dc819a93d4e855b213b518f25a9700f46434/header.jpg?t=1792515126",
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3247750/96b7543e6d29105f92c5395000db2691910519fe/ss_96b7543e6d29105f92c5395000db2691910519fe.1920x1080.jpg?t=1792515126",
+  "info": {
+   "date": "2026년 10월 20일",
+   "soon": false,
+   "genres": [
+    "액션",
+    "인디"
+   ],
+   "dev": "Pigeons at Play",
+   "pub": "Devolver Digital",
+   "ko": true,
+   "ko_voice": false,
+   "price": "₩ 8,250",
+   "discount": 50,
+   "meta": null
+  }
  },
  "id:2315050": {
   "appid": 2315050,
@@ -1053,7 +1069,24 @@
  "id:1172470": {
   "appid": 1172470,
   "name": "Apex 레전드™",
-  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1172470/60fcaedb88ccf94df30281533d828b86c6ffb9b6/header_alt_assets_5.jpg?t=1790164440"
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1172470/6cf04767652d703b6050da84b82cfb1194258d7d/header.jpg?t=1790164440",
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1172470/3fc2dfcf0e8d7d7202a3ca32ae26c7afaec723e2/ss_3fc2dfcf0e8d7d7202a3ca32ae26c7afaec723e2.1920x1080.jpg?t=1790164440",
+  "info": {
+   "date": "2020년 11월 4일",
+   "soon": false,
+   "genres": [
+    "액션",
+    "어드벤처",
+    "무료 플레이"
+   ],
+   "dev": "Respawn",
+   "pub": "Electronic Arts",
+   "ko": true,
+   "ko_voice": true,
+   "price": "무료",
+   "discount": 0,
+   "meta": 88
+  }
  },
  "id:892970": {
   "appid": 892970,
@@ -12951,5 +12984,39 @@
  "ig:nhl27": {
   "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar6cj6.jpg",
   "hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar6cj6.jpg"
- }
+ },
+ "q:fightnight": null,
+ "q:grounded2": 2661300,
+ "id:2661300": {
+  "appid": 2661300,
+  "name": "Grounded 2",
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2661300/94fdfb835c4fc70037f6abf052d909579b9c8539/header.jpg?t=1792522977",
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2661300/754d15aea493d510133632a94cd2887c8a0d6fae/ss_754d15aea493d510133632a94cd2887c8a0d6fae.1920x1080.jpg?t=1792522977",
+  "info": {
+   "date": "2025년 7월 29일",
+   "soon": false,
+   "genres": [
+    "액션",
+    "어드벤처",
+    "앞서 해보기"
+   ],
+   "dev": "Obsidian Entertainment",
+   "pub": "Xbox Game Studios",
+   "ko": true,
+   "ko_voice": false,
+   "price": "₩ 34,800",
+   "discount": 0,
+   "meta": null
+  }
+ },
+ "q:파이트나이트": null,
+ "ig:fightnight": {
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/scwwhv.jpg",
+  "hd": "https://images.igdb.com/igdb/image/upload/t_1080p/scwwhv.jpg"
+ },
+ "ig:shrek2remastered": {
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar6ul4.jpg",
+  "hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar6ul4.jpg"
+ },
+ "itad:3247750": "01967cec-5420-72eb-b4b4-e1dc2fd56460"
 }
