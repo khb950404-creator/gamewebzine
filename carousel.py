@@ -48,7 +48,7 @@ def text_bg(a):
 
 
 def safe(t):
-    return t.replace("…", "...")  # 블랙한산스에 없는 글자
+    return t.replace("…", "...").replace("·", ", ").replace("ㆍ", ", ")  # 블랙한산스에 없는 글자
 
 
 def slide_title(a, total):

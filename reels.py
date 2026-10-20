@@ -149,7 +149,7 @@ def render(a, out_path, lang="ko", handle=None):
     shade = shade_mask()
 
     hook = hook_layer(default_hook(a, lang), RED)
-    tf, title = fit(PROBE, title_txt.replace("…", "..."), BH, 104 if lang == "ko" else 92, RW - 152, 4)
+    tf, title = fit(PROBE, title_txt.replace("…", "...").replace("·", ", ").replace("ㆍ", ", "), BH, 104 if lang == "ko" else 92, RW - 152, 4)
     lh = int(tf.size * 1.19)
     y0 = RH - 520 - len(title) * lh
     title_ls = [layer(lambda d, ln=ln, y=y0 + i * lh: d.text((76, y), ln, font=tf, fill=WHITE)) for i, ln in enumerate(title)]
@@ -170,7 +170,8 @@ def render(a, out_path, lang="ko", handle=None):
     end = layer(lambda d: (d.text((RW // 2, 820), T["end1"], font=BH(84), fill=WHITE, anchor="mm"),
                            d.text((RW // 2, 930), T["end2"], font=NM(46), fill=SOFT, anchor="mm")))
 
-    T_HOOK, T_TITLE, T_POINTS, T_END = 1.3, 3.2, 5.4, 1.8
+    # 훅 화면은 제목과 내용이 겹쳐서 뺐다 — 첫 프레임부터 제목이 보이게 (썸네일 겸 멈춰 세우기)
+    T_HOOK, T_TITLE, T_POINTS, T_END = 0, 3.0, 5.4, 1.8
     total = T_HOOK + T_TITLE + T_POINTS + T_END
     v = Video(out_path, total, a["id"] + lang)
     for f in range(int(total * FPS)):
@@ -181,10 +182,9 @@ def render(a, out_path, lang="ko", handle=None):
         elif t < T_HOOK + T_TITLE:
             tt = t - T_HOOK
             im = Image.composite(dark, zoomed(big, 1.0 + 0.08 * tt / T_TITLE), shade).convert("RGBA")
-            show(im, label, ease((tt - 0.1) / 0.4), (1 - ease((tt - 0.1) / 0.4)) * 60)
-            for i, l in enumerate(title_ls):
-                e = ease((tt - 0.25 - i * 0.2) / 0.45)
-                show(im, l, e, (1 - e) * 60)
+            show(im, label, 1.0)
+            for l in title_ls:
+                show(im, l, 1.0)
         elif t < T_HOOK + T_TITLE + T_POINTS:
             tt = t - T_HOOK - T_TITLE
             im = blurred.convert("RGBA")
