@@ -71,9 +71,9 @@ def slide_heading(d, y, label):
     return y + 100
 
 
-def slide_summary(a, total):
+def slide_summary(a, total, page=2):
     img = text_bg(a)
-    d = frame(img, 2, total)
+    d = frame(img, page, total)
     y = slide_heading(d, 300, L[LANG]["key"])
     from ig_post import to_card_tone
     pts = a.get("tldr", [])[:3] if LANG == "en" else [to_card_tone(x) for x in a.get("tldr", [])[:3]]
@@ -95,9 +95,6 @@ def slide_summary(a, total):
     return img
 
 
-PH_TOP, PH_H = 380, 522  # 본문 장 위쪽 공식 이미지 칸 (16:9)
-
-
 def gallery_imgs(a):
     """기사에 붙은 공식 발표 이미지 중 실제로 열리는 것만 (본문 장마다 한 장씩)."""
     if "_gal" not in a:
@@ -114,9 +111,8 @@ def gallery_imgs(a):
 def body_pages(a):
     """본문 문단을 카드 한 장 높이에 맞게 나눈다. 공식 이미지가 있는 장은 위쪽에 사진 칸을 둔다."""
     probe = ImageDraw.Draw(Image.new("RGB", (W, H)))
-    gal = gallery_imgs(a)
     f, lh, bottom = NR(38), 62, H - 170
-    top_of = lambda k: PH_TOP + PH_H + 50 if k < len(gal) else 400
+    top_of = lambda k: 400
     pages, cur, y = [], [], top_of(0)
     for para in a.get("body", []):
         ls = wrap(probe, para, f, W - 152)
@@ -136,23 +132,25 @@ def slide_body(a, paras, page, total, idx, n):
     d = frame(img, page, total)
     slide_heading(d, 300, L[LANG]["more"] + (f" ({idx}/{n})" if n > 1 else ""))
     y = 400
-    gal = gallery_imgs(a)
-    if idx - 1 < len(gal):  # 공식 발표 이미지: 장마다 다른 사진을 선명하게
-        from cards import cover_fit
-        ph = cover_fit(gal[idx - 1][0], W - 152, PH_H)
-        mask = Image.new("L", ph.size, 0)
-        ImageDraw.Draw(mask).rounded_rectangle((0, 0, ph.width - 1, ph.height - 1), 18, fill=255)
-        img.paste(ph, (76, PH_TOP), mask)
-        cr = gal[idx - 1][1]
-        if cr:
-            d.text((W - 92, PH_TOP + PH_H - 18), ("이미지: " if LANG == "ko" else "Image: ") + cr, font=NR(24),
-                   fill=(235, 235, 240), anchor="rs", stroke_width=2, stroke_fill=(0, 0, 0))
-        y = PH_TOP + PH_H + 50
     for ls in paras:
         for ln in ls:
             d.text((76, y), ln, font=NR(38), fill=SOFT)
             y += 62
         y += 34
+    return img
+
+
+def slide_photo(a, im, credit, page, total):
+    """공식 발표 이미지 한 장: 잘리지 않게 원본 비율로 가운데, 뒤는 같은 사진을 흐리게."""
+    from cards import cover_fit
+    back = cover_fit(im, W, H).crop((0, 0, W, H)).filter(ImageFilter.GaussianBlur(28))
+    img = Image.blend(back.convert("RGB"), Image.new("RGB", (W, H), (10, 10, 12)), 0.6)
+    r = min(W / im.width, (H - 360) / im.height)
+    ph = im.resize((int(im.width * r), int(im.height * r)), Image.LANCZOS)
+    img.paste(ph, ((W - ph.width) // 2, (H - ph.height) // 2))
+    d = frame(img, page, total)
+    if credit:
+        d.text((76, H - 70), ("이미지: " if LANG == "ko" else "Image: ") + credit, font=NR(28), fill=SOFT)
     return img
 
 
@@ -194,11 +192,15 @@ def build_carousel(a, lang="ko", handle=None):
     a = {**a, "img_hd": best_image(a)}
     if lang == "en":  # 영문: 제목·핵심 3줄·출처 (본문은 한국어라 생략)
         a = {**a, "title": a.get("title_en") or a["title"], "tldr": a.get("tldr_en") or [], "why": "", "body": []}
-    pages = body_pages(a)
-    total = 2 + len(pages) + 1
-    slides = [slide_title(a, total), slide_summary(a, total)]
+    gal = gallery_imgs(a)[:3]
+    pages = body_pages(a)[:max(1, 10 - 3 - len(gal))]
+    total = 2 + len(gal) + len(pages) + 1
+    slides = [slide_title(a, total)]
+    for k, (im, cr) in enumerate(gal):
+        slides.append(slide_photo(a, im, cr, 2 + k, total))
+    slides.append(slide_summary(a, total, page=2 + len(gal)))
     for k, p in enumerate(pages, 1):
-        slides.append(slide_body(a, p, 2 + k, total, k, len(pages)))
+        slides.append(slide_body(a, p, 2 + len(gal) + k, total, k, len(pages)))
     slides.append(slide_end(a, total))
     return slides
 
