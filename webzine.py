@@ -84,10 +84,15 @@ def fetch_feed(name, url, official):
             blob = ET.tostring(it, encoding="unicode")
             m = re.search(r'(?:url|src)="(https?://[^"]+?\.(?:jpe?g|png|webp)[^"]*)"', html.unescape(blob), re.I)
             img = m[1] if m else None
+            imgs = []
+            for u in re.findall(r'(?:url|src)="(https?://[^"]+?\.(?:jpe?g|png|webp)[^"]*)"', html.unescape(blob), re.I):
+                if u not in imgs and not IMG_SKIP.search(u):
+                    imgs.append(u)
         items.append({
             "id": hashlib.md5(link.encode()).hexdigest()[:12],
             "source": name, "official": official, "title": title, "link": link,
             "summary": strip_html(it.findtext("description"))[:2500], "ts": ts, "img": img,
+            **({"imgs": imgs[:8]} if official and imgs else {}),
         })
     print(f"  {name}: {len(items)}건")
     return items
@@ -286,13 +291,48 @@ class LLMDown(Exception):
     pass
 
 
+PAGE_IMGS = {}  # 원문 URL → 본문에 실린 이미지 목록 (full_text 가 채운다)
+IMG_SKIP = re.compile(r"logo|avatar|icon|sprite|badge|banner|author|profile|placeholder|emoji|tracking|pixel|"
+                      r"user-\d|header_menu|/shared/images/|hamburger|/static/|gravatar|ytimg\.com|"
+                      r"\.svg|\.gif|1x1|thumb(nail)?s?/|-150x|-300x|_small|/ads?/", re.I)
+
+
+def page_images(h, base):
+    """기사 본문 영역의 큰 이미지만 (로고·작성자 사진·추천 기사 썸네일 제외)."""
+    m = re.search(r"(?is)<article[^>]*>(.*?)</article>", h) or re.search(r"(?is)<main[^>]*>(.*?)</main>", h)
+    body = m.group(1) if m else h
+    body = re.sub(r"(?is)<(aside|nav|footer)[^>]*>.*?</\1>", " ", body)
+    out = []
+    for tag in re.findall(r"(?is)<img\b[^>]*>", body):
+        attrs = dict((k.lower(), v) for k, _, v in re.findall(r'([\w-]+)\s*=\s*(["\'])(.*?)\2', tag))
+        src = attrs.get("data-src") or attrs.get("data-lazy-src") or attrs.get("src") or ""
+        srcset = attrs.get("srcset") or attrs.get("data-srcset") or ""
+        if srcset:  # srcset 에서 가장 큰 것
+            best = max(((int(w), u) for u, w in re.findall(r"(\S+)\s+(\d+)w", srcset)), default=None)
+            if best and best[0] >= 800:
+                src = best[1]
+        if not src or src.startswith("data:") or IMG_SKIP.search(src + " " + attrs.get("class", "")):
+            continue
+        w = attrs.get("width", "")
+        if w.isdigit() and int(w) < 500:
+            continue
+        src = urllib.parse.urljoin(base, html.unescape(src))
+        if src not in out:
+            out.append(src)
+    return out[:8]
+
+
 def full_text(url, limit=3000):
-    """원문 페이지 본문(<p>)을 가져온다. RSS 요약만으론 기사가 얕아서."""
+    """원문 페이지 본문(<p>)을 가져온다. RSS 요약만으론 기사가 얕아서. 본문 이미지는 PAGE_IMGS 에 담는다."""
     try:
         req = urllib.request.Request(url, headers={
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36",
             "Accept": "text/html,application/xhtml+xml", "Accept-Language": "en-US,en;q=0.9"})
         h = urllib.request.urlopen(req, timeout=10).read().decode("utf-8", "ignore")
+        try:
+            PAGE_IMGS[url] = page_images(re.sub(r"(?is)<(script|style)[^>]*>.*?</\1>", " ", h), url)
+        except Exception:
+            pass
         h = re.sub(r"(?is)<(script|style|nav|footer|aside|header)[^>]*>.*?</\1>", " ", h)
         ps = [strip_html(p) for p in re.findall(r"(?is)<p[^>]*>(.*?)</p>", h)]
         return "\n".join(p for p in ps if len(p) > 60)[:limit]
@@ -304,7 +344,7 @@ def issue_text(n, c):
     out = []
     for i, s in enumerate(c["items"][:6]):
         body = ""
-        if i < 2:  # 앞의 두 출처는 원문 본문까지
+        if i < 2 or s.get("official"):  # 앞의 두 출처와 공식 출처는 원문 본문까지
             body = s.get("full") or full_text(s.get("link", ""))
             s["full"] = body
         out.append(f"- {s['source']} (official={str(s['official']).lower()})\n  제목: {s['title']}\n  요약: {s['summary']}"
@@ -356,6 +396,14 @@ def write_batch(cands):
         a["id"] = hashlib.md5("".join(sorted(s["id"] for s in srcs)).encode()).hexdigest()[:10]
         a["sources"] = [{"name": s["source"], "title": s["title"], "link": s["link"], "official": s["official"],
                          **({"img": s["img"]} if s.get("img") else {})} for s in srcs]
+        gal = []  # 공식 발표 원문에 실린 이미지 (매체 사진은 저작권 문제로 제외)
+        for s in [s for s in srcs if s["official"]]:
+            for u in (s.get("imgs") or []) + PAGE_IMGS.get(s["link"], []):
+                key = re.sub(r"(-\d+x\d+|-scaled)(?=\.\w+$)", "", u.split("?")[0])  # 같은 사진의 크기별 사본은 하나만
+                if key not in [g["key"] for g in gal]:
+                    gal.append({"src": u, "credit": s["source"], "key": key})
+        if gal:
+            a["gallery"] = [{"src": g["src"], "credit": g["credit"]} for g in gal[:6]]
         a["ts"] = max(s["ts"] for s in srcs)
         a["written"] = time.time()
         a.pop("issue", None)
@@ -2011,7 +2059,14 @@ def build():
     for a in articles + pending:
         try:
             tldr = "".join(f"<li>{esc(t)}</li>" for t in a.get("tldr", []))
-            body = "".join(f"<p>{esc(p)}</p>" for p in a.get("body", []))
+            gal = [g for g in a.get("gallery", []) if g.get("src") and g["src"] != (a.get("img_hd") or a.get("img"))]
+            body = ""
+            for i, p in enumerate(a.get("body", [])):
+                body += f"<p>{esc(p)}</p>"
+                if i < len(gal):  # 문단마다 원문 공식 이미지 한 장씩
+                    g = gal[i]
+                    body += (f'<figure class="hero"><img src="{esc(g["src"])}" alt="" loading="lazy" referrerpolicy="no-referrer"'
+                             f' onerror="this.parentNode.remove()"><figcaption>이미지: {esc(g["credit"])}</figcaption></figure>')
             srcs = "".join(f'<li>{"[공식] " if s["official"] else ""}{esc(s["name"])} — '
                            f'<a href="{esc(s["link"])}" target="_blank" rel="noopener">{esc(s["title"])}</a></li>'
                            for s in a["sources"])
