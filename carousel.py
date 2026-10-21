@@ -95,7 +95,7 @@ def slide_summary(a, total):
     return img
 
 
-PH_H, PH_TEXT = 720, 800  # 본문 장: 위쪽 사진(가장자리까지 꽉 차게) 높이, 그 아래 글 시작 위치
+PH_TOP, PH_H = 380, 522  # 본문 장 위쪽 공식 이미지 칸 (16:9)
 
 
 def gallery_imgs(a):
@@ -116,7 +116,7 @@ def body_pages(a):
     probe = ImageDraw.Draw(Image.new("RGB", (W, H)))
     gal = gallery_imgs(a)
     f, lh, bottom = NR(38), 62, H - 170
-    top_of = lambda k: PH_TEXT if k < len(gal) else 400
+    top_of = lambda k: PH_TOP + PH_H + 50 if k < len(gal) else 400
     pages, cur, y = [], [], top_of(0)
     for para in a.get("body", []):
         ls = wrap(probe, para, f, W - 152)
@@ -133,33 +133,21 @@ def body_pages(a):
 
 def slide_body(a, paras, page, total, idx, n):
     img = text_bg(a)
+    d = frame(img, page, total)
+    slide_heading(d, 300, L[LANG]["more"] + (f" ({idx}/{n})" if n > 1 else ""))
+    y = 400
     gal = gallery_imgs(a)
-    label = L[LANG]["more"] + (f" ({idx}/{n})" if n > 1 else "")
-    if idx - 1 < len(gal):  # 공식 발표 이미지: 매거진처럼 위쪽을 꽉 채우고 아래로 자연스럽게 사라지게
+    if idx - 1 < len(gal):  # 공식 발표 이미지: 장마다 다른 사진을 선명하게
         from cards import cover_fit
-        ph = cover_fit(gal[idx - 1][0], W, PH_H).crop((0, 0, W, PH_H))
-        fade = Image.new("L", (W, PH_H), 255)
-        fd = ImageDraw.Draw(fade)
-        for yy in range(PH_H - 380, PH_H):  # 아래 380px 에 걸쳐 배경으로 녹아들기 (제목 자리는 충분히 어둡게)
-            fd.line([(0, yy), (W, yy)], fill=int(255 * (1 - (yy - (PH_H - 380)) / 380) ** 2.2))
-        img.paste(ph, (0, 0), fade)
-        top = Image.new("L", (W, 200), 0)  # 위쪽 로고·쪽수가 보이게 살짝 어둡게
-        td = ImageDraw.Draw(top)
-        for yy in range(200):
-            td.line([(0, yy), (W, yy)], fill=int(140 * (1 - yy / 200)))
-        img.paste(Image.new("RGB", (W, 200), (0, 0, 0)), (0, 0), top)
-        d = frame(img, page, total)
+        ph = cover_fit(gal[idx - 1][0], W - 152, PH_H)
+        mask = Image.new("L", ph.size, 0)
+        ImageDraw.Draw(mask).rounded_rectangle((0, 0, ph.width - 1, ph.height - 1), 18, fill=255)
+        img.paste(ph, (76, PH_TOP), mask)
         cr = gal[idx - 1][1]
         if cr:
-            d.text((W - 56, PH_H - 330), ("이미지 " if LANG == "ko" else "Image ") + cr, font=NR(22),
-                   fill=(225, 225, 230), anchor="rs")
-        d.rectangle((76, PH_H - 92, 76 + 56, PH_H - 86), fill=LIME)  # 짧은 빨간 선 + 제목
-        d.text((76, PH_H - 70), label, font=BH(44), fill=WHITE)
-        y = PH_TEXT
-    else:
-        d = frame(img, page, total)
-        slide_heading(d, 300, label)
-        y = 400
+            d.text((W - 92, PH_TOP + PH_H - 18), ("이미지: " if LANG == "ko" else "Image: ") + cr, font=NR(24),
+                   fill=(235, 235, 240), anchor="rs", stroke_width=2, stroke_fill=(0, 0, 0))
+        y = PH_TOP + PH_H + 50
     for ls in paras:
         for ln in ls:
             d.text((76, y), ln, font=NR(38), fill=SOFT)
