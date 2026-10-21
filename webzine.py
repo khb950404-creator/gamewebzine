@@ -297,6 +297,26 @@ IMG_SKIP = re.compile(r"logo|avatar|icon|sprite|badge|banner|author|profile|plac
                       r"\.svg|\.gif|1x1|thumb(nail)?s?/|-150x|-300x|_small|/ads?/", re.I)
 
 
+VISUAL_KW = re.compile(r"지도|맵|공개|트레일러|티저|스크린샷|영상|아트|캐릭터|영웅|신규 지역|지역|의상|스킨|디자인|컨셉|"
+                       r"쇼케이스|다이렉트|확장팩|시즌|신규 모드|모드 공개|first look|reveal|map|trailer|screenshot", re.I)
+NUMERIC_KW = re.compile(r"판매|예약|매출|동접|동시 접속|기록|돌파|실적|주가|인수|해고|폐업|파산|소송|점유율|순위|평가|리뷰 점수")
+
+
+def gallery_fits(a):
+    """공식 이미지를 붙일 만한 기사인가: 무언가를 '보여주는' 발표(지도·트레일러·캐릭터 공개 등)만.
+    판매량·실적·인수 같은 숫자·업계 소식은 이미지가 내용과 무관해서 붙이지 않는다."""
+    t = a.get("title", "") + " " + " ".join(a.get("tldr", [])[:1])
+    return bool(VISUAL_KW.search(t)) and not NUMERIC_KW.search(a.get("title", ""))
+
+
+def rank_gallery(a, gal):
+    """제목 핵심어와 이미지 파일명이 맞는 것을 앞으로 (예: '지도 공개' 기사 → 이름에 map 이 든 이미지)."""
+    hints = {"지도": "map", "맵": "map", "캐릭터": "character", "트레일러": "trailer", "스크린샷": "screenshot",
+             "로고": "logo", "아트": "art", "차량": "vehicle", "무기": "weapon"}
+    want = [en for ko, en in hints.items() if ko in a.get("title", "")]
+    return sorted(gal, key=lambda g: -sum(w in g["src"].lower() for w in want))
+
+
 def page_images(h, base):
     """기사 본문 영역의 큰 이미지만 (로고·작성자 사진·추천 기사 썸네일 제외)."""
     m = re.search(r"(?is)<article[^>]*>(.*?)</article>", h) or re.search(r"(?is)<main[^>]*>(.*?)</main>", h)
@@ -402,8 +422,8 @@ def write_batch(cands):
                 key = re.sub(r"(-\d+x\d+|-scaled)(?=\.\w+$)", "", u.split("?")[0])  # 같은 사진의 크기별 사본은 하나만
                 if key not in [g["key"] for g in gal]:
                     gal.append({"src": u, "credit": s["source"], "key": key})
-        if gal:
-            a["gallery"] = [{"src": g["src"], "credit": g["credit"]} for g in gal[:6]]
+        if gal and gallery_fits(a):  # 숫자·업계 소식엔 관련 없는 이미지가 붙기 쉬워 제외
+            a["gallery"] = [{"src": g["src"], "credit": g["credit"]} for g in rank_gallery(a, gal)[:6]]
         a["ts"] = max(s["ts"] for s in srcs)
         a["written"] = time.time()
         a.pop("issue", None)
