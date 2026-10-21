@@ -95,17 +95,35 @@ def slide_summary(a, total):
     return img
 
 
+PH_TOP, PH_H = 380, 522  # 본문 장 위쪽 공식 이미지 칸 (16:9)
+
+
+def gallery_imgs(a):
+    """기사에 붙은 공식 발표 이미지 중 실제로 열리는 것만 (본문 장마다 한 장씩)."""
+    if "_gal" not in a:
+        from cards import fetch_img
+        out = []
+        for g in a.get("gallery", [])[:6]:
+            im = fetch_img(g.get("src", ""))
+            if im and im.width >= 500:
+                out.append((im, g.get("credit", "")))
+        a["_gal"] = out
+    return a["_gal"]
+
+
 def body_pages(a):
-    """본문 문단을 카드 한 장 높이에 맞게 나눈다."""
+    """본문 문단을 카드 한 장 높이에 맞게 나눈다. 공식 이미지가 있는 장은 위쪽에 사진 칸을 둔다."""
     probe = ImageDraw.Draw(Image.new("RGB", (W, H)))
-    f, lh, top, bottom = NR(38), 62, 400, H - 170
-    pages, cur, y = [], [], top
+    gal = gallery_imgs(a)
+    f, lh, bottom = NR(38), 62, H - 170
+    top_of = lambda k: PH_TOP + PH_H + 50 if k < len(gal) else 400
+    pages, cur, y = [], [], top_of(0)
     for para in a.get("body", []):
         ls = wrap(probe, para, f, W - 152)
         need = len(ls) * lh + 34
         if cur and y + need > bottom:
             pages.append(cur)
-            cur, y = [], top
+            cur, y = [], top_of(len(pages))
         cur.append(ls)
         y += need
     if cur:
@@ -118,6 +136,18 @@ def slide_body(a, paras, page, total, idx, n):
     d = frame(img, page, total)
     slide_heading(d, 300, L[LANG]["more"] + (f" ({idx}/{n})" if n > 1 else ""))
     y = 400
+    gal = gallery_imgs(a)
+    if idx - 1 < len(gal):  # 공식 발표 이미지: 장마다 다른 사진을 선명하게
+        from cards import cover_fit
+        ph = cover_fit(gal[idx - 1][0], W - 152, PH_H)
+        mask = Image.new("L", ph.size, 0)
+        ImageDraw.Draw(mask).rounded_rectangle((0, 0, ph.width - 1, ph.height - 1), 18, fill=255)
+        img.paste(ph, (76, PH_TOP), mask)
+        cr = gal[idx - 1][1]
+        if cr:
+            d.text((W - 92, PH_TOP + PH_H - 18), ("이미지: " if LANG == "ko" else "Image: ") + cr, font=NR(24),
+                   fill=(235, 235, 240), anchor="rs", stroke_width=2, stroke_fill=(0, 0, 0))
+        y = PH_TOP + PH_H + 50
     for ls in paras:
         for ln in ls:
             d.text((76, y), ln, font=NR(38), fill=SOFT)
