@@ -293,7 +293,7 @@ class LLMDown(Exception):
 
 PAGE_IMGS = {}  # 원문 URL → 본문에 실린 이미지 목록 (full_text 가 채운다)
 IMG_SKIP = re.compile(r"logo|avatar|icon|sprite|badge|banner|author|profile|placeholder|emoji|tracking|pixel|"
-                      r"user-\d|header_menu|/shared/images/|hamburger|/static/|gravatar|ytimg\.com|"
+                      r"grac|esrb|pegi|rating|user-\d|header_menu|/shared/images/|hamburger|/static/|gravatar|ytimg\.com|"
                       r"\.svg|\.gif|1x1|thumb(nail)?s?/|-150x|-300x|_small|/ads?/", re.I)
 
 
