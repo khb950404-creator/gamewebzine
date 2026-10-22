@@ -98,7 +98,7 @@ def text_panel(head, lines, page, total):
 def fetch_trailer(src, out, seconds=60):
     """HLS 트레일러 앞부분을 내려받아 로컬 파일로 (HLS 를 직접 자르면 앞부분이 비는 경우가 있다)."""
     subprocess.run([ffmpeg_bin(), "-y", "-loglevel", "error", "-i", src, "-t", str(seconds), "-an", "-c:v", "copy",
-                    str(out)], check=True, timeout=300)
+                    str(out)], check=True, timeout=300, capture_output=True)
     return out
 
 
