@@ -8,7 +8,7 @@
           IG_ENABLED=1 일 때만 실제 게시 (기본은 준비·확인만)
           IG_PER_RUN(기본 1), IG_DAILY(기본 4)
 """
-import hashlib, json, os, sys, time, urllib.error, urllib.parse, urllib.request
+import hashlib, json, os, re, sys, time, urllib.error, urllib.parse, urllib.request
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -123,6 +123,16 @@ def top_played():
         except Exception:
             _TOP_PLAYED = set()
     return _TOP_PLAYED
+
+
+VIDEO_KW = re.compile(r"업데이트|패치|시즌|확장팩|DLC|신규|트레일러|티저|게임플레이|공개|출시|쇼케이스|모드|영웅|캐릭터|지역|맵")
+VIDEO_NO = re.compile(r"판매|예약|매출|동접|기록|돌파|실적|인수|해고|폐업|파산|소송|할인|최저가|가격|리뷰")
+
+
+def video_news(a):
+    """영상이 어울리는 소식: 게임 화면이 바뀌거나 보여지는 발표 (숫자·업계·할인 소식 제외)."""
+    t = a.get("title", "")
+    return bool(VIDEO_KW.search(t)) and not VIDEO_NO.search(t)
 
 
 def is_big(a):
@@ -484,6 +494,9 @@ def regen_one(q, arts):
     elif kind in ("deal", "story"):
         if not folder.exists():
             rebuild_deal(q)
+    elif not folder.exists() and a and q.get("vtexts"):
+        from video_carousel import build as build_vcar
+        build_vcar(a, folder, q["vtexts"])
     elif not folder.exists() and a:
         for i, im in enumerate(build_carousel(a, lang=PROFILE, handle=HANDLE_P)[:10], 1):
             folder.mkdir(parents=True, exist_ok=True)
@@ -531,6 +544,15 @@ def prepare():
                 continue
             except Exception as e:
                 print(f"  ! 릴스 생성 실패, 캐러셀로: {e}")
+        if PROFILE == "ko" and a.get("appid") and video_news(a):
+            try:  # 영상 캐러셀: 위쪽에 스팀 공식 트레일러, 아래 소제목·설명
+                from video_carousel import build as build_vcar
+                files, texts = build_vcar(a, SITE / IGDIR / a["id"])
+                queue.append({"id": a["id"], "files": files, "caption": caption(a), "vtexts": texts})
+                print(f"인스타 준비(영상 캐러셀): {a['title']}")
+                continue
+            except Exception as e:
+                print(f"  ! 영상 캐러셀 실패, 일반 카드로: {e}")
         try:
             slides = build_carousel(a, lang=PROFILE, handle=HANDLE_P)[:10]  # 캐러셀 최대 10장
         except Exception as e:
@@ -779,8 +801,12 @@ def _publish():
             children = []
             for f in q["files"]:
                 url = f"{site_url()}{IGDIR}/{q['id']}/{f}"
-                c = api("POST", f"{uid}/media", image_url=url, is_carousel_item="true")["id"]
-                wait_ready(c)
+                if f.endswith(".mp4"):  # 영상 장 (처리에 1~2분)
+                    c = api("POST", f"{uid}/media", media_type="VIDEO", video_url=url, is_carousel_item="true")["id"]
+                    wait_ready(c, tries=30)
+                else:
+                    c = api("POST", f"{uid}/media", image_url=url, is_carousel_item="true")["id"]
+                    wait_ready(c)
                 children.append(c)
             parent = api("POST", f"{uid}/media", media_type="CAROUSEL", children=",".join(children), caption=q["caption"])["id"]
             wait_ready(parent)
@@ -848,7 +874,9 @@ def post_threads(q):
         if q.get("kind") == "reel":
             c = th_api("POST", f"{uid}/threads", media_type="VIDEO", video_url=base + "reel.mp4", text=text)["id"]
         else:
-            kids = [th_api("POST", f"{uid}/threads", media_type="IMAGE", image_url=base + f, is_carousel_item="true")["id"]
+            kids = [th_api("POST", f"{uid}/threads", is_carousel_item="true",
+                           **({"media_type": "VIDEO", "video_url": base + f} if f.endswith(".mp4")
+                              else {"media_type": "IMAGE", "image_url": base + f}))["id"]
                     for f in q["files"][:20]]
             for k in kids:
                 th_wait(k)

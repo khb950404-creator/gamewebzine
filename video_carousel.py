@@ -59,10 +59,12 @@ def make_slides_text(a):
 
 
 def cover(a, lines):
-    img = shade(bg({**a, "img_hd": best_image(a)}, bright=0.9), 0.30, 235)
+    img = shade(bg({**a, "img_hd": best_image(a)}, mono=0.0, bright=0.85), 0.30, 235)  # 표지는 컬러
     d = ImageDraw.Draw(img)
     f1, l1 = fit(d, safe(lines[0]), BH, 92, W - 152, 1, 60)
-    f2, l2 = fit(d, safe(lines[1]), BH, 108, W - 152, 2, 70)
+    f2, l2 = fit(d, safe(lines[1]), BH, 108, W - 152, 1, 72)  # 핵심 줄은 가능하면 한 줄로
+    if len(l2) > 1:
+        f2, l2 = fit(d, safe(lines[1]), BH, 96, W - 152, 2, 64)
     y = H - 210 - len(l2) * int(f2.size * 1.15)
     d.text((76, y - int(f1.size * 1.25)), l1[0], font=f1, fill=WHITE)
     for ln in l2:
