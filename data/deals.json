@@ -1,5 +1,5 @@
 {
- "updated": "10.22 22:41",
+ "updated": "10.22 22:47",
  "deals": [
   {
    "appid": 1091500,
@@ -2876,7 +2876,7 @@
    "discount": 50,
    "initial": 25800,
    "final": 12900,
-   "low": false,
+   "low": true,
    "ko": true,
    "ko_voice": true,
    "genres": [
@@ -2908,10 +2908,10 @@
      "cur": "KRW"
     },
     {
-     "shop": "PlayerLand",
-     "krw": 15221,
-     "cut": 54,
-     "url": "https://itad.link/019bfb09-4bcd-70d6-98c2-e163bd5f3f77/?app=g6au43",
+     "shop": "GamesPlanet US",
+     "krw": 15605,
+     "cut": 53,
+     "url": "https://itad.link/018d9386-492b-7351-8cee-b4d9fbcfccf6/?app=g6au43",
      "cur": "KRW"
     }
    ],
@@ -2919,31 +2919,10 @@
    "best": 11610
   },
   {
-   "appid": 625960,
-   "name": "Stoneshard",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/625960/25aa7037cf8dd1df245fa189b69b03eaed5fd135/header.jpg?t=1790180600",
-   "rank": 84,
-   "discount": 30,
-   "initial": 24000,
-   "final": 16800,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "어드벤처",
-    "인디",
-    "RPG"
-   ],
-   "meta": null,
-   "shops": [],
-   "ever_low": 15600,
-   "best": 16800
-  },
-  {
    "appid": 3511030,
    "name": "미니 코지 룸 : Lo-Fi",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3511030/cd87b96808972f16ff8c7c238d7ef09bad61912f/header_alt_assets_0_koreana.jpg?t=1791638455",
-   "rank": 85,
+   "rank": 84,
    "discount": 40,
    "initial": 4900,
    "final": 2940,
@@ -2971,7 +2950,7 @@
    "appid": 646570,
    "name": "Slay the Spire",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/646570/header.jpg?t=1774015376",
-   "rank": 86,
+   "rank": 85,
    "discount": 75,
    "initial": 27000,
    "final": 6750,
@@ -2999,7 +2978,7 @@
    "appid": 493520,
    "name": "GTFO",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/493520/header.jpg?t=1773842359",
-   "rank": 87,
+   "rank": 86,
    "discount": 74,
    "initial": 49990,
    "final": 13000,
@@ -3030,31 +3009,31 @@
    "best": 13000
   },
   {
-   "appid": 1794680,
-   "name": "Vampire Survivors",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1794680/2ca07b690dde645771125ed9d9206c4c5fde4dd4/header.jpg?t=1787911678",
-   "rank": 88,
-   "discount": 25,
-   "initial": 5000,
-   "final": 3750,
+   "appid": 625960,
+   "name": "Stoneshard",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/625960/25aa7037cf8dd1df245fa189b69b03eaed5fd135/header.jpg?t=1790180600",
+   "rank": 87,
+   "discount": 30,
+   "initial": 24000,
+   "final": 16800,
    "low": true,
    "ko": true,
    "ko_voice": false,
    "genres": [
-    "액션",
-    "캐주얼",
-    "인디"
+    "어드벤처",
+    "인디",
+    "RPG"
    ],
-   "meta": 86,
+   "meta": null,
    "shops": [],
-   "ever_low": 3500,
-   "best": 3750
+   "ever_low": 15600,
+   "best": 16800
   },
   {
    "appid": 4024600,
    "name": "Pyramidion",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4024600/eabee53407b333903f098d1590c21ed4b5ada92e/header.jpg?t=1792660136",
-   "rank": 89,
+   "rank": 88,
    "discount": 20,
    "initial": 8700,
    "final": 6960,
@@ -3075,7 +3054,7 @@
    "appid": 2929250,
    "name": "over the hill",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2929250/header.jpg?t=1791994837",
-   "rank": 90,
+   "rank": 89,
    "discount": 20,
    "initial": 42900,
    "final": 34320,
@@ -3104,17 +3083,17 @@
      "cur": "KRW"
     },
     {
+     "shop": "WinGameStore",
+     "krw": 26150,
+     "cut": 21,
+     "url": "https://itad.link/01a13b5c-5041-7173-8427-817ed809a39c/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
      "shop": "Humble Store",
      "krw": 26481,
      "cut": 20,
      "url": "https://itad.link/01a13b32-b3ff-71fe-9db1-b23a4210a9b2/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GamesPlanet US",
-     "krw": 26481,
-     "cut": 20,
-     "url": "https://itad.link/01a14428-375c-73f6-ac05-07e7af855394/?app=g6au43",
      "cur": "KRW"
     }
    ],
@@ -3125,7 +3104,7 @@
    "appid": 3844970,
    "name": "노움 강도단",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3844970/44a9cd63490b7749e00eca15dd39b6ecbbec65ca/header_koreana.jpg?t=1787427131",
-   "rank": 91,
+   "rank": 90,
    "discount": 25,
    "initial": 10500,
    "final": 7870,
@@ -3140,6 +3119,27 @@
    "shops": [],
    "ever_low": 7350,
    "best": 7870
+  },
+  {
+   "appid": 1794680,
+   "name": "Vampire Survivors",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1794680/2ca07b690dde645771125ed9d9206c4c5fde4dd4/header.jpg?t=1787911678",
+   "rank": 91,
+   "discount": 25,
+   "initial": 5000,
+   "final": 3750,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "액션",
+    "캐주얼",
+    "인디"
+   ],
+   "meta": 86,
+   "shops": [],
+   "ever_low": 3500,
+   "best": 3750
   },
   {
    "appid": 530611,
@@ -3302,60 +3302,10 @@
    "best": 15685
   },
   {
-   "appid": 1139980,
-   "name": "Travellers Rest",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1139980/4f7daf4884589291ef49f35248d41f76e9b4d967/header.jpg?t=1789987425",
-   "rank": 96,
-   "discount": 25,
-   "initial": 19500,
-   "final": 14620,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "어드벤처",
-    "캐주얼",
-    "인디"
-   ],
-   "meta": null,
-   "shops": [
-    {
-     "shop": "Humble Store",
-     "krw": 17870,
-     "cut": 25,
-     "url": "https://itad.link/018d9386-e797-735a-991c-821800b4e085/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GamesPlanet US",
-     "krw": 21447,
-     "cut": 10,
-     "url": "https://itad.link/018d9386-e797-735a-991c-821800df9d68/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GamesPlanet UK",
-     "krw": 23876,
-     "cut": 10,
-     "url": "https://itad.link/018d9386-e797-735a-991c-821802088691/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GamesPlanet FR",
-     "krw": 24021,
-     "cut": 10,
-     "url": "https://itad.link/018d9386-e797-735a-991c-8218013e5c45/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 13060,
-   "best": 14620
-  },
-  {
    "appid": 2333000,
    "name": "Silver Pines",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2333000/2ce661be5b6e60b8fcc92ecdf3f9dc2dca2a9037/header.jpg?t=1791483390",
-   "rank": 97,
+   "rank": 96,
    "discount": 10,
    "initial": 27860,
    "final": 25070,
@@ -3402,6 +3352,56 @@
    "best": 21449
   },
   {
+   "appid": 1139980,
+   "name": "Travellers Rest",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1139980/4f7daf4884589291ef49f35248d41f76e9b4d967/header.jpg?t=1789987425",
+   "rank": 97,
+   "discount": 25,
+   "initial": 19500,
+   "final": 14620,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "어드벤처",
+    "캐주얼",
+    "인디"
+   ],
+   "meta": null,
+   "shops": [
+    {
+     "shop": "Humble Store",
+     "krw": 17870,
+     "cut": 25,
+     "url": "https://itad.link/018d9386-e797-735a-991c-821800b4e085/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GamesPlanet US",
+     "krw": 21447,
+     "cut": 10,
+     "url": "https://itad.link/018d9386-e797-735a-991c-821800df9d68/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GamesPlanet UK",
+     "krw": 23876,
+     "cut": 10,
+     "url": "https://itad.link/018d9386-e797-735a-991c-821802088691/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GamesPlanet FR",
+     "krw": 24021,
+     "cut": 10,
+     "url": "https://itad.link/018d9386-e797-735a-991c-8218013e5c45/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 13060,
+   "best": 14620
+  },
+  {
    "appid": 1129580,
    "name": "Medieval Dynasty",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1129580/header.jpg?t=1790889732",
@@ -3438,31 +3438,10 @@
    "best": 13950
   },
   {
-   "appid": 2696050,
-   "name": "Yarimono",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2696050/header.jpg?t=1792123210",
-   "rank": 99,
-   "discount": 23,
-   "initial": 27000,
-   "final": 20790,
-   "low": true,
-   "ko": false,
-   "ko_voice": false,
-   "genres": [
-    "어드벤처",
-    "인디",
-    "RPG"
-   ],
-   "meta": null,
-   "shops": [],
-   "ever_low": 20790,
-   "best": 20790
-  },
-  {
    "appid": 365360,
    "name": "Battle Brothers",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/365360/c6ad528c1ec98716cccc6b251d570bd1c0f2d283/header.jpg?t=1791278733",
-   "rank": 100,
+   "rank": 99,
    "discount": 70,
    "initial": 29900,
    "final": 8970,
@@ -3507,6 +3486,27 @@
    ],
    "ever_low": 8432,
    "best": 8970
+  },
+  {
+   "appid": 2696050,
+   "name": "Yarimono",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2696050/header.jpg?t=1792123210",
+   "rank": 100,
+   "discount": 23,
+   "initial": 27000,
+   "final": 20790,
+   "low": true,
+   "ko": false,
+   "ko_voice": false,
+   "genres": [
+    "어드벤처",
+    "인디",
+    "RPG"
+   ],
+   "meta": null,
+   "shops": [],
+   "ever_low": 20790,
+   "best": 20790
   }
  ],
  "shops_status": "ok",
