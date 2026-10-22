@@ -22,8 +22,11 @@ SLIDES_PROMPT = """너는 게임 매체 인스타 카드뉴스 편집자다. 아
 각 장: "head" = 그 장의 핵심 한 줄 (12~22자, 구체적으로. 예: "쌍권총은 '냉정'에서 해금"),
 "lines" = 그 장을 설명하는 짧은 줄 2~4개 (각 18~34자, 개조식 '~함/~됨/~가능' 또는 명사형. 숫자·이름 살리기).
 장끼리 내용이 겹치지 않게, 기사에 있는 사실만.
+"video" = 이 장의 내용을 아래 공식 트레일러가 실제로 보여주면 true, 아니면 false.
+  (예: 트레일러가 신규 모드 영상이면 모드 장만 true. 코스튬·번들·버그 수정·가격 장은 트레일러에 안 나오므로 false)
+공식 트레일러 제목: {trailer}
 "cover" = 표지 두 줄 제목 [윗줄(맥락, 8~16자), 아랫줄(핵심, 8~16자)] 예: ["엣지러너 2 기념 업데이트", "V도 드디어 '쌍권총'"]
-JSON 하나만: {{"cover": [..,..], "slides": [{{"head": .., "lines": [..]}}]}}
+JSON 하나만: {{"cover": [..,..], "slides": [{{"head": .., "lines": [..], "video": true}}]}}
 
 기사: {art}"""
 
@@ -51,11 +54,20 @@ def pick_movie(a, movies):
     return max(movies, key=score) if movies else None
 
 
-def make_slides_text(a):
+def make_slides_text(a, trailer):
     import webzine
     art = {k: a.get(k) for k in ("title", "tldr", "body")}
-    r = webzine.llm(SLIDES_PROMPT.format(art=json.dumps(art, ensure_ascii=False)))
-    return r
+    return webzine.llm(SLIDES_PROMPT.format(art=json.dumps(art, ensure_ascii=False), trailer=trailer))
+
+
+def still_slide(a, head, lines, page, total):
+    """트레일러가 보여주지 않는 내용의 장: 위쪽엔 게임 공식 키아트(정지 이미지) — 엉뚱한 영상보다 정직하게."""
+    from cards import fetch_img, cover_fit
+    img = text_panel(head, lines, page, total)
+    im = fetch_img(best_image(a))
+    if im:
+        img.paste(cover_fit(im, VW, VH).crop((0, 0, VW, VH)), (0, VY))
+    return img
 
 
 def cover(a, lines):
@@ -119,16 +131,25 @@ def build(a, out_dir, texts=None):
     if not mv:
         raise RuntimeError("스팀 공식 트레일러 없음")
     src = fetch_trailer(mv.get("hls_h264") or mv["mp4"]["max"], out / "_trailer.mp4")
-    texts = texts or make_slides_text(a)
+    texts = texts or make_slides_text(a, mv["name"])
     slides = texts["slides"][:4]
+    if not any(s_.get("video") for s_ in slides):
+        raise RuntimeError("트레일러와 맞는 장 없음 — 일반 카드로")
     total = len(slides) + 1
     cover(a, texts["cover"]).convert("RGB").save(out / "01.jpg", quality=90)
     files = ["01.jpg"]
+    k = 0
     for i, s in enumerate(slides):
+        if not s.get("video"):  # 트레일러에 안 나오는 내용 → 키아트 정지 이미지 장
+            name = f"{i + 2:02d}.jpg"
+            still_slide(a, s["head"], s["lines"], i + 2, total).convert("RGB").save(out / name, quality=90)
+            files.append(name)
+            continue
         png = out / f"_p{i}.png"
         text_panel(s["head"], s["lines"], i + 2, total).save(png)
         name = f"{i + 2:02d}.mp4"
-        render_clip(src, 4 + i * (CLIP + 3), png, out / name)  # 장마다 트레일러 다른 구간
+        render_clip(src, 4 + k * (CLIP + 3), png, out / name)  # 영상 장마다 트레일러 다른 구간
+        k += 1
         png.unlink()
         files.append(name)
     src.unlink(missing_ok=True)
