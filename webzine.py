@@ -224,6 +224,9 @@ PROMPT = """너는 PC·콘솔 게이머를 위한 한국어 게임 웹진 기자
 신작 발표·출시일·연기, 대형 업데이트·확장팩, 판매/동접 기록, 업계 사건(인수·해고·폐업·소송), 주요 논란, 하드웨어 소식, 큰 할인 정도.
 아래는 전부 skip: 성우·캐스팅 잡담, 개인 인터뷰 속 사소한 회고, 마이너 인디의 소소한 소식, 코스튬·스킨 하나 추가,
 유튜버/커뮤니티 반응 모음, 리스트형 기사("~할 게임 10선"), 가이드·공략, 리뷰 점수 단독 나열, 이미 다룬 소식의 재탕.
+이미 널리 알려진 사실을 새 소식처럼 쓰지 마라: 이슈마다 '알트탭 기존 보도' 목록이 있으면 그것과 비교해
+새로 밝혀진 게 없으면 skip. 이미 출시·공개된 게임을 '코드명 언급', '최초 공개', '유출'처럼 처음 알려진 듯 쓰면 안 된다
+(예: 이미 서비스 중인 '데드락'을 '차기작 코드명 데드락 언급'으로 쓰는 것 금지). 후속 소식이면 새로 바뀐 점만 쓴다.
 
 PC·콘솔 비디오게임과 무관하거나(보드·카드게임, 게임과 연결 약한 영화·드라마 소식 등)
 광고/딜 나열/퀴즈/팟캐스트 같은 저가치 글은 {{"issue": 번호, "skip": true}} 로만 표시하라.
@@ -360,6 +363,25 @@ def full_text(url, limit=3000):
         return ""
 
 
+KNOWN = []  # 최근 기사 (write_batch 가 채운다) — '이미 보도한 소식' 비교용
+
+
+def prior_coverage(c, k=5):
+    """이 이슈와 같은 게임·주제를 다룬 알트탭 최근 30일 기사 제목."""
+    t = tokens(" ".join(i["title"] for i in c["items"]))
+    if not t:
+        return []
+    scored = []
+    for a in KNOWN:
+        at = tokens(" ".join([a.get("title_en") or ""] + (a.get("games_en") or [])))
+        hit = len(t & at)
+        if hit >= 2 or (hit and any(norm(g) and norm(g) in norm(" ".join(i["title"] for i in c["items"]))
+                                    for g in a.get("games_en") or [])):
+            scored.append((hit, a))
+    scored.sort(key=lambda x: -x[0])
+    return [f"{datetime.fromtimestamp(a.get('written', a['ts'])).strftime('%m/%d')} {a['title']}" for _, a in scored[:k]]
+
+
 def issue_text(n, c):
     out = []
     for i, s in enumerate(c["items"][:6]):
@@ -369,11 +391,15 @@ def issue_text(n, c):
             s["full"] = body
         out.append(f"- {s['source']} (official={str(s['official']).lower()})\n  제목: {s['title']}\n  요약: {s['summary']}"
                    + (f"\n  본문: {body}" if body else ""))
+    prior = prior_coverage(c)
+    if prior:
+        out.append("  알트탭 기존 보도: " + " / ".join(prior))
     return f"=== 이슈 {n} ===\n" + "\n".join(out)
 
 
 def write_batch(cands):
     """후보 이슈들을 한 번에 작성 → 한 번에 팩트체크. 반환: 기사 목록(이슈 순서)."""
+    KNOWN[:] = [a for a in load_json(DATA / "articles.json", []) if time.time() - a.get("written", a["ts"]) < 30 * 86400]
     issues = "\n\n".join(issue_text(n, c) for n, c in enumerate(cands, 1))
     try:
         res = llm(PROMPT.format(cats=", ".join(CATEGORIES), issues=issues))
