@@ -10,7 +10,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFilter
 
 from cards import ROOT, fetch_img, cover_fit
-from card_themes import BH, NB, NM, ANTON, grade, lines_of, fit, HANDLE
+from card_themes import BH, NB, NM, ANTON, grade, fit, HANDLE
 from carousel import LIME as RED, WHITE, SOFT, best_image
 from ig_post import to_card_tone
 
@@ -43,6 +43,9 @@ def ease(t):
 def pop(t):  # 살짝 튀어나왔다 들어가는 크기 변화 (훅 문구용)
     t = max(0.0, min(1.0, t))
     return 1 + 0.18 * (1 - t) ** 2 - 0.18 * (1 - t) ** 6
+
+
+SAFE_R, SAFE_B, SAFE_T = RW - 190, RH - 470, 260  # 이 안에만 글자를 둔다
 
 
 def plus(d, color, cx=100, cy=150, L=26, t=4):
@@ -151,24 +154,31 @@ def render(a, out_path, lang="ko", handle=None):
     shade = shade_mask()
 
     hook = hook_layer(default_hook(a, lang), RED)
-    tf, title = fit(PROBE, title_txt.replace("…", "...").replace("·", ", ").replace("ㆍ", ", "), BH, 104 if lang == "ko" else 92, RW - 152, 4)
+    tf, title = fit(PROBE, title_txt.replace("…", "...").replace("·", ", ").replace("ㆍ", ", "), BH, 92 if lang == "ko" else 84, SAFE_R - 76, 4)
     lh = int(tf.size * 1.19)
     y0 = RH - 520 - len(title) * lh
     title_ls = [layer(lambda d, ln=ln, y=y0 + i * lh: d.text((76, y), ln, font=tf, fill=WHITE)) for i, ln in enumerate(title)]
     label = layer(lambda d: d.text((76, y0 - 80), f"{a.get('trust')} · {a.get('category')}" if lang == "ko"
                                    else (a.get("category_en") or "GAME NEWS"), font=NB(40), fill=RED))
-    point_ls, y = [], 560
-    for i, t in enumerate(points, 1):
-        pf, ls = fit(PROBE, t, NB, 54 if lang == "ko" else 50, RW - 260, 5)
-        plh = int(pf.size * 1.37)
+    # 요약: 조금 작고 얇은 글씨(NM)로, 세 줄이 안전 영역 안에 다 들어가게 크기를 맞춘다
+    size = 46 if lang == "ko" else 44
+    while True:
+        blocks = [fit(PROBE, t, NM, size, SAFE_R - 200, 5, 30) for t in points]
+        need = sum(len(ls) * int(pf.size * 1.42) + 80 for pf, ls in blocks)
+        if 540 + need <= SAFE_B or size <= 32:
+            break
+        size -= 2
+    point_ls, y = [], 540
+    for i, (t, (pf, ls)) in enumerate(zip(points, blocks), 1):
+        plh = int(pf.size * 1.42)
 
         def draw(d, i=i, ls=ls, y=y, pf=pf, plh=plh):
-            d.text((76, y - 6), f"{i:02d}", font=ANTON(78), fill=RED)
+            d.text((76, y - 4), f"{i:02d}", font=ANTON(66), fill=RED)
             for k, ln in enumerate(ls):
                 d.text((200, y + k * plh), ln, font=pf, fill=WHITE)
         point_ls.append(layer(draw))
-        y += len(ls) * plh + 90
-    head = layer(lambda d: (d.rectangle((76, 418, 92, 466), fill=RED), d.text((112, 410), T["key"], font=BH(60), fill=RED)))
+        y += len(ls) * plh + 80
+    head = layer(lambda d: (d.rectangle((76, 408, 90, 450), fill=RED), d.text((108, 400), T["key"], font=BH(52), fill=RED)))
     end = layer(lambda d: (d.text((RW // 2, 820), T["end1"], font=BH(84), fill=WHITE, anchor="mm"),
                            d.text((RW // 2, 930), T["end2"], font=NM(46), fill=SOFT, anchor="mm")))
 
@@ -199,9 +209,6 @@ def render(a, out_path, lang="ko", handle=None):
             im = blurred.convert("RGBA")
             e = ease(tt / 0.5)
             show(im, end, e, (1 - e) * 40)
-        d = ImageDraw.Draw(im)
-        plus(d, RED)
-        d.text((RW // 2, RH - 110), handle, font=NB(40), fill=RED, anchor="mm")
         v.write(im)
     v.close()
     return out_path
@@ -219,10 +226,10 @@ def render_deals(deals, out_path, hook_text, key="deals", handle=None):
 
         def draw(d, x=x, pct=pct):
             w = d.textlength(pct, font=ANTON(170))
-            d.rounded_rectangle((76, 1040, 76 + w + 60, 1250), 20, fill=GOLD)
-            d.text((106, 1145), pct, font=ANTON(170), fill=INK, anchor="lm")
-            y = 1300
-            nf, nls = fit(PROBE, x["name"].replace("™", "").replace("®", ""), BH, 80, RW - 152, 2)
+            d.rounded_rectangle((76, 820, 76 + w + 60, 1030), 20, fill=GOLD)  # 안전 영역(아래 캡션 위)으로 올림
+            d.text((106, 925), pct, font=ANTON(170), fill=INK, anchor="lm")
+            y = 1080
+            nf, nls = fit(PROBE, x["name"].replace("™", "").replace("®", ""), BH, 72, SAFE_R - 76, 2)
             for ln in nls:
                 d.text((76, y), ln, font=nf, fill=WHITE)
                 y += int(nf.size * 1.2)
@@ -259,9 +266,6 @@ def render_deals(deals, out_path, hook_text, key="deals", handle=None):
             im = Image.composite(dark, zoomed(first, 1.05), Image.new("L", (RW, RH), 200)).convert("RGBA")
             e = ease(tt / 0.5)
             show(im, end, e, (1 - e) * 40)
-        d = ImageDraw.Draw(im)
-        plus(d, GOLD)
-        d.text((RW // 2, RH - 110), handle, font=NB(40), fill=GOLD, anchor="mm")
         v.write(im)
     v.close()
     return out_path
