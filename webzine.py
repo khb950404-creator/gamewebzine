@@ -257,6 +257,7 @@ JSON 하나만 출력:
 
 VERIFY = """너는 게임 웹진의 팩트체커다. 아래 기사들을 각 이슈의 출처 자료와 한 문장씩 대조하라.
 출처에 근거가 없는 주장(추측, 배경 설명으로 지어낸 사실, 틀린 날짜·수치·플랫폼)은 삭제하거나 출처에 맞게 고쳐라.
+특히 패치·업데이트 버전 번호(예: 2.5), 시즌 번호, 가격, 날짜는 출처와 한 글자도 다르면 안 되고, 제목·요약·본문끼리도 같아야 한다.
 문체와 구조는 유지하고, 문제없는 문장은 건드리지 마라. trust 값도 규칙에 맞는지 확인하라
 (공식=회사 발표를 전한 경우 포함, 확인=2개 이상 매체, 보도=매체 한 곳의 취재, 루머=유출·익명 소식통·추측만).
 
@@ -268,6 +269,29 @@ JSON 하나만 출력 (입력의 모든 기사를 같은 issue 번호로):
 
 기사:
 {articles}"""
+
+
+VER = re.compile(r"(?<![\d.])(\d{1,2}\.\d{1,2}(?:\.\d{1,2})?)(?![\d.%])")
+
+
+def fix_versions(a, src_text=""):
+    """패치·업데이트 버전 번호 일관성: 제목·요약·훅의 버전이 본문/출처에 없고, 본문/출처엔 다른 버전 하나만 있으면 그걸로 고친다.
+    (예: 본문은 '2.5 패치'인데 제목이 '2.0 패치'로 나간 사고 방지)"""
+    if not re.search(r"패치|업데이트|버전|patch|update|version", " ".join([a.get("title", "")] + a.get("tldr", [])), re.I):
+        return a
+    ref = " ".join(a.get("body", [])) + " " + src_text
+    ref_v = set(VER.findall(ref))
+    if len(ref_v) != 1:
+        return a
+    right = next(iter(ref_v))
+    def fix(t):
+        return VER.sub(lambda m: right if m.group(1) not in ref_v and re.search(
+            r"패치|업데이트|버전|patch|update", t[m.end():m.end() + 8] + t[max(0, m.start() - 12):m.start()], re.I) else m.group(1), t)
+    for k in ("title", "hook", "why"):
+        if isinstance(a.get(k), str):
+            a[k] = fix(a[k])
+    a["tldr"] = [fix(t) for t in a.get("tldr", [])]
+    return a
 
 
 def clean_article(a):
@@ -455,6 +479,7 @@ def write_batch(cands):
         a.pop("issue", None)
         a = clean_article(a)
         if a:
+            fix_versions(a, " ".join(s_["title"] + " " + s_.get("summary", "") + " " + (s_.get("full") or "") for s_ in srcs))
             out.append(a)
     return out
 
