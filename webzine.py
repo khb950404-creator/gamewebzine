@@ -106,6 +106,18 @@ def tokens(t):
     return {w for w in re.findall(r"[a-z0-9]+", t.lower()) if w not in STOP and len(w) > 2}
 
 
+# 공략·가이드 글은 아예 쓰지 않는다 (원문 제목 단계에서 거르고, 작성된 제목도 한 번 더 거른다)
+GUIDE_EN = re.compile(r"^(how to|where to|where is|when does|what is the best|best .*(build|loadout|settings|class|weapons?)|"
+                      r"all .*(locations|collectibles|answers))\b|\b(guide|walkthrough|tier list|tips and tricks|"
+                      r"beginner'?s? tips|explained|locations?$|answers? today|wordle|redeem codes?|codes? \(|should you (choose|pick|side))", re.I)
+GUIDE_KO = re.compile(r"획득법|획득 방법|얻는 ?법|얻는 방법|해금 방법|해금법|공략|가이드|위치 총정리|위치 정리|팁 \d|꿀팁|"
+                      r"빌드 추천|추천 빌드|티어 ?리스트|하는 ?법$|공략법|클리어 방법|정답")
+
+
+def is_guide(title):
+    return bool(GUIDE_EN.search(title or "") or GUIDE_KO.search(title or ""))
+
+
 def cluster(items):
     clusters = []
     for it in sorted(items, key=lambda x: -x["ts"]):
@@ -223,7 +235,8 @@ PROMPT = """너는 PC·콘솔 게이머를 위한 한국어 게임 웹진 기자
 뉴스 가치 판단 (엄격하게): 게이머가 "오, 이건 알아야지" 할 소식만 쓴다.
 신작 발표·출시일·연기, 대형 업데이트·확장팩, 판매/동접 기록, 업계 사건(인수·해고·폐업·소송), 주요 논란, 하드웨어 소식, 큰 할인 정도.
 아래는 전부 skip: 성우·캐스팅 잡담, 개인 인터뷰 속 사소한 회고, 마이너 인디의 소소한 소식, 코스튬·스킨 하나 추가,
-유튜버/커뮤니티 반응 모음, 리스트형 기사("~할 게임 10선"), 가이드·공략, 리뷰 점수 단독 나열, 이미 다룬 소식의 재탕.
+유튜버/커뮤니티 반응 모음, 리스트형 기사("~할 게임 10선"), 가이드·공략(획득법·해금법·위치·빌드·팁 등 '어떻게 하는지' 글은 공식 출처라도 전부 skip),
+리뷰 점수 단독 나열, 이미 다룬 소식의 재탕.
 이미 널리 알려진 사실을 새 소식처럼 쓰지 마라: 이슈마다 '알트탭 기존 보도' 목록이 있으면 그것과 비교해
 새로 밝혀진 게 없으면 skip. 이미 출시·공개된 게임을 '코드명 언급', '최초 공개', '유출'처럼 처음 알려진 듯 쓰면 안 된다
 (예: 이미 서비스 중인 '데드락'을 '차기작 코드명 데드락 언급'으로 쓰는 것 금지). 후속 소식이면 새로 바뀐 점만 쓴다.
@@ -478,6 +491,9 @@ def write_batch(cands):
         a["written"] = time.time()
         a.pop("issue", None)
         a = clean_article(a)
+        if a and is_guide(a.get("title", "")):  # 작성된 제목이 공략이면 버림
+            print(f"  공략 기사 제외: {a['title']}")
+            a = None
         if a:
             fix_versions(a, " ".join(s_["title"] + " " + s_.get("summary", "") + " " + (s_.get("full") or "") for s_ in srcs))
             out.append(a)
@@ -714,6 +730,11 @@ def run():
     print("수집 중...")
     items = [i for name, url, off in FEEDS for i in fetch_feed(name, url, off)]
     fresh = [i for i in items if i["id"] not in seen and time.time() - i["ts"] < 3 * 86400]
+    guides = [i for i in fresh if is_guide(i["title"])]
+    seen.update(i["id"] for i in guides)  # 공략 글은 후보에서 빼고 다시 보지 않음
+    fresh = [i for i in fresh if not is_guide(i["title"])]
+    if guides:
+        print(f"공략·가이드 제외 {len(guides)}건")
     print(f"새 항목 {len(fresh)}건")
     # 건너뛰는 이슈를 감안해 여유 있게 후보를 뽑고, 작성된 것 중 상위 MAX 건만 쓴다
     cands = cluster(fresh)[:MAX_ARTICLES_PER_RUN + 8]
