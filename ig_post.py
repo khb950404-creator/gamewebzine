@@ -135,6 +135,9 @@ def video_news(a):
     return bool(VIDEO_KW.search(t)) and not VIDEO_NO.search(t)
 
 
+PLAYABLE = re.compile(r"무료|출시|배포|업데이트|패치|시즌 \d|확장팩|DLC|할인|얼리 액세스|베타|데모|체험판|지금 바로|오늘")
+
+
 def is_big(a):
     import re as _re
     text = _re.sub(r"[^0-9a-z가-힣]", "", " ".join([a["title"]] + (a.get("games_en") or []) + (a.get("games") or [])).lower())
@@ -150,6 +153,7 @@ def popularity(a):
     s_ += 2 if a.get("trust") == "공식" else 0
     s_ += 2 if a.get("category") == "신작" or "트레일러" in a["title"] or "공개" in a["title"] else 0
     s_ += 2 if a.get("video") else 0
+    s_ += 4 if PLAYABLE.search(a["title"]) else 0
     s_ -= (time.time() - a.get("written", a["ts"])) / 3600 * 0.3  # 오래될수록 감점
     # 인사이트 학습값: 반응 좋았던 카테고리·게임은 가점, 약했던 건 감점 (insights.py)
     lr = learned()
@@ -334,7 +338,7 @@ def prepare_deals(queue, posted):
     if (force or (now.weekday() == 4 and now.hour >= 17)) and wk not in keys:
         slides, deals = dc.build(7, skip=skip)
         queue.append({"id": wk, "kind": "deal", "files": save_slides(wk, slides), "appids": [x["appid"] for x in deals],
-                      "caption": deal_caption(deals, f"💸 이번 주 Steam 역대 최저가 {len(deals)}")})
+                      "caption": deal_caption(deals, f"[알트탭 주간 할인] 이번 주 Steam 역대 최저가 {len(deals)}")})
         print("인스타 준비: 주간 할인")
         # 같은 날 할인 릴스도 (도달용)
         from reels import render_deals
@@ -362,7 +366,7 @@ def prepare_deals(queue, posted):
         if len(top) >= 3:
             queue.append({"id": tk, "kind": "series", "files": save_slides(tk, build_weekly_top(top)),
                           "arts": [a["id"] for a in top],
-                          "caption": "\n".join(["📰 이번 주 게임 뉴스 TOP" + str(len(top)), ""]
+                          "caption": "\n".join(["[알트탭 주간 TOP5] 이번 주 게임 뉴스 TOP" + str(len(top)), ""]
                                                + [f"{i}. {a['title']}" for i, a in enumerate(top, 1)]
                                                + ["", "가장 놀라운 소식은 몇 번인가요?", "",
                                                   "#게임뉴스 #주간게임뉴스 #게임소식 #알트탭 #gamingnews #gaming #videogames"])})
@@ -375,7 +379,7 @@ def prepare_deals(queue, posted):
             from carousel import build_weekly_releases
             queue.append({"id": rk_, "kind": "series", "files": save_slides(rk_, build_weekly_releases(games)),
                           "rel": games,
-                          "caption": "\n".join(["🎮 이번 주 출시 게임 " + str(len(games)), ""]
+                          "caption": "\n".join(["[알트탭 주간 출시] 이번 주 출시 게임 " + str(len(games)), ""]
                                                + [f"{datetime.strptime(g['date'], '%Y-%m-%d').strftime('%m/%d')} {g['name']}"
                                                   + (f" ({', '.join(g['platforms'])})" if g.get("platforms") else "")
                                                   for g in games]
