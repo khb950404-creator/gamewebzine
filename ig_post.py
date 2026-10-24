@@ -177,7 +177,8 @@ def pick(arts, posted, n, queued_ids=(), cap=True, by_pop=False):
         return []
     cand = [a for a in arts if a.get("status", "published") == "published" and a.get("img")
             and a["id"] not in posted and a.get("trust") != "루머"
-            and time.time() - a.get("written", a["ts"]) < 24 * 3600 and len(a.get("body", [])) >= 2]
+            and time.time() - a.get("written", a["ts"]) < 24 * 3600 and len(a.get("body", [])) >= 2
+            and time.time() - a["ts"] < 48 * 3600]  # 원문(가장 최근 출처) 발행 48시간 이내 소식만 인스타에
     # 화제성: 출처 수 > 공식 발표 > 최신
     # 화제성 높은 기사만 (출처 1곳짜리 소소한 소식·마이너 게임은 제외)
     min_pop = float(os.environ.get("IG_MIN_POP", 8))

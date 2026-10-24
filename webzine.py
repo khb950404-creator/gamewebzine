@@ -109,7 +109,8 @@ def tokens(t):
 # 공략·가이드 글은 아예 쓰지 않는다 (원문 제목 단계에서 거르고, 작성된 제목도 한 번 더 거른다)
 GUIDE_EN = re.compile(r"^(how to|where to|where is|when does|what is the best|best .*(build|loadout|settings|class|weapons?)|"
                       r"all .*(locations|collectibles|answers))\b|\b(guide|walkthrough|tier list|tips and tricks|"
-                      r"beginner'?s? tips|explained|locations?$|answers? today|wordle|redeem codes?|codes? \(|should you (choose|pick|side))", re.I)
+                      r"beginner'?s? tips|explained|everything we know|everything you need to know|"
+                      r"what we know so far|recap|roundup|round-up|this week in|weekly round|locations?$|answers? today|wordle|redeem codes?|codes? \(|should you (choose|pick|side))", re.I)
 GUIDE_KO = re.compile(r"획득법|획득 방법|얻는 ?법|얻는 방법|해금 방법|해금법|공략|가이드|위치 총정리|위치 정리|팁 \d|꿀팁|"
                       r"빌드 추천|추천 빌드|티어 ?리스트|하는 ?법$|공략법|클리어 방법|정답")
 
@@ -214,7 +215,7 @@ def llm(prompt, prefer_lite=False, search=False):
     return None
 
 
-PROMPT = """너는 PC·콘솔 게이머를 위한 한국어 게임 웹진 기자다.
+PROMPT = """너는 PC·콘솔 게이머를 위한 한국어 게임 웹진 기자다. 오늘은 {today} 이다.
 아래 이슈들 각각에 대해 기사를 하나씩 써라. 각 기사는 해당 이슈의 출처 자료만 근거로 한다.
 자료에 없는 사실(날짜, 가격, 플랫폼, 수치)은 절대 지어내지 마라.
 원문 문장을 번역해 옮기지 말고, 여러 출처를 종합해 자신의 문장으로 새로 써라.
@@ -237,6 +238,9 @@ PROMPT = """너는 PC·콘솔 게이머를 위한 한국어 게임 웹진 기자
 아래는 전부 skip: 성우·캐스팅 잡담, 개인 인터뷰 속 사소한 회고, 마이너 인디의 소소한 소식, 코스튬·스킨 하나 추가,
 유튜버/커뮤니티 반응 모음, 리스트형 기사("~할 게임 10선"), 가이드·공략(획득법·해금법·위치·빌드·팁 등 '어떻게 하는지' 글은 공식 출처라도 전부 skip),
 리뷰 점수 단독 나열, 이미 다룬 소식의 재탕.
+최신성: 이슈의 핵심 사건(발표·출시·공개)이 오늘 기준 3일보다 오래됐으면 skip.
+매체가 늦게 올렸거나, 예전 발표를 다시 정리한 글(회고·요약·"지금까지 알려진 모든 것")이면 skip.
+본문에 날짜가 나오면 오늘({today})과 비교해 '어제', '이번 주' 같은 표현을 맞게 써라.
 이미 널리 알려진 사실을 새 소식처럼 쓰지 마라: 이슈마다 '알트탭 기존 보도' 목록이 있으면 그것과 비교해
 새로 밝혀진 게 없으면 skip. 이미 출시·공개된 게임을 '코드명 언급', '최초 공개', '유출'처럼 처음 알려진 듯 쓰면 안 된다
 (예: 이미 서비스 중인 '데드락'을 '차기작 코드명 데드락 언급'으로 쓰는 것 금지). 후속 소식이면 새로 바뀐 점만 쓴다.
@@ -439,7 +443,8 @@ def write_batch(cands):
     KNOWN[:] = [a for a in load_json(DATA / "articles.json", []) if time.time() - a.get("written", a["ts"]) < 30 * 86400]
     issues = "\n\n".join(issue_text(n, c) for n, c in enumerate(cands, 1))
     try:
-        res = llm(PROMPT.format(cats=", ".join(CATEGORIES), issues=issues))
+        res = llm(PROMPT.format(cats=", ".join(CATEGORIES), issues=issues,
+                                today=datetime.now().strftime("%Y년 %m월 %d일")))
     except Exception as e:
         print(f"  ! LLM 오류: {e}")
         raise LLMDown()
@@ -729,7 +734,7 @@ def run():
     articles = load_json(DATA / "articles.json", [])
     print("수집 중...")
     items = [i for name, url, off in FEEDS for i in fetch_feed(name, url, off)]
-    fresh = [i for i in items if i["id"] not in seen and time.time() - i["ts"] < 3 * 86400]
+    fresh = [i for i in items if i["id"] not in seen and time.time() - i["ts"] < 2 * 86400]  # 원문 발행 48시간 이내만
     guides = [i for i in fresh if is_guide(i["title"])]
     seen.update(i["id"] for i in guides)  # 공략 글은 후보에서 빼고 다시 보지 않음
     fresh = [i for i in fresh if not is_guide(i["title"])]
