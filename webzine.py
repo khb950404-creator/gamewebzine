@@ -232,6 +232,8 @@ PROMPT = """너는 PC·콘솔 게이머를 위한 한국어 게임 웹진 기자
 - 1문단: 무엇이 언제 발표됐나 (리드). 2~4문단: 세부 내용, 핵심 발언 인용("...라고 밝혔다"), 전작·경쟁작과의 맥락.
   마지막 문단: 출시일·업데이트 일정 등 게이머가 체크할 점 (출처에 있는 것만).
 - 같은 말 반복, "기대를 모으고 있다", "귀추가 주목된다" 같은 상투적 마무리 금지. 문장마다 새 정보가 있어야 한다.
+- "이전 시리즈를 뛰어넘는", "눈길을 사로잡고 있다"처럼 출처에 없는 평가·수식 문장 금지. 출처에 없는 플랫폼(예: 콘솔 전용 게임에 PC)을 쓰지 마라.
+- 출처 정보가 적으면 문단을 억지로 늘리지 말고 짧게 써라 (2~3문단도 괜찮다).
 
 뉴스 가치 판단 (엄격하게): 게이머가 "오, 이건 알아야지" 할 소식만 쓴다.
 신작 발표·출시일·연기, 대형 업데이트·확장팩, 판매/동접 기록, 업계 사건(인수·해고·폐업·소송), 주요 논란, 하드웨어 소식, 큰 할인 정도.
@@ -254,7 +256,8 @@ JSON 하나만 출력:
   "title": "한국어 헤드라인(핵심 사실이 제목만 봐도 보이게. 50자 이내, 낚시 금지)",
   "tldr": ["핵심 요약 1", "핵심 요약 2", "핵심 요약 3"] (각각 '~했다', '~이다'로 끝나는 기사체 완결 문장.
            정보 전달 우선: 누가·무엇을·언제·얼마나를 구체적으로(게임명, 날짜, 가격, 수치, 플랫폼). 40~90자.
-           "대규모 업데이트 진행", "다양한 콘텐츠 추가"처럼 뭉뚱그린 축약 금지 — 무엇이 추가됐는지 이름을 적어라),
+           "대규모 업데이트 진행", "다양한 콘텐츠 추가"처럼 뭉뚱그린 축약 금지 — 무엇이 추가됐는지 이름을 적어라.
+           세 줄은 서로 다른 정보여야 한다. 같은 날짜·사실을 두 줄 이상에 반복 금지. 정보가 2개뿐이면 2줄만),
   "why": "PC·콘솔 게이머에게 왜 중요한가 (1~2문장)",
   "body": ["문단1", "문단2", "문단3", "문단4", "문단5"],
   "category": "{cats} 중 하나",
@@ -289,6 +292,44 @@ JSON 하나만 출력 (입력의 모든 기사를 같은 issue 번호로):
 
 
 VER = re.compile(r"(?<![\d.])(\d{1,2}\.\d{1,2}(?:\.\d{1,2})?)(?![\d.%])")
+
+
+def _facts(t):
+    """문장의 핵심 사실 조각: 숫자(날짜·가격·버전)와 2글자 이상 단어."""
+    # 날짜·가격·버전처럼 '사실'인 숫자만 (PS5·PS2 같은 이름 속 숫자는 제외)
+    nums = set(re.findall(r"(?<![A-Za-z\d])\d+(?:[.,]\d+)?(?=\s*(?:월|일|년|달러|원|%|만|억|시|분|주|명|종|개|장|위|점))", t))
+    nums |= set(re.findall(r"(?<![A-Za-z\d.])\d+\.\d+(?![\d.])", t))
+    words = {w for w in re.findall(r"[가-힣A-Za-z0-9]{2,}", t)
+             if w not in ("이번", "오는", "있다", "했다", "됐다", "예정", "공식", "게임", "통해", "따라", "전했다", "밝혔다")}
+    return nums, words
+
+
+def dedupe_summary(a):
+    """핵심 요약 3줄끼리 같은 사실을 반복하면 뒤의 것을 뺀다 (예: '11월 19일 발매'가 세 줄에 반복).
+    본문에서도 같은 문장이 반복되면 뺀다."""
+    kept = []
+    for t in a.get("tldr", []):
+        n, w = _facts(t)
+        dup = False
+        for k in kept:
+            kn, kw = _facts(k)
+            share_num = n and kn and n & kn and len(n & kn) >= min(len(n), len(kn))
+            sim = len(w & kw) / max(1, min(len(w), len(kw)))
+            extra = {x for x in w if not re.search(r"\d", x)} - kw  # 앞 줄에 없던 새 단어
+            if (share_num and len(extra) <= 4) or sim >= 0.6:  # 같은 날짜를 반복하면서 새 정보가 거의 없는 줄
+                dup = True
+                break
+        if not dup:
+            kept.append(t)
+    a["tldr"] = kept
+    seen_b, body = set(), []
+    for p in a.get("body", []):
+        key = re.sub(r"\s+", "", p)[:60]
+        if key not in seen_b:
+            seen_b.add(key)
+            body.append(p)
+    a["body"] = body
+    return a
 
 
 def fix_versions(a, src_text=""):
@@ -500,6 +541,7 @@ def write_batch(cands):
             print(f"  공략 기사 제외: {a['title']}")
             a = None
         if a:
+            dedupe_summary(a)
             fix_versions(a, " ".join(s_["title"] + " " + s_.get("summary", "") + " " + (s_.get("full") or "") for s_ in srcs))
             out.append(a)
     return out
