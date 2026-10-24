@@ -1,5 +1,5 @@
 {
- "updated": "10.24 11:30",
+ "updated": "10.24 11:35",
  "deals": [
   {
    "appid": 1091500,
@@ -2311,29 +2311,10 @@
    "best": 26250
   },
   {
-   "appid": 4131220,
-   "name": "AKIBA LOST - アキバロスト",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4131220/fd7c66f078eca6d2eba04cf046d1228874a3280f/header.jpg?t=1792508724",
-   "rank": 64,
-   "discount": 20,
-   "initial": 26500,
-   "final": 21200,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "어드벤처"
-   ],
-   "meta": 81,
-   "shops": [],
-   "ever_low": 21200,
-   "best": 21200
-  },
-  {
    "appid": 1449690,
    "name": "The Walking Dead: The Telltale Definitive Series",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1449690/header.jpg?t=1760651835",
-   "rank": 65,
+   "rank": 64,
    "discount": 90,
    "initial": 53000,
    "final": 5300,
@@ -2376,6 +2357,25 @@
    ],
    "ever_low": 5300,
    "best": 5300
+  },
+  {
+   "appid": 4131220,
+   "name": "AKIBA LOST - アキバロスト",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4131220/fd7c66f078eca6d2eba04cf046d1228874a3280f/header.jpg?t=1792508724",
+   "rank": 65,
+   "discount": 20,
+   "initial": 26500,
+   "final": 21200,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "어드벤처"
+   ],
+   "meta": 81,
+   "shops": [],
+   "ever_low": 21200,
+   "best": 21200
   },
   {
    "appid": 1066890,
@@ -3312,10 +3312,38 @@
    "best": 17600
   },
   {
+   "appid": 3511030,
+   "name": "미니 코지 룸 : Lo-Fi",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3511030/cd87b96808972f16ff8c7c238d7ef09bad61912f/header_alt_assets_0_koreana.jpg?t=1791638455",
+   "rank": 89,
+   "discount": 40,
+   "initial": 4900,
+   "final": 2940,
+   "low": true,
+   "ko": true,
+   "ko_voice": true,
+   "genres": [
+    "캐주얼",
+    "인디"
+   ],
+   "meta": null,
+   "shops": [
+    {
+     "shop": "Gamesporium",
+     "krw": 2940,
+     "cut": 40,
+     "url": "https://itad.link/01a12125-2c40-71fd-8f3d-cb5e877a891d/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 2450,
+   "best": 2940
+  },
+  {
    "appid": 1735700,
    "name": "Back to the Dawn ~브레이크 더 애니멀 프리즌~",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1735700/dbdd7b4d93b15f650944e2affb21bc69e8c5f693/header_koreana.jpg?t=1790652224",
-   "rank": 89,
+   "rank": 90,
    "discount": 25,
    "initial": 29000,
    "final": 21750,
@@ -3337,24 +3365,17 @@
      "cur": "KRW"
     },
     {
-     "shop": "GreenManGaming",
-     "krw": 21800,
-     "cut": 25,
-     "url": "https://itad.link/018d9386-2c9d-7077-8f6a-fcce340fff29/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "Fanatical",
-     "krw": 26973,
-     "cut": 15,
-     "url": "https://itad.link/018d9386-2c9d-7077-8f6a-fcce34a0eb2c/?app=g6au43",
+     "shop": "Fortuna Digital",
+     "krw": 18500,
+     "cut": 0,
+     "url": "https://itad.link/01a14460-a3be-70da-ba4f-3994d2399419/?app=g6au43",
      "cur": "KRW"
     },
     {
      "shop": "Humble Store",
-     "krw": 31733,
+     "krw": 19828,
      "cut": 0,
-     "url": "https://itad.link/018d9386-2c9d-7077-8f6a-fcce34238456/?app=g6au43",
+     "url": "https://itad.link/01a14023-f54b-70f5-901c-74cf997d5c3d/?app=g6au43",
      "cur": "KRW"
     }
    ],
@@ -3365,7 +3386,7 @@
    "appid": 2871520,
    "name": "Deep Dish Dungeon",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2871520/a941857720d5b6a62a2e0a7646f2ca46b00039b6/header_alt_assets_1.jpg?t=1791899999",
-   "rank": 90,
+   "rank": 91,
    "discount": 15,
    "initial": 16000,
    "final": 13600,
@@ -3414,7 +3435,7 @@
    "appid": 2852190,
    "name": "몬스터헌터 스토리즈 3 엇갈린 운명",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2852190/de3717096a093d7bf9ab504563621bc17e37ccf4/header.jpg?t=1790900261",
-   "rank": 91,
+   "rank": 92,
    "discount": 30,
    "initial": 79800,
    "final": 55860,
@@ -3463,7 +3484,7 @@
    "appid": 2407270,
    "name": "AI LIMIT",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2407270/header.jpg?t=1790139241",
-   "rank": 92,
+   "rank": 93,
    "discount": 35,
    "initial": 42500,
    "final": 27620,
@@ -3513,7 +3534,7 @@
    "appid": 219740,
    "name": "Don't Starve",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/219740/88641e235d75934ea9f7ed4e947edfd9da682732/header.jpg?t=1790876891",
-   "rank": 93,
+   "rank": 94,
    "discount": 75,
    "initial": 10500,
    "final": 2620,
@@ -3542,7 +3563,7 @@
    "appid": 740130,
    "name": "테일즈 오브 어라이즈",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/740130/9031a1f4e34e8031118594726762d7979e43f320/header.jpg?t=1783413316",
-   "rank": 94,
+   "rank": 95,
    "discount": 60,
    "initial": 49800,
    "final": 19920,
@@ -3591,7 +3612,7 @@
    "appid": 1020790,
    "name": "나루토 X 보루토 나루티밋 스톰 커넥션즈",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1020790/header_koreana.jpg?t=1727301927",
-   "rank": 95,
+   "rank": 96,
    "discount": 67,
    "initial": 69800,
    "final": 23030,
@@ -3640,7 +3661,7 @@
    "appid": 3124540,
    "name": "Far Far West",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3124540/5473eb1bbfdcbd1d1585d47bdc07752caf3105c9/header_alt_assets_4.jpg?t=1792675224",
-   "rank": 96,
+   "rank": 97,
    "discount": 20,
    "initial": 19990,
    "final": 15990,
@@ -3690,7 +3711,7 @@
    "appid": 2696050,
    "name": "Yarimono",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2696050/header.jpg?t=1792123210",
-   "rank": 97,
+   "rank": 98,
    "discount": 23,
    "initial": 27000,
    "final": 20790,
@@ -3711,7 +3732,7 @@
    "appid": 5063150,
    "name": "유루캠△ 우리를 이어주는 All -in -one!! Chill Time",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5063150/8f5c96fe776425962512585bdbd2f97fbc2716e9/header_koreana.jpg?t=1792668034",
-   "rank": 98,
+   "rank": 99,
    "discount": 10,
    "initial": 10500,
    "final": 9450,
@@ -3728,7 +3749,7 @@
    "appid": 3845070,
    "name": "거짓의 심판",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3845070/57e3ef3be01b75c5edd58f0fcde723e6da613ff8/header_alt_assets_1_koreana.jpg?t=1792079628",
-   "rank": 99,
+   "rank": 100,
    "discount": 20,
    "initial": 18500,
    "final": 14800,
@@ -3773,55 +3794,6 @@
    ],
    "ever_low": 14309,
    "best": 14800
-  },
-  {
-   "appid": 2411231,
-   "name": "Victoria 3: Sphere of Influence - Expansion",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2411231/header.jpg?t=1771248322",
-   "rank": 100,
-   "discount": 30,
-   "initial": 33000,
-   "final": 23100,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "시뮬레이션",
-    "전략"
-   ],
-   "meta": null,
-   "shops": [
-    {
-     "shop": "GameBillet",
-     "krw": 32857,
-     "cut": 17,
-     "url": "https://itad.link/018e2cd5-78fb-70bc-ac9c-31d2a8ed3201/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "Fanatical",
-     "krw": 34907,
-     "cut": 12,
-     "url": "https://itad.link/018e1985-2154-7330-ab42-1d707de97606/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GamersGate",
-     "krw": 35748,
-     "cut": 10,
-     "url": "https://itad.link/018e14cc-ac67-73e2-a2d9-96054f7f1591/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "PlanetPlay",
-     "krw": 35999,
-     "cut": 10,
-     "url": "https://itad.link/019ae793-4bd1-7119-aea1-b0c672325682/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 23100,
-   "best": 23100
   }
  ],
  "shops_status": "ok",
