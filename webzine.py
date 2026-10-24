@@ -110,7 +110,7 @@ def tokens(t):
 GUIDE_EN = re.compile(r"^(how to|where to|where is|when does|what is the best|best .*(build|loadout|settings|class|weapons?)|"
                       r"all .*(locations|collectibles|answers))\b|\b(guide|walkthrough|tier list|tips and tricks|"
                       r"beginner'?s? tips|explained|everything we know|everything you need to know|"
-                      r"what we know so far|recap|roundup|round-up|this week in|weekly round|locations?$|answers? today|wordle|redeem codes?|codes? \(|should you (choose|pick|side))", re.I)
+                      r"what we know so far|recap|roundup|round-up|this week in|weekly round|locations?$|answers? today|wordle|redeem codes?|codes? \(|should you (choose|pick|side))", re.I)
 GUIDE_KO = re.compile(r"획득법|획득 방법|얻는 ?법|얻는 방법|해금 방법|해금법|공략|가이드|위치 총정리|위치 정리|팁 \d|꿀팁|"
                       r"빌드 추천|추천 빌드|티어 ?리스트|하는 ?법$|공략법|클리어 방법|정답")
 
@@ -574,7 +574,7 @@ def video_fits(vtitle, a):
     t = norm(vtitle)
     bases = [norm(EDITION_RE.sub("", g).split(":")[0]) for g in (a.get("games_en") or [])[:2]]
     bases = [b for b in bases if len(b) > 2]
-    collab = re.search(r"x|×|콜라보|컬래버|collab|crossover", a["title"] + " " + (a.get("video_q") or ""), re.I)
+    collab = re.search(r"x|×|콜라보|컬래버|collab|crossover", a["title"] + " " + (a.get("video_q") or ""), re.I)
     if bases and sum(b in t for b in bases) < (min(2, len(bases)) if collab else 1):
         return False
     gw = {w_ for g in (a.get("games_en") or []) for w_ in re.findall(r"[a-z0-9]+", g.lower())}
