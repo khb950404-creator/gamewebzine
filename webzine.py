@@ -24,6 +24,10 @@ UA = {"User-Agent": "Mozilla/5.0 (GameWebzine RSS reader)"}
 
 # official=True 는 1차 출처(플랫폼/퍼블리셔 공식)
 FEEDS = [
+    # 국내 e스포츠: 롤드컵·LCK 경기 기사와 선수·감독 인터뷰 (아래 ESPORTS_ONLY 로 e스포츠 기사만 받는다)
+    ("인벤", "https://www.inven.co.kr/webzine/news/rss.php", False),
+    ("경향게임스", "https://www.khgames.co.kr/rss/allArticle.xml", False),
+    ("Dexerto LoL", "https://www.dexerto.com/league-of-legends/feed/", False),
     ("PlayStation Blog", "https://blog.playstation.com/feed/", True),
     ("Xbox Wire", "https://news.xbox.com/en-us/feed/", True),
     ("IGN", "https://feeds.ign.com/ign/news", False),
@@ -62,6 +66,11 @@ def strip_html(s):
     return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", s or ""))).strip()
 
 
+ESPORTS_ONLY = {"인벤", "경향게임스"}  # 국내 매체는 일반 게임 기사가 영문 매체와 겹치므로 e스포츠만
+ESPORTS_KW = re.compile(r"롤드컵|LCK|월즈|Worlds|\bT1\b|젠지|한화생명|디플러스|페이커|e스포츠|이스포츠|"
+                        r"Faker|Chovy|쵸비|룰러|캐니언|제우스|케리아|쇼메이커|기인|구마유시", re.I)
+
+
 def fetch_feed(name, url, official):
     try:
         raw = urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=20).read()
@@ -94,6 +103,8 @@ def fetch_feed(name, url, official):
             "summary": strip_html(it.findtext("description"))[:2500], "ts": ts, "img": img,
             **({"imgs": imgs[:8]} if official and imgs else {}),
         })
+    if name in ESPORTS_ONLY:
+        items = [i for i in items if ESPORTS_KW.search(i["title"])]
     print(f"  {name}: {len(items)}건")
     return items
 
@@ -103,7 +114,8 @@ STOP = set("the a an of to in and for on with is at by from new now this how why
 
 
 def tokens(t):
-    return {w for w in re.findall(r"[a-z0-9]+", t.lower()) if w not in STOP and len(w) > 2}
+    return {w for w in re.findall(r"[a-z0-9]+|[가-힣]{2,}", t.lower()) if w not in STOP and len(w) > 1
+            and (len(w) > 2 or not w.isascii())}
 
 
 # 공략·가이드 글은 아예 쓰지 않는다 (원문 제목 단계에서 거르고, 작성된 제목도 한 번 더 거른다)
@@ -234,6 +246,10 @@ PROMPT = """너는 PC·콘솔 게이머를 위한 한국어 게임 웹진 기자
 - 같은 말 반복, "기대를 모으고 있다", "귀추가 주목된다" 같은 상투적 마무리 금지. 문장마다 새 정보가 있어야 한다.
 - "이전 시리즈를 뛰어넘는", "눈길을 사로잡고 있다"처럼 출처에 없는 평가·수식 문장 금지. 출처에 없는 플랫폼(예: 콘솔 전용 게임에 PC)을 쓰지 마라.
 - 출처 정보가 적으면 문단을 억지로 늘리지 말고 짧게 써라 (2~3문단도 괜찮다).
+
+e스포츠(롤드컵·LCK): 경기 결과와 경기 후 선수·감독 인터뷰는 뉴스 가치가 높다 — skip 하지 마라.
+인터뷰 기사는 출처 본문에 실제로 있는 발언만 큰따옴표로 인용하고(영문은 뜻을 바꾸지 말고 번역), 누가 한 말인지 밝혀라.
+발언을 지어내거나 출처에 없는 경기 내용을 덧붙이면 안 된다. 팀명은 T1·젠지·한화생명e스포츠·디플러스 기아, 선수는 국내 통용 표기(페이커, 쵸비 등).
 
 뉴스 가치 판단 (엄격하게): 게이머가 "오, 이건 알아야지" 할 소식만 쓴다.
 신작 발표·출시일·연기, 대형 업데이트·확장팩, 판매/동접 기록, 업계 사건(인수·해고·폐업·소송), 주요 논란, 하드웨어 소식, 큰 할인 정도.

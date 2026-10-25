@@ -560,8 +560,8 @@ def make_info_articles():
                                            + " / 규칙: 3승 진출, 3패 탈락"))
         if r and r.get("title"):
             made.append(_save_info_article(aid, r, cov, img, f"{BASE}/leagueoflegends/{EVENT}/Swiss_Stage"))
-    # ② 한국팀 로스터
-    ros = kr_rosters()
+    # ② 한국팀 로스터 — 필요 없다는 피드백으로 자동 생성은 끔 (함수는 남겨 둠)
+    ros = kr_rosters() if False else []
     if ros:
         tl = {m[k]["name"]: m[k]["logo"] for m in ms for k in ("t1", "t2")}
         aid = "worlds26-lck-rosters"
@@ -585,4 +585,4 @@ if __name__ == "__main__":
     else:
         make_article()
         make_draw_article()
-        make_info_articles()  # 라운드 종료 전적표(라운드마다 1번), 한국팀 로스터(1번)
+        make_info_articles()  # 라운드 종료 전적표(라운드마다 1번)
