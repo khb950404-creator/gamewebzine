@@ -145,7 +145,8 @@ def is_big(a):
 
 
 WORLDS_UNTIL = "2026-11-16"  # 롤드컵 2026 결승 직후까지
-WORLDS_KW = ("롤드컵", "worlds", "월드챔피언십", "lck", "t1", "페이커", "젠지", "geng", "한화생명", "디플러스", "kt롤스터")
+WORLDS_KW = ("롤드컵", "worlds", "월드챔피언십", "lck", "t1", "페이커", "faker", "젠지", "geng", "한화생명", "hanwha",
+             "디플러스", "dplus", "kt롤스터", "ktrolster")
 GTA_KW = ("gta6", "gtavi", "grandtheftautovi", "grandtheftauto6", "gta 6", "그랜드테프트오토6", "그랜드테프트오토vi")
 
 
@@ -690,8 +691,10 @@ def caption(a):
     if a.get("esports") or a.get("category") == "e스포츠":  # 롤드컵 등: 언급된 한국팀 태그
         txt = " ".join([a["title"]] + a.get("tldr", []) + a.get("body", []))
         tags += ["롤드컵", "LCK", "롤"]
-        for k, ts in (("T1", ["T1", "페이커"]), ("젠지", ["젠지", "GenG"]), ("한화생명", ["한화생명e스포츠", "HLE"]),
-                      ("디플러스", ["디플러스기아", "DK"]), ("kt", ["kt롤스터"]), ("농심", ["농심레드포스"])):
+        for k, ts in (("T1", ["T1", "페이커"]), ("Gen.G", ["젠지", "GenG"]), ("젠지", ["젠지", "GenG"]),
+                      ("Hanwha", ["한화생명e스포츠", "HLE"]), ("한화생명", ["한화생명e스포츠", "HLE"]),
+                      ("Dplus", ["디플러스기아", "DplusKIA"]), ("디플러스", ["디플러스기아", "DplusKIA"]),
+                      ("KT Rolster", ["kt롤스터"]), ("Nongshim", ["농심레드포스"])):
             if k in txt:
                 tags += ts
         tags += ["Worlds2026", "LeagueOfLegends"]

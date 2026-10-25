@@ -10,7 +10,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 
 from cards import W, H
-from card_themes import BH, NB, NM, NR, ANTON
+from card_themes import BH, NB, NM, NR, ANTON, fit
 
 ROOT = Path(__file__).parent
 DATA = ROOT / "data"
@@ -20,9 +20,10 @@ API = "https://liquipedia.net/leagueoflegends/api.php"
 BASE = "https://liquipedia.net"
 EVENT = "World_Championship/2026"
 STAGES = [("Swiss_Stage", "스위스 스테이지"), ("Knockout_Stage", "녹아웃 스테이지")]
-KR = {"T1": "T1", "Gen.G Esports": "젠지", "Hanwha Life Esports": "한화생명e스포츠", "Dplus": "디플러스 기아",
-      "KT Rolster": "kt 롤스터", "Nongshim RedForce": "농심 레드포스", "DRX": "DRX", "BNK FEARX": "BNK 피어엑스"}
-CHIP = {"Hanwha Life Esports": "한화생명", "Dplus": "디플러스", "Nongshim RedForce": "농심", "BNK FEARX": "BNK"}
+# 한국팀 표기는 영문 공식명으로 통일
+KR = {"T1": "T1", "Gen.G Esports": "Gen.G", "Hanwha Life Esports": "HLE", "Dplus": "Dplus KIA",
+      "KT Rolster": "KT Rolster", "Nongshim RedForce": "Nongshim RedForce", "DRX": "DRX", "BNK FEARX": "BNK FEARX"}
+CHIP = {"Hanwha Life Esports": "HLE", "Dplus": "Dplus KIA", "Nongshim RedForce": "NS", "BNK FEARX": "BNK"}
 KST = timezone(timedelta(hours=9))
 BG, CARD, LINE = (12, 12, 15), (24, 24, 29), (44, 44, 52)
 WHITE, SOFT, DIM, RED, GOLD = (245, 245, 248), (200, 200, 208), (120, 120, 130), (229, 72, 77), (245, 178, 51)
@@ -284,7 +285,7 @@ def render_bracket(ms, title, out):
 DRAW_PROMPT = """너는 한국 게임 매체의 e스포츠 기자다. 오늘은 {today}.
 LoL 월드 챔피언십 2026 스위스 스테이지 {rnd}라운드 대진이 확정됐다. 아래 데이터만으로 기사를 써라 (지어내기 금지).
 스위스 스테이지는 3승이면 녹아웃 진출, 3패면 탈락. 2승 0패 조 경기는 이기면 바로 진출, 0승 2패 조는 지면 탈락이다.
-한국팀(T1, 젠지, 한화생명e스포츠, 디플러스 기아) 대진과 일정을 중심으로 쓰고, 나머지 대진도 간단히 정리하라.
+한국팀(T1, Gen.G, HLE(한화생명), Dplus KIA) 대진과 일정을 중심으로 쓰고, 나머지 대진도 간단히 정리하라. 팀 이름은 모두 영문 표기.
 JSON 하나만: {{"title": "45자 이내", "tldr": ["서로 다른 정보 3줄, 기사체"], "why": "한 문장", "body": ["2~3문단"],
  "hook": "8~16자", "title_en": "...", "tldr_en": ["..."], "hook_en": "..."}}
 
@@ -348,7 +349,7 @@ def make_draw_article(stage="Swiss_Stage"):
 PROMPT = """너는 한국 게임 매체의 e스포츠 기자다. 오늘은 {today}.
 아래는 LoL 월드 챔피언십 2026 {stage} 경기 결과 데이터(한국 시간)다. 한국팀 소식 위주로 기사를 써라.
 데이터에 없는 내용(선수 발언, 경기 내용 묘사, 밴픽)은 절대 지어내지 마라. 결과·전적·다음 일정만으로 쓴다.
-팀 이름은 국내 표기(T1, 젠지, 한화생명e스포츠, 디플러스 기아 등), 해외팀은 통용 표기(빌리빌리 게이밍=BLG 등)를 쓴다.
+팀 이름은 영문 공식명으로 통일한다: T1, Gen.G, HLE(한화생명), Dplus KIA, 해외팀도 영문 약칭(BLG, TES, G2 등).
 스위스 스테이지는 3승이면 녹아웃 진출, 3패면 탈락이다.
 
 JSON 하나만: {{"title": "제목(핵심 결과가 보이게, 45자 이내)", "tldr": ["서로 다른 정보 3줄, 기사체"],
@@ -514,7 +515,7 @@ def render_standings(table, logos, title, out):
 
 INFO_PROMPT = """너는 한국 게임 매체의 e스포츠 기자다. 오늘은 {today}. 아래 데이터만으로 기사를 써라 (선수 발언·경기 내용 지어내기 금지).
 주제: {topic}
-팀 이름은 국내 표기(T1, 젠지, 한화생명e스포츠, 디플러스 기아), 선수는 영문 닉네임 그대로(Faker, Chovy 등) 쓴다.
+팀 이름은 영문 공식명(T1, Gen.G, HLE(한화생명), Dplus KIA), 선수는 영문 닉네임 그대로(Faker, Chovy 등) 쓴다.
 JSON 하나만: {{"title": "45자 이내", "tldr": ["서로 다른 정보 3줄, 기사체"], "why": "한 문장", "body": ["2~3문단"],
  "hook": "8~16자", "title_en": "...", "tldr_en": ["..."], "hook_en": "..."}}
 
@@ -640,7 +641,8 @@ def render_result(m, rec, stage, stage_ko, out):
                 a = lg.split()[-1].point(lambda v: int(v * 0.45))
                 lg.putalpha(a)
             img.paste(lg, (cx - lg.width // 2, 520 - lg.height // 2), lg)
-        d.text((cx, 720), kname(t), font=BH(54) if t["name"] in KR else NB(46), fill=WHITE if win else DIM, anchor="mm")
+        tf, tl = fit(d, kname(t), BH if t["name"] in KR else NB, 54, W // 2 - 60, 1, 30)  # 칸을 넘지 않게
+        d.text((cx, 720), tl[0], font=tf, fill=WHITE if win else DIM, anchor="mm")
         if win:
             d.text((cx, 785), "WIN", font=ANTON(44), fill=GOLD, anchor="mm")
     d.text((W // 2, 520), f"{m['s1']}:{m['s2']}", font=ANTON(170), fill=WHITE, anchor="mm")
@@ -762,8 +764,8 @@ def publish_quick(arts):
                           " ".join("#" + t for t in ["롤드컵", "LCK", "롤", "Worlds2026", "e스포츠", "리그오브레전드",
                                                      "알트탭", "LeagueOfLegends", "esports"])])
         tags = []
-        for k, ts in (("T1", ["T1", "페이커"]), ("젠지", ["젠지", "GenG"]), ("한화생명", ["한화생명e스포츠"]),
-                      ("디플러스", ["디플러스기아", "DK"])):
+        for k, ts in (("T1", ["T1", "페이커"]), ("Gen.G", ["젠지", "GenG"]), ("Hanwha", ["한화생명e스포츠", "HLE"]),
+                      ("Dplus", ["디플러스기아", "DplusKIA"])):
             if k in a["title"] + " ".join(a["tldr"]):
                 tags += ts
         cap += " " + " ".join("#" + t for t in tags)
