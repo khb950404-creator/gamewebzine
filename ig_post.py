@@ -267,7 +267,7 @@ def deal_caption(deals, head):
     lines = [head, ""] + [f"▪ {x['name'].replace('™', '')} -{x['discount']}% ₩{x['final']:,}" for x in deals]
     lines += ["", "할인은 게임별 마감일까지 진행된다. 가격은 게시 시점 Steam 한국 가격 기준이다.", "",
               "이번에 장바구니에 담을 게임은?", "",
-              "#스팀할인 #스팀세일 #게임할인 #역대최저가 #PC게임 #게임추천 #알트탭 #steamsale #steamdeals #pcgaming #gamedeals"]
+              "#스팀할인 #스팀세일 #게임할인 #역대최저가 #PC게임 #게임추천 #알트탭 #steamsale #steamdeals #pcgaming #gamedeals #steam #game #games #videogame #gamer #게임 #게이머"]
     return "\n".join(lines)
 
 
@@ -388,7 +388,7 @@ def prepare_deals(queue, posted):
                           "caption": "\n".join(["[알트탭 주간 TOP5] 이번 주 게임 뉴스 TOP" + str(len(top)), ""]
                                                + [f"{i}. {a['title']}" for i, a in enumerate(top, 1)]
                                                + ["", "가장 놀라운 소식은 몇 번인가요?", "",
-                                                  "#게임뉴스 #주간게임뉴스 #게임소식 #알트탭 #gamingnews #gaming #videogames"])})
+                                                  "#게임뉴스 #주간게임뉴스 #게임소식 #알트탭 #gamingnews #gaming #videogames #game #games #videogame #gamer #게임 #게이머"])})
             print("인스타 준비: 주간 TOP5")
     # ⑤ 월요일 시리즈: 이번 주 출시 게임 (월요일 9시 이후, 주 1회) — 저장 유도형
     rk_ = f"rel-{now.isocalendar()[0]}-{now.isocalendar()[1]:02d}"
@@ -403,7 +403,7 @@ def prepare_deals(queue, posted):
                                                   + (f" ({', '.join(g['platforms'])})" if g.get("platforms") else "")
                                                   for g in games]
                                                + ["", "이 중에 바로 살 게임 있나요?", "",
-                                                  "#신작게임 #출시예정 #게임추천 #알트탭 #newgames #gamereleases #gaming"])})
+                                                  "#신작게임 #출시예정 #게임추천 #알트탭 #newgames #gamereleases #gaming #game #games #videogame #gamer #ps5 #nintendoswitch #pcgaming #게임 #게이머"])})
             print(f"인스타 준비: 이번 주 출시 게임 {len(games)}")
     # ③ 오늘의 딜 스토리 (매일 9시 이후 하루 한 번, 최근 7일 소개한 게임 제외)
     sk = f"story-{now.strftime('%Y-%m-%d')}"
@@ -684,6 +684,19 @@ def question(a):
     return qs[int(hashlib.md5(a["id"].encode()).hexdigest(), 16) % len(qs)]
 
 
+PLATFORM_TAGS = {"PS5": ["ps5", "playstation", "playstation5"], "Xbox": ["xbox", "xboxseriesx"],
+                 "Switch": ["nintendo", "nintendoswitch"], "Switch 2": ["nintendoswitch2", "nintendo"],
+                 "PC": ["pcgaming", "steam"]}
+
+
+def broad_tags(platforms):
+    """검색량 많은 포괄 태그: 게임 일반 + 플랫폼별 (소문자, 해외 검색용)."""
+    out = ["game", "games", "videogame", "gamer", "gamingcommunity", "게임", "게이머"]
+    for p_ in platforms or []:
+        out += PLATFORM_TAGS.get(p_, [])
+    return out
+
+
 def caption(a):
     tags = ["게임뉴스", "게임소식", "알트탭"]
     tags += [HASHTAG[a["category"]]] if a.get("category") in HASHTAG else []
@@ -701,6 +714,7 @@ def caption(a):
         tags += ["Worlds2026", "LeagueOfLegends"]
     # 영어 해시태그 (해외 노출용)
     tags += ["gaming", "gamingnews", "videogames"]
+    tags += broad_tags(a.get("platforms", []))
     tags += [TAG_EN[a["category"]]] if a.get("category") in TAG_EN else []
     tags += ["".join(ch for ch in g if ch.isalnum()) for g in (a.get("games_en") or [])[:2]]
     srcs = [s_["name"] for s_ in a.get("sources", [])]
@@ -711,7 +725,7 @@ def caption(a):
     for t in tags:  # 대소문자만 다른 태그는 하나로 (#LeagueOfLegends / #LeagueofLegends)
         if t and t.lower() not in uniq:
             uniq[t.lower()] = t
-    lines += ["", question(a), "", " ".join("#" + t for t in uniq.values())]
+    lines += ["", question(a), "", " ".join("#" + t for t in list(uniq.values())[:30])]  # 인스타 한도 30개
     return "\n".join(lines)[:2100]
 
 

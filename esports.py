@@ -762,7 +762,8 @@ def publish_quick(arts):
             continue
         cap = "\n".join([a["title"], ""] + a["tldr"] + ["", "출처: Liquipedia", "",
                           " ".join("#" + t for t in ["롤드컵", "LCK", "롤", "Worlds2026", "e스포츠", "리그오브레전드",
-                                                     "알트탭", "LeagueOfLegends", "esports"])])
+                                                     "알트탭", "LeagueOfLegends", "esports", "lol", "leagueoflegendsclips",
+                                                     "game", "gamer", "pcgaming", "게임"])])
         tags = []
         for k, ts in (("T1", ["T1", "페이커"]), ("Gen.G", ["젠지", "GenG"]), ("Hanwha", ["한화생명e스포츠", "HLE"]),
                       ("Dplus", ["디플러스기아", "DplusKIA"])):
