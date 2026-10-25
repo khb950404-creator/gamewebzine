@@ -47439,7 +47439,6 @@
   "title": "A24 실사영화 '엘든 링', 제작비 약 2억 달러 투입… 스튜디오 역사상 최대 규모",
   "tldr": [
    "A24가 제작하는 프롬 소프트웨어 원작의 실사영화 '엘든 링'의 제작비가 약 2억 달러에 달하는 것으로 알려졌다.",
-   "이는 알렉스 갈랜드가 각본과 연출을 맡고 IMAX 촬영으로 진행되는 A24 역대 최고 예산 영화다.",
    "본작은 2028년 3월 3일 극장 개봉을 목표로 제작이 진행 중이다."
   ],
   "why": "초대형 게임 지식재산권(IP)을 다루는 인지도 높은 독립 영화사의 역대 최대 예산 프로젝트이기 때문이다.",
@@ -47467,7 +47466,9 @@
   "hook_en": "Elden Ring movie budget",
   "video_q": "Elden Ring movie set leak Conwy Castle",
   "trust": "보도",
-  "fixes": [],
+  "fixes": [
+   "[교열] tldr 2번째 줄이 출처 제목들의 핵심 내용과 중복되므로 5번 규칙에 따라 반복된 줄을 삭제함"
+  ],
   "status": "published",
   "id": "f068578772",
   "sources": [
@@ -47491,7 +47492,9 @@
   "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/ss_943bf6fe62352757d9070c1d33e50b92fe8539f1.1920x1080.jpg?t=1790290043",
   "appid": 1245620,
   "img_src": "Steam 스토어",
-  "video_v": 1
+  "video_v": 1,
+  "proofread": 1792957512.0986028,
+  "edited": 1792957512.1228168
  },
  {
   "title": "2026 롤드컵 스위스 스테이지: IG, 한화생명 꺾고 2승 1패 기록",
