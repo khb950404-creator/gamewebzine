@@ -17,8 +17,7 @@ GREEN = (31, 157, 85)
 
 
 def plus(d, cx=100, cy=100, L=26, t=4):
-    d.rectangle((cx - L, cy - t, cx + L, cy + t), fill=GOLD)
-    d.rectangle((cx - t, cy - L, cx + t, cy + L), fill=GOLD)
+    pass  # 왼쪽 위 '+' 표시는 뺐다 (거슬린다는 피드백)
 
 
 def frame(img, page, total):

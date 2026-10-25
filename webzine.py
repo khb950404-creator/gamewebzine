@@ -2204,7 +2204,7 @@ def build():
                 body += f"<p>{esc(p)}</p>"
                 if i < len(gal):  # 문단마다 원문 공식 이미지 한 장씩
                     g = gal[i]
-                    body += (f'<figure class="hero"><img src="{esc(g["src"])}" alt="" loading="lazy" referrerpolicy="no-referrer"'
+                    body += (f'<figure class="hero"><img src="{esc(rel_img(g["src"]))}" alt="" loading="lazy" referrerpolicy="no-referrer"'
                              f' onerror="this.parentNode.remove()"><figcaption>이미지: {esc(g["credit"])}</figcaption></figure>')
             srcs = "".join(f'<li>{"[공식] " if s["official"] else ""}{esc(s["name"])} — '
                            f'<a href="{esc(s["link"])}" target="_blank" rel="noopener">{esc(s["title"])}</a></li>'

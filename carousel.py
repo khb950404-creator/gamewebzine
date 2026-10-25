@@ -31,8 +31,7 @@ def frame(img, page, total, show_dots=False):
     d = ImageDraw.Draw(img)
     # 디자인 포인트: 로고의 '+' (가늘게 — 굵으면 의료용 십자가처럼 보임)
     cx, cy, L, t = 100, 100, 26, 4
-    d.rectangle((cx - L, cy - t, cx + L, cy + t), fill=LIME)
-    d.rectangle((cx - t, cy - L, cx + t, cy + L), fill=LIME)
+    # 왼쪽 위 '+' 표시는 뺐다 (거슬린다는 피드백)
     d.text((W - 56, 70), f"{page}/{total}", font=NB(30), fill=LIME, anchor="ra")
     d.text((W - 56, H - 70), HANDLE_NOW[0], font=NB(32), fill=LIME, anchor="ra")
     return d
@@ -52,7 +51,7 @@ def safe(t):
 
 
 def slide_title(a, total):
-    img = shade(bg(a, bright=0.8), 0.40, 240)
+    img = shade(bg(a, **({"mono": 0.0, "bright": 1.0} if a.get("esports") else {"bright": 0.8})), 0.40, 240)
     d = frame(img, 1, total, show_dots=True)
     tf, lines = fit(d, safe(a["title"]), BH, 108, W - 150, 4)
     lh = int(tf.size * 1.17)

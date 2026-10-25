@@ -61,7 +61,9 @@ jobs:
       - name: 수집·기사 작성
         if: github.event_name != 'push'
         continue-on-error: true   # 실패해도 경고로 표시하고 기존 기사로 빌드·배포는 계속
-        run: python -u webzine.py
+        run: |
+          python -u webzine.py
+          python -u esports.py || true   # 롤드컵 기간: 한국팀 새 결과가 있으면 결과표 + 기사
 
       - name: 할인 정보 갱신 (push 때)
         if: github.event_name == 'push'
@@ -93,7 +95,7 @@ jobs:
         run: |
           git config user.name "webzine-bot"
           git config user.email "webzine-bot@users.noreply.github.com"
-          git add data
+          git add data media
           git diff --cached --quiet || (git commit -m "새 기사 $(date '+%m-%d %H:%M')" && (git pull --rebase -X theirs || (git rebase --abort; git pull --no-rebase -X ours)) && git push)
 
       - name: 실패 알림 (이슈 생성 → 이메일)
@@ -141,5 +143,5 @@ jobs:
         run: |
           git config user.name "webzine-bot"
           git config user.email "webzine-bot@users.noreply.github.com"
-          git add data
+          git add data media
           git diff --cached --quiet || (git commit -m "인스타 게시 기록" && git pull --rebase && git push)

@@ -37,6 +37,11 @@ def MONO(size):
 
 
 def fetch_img(url):
+    if url and not url.startswith("http"):  # 사이트에 함께 올리는 로컬 이미지 (media/...)
+        try:
+            return Image.open(ROOT / url).convert("RGB")
+        except Exception:
+            return None
     try:
         raw = urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"}), timeout=20).read()
         return Image.open(io.BytesIO(raw)).convert("RGB")

@@ -100,7 +100,7 @@ def refresh_if_needed():
 
 # ---------- 준비: 기사 고르기 + 이미지 ----------
 # 이름만으로 클릭되는 대형 IP (정규화한 영문/한글 일부)
-BIG_IP = ["gta", "grandtheftauto", "그랜드테프트오토", "callofduty", "콜오브듀티", "zelda", "젤다", "pokemon", "포켓몬",
+BIG_IP = ["롤드컵", "worlds", "t1", "페이커", "faker", "젠지", "geng", "한화생명", "디플러스", "lck", "gta", "grandtheftauto", "그랜드테프트오토", "callofduty", "콜오브듀티", "zelda", "젤다", "pokemon", "포켓몬",
           "mario", "마리오", "eldenring", "엘든링", "fromsoftware", "marvel", "마블", "starwars", "스타워즈", "battlefield",
           "배틀필드", "assassinscreed", "어쌔신크리드", "residentevil", "레지던트이블", "바이오하자드", "monsterhunter",
           "몬스터헌터", "finalfantasy", "파이널판타지", "cyberpunk", "사이버펑크", "witcher", "위쳐", "halo", "헤일로",
