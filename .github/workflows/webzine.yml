@@ -95,6 +95,7 @@ jobs:
         run: |
           git config user.name "webzine-bot"
           git config user.email "webzine-bot@users.noreply.github.com"
+          git config merge.jsonunion.driver "python merge_data.py %O %A %B"   # data/*.json 은 덮어쓰지 않고 합친다
           git add data media
           git diff --cached --quiet || (git commit -m "새 기사 $(date '+%m-%d %H:%M')" && (git pull --rebase -X theirs || (git rebase --abort; git pull --no-rebase -X ours)) && git push)
 
@@ -143,5 +144,6 @@ jobs:
         run: |
           git config user.name "webzine-bot"
           git config user.email "webzine-bot@users.noreply.github.com"
+          git config merge.jsonunion.driver "python merge_data.py %O %A %B"   # data/*.json 은 덮어쓰지 않고 합친다
           git add data media
           git diff --cached --quiet || (git commit -m "인스타 게시 기록" && git pull --rebase && git push)
