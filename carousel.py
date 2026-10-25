@@ -111,7 +111,7 @@ def body_pages(a):
     """본문 문단을 카드 한 장 높이에 맞게 나눈다. 공식 이미지가 있는 장은 위쪽에 사진 칸을 둔다."""
     probe = ImageDraw.Draw(Image.new("RGB", (W, H)))
     f, lh, bottom = NR(38), 62, H - 170
-    top_of = lambda k: 400
+    top_of = lambda k: 230
     pages, cur, y = [], [], top_of(0)
     for para in a.get("body", []):
         ls = wrap(probe, para, f, W - 152)
@@ -129,8 +129,7 @@ def body_pages(a):
 def slide_body(a, paras, page, total, idx, n):
     img = text_bg(a)
     d = frame(img, page, total)
-    slide_heading(d, 300, L[LANG]["more"] + (f" ({idx}/{n})" if n > 1 else ""))
-    y = 400
+    y = 230  # '자세히 (1/2)' 머리글 없이 본문만 (쪽수는 오른쪽 위에 이미 있음)
     for ls in paras:
         for ln in ls:
             d.text((76, y), ln, font=NR(38), fill=SOFT)
