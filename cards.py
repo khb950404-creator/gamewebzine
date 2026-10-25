@@ -70,6 +70,29 @@ def _interest(img):
     return grid, ew, eh
 
 
+def _people(img):
+    """사람 얼굴 위치 (OpenCV YuNet 딥러닝 얼굴 인식, models/face_yunet.onnx). 반환: [(x중심비율, y중심비율, 점수)]
+    헬멧·고글을 쓴 게임 캐릭터 얼굴도 잡히고, 불꽃·무늬 오탐이 적다."""
+    model = ROOT / "models" / "face_yunet.onnx"
+    try:
+        import cv2, numpy as np
+        if not model.exists():
+            return []
+        small = img.convert("RGB").resize((960, max(1, int(960 * img.height / img.width))))
+        arr = cv2.cvtColor(np.array(small), cv2.COLOR_RGB2BGR)
+        det = cv2.FaceDetectorYN.create(str(model), "", (small.width, small.height), 0.7)
+        _, faces = det.detect(arr)
+    except Exception:
+        return []
+    if faces is None:
+        return []
+    out = []
+    for f in faces:
+        x, y, fw, fh, score = float(f[0]), float(f[1]), float(f[2]), float(f[3]), float(f[14])
+        out.append(((x + fw / 2) / small.width, (y + fh / 2) / small.height, score * (fw * fh) ** 0.5))
+    return out
+
+
 def cover_fit(img, w, h, smart=True):
     """w×h 를 꽉 채우도록 확대 후 자른다. smart=True 면 가운데가 아니라 '가장 볼거리 많은' 구간을 남긴다."""
     r = max(w / img.width, h / img.height)
@@ -78,15 +101,26 @@ def cover_fit(img, w, h, smart=True):
     if smart and (img.width - w > 8 or img.height - h > 8):
         try:
             grid, ew, eh = _interest(img)
+            faces = sorted(_people(img), key=lambda f: -f[2])  # 가장 크고 확실한 얼굴 = 주인공
             sx, sy = ew / img.width, eh / img.height
             ww, wh = max(1, int(w * sx)), max(1, int(h * sy))
             if img.width - w > 8:  # 가로로 남는다 → 가장 좋은 가로 위치
                 cols = [sum(grid[yy][xx] for yy in range(eh)) for xx in range(ew)]
-                best = max(range(0, ew - ww + 1), key=lambda i: sum(cols[i:i + ww]))
+                rng = range(0, ew - ww + 1)
+                if faces:  # 주인공 얼굴이 화면 가로 20~80% 사이에 오도록 하는 위치만 후보로
+                    fx = faces[0][0] * ew
+                    ok = [i for i in rng if i + ww * 0.2 <= fx <= i + ww * 0.8]
+                    rng = ok or [max(0, min(ew - ww, int(fx - ww / 2)))]
+                best = max(rng, key=lambda i: sum(cols[i:i + ww]))
                 x = min(img.width - w, int(best / sx))
             else:  # 세로로 남는다 → 위쪽(인물 얼굴 쪽)을 약간 선호
                 rows = [sum(grid[yy]) * (1.15 - 0.3 * yy / eh) for yy in range(eh)]
-                best = max(range(0, eh - wh + 1), key=lambda i: sum(rows[i:i + wh]))
+                rng = range(0, eh - wh + 1)
+                if faces:
+                    fy = faces[0][1] * eh
+                    ok = [i for i in rng if i + wh * 0.15 <= fy <= i + wh * 0.6]
+                    rng = ok or [max(0, min(eh - wh, int(fy - wh / 3)))]
+                best = max(rng, key=lambda i: sum(rows[i:i + wh]))
                 y = min(img.height - h, int(best / sy))
         except Exception:
             pass

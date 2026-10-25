@@ -76,7 +76,7 @@ jobs:
       - name: 인스타 준비 (캐러셀 이미지 생성)
         continue-on-error: true
         run: |
-          pip install -q pillow numpy imageio-ffmpeg
+          pip install -q pillow numpy imageio-ffmpeg "opencv-python-headless<5"   # 얼굴 인식(스마트 크롭)
           sudo apt-get install -y -qq ffmpeg >/dev/null 2>&1 || true  # 영상 캐러셀: 스팀 HLS 트레일러를 받으려면 시스템 ffmpeg 필요
           ffmpeg -version | head -1
           python -u ig_post.py prepare
