@@ -49,10 +49,47 @@ def fetch_img(url):
         return None
 
 
-def cover_fit(img, w, h):
+def _interest(img):
+    """작게 줄인 이미지의 '눈에 띄는 곳' 지도 (간단한 시각 주목도):
+    - 주변과 색·밝기가 확 다른 곳 (원본 − 크게 흐린 배경) → 인물·주요 사물이 높게, 커튼·풀숲 같은 반복 무늬는 낮게
+    - 사람 피부색 가점, 가운데 약간 가점"""
+    from PIL import ImageFilter, ImageChops
+    sm = img.convert("RGB").resize((64, max(1, int(64 * img.height / img.width))), Image.BILINEAR)
+    bg = sm.filter(ImageFilter.GaussianBlur(10))
+    diff = ImageChops.difference(sm, bg).convert("L").filter(ImageFilter.GaussianBlur(2))
+    ew, eh = sm.size
+    dv, px = list(diff.getdata()), list(sm.getdata())
+    grid = [[0.0] * ew for _ in range(eh)]
+    for yy in range(eh):
+        for xx in range(ew):
+            k = yy * ew + xx
+            r, g, b = px[k]
+            skin = 1.6 if (r > 95 and g > 40 and b > 20 and r > g > b and r - b > 15 and abs(r - g) > 12) else 1.0
+            cx = 1 - abs(xx - ew / 2) / ew * 0.8
+            grid[yy][xx] = (dv[k] ** 1.5) * skin * cx
+    return grid, ew, eh
+
+
+def cover_fit(img, w, h, smart=True):
+    """w×h 를 꽉 채우도록 확대 후 자른다. smart=True 면 가운데가 아니라 '가장 볼거리 많은' 구간을 남긴다."""
     r = max(w / img.width, h / img.height)
     img = img.resize((int(img.width * r) + 1, int(img.height * r) + 1), Image.LANCZOS)
     x, y = (img.width - w) // 2, (img.height - h) // 2
+    if smart and (img.width - w > 8 or img.height - h > 8):
+        try:
+            grid, ew, eh = _interest(img)
+            sx, sy = ew / img.width, eh / img.height
+            ww, wh = max(1, int(w * sx)), max(1, int(h * sy))
+            if img.width - w > 8:  # 가로로 남는다 → 가장 좋은 가로 위치
+                cols = [sum(grid[yy][xx] for yy in range(eh)) for xx in range(ew)]
+                best = max(range(0, ew - ww + 1), key=lambda i: sum(cols[i:i + ww]))
+                x = min(img.width - w, int(best / sx))
+            else:  # 세로로 남는다 → 위쪽(인물 얼굴 쪽)을 약간 선호
+                rows = [sum(grid[yy]) * (1.15 - 0.3 * yy / eh) for yy in range(eh)]
+                best = max(range(0, eh - wh + 1), key=lambda i: sum(rows[i:i + wh]))
+                y = min(img.height - h, int(best / sy))
+        except Exception:
+            pass
     return img.crop((x, y, x + w, y + h))
 
 
