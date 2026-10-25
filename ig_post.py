@@ -82,6 +82,18 @@ def api(method, path, **params):
         raise RuntimeError(f"{e.code} {e.read()[:300].decode('utf-8', 'ignore')}")
 
 
+def delete_media():
+    """IG_DELETE_IDS(쉼표로 구분한 미디어 ID)의 게시물을 지운다 — 잘못 올라간 게시물 정리용."""
+    tok, _ = token()
+    for mid in [x.strip() for x in os.environ.get("IG_DELETE_IDS", "").split(",") if x.strip()]:
+        url = f"{API}/{mid}?" + urllib.parse.urlencode({"access_token": tok})
+        try:
+            r = json.loads(urllib.request.urlopen(urllib.request.Request(url, method="DELETE"), timeout=60).read())
+            print(f"삭제: {mid} → {r}")
+        except urllib.error.HTTPError as e:
+            print(f"  ! 삭제 실패 {mid}: {e.code} {e.read()[:300].decode('utf-8', 'ignore')}")
+
+
 def refresh_if_needed():
     """마지막 연장 후 7일 지났으면 연장 (토큰은 최소 24시간 지나야 연장 가능)."""
     _, meta = token()
@@ -963,7 +975,7 @@ def check():
 if __name__ == "__main__":
     sys.stdout.reconfigure(encoding="utf-8")
     try:
-        {"prepare": prepare, "publish": publish, "check": check}[sys.argv[1]]()
+        {"prepare": prepare, "publish": publish, "check": check, "delete": delete_media}[sys.argv[1]]()
     except Exception:  # GitHub 로그 없이도 원인을 볼 수 있게 기록
         import traceback
         st = load(DATA / "state.json", {})
