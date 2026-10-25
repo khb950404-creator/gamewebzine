@@ -413,6 +413,168 @@ def make_article():
     return a
 
 
+# ---------- 로스터 · 전적표 기사 ----------
+POS = ["TOP", "JGL", "MID", "ADC", "SUP"]
+
+
+def kr_rosters():
+    """참가팀 섹션에서 한국팀 로스터 (선수 5명 + 감독)와 시드."""
+    h = api(action="parse", page=EVENT, prop="text", section=2)["parse"]["text"]["*"]
+    t = html.unescape(re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", h)))
+    out = []
+    for full in ["Gen.G Esports", "Hanwha Life Esports", "T1", "Dplus", "KT Rolster"]:
+        m = re.search(re.escape(full) + r" Qualified (.+?) Player roster .+? Main Staff (.+?) Head Coach", t)
+        if not m:
+            continue
+        toks = [p for p in re.sub(r"\bx\d+\b|\bCaptain\b", " ", m.group(2)).split() if p]
+        # 'Main Staff' 뒤: 선수 5명 다음 이름이 감독 (이름 → 직함 순서로 적혀 있다)
+        out.append({"name": full, "seed": m.group(1).strip(), "players": toks[:5], "coach": toks[5] if len(toks) > 5 else ""})
+    return out
+
+
+def render_rosters(rosters, logos, out):
+    img = Image.new("RGB", (W, H), BG)
+    d = ImageDraw.Draw(img)
+    d.text((76, 80), "LoL 월드 챔피언십 2026", font=NB(34), fill=RED)
+    d.text((76, 130), "LCK 대표팀 로스터", font=BH(64), fill=WHITE)
+    card_h = (H - 300 - 110) // max(1, len(rosters)) - 16
+    y = 260
+    for r in rosters:
+        d.rounded_rectangle((76, y, W - 76, y + card_h), 18, fill=CARD)
+        lg = logo(logos.get(r["name"]), 84)
+        if lg:
+            img.paste(lg, (106, y + 24), lg)
+        d.text((210, y + 30), KR.get(r["name"], r["name"]), font=BH(44), fill=WHITE)
+        seed = r["seed"].replace("LCK 2026", "LCK").replace("MSI 2026", "MSI").replace("1st", "1위").replace("2nd", "2위") \
+            .replace("3rd", "3위").replace("4th", "4위")
+        d.text((W - 106, y + 44), seed + " 자격", font=NM(28), fill=DIM, anchor="ra")
+        cw = (W - 152 - 60) / 5
+        for i, (pos, pl) in enumerate(zip(POS, r["players"])):
+            cx = 106 + cw * i + cw / 2
+            d.text((cx, y + card_h - 74), pos, font=NB(22), fill=RED, anchor="mm")
+            pf = NB(34) if len(pl) <= 7 else NB(28)
+            d.text((cx, y + card_h - 36), pl, font=pf, fill=WHITE, anchor="mm")
+        d.text((W - 106, y + 84), f"감독 {r['coach']}", font=NR(24), fill=DIM, anchor="ra")
+        y += card_h + 16
+    d.text((76, H - 70), "자료: Liquipedia (CC BY-SA 3.0)", font=NR(24), fill=DIM)
+    d.text((W - 56, H - 70), "@webzinealttab", font=NB(28), fill=RED, anchor="ra")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    img.save(out, quality=92)
+    return out
+
+
+def standings(ms):
+    rec, logos = {}, {}
+    for m in ms:
+        for t in (m["t1"], m["t2"]):
+            logos[t["name"]] = t
+        if not m["done"]:
+            continue
+        w1 = int(m["s1"]) > int(m["s2"])
+        for t, w in ((m["t1"], w1), (m["t2"], not w1)):
+            a_, b_ = rec.get(t["name"], (0, 0))
+            rec[t["name"]] = (a_ + w, b_ + (not w))
+    return sorted(rec.items(), key=lambda r: (-r[1][0], r[1][1], r[0])), logos
+
+
+def render_standings(table, logos, title, out):
+    img = Image.new("RGB", (W, H), BG)
+    d = ImageDraw.Draw(img)
+    d.text((76, 80), "LoL 월드 챔피언십 2026", font=NB(34), fill=RED)
+    d.text((76, 130), title, font=BH(60), fill=WHITE)
+    groups = {}
+    for name, (w, l) in table:
+        groups.setdefault((w, l), []).append(name)
+    y = 250
+    colw = (W - 152 - 20) // 2
+    for (w, l), names in groups.items():
+        lab = {(2, 0): "2승 0패 · 다음 경기 이기면 8강", (0, 2): "0승 2패 · 다음 경기 지면 탈락"}.get((w, l), f"{w}승 {l}패")
+        d.text((76, y), lab, font=NB(30), fill=GOLD if w > l else DIM if l > w else SOFT)
+        y += 50
+        for i, n in enumerate(names):
+            x = 76 + (i % 2) * (colw + 20)
+            if i % 2 == 0 and i:
+                y += 84
+            kr = n in KR
+            d.rounded_rectangle((x, y, x + colw, y + 72), 14, fill=CARD, outline=RED if kr else None, width=2)
+            t = logos.get(n, {})
+            lg = logo(t.get("logo"), 46)
+            if lg:
+                img.paste(lg, (x + 20, y + 36 - lg.height // 2), lg)
+            d.text((x + 84, y + 36), KR.get(n, t.get("short", n)), font=NB(30) if kr else NM(28),
+                   fill=WHITE if kr else SOFT, anchor="lm")
+            d.text((x + colw - 20, y + 36), f"{w}-{l}", font=ANTON(36), fill=WHITE, anchor="rm")
+        y += 84 + 22
+    d.text((76, H - 70), "자료: Liquipedia (CC BY-SA 3.0)", font=NR(24), fill=DIM)
+    d.text((W - 56, H - 70), "@webzinealttab", font=NB(28), fill=RED, anchor="ra")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    img.save(out, quality=92)
+    return out
+
+
+INFO_PROMPT = """너는 한국 게임 매체의 e스포츠 기자다. 오늘은 {today}. 아래 데이터만으로 기사를 써라 (선수 발언·경기 내용 지어내기 금지).
+주제: {topic}
+팀 이름은 국내 표기(T1, 젠지, 한화생명e스포츠, 디플러스 기아), 선수는 영문 닉네임 그대로(Faker, Chovy 등) 쓴다.
+JSON 하나만: {{"title": "45자 이내", "tldr": ["서로 다른 정보 3줄, 기사체"], "why": "한 문장", "body": ["2~3문단"],
+ "hook": "8~16자", "title_en": "...", "tldr_en": ["..."], "hook_en": "..."}}
+
+데이터: {data}"""
+
+
+def _save_info_article(aid, r, cover, table_img, stage_link):
+    import webzine
+    arts = webzine.load_json(DATA / "articles.json", [])
+    if any(a["id"] == aid for a in arts):
+        return None
+    a = {"id": aid, "title": r["title"], "tldr": r.get("tldr", [])[:3], "why": r.get("why", ""), "body": r.get("body", []),
+         "hook": r.get("hook"), "title_en": r.get("title_en"), "tldr_en": r.get("tldr_en"), "hook_en": r.get("hook_en"),
+         "category": "e스포츠", "platforms": ["PC"], "games": ["리그 오브 레전드"], "games_en": ["League of Legends"],
+         "trust": "확인", "status": "published", "ts": time.time(), "written": time.time(),
+         "img": f"media/esports/{cover.name}", "img_hd": f"media/esports/{cover.name}", "img_src": "알트탭 (로고: Liquipedia)",
+         "gallery": [{"src": f"media/esports/{table_img.name}", "credit": "알트탭 (자료: Liquipedia)"}],
+         "sources": [{"name": "Liquipedia", "title": "2026 World Championship", "link": stage_link, "official": False}],
+         "esports": True}
+    webzine.dedupe_summary(a)
+    arts.append(a)
+    webzine.save_json(DATA / "articles.json", arts)
+    print(f"롤드컵 기사: {a['title']}")
+    return a
+
+
+def make_info_articles():
+    import webzine
+    webzine.load_env()
+    today = datetime.now(KST).strftime("%Y년 %m월 %d일")
+    ms = stage_matches("Swiss_Stage")
+    done_rounds = sorted({re.search(r"Round (\d+)", m["round"]).group(1) for m in ms if m["done"] and m["round"]})
+    made = []
+    # ① 전적표 (마지막으로 끝난 라운드 기준)
+    if done_rounds:
+        rnd = done_rounds[-1]
+        table, tl = standings(ms)
+        aid = f"worlds26-standings-r{rnd}"
+        img = render_standings(table, tl, f"스위스 {rnd}라운드 종료 전적", MEDIA / f"{aid}.jpg")
+        cov = render_cover([m for m in ms if m["done"]], MEDIA / f"{aid}_cover.jpg")
+        r = webzine.llm(INFO_PROMPT.format(today=today, topic=f"스위스 스테이지 {rnd}라운드 종료 시점 16팀 전적 정리 (한국팀 중심)",
+                                           data=", ".join(f"{KR.get(n, tl[n]['short'])} {w}승 {l}패" for n, (w, l) in table)
+                                           + " / 규칙: 3승 진출, 3패 탈락"))
+        if r and r.get("title"):
+            made.append(_save_info_article(aid, r, cov, img, f"{BASE}/leagueoflegends/{EVENT}/Swiss_Stage"))
+    # ② 한국팀 로스터
+    ros = kr_rosters()
+    if ros:
+        tl = {m[k]["name"]: m[k]["logo"] for m in ms for k in ("t1", "t2")}
+        aid = "worlds26-lck-rosters"
+        img = render_rosters(ros, tl, MEDIA / f"{aid}.jpg")
+        cov = render_cover([m for m in ms if m["done"]], MEDIA / f"{aid}_cover.jpg")
+        data = "; ".join(f"{KR.get(r_['name'], r_['name'])}({r_['seed']} 자격): " +
+                         ", ".join(f"{p} {pl}" for p, pl in zip(POS, r_["players"])) + f", 감독 {r_['coach']}" for r_ in ros)
+        r = webzine.llm(INFO_PROMPT.format(today=today, topic="롤드컵 2026에 나선 LCK 대표 4팀 로스터 총정리", data=data))
+        if r and r.get("title"):
+            made.append(_save_info_article(aid, r, cov, img, f"{BASE}/leagueoflegends/{EVENT}"))
+    return [m for m in made if m]
+
+
 if __name__ == "__main__":
     sys.stdout.reconfigure(encoding="utf-8")
     if sys.argv[1:] == ["table"]:
@@ -423,3 +585,4 @@ if __name__ == "__main__":
     else:
         make_article()
         make_draw_article()
+        make_info_articles()  # 라운드 종료 전적표(라운드마다 1번), 한국팀 로스터(1번)
