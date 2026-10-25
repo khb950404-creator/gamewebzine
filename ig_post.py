@@ -144,10 +144,27 @@ def is_big(a):
     return any(k in text for k in BIG_IP)
 
 
+WORLDS_UNTIL = "2026-11-16"  # 롤드컵 2026 결승 직후까지
+WORLDS_KW = ("롤드컵", "worlds", "월드챔피언십", "lck", "t1", "페이커", "젠지", "geng", "한화생명", "디플러스", "kt롤스터")
+GTA_KW = ("gta6", "gtavi", "grandtheftautovi", "grandtheftauto6", "gta 6", "그랜드테프트오토6", "그랜드테프트오토vi")
+
+
+def priority(a):
+    """게시 우선순위 단계: 0 = 롤드컵(대회 기간), 1 = GTA 6, 2 = 나머지."""
+    import re as _re
+    text = _re.sub(r"[^0-9a-z가-힣]", "", " ".join([a.get("title", "")] + (a.get("games_en") or []) + (a.get("games") or [])).lower())
+    if datetime.now().strftime("%Y-%m-%d") <= WORLDS_UNTIL and (a.get("esports") or any(k in text for k in WORLDS_KW)):
+        return 0
+    if any(k.replace(" ", "") in text for k in GTA_KW):
+        return 1
+    return 2
+
+
 def popularity(a):
     import re as _re
     text = _re.sub(r"[^0-9a-z가-힣]", "", " ".join([a["title"]] + (a.get("games_en") or []) + (a.get("games") or [])).lower())
     s_ = 3 * len(a.get("sources", []))
+    s_ += {0: 100, 1: 50}.get(priority(a), 0)  # 롤드컵 기간엔 롤드컵, 그다음 GTA 6
     s_ += 5 if a.get("appid") in top_played() else 0
     s_ += 5 if any(k in text for k in BIG_IP) else 0
     s_ += 2 if a.get("trust") == "공식" else 0
@@ -177,8 +194,9 @@ def pick(arts, posted, n, queued_ids=(), cap=True, by_pop=False):
     done_today = sum(1 for p in posted.values() if p.get("date") == today and p.get("kind", "news") == "news"
                      and not p.get("forced"))
     room = min(n, int(os.environ.get("IG_DAILY", 3)) - done_today) if cap else n
-    if room <= 0:
-        return []
+    prio_only = room <= 0
+    if prio_only:  # 하루 한도가 차도 롤드컵·GTA 6 소식은 실행마다 1건씩 올린다
+        room = 1
     cand = [a for a in arts if a.get("status", "published") == "published" and a.get("img")
             and a["id"] not in posted and a.get("trust") != "루머"
             and time.time() - a.get("written", a["ts"]) < 24 * 3600 and len(a.get("body", [])) >= 2
@@ -186,7 +204,7 @@ def pick(arts, posted, n, queued_ids=(), cap=True, by_pop=False):
     # 화제성: 출처 수 > 공식 발표 > 최신
     # 화제성 높은 기사만 (출처 1곳짜리 소소한 소식·마이너 게임은 제외)
     min_pop = float(os.environ.get("IG_MIN_POP", 8))
-    cand = [a for a in cand if popularity(a) >= min_pop]
+    cand = [a for a in cand if popularity(a) >= min_pop and (not prio_only or priority(a) <= 1)]
     cand.sort(key=lambda a: -popularity(a))
     # 이틀 안에 올렸거나 대기 중인 게임과 겹치면 건너뜀 (같은 소식을 매체별로 따로 쓴 기사 중복 방지)
     byid = {a["id"]: a for a in arts}
@@ -778,7 +796,8 @@ def _publish():
     if dropped:
         print(f"오래된 대기 {len(dropped)}건 정리")
     order = {"reel": 0, "series": 1, "deal": 2, "news": 3}
-    queue.sort(key=lambda q: (not q.get("breaking"), order.get(q.get("kind", "news"), 4)))  # 속보가 맨 앞
+    queue.sort(key=lambda q: (not q.get("breaking"), priority(arts.get(q["id"]) or {"title": q.get("caption", "")[:80]}),
+                              order.get(q.get("kind", "news"), 4)))  # 속보 > 롤드컵 > GTA 6 > 나머지
     budget = int(os.environ.get("IG_PUBLISH_MAX", 99))  # 시간대 실행에서는 2건씩
     # 인사이트 학습: 반응 좋은 시간대엔 1건 더, 약한 시간대엔 1건 덜 (강제 게시 땐 그대로)
     hr = (learned().get("hour") or {}).get(str(datetime.now().hour))
