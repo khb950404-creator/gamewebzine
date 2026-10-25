@@ -669,6 +669,14 @@ def caption(a):
     tags += [HASHTAG[a["category"]]] if a.get("category") in HASHTAG else []
     tags += [p.replace(" ", "") for p in a.get("platforms", [])]
     tags += ["".join(ch for ch in g if ch.isalnum()) for g in (a.get("games") or [])[:2]]
+    if a.get("esports") or a.get("category") == "e스포츠":  # 롤드컵 등: 언급된 한국팀 태그
+        txt = " ".join([a["title"]] + a.get("tldr", []) + a.get("body", []))
+        tags += ["롤드컵", "LCK", "롤"]
+        for k, ts in (("T1", ["T1", "페이커"]), ("젠지", ["젠지", "GenG"]), ("한화생명", ["한화생명e스포츠", "HLE"]),
+                      ("디플러스", ["디플러스기아", "DK"]), ("kt", ["kt롤스터"]), ("농심", ["농심레드포스"])):
+            if k in txt:
+                tags += ts
+        tags += ["Worlds2026", "LeagueOfLegends"]
     # 영어 해시태그 (해외 노출용)
     tags += ["gaming", "gamingnews", "videogames"]
     tags += [TAG_EN[a["category"]]] if a.get("category") in TAG_EN else []
@@ -677,7 +685,11 @@ def caption(a):
     lines = [a["title"], ""] + [to_news_tone(t) for t in a.get("tldr", [])[:3]]
     if srcs:
         lines += ["", "출처: " + srcs[0] + (f" 외 {len(srcs) - 1}곳" if len(srcs) > 1 else "")]
-    lines += ["", question(a), "", " ".join("#" + t for t in dict.fromkeys(t for t in tags if t))]
+    uniq = {}
+    for t in tags:  # 대소문자만 다른 태그는 하나로 (#LeagueOfLegends / #LeagueofLegends)
+        if t and t.lower() not in uniq:
+            uniq[t.lower()] = t
+    lines += ["", question(a), "", " ".join("#" + t for t in uniq.values())]
     return "\n".join(lines)[:2100]
 
 

@@ -148,7 +148,14 @@ def render(a, out_path, lang="ko", handle=None):
     points = tldr[:3] if lang == "en" else [to_card_tone(t) for t in tldr[:3]]
 
     src = fetch_img(best_image(a)) or Image.new("RGB", (RW, RH), (40, 40, 44))
-    big = grade(cover_fit(src, int(RW * 1.2), int(RH * 1.2)), mono=0.35, bright=0.8)
+    if a.get("esports"):  # 팀 로고 표지: 잘리지 않게 가로에 맞춰 위쪽에 (색 유지)
+        bw, bh = int(RW * 1.2), int(RH * 1.2)
+        canvas = Image.new("RGB", (bw, bh), BG)
+        sc = src.resize((int(RW * 0.95), int(src.height * RW * 0.95 / src.width)), Image.LANCZOS)
+        canvas.paste(sc, ((bw - sc.width) // 2, int(bh * 0.18)))
+        big = canvas
+    else:
+        big = grade(cover_fit(src, int(RW * 1.2), int(RH * 1.2)), mono=0.35, bright=0.8)
     dark = Image.new("RGB", (RW, RH), BG)
     blurred = Image.blend(grade(cover_fit(src, RW, RH), bright=0.5).filter(ImageFilter.GaussianBlur(22)), dark, 0.55)
     shade = shade_mask()
@@ -184,7 +191,16 @@ def render(a, out_path, lang="ko", handle=None):
 
     # 훅 화면은 제목과 내용이 겹쳐서 뺐다 — 첫 프레임부터 제목이 보이게 (썸네일 겸 멈춰 세우기)
     T_HOOK, T_TITLE, T_POINTS, T_END = 0, 3.0, 8.0, 1.8  # 요약은 읽을 시간 충분히
-    total = T_HOOK + T_TITLE + T_POINTS + T_END
+    table = None
+    if a.get("esports") and a.get("gallery"):  # 결과표·대진표 장면 (안전 영역 안에 맞춤)
+        tim = fetch_img(a["gallery"][0]["src"])
+        if tim:
+            r_ = min((SAFE_R - 40) / tim.width, (SAFE_B - SAFE_T) / tim.height)
+            tim = tim.resize((int(tim.width * r_), int(tim.height * r_)), Image.LANCZOS)
+            table = Image.new("RGBA", (RW, RH), (0, 0, 0, 0))
+            table.paste(tim, ((SAFE_R + 40 - tim.width) // 2, SAFE_T + (SAFE_B - SAFE_T - tim.height) // 2))
+    T_TABLE = 4.0 if table else 0
+    total = T_HOOK + T_TITLE + T_TABLE + T_POINTS + T_END
     v = Video(out_path, total, a["id"] + lang)
     for f in range(int(total * FPS)):
         t = f / FPS
@@ -197,15 +213,19 @@ def render(a, out_path, lang="ko", handle=None):
             show(im, label, 1.0)
             for l in title_ls:
                 show(im, l, 1.0)
-        elif t < T_HOOK + T_TITLE + T_POINTS:
+        elif t < T_HOOK + T_TITLE + T_TABLE:
             tt = t - T_HOOK - T_TITLE
+            im = Image.new("RGBA", (RW, RH), BG + (255,))
+            show(im, table, ease(tt / 0.4))
+        elif t < T_HOOK + T_TITLE + T_TABLE + T_POINTS:
+            tt = t - T_HOOK - T_TITLE - T_TABLE
             im = blurred.convert("RGBA")
             show(im, head, ease(tt / 0.4))
             for i, l in enumerate(point_ls):
                 e = ease((tt - 0.3 - i * 2.2) / 0.5)
                 show(im, l, e, (1 - e) * 50)
         else:
-            tt = t - T_HOOK - T_TITLE - T_POINTS
+            tt = t - T_HOOK - T_TITLE - T_TABLE - T_POINTS
             im = blurred.convert("RGBA")
             e = ease(tt / 0.5)
             show(im, end, e, (1 - e) * 40)

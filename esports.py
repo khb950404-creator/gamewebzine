@@ -58,25 +58,32 @@ def _team(cell):
 
 
 def stage_matches(stage):
+    """경기 블록(brkts-matchlist-match / brkts-match) 단위로 잘라서 두 팀·점수·시각·라운드를 읽는다."""
     h = api(action="parse", page=f"{EVENT}/{stage}", prop="text")["parse"]["text"]["*"]
-    out, rnd = [], ""
-    # 라운드 제목과 경기 블록을 문서 순서대로 훑는다
-    for m in re.finditer(r'<span class="mw-headline" id="([^"]+)"|class="brkts-(?:matchlist-match|match)\b[^"]*"', h):
-        if m.group(1):
-            rnd = html.unescape(m.group(1)).replace("_", " ")
-            continue
-        blk = h[m.start(): m.start() + 9000]
+    starts = [m.start() for m in re.finditer(r'class="brkts-(?:matchlist-match|match brkts-match-popup-wrapper)\b', h)]
+    out = []
+    for i, st in enumerate(starts):
+        blk = h[st: starts[i + 1] if i + 1 < len(starts) else st + 20000]
         opp = re.findall(r'(<div class="brkts-(?:matchlist-cell brkts-matchlist-opponent|opponent-entry)[^>]*>.*?</span></div></div>)', blk, re.S)
         sc = re.findall(r'brkts-(?:matchlist-score|opponent-score-inner)[^>]*>(?:<div[^>]*>)?\s*(\d+|W|L|FF|-)?\s*<', blk)
         ts = re.search(r'data-timestamp="(\d+)"', blk)
-        fin = 'data-finished="finished"' in blk[:9000]
         if len(opp) < 2 or not ts:
             continue
         t1, t2 = _team(opp[0]), _team(opp[1])
+        if "TBD" in (t1["short"], t2["short"]) or t1["name"] == t2["name"]:
+            continue
+        # 라운드: 이 경기 앞에 나온 가장 가까운 'Round N ...' 제목
+        prev = re.findall(r'(Round \d+(?: (?:High|Mid|Middle|Low))?)', re.sub(r"<[^>]+>", " ", h[max(0, st - 6000): st]))
         s1, s2 = (sc + ["", ""])[:2]
-        out.append({"round": rnd, "ts": int(ts.group(1)), "t1": t1, "t2": t2, "s1": s1 or "", "s2": s2 or "",
-                    "done": fin and s1 not in ("", "-")})
-    # 같은 경기가 팝업에 한 번 더 나오는 경우 제거
+        fin = 'data-finished="finished"' in blk
+        bo = re.search(r"\(Bo(\d)\)", re.sub(r"<[^>]+>", " ", blk))
+        out.append({"round": prev[-1] if prev else "", "ts": int(ts.group(1)), "t1": t1, "t2": t2,
+                    "s1": s1 or "", "s2": s2 or "", "done": fin and (s1 or "") not in ("", "-"),
+                    "bo": int(bo.group(1)) if bo else None})
+    last = ""
+    for x in out:  # 라운드 제목은 묶음의 첫 경기에만 붙으므로 뒤로 이어 준다
+        x["round"] = x["round"] or last
+        last = x["round"]
     seen, uniq = set(), []
     for x in out:
         k = (x["ts"], x["t1"]["name"], x["t2"]["name"])
@@ -222,6 +229,122 @@ def render_cover(ms, out):
     return out
 
 
+GROUP_KO = {"High": "2승 0패 조", "Mid": "1승 1패 조", "Middle": "1승 1패 조", "Low": "0승 2패 조"}
+
+
+def render_bracket(ms, title, out):
+    """한 라운드 전체 대진표: 조별(2-0 / 1-1 / 0-2)로 묶고, 한국팀은 강조."""
+    img = Image.new("RGB", (W, H), BG)
+    d = ImageDraw.Draw(img)
+    d.text((76, 80), "LoL 월드 챔피언십 2026", font=NB(34), fill=RED)
+    d.text((76, 130), title, font=BH(60), fill=WHITE)
+    groups = {}
+    for m in sorted(ms, key=lambda m: m["ts"]):
+        g = m["round"].split()[-1] if m["round"] else ""
+        groups.setdefault(g, []).append(m)
+    y, wd = 250, "월화수목금토일"
+    row = 84 if len(ms) <= 8 else 70
+    order = ["High", "Mid", "Middle", "Low"]
+    for g, lst in sorted(groups.items(), key=lambda kv: order.index(kv[0]) if kv[0] in order else 9):
+        bo = lst[0].get("bo")
+        d.text((76, y), GROUP_KO.get(g, g) + (" · 단판" if bo == 1 else f" · {bo}판 2선승" if bo == 3 else ""),
+               font=NB(30), fill=GOLD if g == "High" else SOFT if g in ("Mid", "Middle") else DIM)
+        y += 50
+        for m in lst:
+            kr = m["t1"]["name"] in KR or m["t2"]["name"] in KR
+            d.rounded_rectangle((76, y, W - 76, y + row - 12), 16, fill=CARD, outline=RED if kr else None, width=2)
+            cy = y + (row - 12) // 2
+            for side, t in ((0, m["t1"]), (1, m["t2"])):
+                lg = logo(t["logo"], 48)
+                f = NB(32) if t["name"] in KR else NM(30)
+                col = WHITE if t["name"] in KR else SOFT
+                if side == 0:
+                    if lg:
+                        img.paste(lg, (100, cy - lg.height // 2), lg)
+                    d.text((164, cy), kname(t), font=f, fill=col, anchor="lm")
+                else:
+                    if lg:
+                        img.paste(lg, (W - 100 - lg.width, cy - lg.height // 2), lg)
+                    d.text((W - 164, cy), kname(t), font=f, fill=col, anchor="rm")
+            dt = datetime.fromtimestamp(m["ts"], KST)
+            if m["done"]:
+                d.text((W // 2, cy), f"{m['s1']} : {m['s2']}", font=ANTON(42), fill=WHITE, anchor="mm")
+            else:
+                d.text((W // 2, cy - 14), f"{dt.month}/{dt.day}({wd[dt.weekday()]})", font=NR(24), fill=DIM, anchor="mm")
+                d.text((W // 2, cy + 16), dt.strftime("%H:%M"), font=NB(32), fill=GOLD, anchor="mm")
+            y += row
+        y += 18
+    d.text((76, H - 70), "자료: Liquipedia (CC BY-SA 3.0) · 시간은 한국 기준", font=NR(24), fill=DIM)
+    d.text((W - 56, H - 70), "@webzinealttab", font=NB(28), fill=RED, anchor="ra")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    img.save(out, quality=92)
+    return out
+
+
+DRAW_PROMPT = """너는 한국 게임 매체의 e스포츠 기자다. 오늘은 {today}.
+LoL 월드 챔피언십 2026 스위스 스테이지 {rnd}라운드 대진이 확정됐다. 아래 데이터만으로 기사를 써라 (지어내기 금지).
+스위스 스테이지는 3승이면 녹아웃 진출, 3패면 탈락. 2승 0패 조 경기는 이기면 바로 진출, 0승 2패 조는 지면 탈락이다.
+한국팀(T1, 젠지, 한화생명e스포츠, 디플러스 기아) 대진과 일정을 중심으로 쓰고, 나머지 대진도 간단히 정리하라.
+JSON 하나만: {{"title": "45자 이내", "tldr": ["서로 다른 정보 3줄, 기사체"], "why": "한 문장", "body": ["2~3문단"],
+ "hook": "8~16자", "title_en": "...", "tldr_en": ["..."], "hook_en": "..."}}
+
+대진(한국 시간): {matches}
+현재 전적: {rec}"""
+
+
+def make_draw_article(stage="Swiss_Stage"):
+    """다음 라운드 대진이 확정되면 전체 대진표 + 기사."""
+    import webzine
+    webzine.load_env()
+    ms = stage_matches(stage)
+    up = [m for m in ms if not m["done"]]
+    if not up:
+        print("롤드컵: 확정된 다음 대진 없음")
+        return None
+    rnd = re.search(r"Round (\d+)", up[0]["round"] or "")
+    rnd = rnd.group(1) if rnd else "?"
+    cur = [m for m in up if re.search(rf"Round {rnd}\b", m["round"] or "")]
+    state = webzine.load_json(DATA / "esports.json", {})
+    key = f"draw-{stage}-{rnd}"
+    if key in state.get("draws", []):
+        print("롤드컵: 이미 올린 대진")
+        return None
+    aid = "worlds26-" + key.lower().replace("_", "")
+    img = render_bracket(cur, f"스위스 {rnd}라운드 대진표", MEDIA / f"{aid}.jpg")
+    cov = render_cover(cur, MEDIA / f"{aid}_cover.jpg")
+    allrec = {}
+    for m in ms:  # 전체 팀 전적 (한국팀만이 아니라)
+        if not m["done"]:
+            continue
+        win1 = int(m["s1"]) > int(m["s2"])
+        for t, w in ((m["t1"], win1), (m["t2"], not win1)):
+            a_, b_ = allrec.get(kname(t), (0, 0))
+            allrec[kname(t)] = (a_ + w, b_ + (not w))
+    fmt = lambda m: f"{datetime.fromtimestamp(m['ts'], KST):%m/%d %H:%M} [{GROUP_KO.get((m['round'] or ' ').split()[-1], '')}, Bo{m.get('bo')}] {kname(m['t1'])} vs {kname(m['t2'])}"
+    r = webzine.llm(DRAW_PROMPT.format(today=datetime.now(KST).strftime("%Y년 %m월 %d일"), rnd=rnd,
+                                       matches="; ".join(fmt(m) for m in cur),
+                                       rec=", ".join(f"{k} {w}승 {l}패" for k, (w, l) in allrec.items())))
+    if not r or not r.get("title"):
+        return None
+    arts = webzine.load_json(DATA / "articles.json", [])
+    a = {"id": aid, "title": r["title"], "tldr": r.get("tldr", [])[:3], "why": r.get("why", ""), "body": r.get("body", []),
+         "hook": r.get("hook"), "title_en": r.get("title_en"), "tldr_en": r.get("tldr_en"), "hook_en": r.get("hook_en"),
+         "category": "e스포츠", "platforms": ["PC"], "games": ["리그 오브 레전드"], "games_en": ["League of Legends"],
+         "trust": "확인", "status": "published", "ts": time.time(), "written": time.time(),
+         "img": f"media/esports/{cov.name}", "img_hd": f"media/esports/{cov.name}", "img_src": "알트탭 (로고: Liquipedia)",
+         "gallery": [{"src": f"media/esports/{img.name}", "credit": "알트탭 (자료: Liquipedia)"}],
+         "sources": [{"name": "Liquipedia", "title": f"2026 World Championship - {stage.replace('_', ' ')}",
+                      "link": f"{BASE}/leagueoflegends/{EVENT}/{stage}", "official": False}],
+         "esports": True}
+    webzine.dedupe_summary(a)
+    arts.append(a)
+    webzine.save_json(DATA / "articles.json", arts)
+    state.setdefault("draws", []).append(key)
+    webzine.save_json(DATA / "esports.json", state)
+    print(f"롤드컵 대진 기사: {a['title']}")
+    return a
+
+
 PROMPT = """너는 한국 게임 매체의 e스포츠 기자다. 오늘은 {today}.
 아래는 LoL 월드 챔피언십 2026 {stage} 경기 결과 데이터(한국 시간)다. 한국팀 소식 위주로 기사를 써라.
 데이터에 없는 내용(선수 발언, 경기 내용 묘사, 밴픽)은 절대 지어내지 마라. 결과·전적·다음 일정만으로 쓴다.
@@ -299,3 +422,4 @@ if __name__ == "__main__":
         print(render_table(ms, "스위스 스테이지", ROOT / "out" / "worlds_table.jpg"))
     else:
         make_article()
+        make_draw_article()
