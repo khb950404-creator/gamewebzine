@@ -198,7 +198,7 @@ def pick(arts, posted, n, queued_ids=(), cap=True, by_pop=False):
     prio_only = room <= 0
     if prio_only:  # 하루 한도가 차도 롤드컵·GTA 6 소식은 실행마다 1건씩 올린다
         room = 1
-    cand = [a for a in arts if a.get("status", "published") == "published" and a.get("img")
+    cand = [a for a in arts if a.get("status", "published") == "published" and a.get("img") and not a.get("noig")
             and a["id"] not in posted and a.get("trust") != "루머"
             and time.time() - a.get("written", a["ts"]) < 24 * 3600 and len(a.get("body", [])) >= 2
             and time.time() - a["ts"] < 48 * 3600]  # 원문(가장 최근 출처) 발행 48시간 이내 소식만 인스타에
@@ -544,7 +544,8 @@ def prepare():
     # 속보: 6시간 안에 쓴 초대형 소식(화제성 IG_BREAK_POP 이상)은 하루 한도와 상관없이 바로 릴스로
     brk_pop = float(os.environ.get("IG_BREAK_POP", 16))
     breaking = [a for a in pick([a for a in arts if a["id"] not in queued], posted, 3, queued, cap=False, by_pop=True)
-                if popularity(a) >= brk_pop and time.time() - a.get("written", a["ts"]) < 6 * 3600][:1]
+                if popularity(a) - {0: 100, 1: 50}.get(priority(a), 0) >= brk_pop  # 우선순위 가점은 속보 판정에서 뺀다
+                and time.time() - a.get("written", a["ts"]) < 6 * 3600][:1]
     cands = breaking[:]
     cands += [a for a in (pick([a for a in arts if a["id"] not in queued], posted, 1, queued, cap=False, by_pop=True)
                           if want_reel else []) if a["id"] not in {b["id"] for b in cands}]
