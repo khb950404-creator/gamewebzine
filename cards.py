@@ -142,6 +142,99 @@ def _compose(prof, n, win, subj, look, thirds_t, keep=()):
     return best
 
 
+def _landscape(img, grid, ew, eh, w, h):
+    """인물·주인공 없이 배경이 중심인 사진: 풍경 사진 구도로 자를 위치 (x, y) 를 고른다.
+    - 좌우 대칭 장면 → 가운데 (대칭 유지)
+    - 랜드마크(탑·건물처럼 세로로 솟은 볼거리) → 삼분할 세로선
+    - 그 외 → 색·밝기가 가장 다채로운 구간 (밋밋한 하늘·벽만 남지 않게)
+    - 위아래를 자를 땐 지평선(하늘↔땅 경계)을 삼분할 가로선에"""
+    from PIL import ImageOps
+    x, y = (img.width - w) // 2, (img.height - h) // 2
+    sm = img.convert("RGB").resize((ew, eh), Image.BILINEAR)
+    lum = sm.convert("L")
+    if img.width - w > 8:
+        ww = max(1, int(w * ew / img.width))
+        # 좌우 대칭이면 가운데
+        lp, rp = list(lum.getdata()), list(ImageOps.mirror(lum).getdata())
+        sym = 1 - sum(abs(a - b) for a, b in zip(lp, rp)) / (255 * len(lp))
+        if sym > 0.9:
+            return x, y
+        cols = [sum(grid[yy][xx] for yy in range(eh)) for xx in range(ew)]
+        mean = sum(cols) / ew or 1
+        peak = max(range(ew), key=lambda i: cols[i])
+        landmark = cols[peak] > mean * 2.2  # 주변보다 확 튀는 세로 볼거리
+        hsv = sm.convert("HSV")
+        best, best_s = (img.width - w) // 2, -1e9
+        for i in range(0, ew - ww + 1):
+            box = (i, 0, i + ww, eh)
+            hist = hsv.crop(box).convert("RGB").quantize(16).histogram()[:16]
+            tot = sum(hist) or 1
+            import math
+            ent = -sum(c / tot * math.log(c / tot) for c in hist if c) / math.log(16)  # 다채로움 0~1
+            inside = sum(cols[i:i + ww]) / (sum(cols) or 1)
+            mid = 1 - abs((i + ww / 2) / ew - 0.5) * 2  # 거리·복도처럼 소실점이 가운데인 풍경이 많아 가운데 쪽 약간 선호
+            sc = ent * 0.5 + inside * 0.8 + mid * 0.45
+            if landmark:
+                pos = (peak - i) / ww
+                if not 0.15 <= pos <= 0.85:
+                    continue
+                sc += (1 - min(1, min(abs(pos - 1 / 3), abs(pos - 2 / 3)) / 0.33)) * 0.5
+            if sc > best_s:
+                best, best_s = int(i * img.width / ew), sc
+        x = min(img.width - w, best)
+    elif img.height - h > 8:
+        wh = max(1, int(h * eh / img.height))
+        rows = [sum(lum.getpixel((xx, yy)) for xx in range(ew)) / ew for yy in range(eh)]
+        # 지평선: 위아래 밝기 차가 가장 큰 가로줄
+        hz = max(range(2, eh - 2), key=lambda yy: abs(sum(rows[yy - 2:yy]) - sum(rows[yy:yy + 2])))
+        lower_busy = sum(map(sum, grid[hz:])) > sum(map(sum, grid[:hz]))
+        target = 1 / 3 if lower_busy else 2 / 3  # 땅이 볼거리면 지평선을 위 1/3, 하늘이 볼거리면 아래 1/3
+        start = int(hz - target * wh)
+        y = int(max(0, min(eh - wh, start)) * img.height / eh)
+        y = min(img.height - h, y)
+    return x, y
+
+
+_SSD = []
+SSD_CLASSES = ["bg", "aeroplane", "bicycle", "bird", "boat", "bottle", "bus", "car", "cat", "chair", "cow", "diningtable",
+               "dog", "horse", "motorbike", "person", "pottedplant", "sheep", "sofa", "train", "tvmonitor"]
+SUBJECT_CLASSES = {"aeroplane", "bicycle", "bird", "boat", "bus", "car", "cat", "cow", "dog", "horse", "motorbike",
+                   "person", "sheep", "train"}  # 가구·화분·병 같은 소품은 주인공으로 치지 않는다
+
+
+def _objects(img):
+    """사진의 주인공 후보 물체 (사람·동물·탈것) — MobileNet-SSD (models/mobilenet_ssd.*, MIT).
+    반환: [(x0, y0, x1, y1, 넓이비율, 이름)] 화면 비율 좌표, 큰 것부터."""
+    try:
+        import cv2, numpy as np
+        if not _SSD:
+            m = ROOT / "models"
+            if not (m / "mobilenet_ssd.caffemodel").exists():
+                return []
+            _SSD.append(cv2.dnn.readNetFromCaffe(str(m / "mobilenet_ssd.prototxt"), str(m / "mobilenet_ssd.caffemodel")))
+        arr = np.array(img.convert("RGB").resize((300, 300)))[:, :, ::-1]
+        _SSD[0].setInput(cv2.dnn.blobFromImage(arr, 0.007843, (300, 300), 127.5))
+        det = _SSD[0].forward()[0, 0]
+    except Exception:
+        return []
+    out = []
+    for r in det:
+        name = SSD_CLASSES[int(r[1])] if 0 <= int(r[1]) < len(SSD_CLASSES) else ""
+        x0, y0, x1, y1 = (max(0.0, min(1.0, float(v))) for v in r[3:7])
+        area = (x1 - x0) * (y1 - y0)
+        if r[2] > 0.45 and name in SUBJECT_CLASSES and area >= 0.04:  # 너무 작은 건 배경의 일부
+            out.append((x0, y0, x1, y1, area, name))
+    return sorted(out, key=lambda o: -o[4])
+
+
+def _is_scenery(grid, ew, eh):
+    """볼거리가 한곳에 몰려 있지 않고 넓게 퍼져 있으면 '배경 위주' 사진."""
+    vals = sorted((v for row in grid for v in row), reverse=True)
+    tot = sum(vals) or 1
+    top = sum(vals[: max(1, len(vals) // 12)])  # 상위 약 8% 칸이 차지하는 비율
+    return top / tot < 0.3
+
+
 def cover_fit(img, w, h, smart=True):
     """w×h 를 꽉 채우도록 확대 후 자른다. smart=True 면 사진 구도 원칙으로 자를 위치를 고른다:
     삼분할 · 시선 방향 여백 · 머리 위 여백 · 피사체를 가장자리로 가르지 않기."""
@@ -152,7 +245,14 @@ def cover_fit(img, w, h, smart=True):
         try:
             grid, ew, eh = _interest(img)
             faces = sorted(_people(img), key=lambda f: -f[2])  # 가장 크고 확실한 얼굴 = 주인공
+            objs = [] if faces else _objects(img)
+            if not faces and not objs:  # 사람·동물·탈것 같은 주인공이 없으면 배경 위주 → 풍경 구도
+                x, y = _landscape(img, grid, ew, eh, w, h)
+                return img.crop((x, y, x + w, y + h))
             subx, suby, look, is_face = _subject(grid, ew, eh, faces)
+            if objs:  # 얼굴은 없지만 주인공 물체가 있으면 그 물체 중심을 주인공으로
+                o = objs[0]
+                subx, suby = (o[0] + o[2]) / 2 * ew, (o[1] + o[3]) / 2 * eh
             sx, sy = ew / img.width, eh / img.height
             ww, wh = max(1, int(w * sx)), max(1, int(h * sy))
             if img.width - w > 8:  # 가로로 남는다 (16:9 → 세로 화면): 삼분할 + 시선 방향 여백
