@@ -89,12 +89,62 @@ def _people(img):
     out = []
     for f in faces:
         x, y, fw, fh, score = float(f[0]), float(f[1]), float(f[2]), float(f[3]), float(f[14])
-        out.append(((x + fw / 2) / small.width, (y + fh / 2) / small.height, score * (fw * fh) ** 0.5))
+        eye_mid, nose = (float(f[4]) + float(f[6])) / 2, float(f[8])
+        look = (nose - eye_mid) / max(fw, 1)  # +면 화면 오른쪽, -면 왼쪽을 본다
+        out.append(((x + fw / 2) / small.width, (y + fh / 2) / small.height, score * (fw * fh) ** 0.5,
+                    1 if look > 0.06 else -1 if look < -0.06 else 0))
     return out
 
 
+def _subject(grid, ew, eh, faces):
+    """주인공 위치(격자 좌표)와 바라보는 방향. 얼굴이 있으면 가장 큰 얼굴, 없으면 가장 눈에 띄는 덩어리의 무게중심."""
+    if faces:
+        f = faces[0]
+        return f[0] * ew, f[1] * eh, f[3], True
+    vals = sorted((grid[y][x] for y in range(eh) for x in range(ew)), reverse=True)
+    cut = vals[max(0, len(vals) // 12 - 1)] if vals else 0  # 상위 약 8%
+    sx = sy = tw = 0.0
+    for y in range(eh):
+        for x in range(ew):
+            if grid[y][x] >= cut and cut > 0:
+                sx += x * grid[y][x]; sy += y * grid[y][x]; tw += grid[y][x]
+    if not tw:
+        return ew / 2, eh / 2, 0, False
+    return sx / tw, sy / tw, 0, False
+
+
+def _compose(prof, n, win, subj, look, thirds_t, keep=()):
+    """한 축(가로 또는 세로)에서 사진 구도 점수가 가장 높은 시작 위치.
+    - 담긴 볼거리 (많을수록 +)
+    - 가장자리가 피사체를 가르면 감점 (경계에 볼거리가 몰려 있으면 −)
+    - 주인공을 삼분할 선에, 바라보는 쪽에 여백 (시선 방향 공간)
+    - 주인공이 화면 밖으로 잘리면 탈락"""
+    total = sum(prof) or 1
+    peak = max(prof) or 1
+    best, best_s = 0, -1e9
+    for i in range(0, n - win + 1):
+        inside = sum(prof[i:i + win]) / total
+        cut = (prof[i] + prof[i + win - 1]) / (2 * peak)
+        pos = (subj - i) / win  # 화면 안에서 주인공 위치 0~1
+        if subj >= 0 and not (0.12 <= pos <= 0.88):
+            continue
+        if any(not (i + win * 0.06 <= k <= i + win * 0.94) for k in keep):  # 사람이 여럿이면 모두 화면 안에
+            continue
+        if subj < 0:
+            comp = 0
+        else:
+            target = thirds_t if thirds_t is not None else (1 / 3 if look > 0 else 2 / 3 if look < 0 else
+                                                            (1 / 3 if pos < 0.5 else 2 / 3))
+            comp = 1 - min(1, abs(pos - target) / 0.33)
+        sc = inside * 1.6 + comp * 0.3 - cut * 0.6  # 피사체를 다 담는 게 우선, 삼분할은 그다음
+        if sc > best_s:
+            best, best_s = i, sc
+    return best
+
+
 def cover_fit(img, w, h, smart=True):
-    """w×h 를 꽉 채우도록 확대 후 자른다. smart=True 면 가운데가 아니라 '가장 볼거리 많은' 구간을 남긴다."""
+    """w×h 를 꽉 채우도록 확대 후 자른다. smart=True 면 사진 구도 원칙으로 자를 위치를 고른다:
+    삼분할 · 시선 방향 여백 · 머리 위 여백 · 피사체를 가장자리로 가르지 않기."""
     r = max(w / img.width, h / img.height)
     img = img.resize((int(img.width * r) + 1, int(img.height * r) + 1), Image.LANCZOS)
     x, y = (img.width - w) // 2, (img.height - h) // 2
@@ -102,25 +152,16 @@ def cover_fit(img, w, h, smart=True):
         try:
             grid, ew, eh = _interest(img)
             faces = sorted(_people(img), key=lambda f: -f[2])  # 가장 크고 확실한 얼굴 = 주인공
+            subx, suby, look, is_face = _subject(grid, ew, eh, faces)
             sx, sy = ew / img.width, eh / img.height
             ww, wh = max(1, int(w * sx)), max(1, int(h * sy))
-            if img.width - w > 8:  # 가로로 남는다 → 가장 좋은 가로 위치
+            if img.width - w > 8:  # 가로로 남는다 (16:9 → 세로 화면): 삼분할 + 시선 방향 여백
                 cols = [sum(grid[yy][xx] for yy in range(eh)) for xx in range(ew)]
-                rng = range(0, ew - ww + 1)
-                if faces:  # 주인공 얼굴이 화면 가로 20~80% 사이에 오도록 하는 위치만 후보로
-                    fx = faces[0][0] * ew
-                    ok = [i for i in rng if i + ww * 0.2 <= fx <= i + ww * 0.8]
-                    rng = ok or [max(0, min(ew - ww, int(fx - ww / 2)))]
-                best = max(rng, key=lambda i: sum(cols[i:i + ww]))
+                best = _compose(cols, ew, ww, subx, look, None, [f[0] * ew for f in faces[1:4]])
                 x = min(img.width - w, int(best / sx))
-            else:  # 세로로 남는다 → 위쪽(인물 얼굴 쪽)을 약간 선호
-                rows = [sum(grid[yy]) * (1.15 - 0.3 * yy / eh) for yy in range(eh)]
-                rng = range(0, eh - wh + 1)
-                if faces:
-                    fy = faces[0][1] * eh
-                    ok = [i for i in rng if i + wh * 0.15 <= fy <= i + wh * 0.6]
-                    rng = ok or [max(0, min(eh - wh, int(fy - wh / 3)))]
-                best = max(rng, key=lambda i: sum(rows[i:i + wh]))
+            else:  # 세로로 남는다: 얼굴은 위 1/3 (머리 위 여백), 사물은 가운데보다 약간 위
+                rows = [sum(grid[yy]) for yy in range(eh)]
+                best = _compose(rows, eh, wh, suby, 0, 1 / 3 if is_face else 0.42, [f[1] * eh for f in faces[1:4]])
                 y = min(img.height - h, int(best / sy))
         except Exception:
             pass
