@@ -244,8 +244,10 @@ def cover_fit(img, w, h, smart=True):
     if smart and (img.width - w > 8 or img.height - h > 8):
         try:
             grid, ew, eh = _interest(img)
-            faces = sorted(_people(img), key=lambda f: -f[2])  # 가장 크고 확실한 얼굴 = 주인공
-            objs = [] if faces else _objects(img)
+            # 화면 맨 가장자리(바깥 15%)의 얼굴은 주인공이 아니다 — 1인칭 슈팅 화면의 옆 병사 등.
+            # 게임 스크린샷은 보통 화면 가운데(조준점·캐릭터)를 중심으로 구성되므로 가장자리 인물을 따라가지 않는다
+            faces = sorted([f for f in _people(img) if 0.15 <= f[0] <= 0.85], key=lambda f: -f[2])
+            objs = [o for o in ([] if faces else _objects(img)) if 0.15 <= (o[0] + o[2]) / 2 <= 0.85]
             if not faces and not objs:  # 사람·동물·탈것 같은 주인공이 없으면 배경 위주 → 풍경 구도
                 x, y = _landscape(img, grid, ew, eh, w, h)
                 return img.crop((x, y, x + w, y + h))
