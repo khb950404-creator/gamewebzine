@@ -1,0 +1,53 @@
+name: esports-quick
+
+# 롤드컵 속보: 한국팀 경기가 끝나면 바로 결과 카드를 인스타에 올린다 (AI 없이 정해진 틀, 몇 분 안에).
+# 경기는 한국 시간 새벽~오전에 열리므로 그 시간대(UTC 15:00~03:00)에 10분마다 확인한다.
+on:
+  schedule:
+    - cron: "*/10 15-23 * * *"
+    - cron: "*/10 0-2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: esports-quick
+  cancel-in-progress: false
+
+env:
+  TZ: Asia/Seoul
+  IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+  IG_USER_ID: ${{ secrets.IG_USER_ID }}
+  IG_ENABLED: ${{ vars.IG_ENABLED }}
+
+jobs:
+  quick:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: 결과 확인 · 카드 생성
+        run: |
+          pip install -q pillow
+          python -u esports.py quick
+      - name: 커밋 (이미지를 GitHub 에 올려야 인스타가 가져갈 수 있다)
+        id: commit
+        run: |
+          git config user.name "webzine-bot"
+          git config user.email "webzine-bot@users.noreply.github.com"
+          git config merge.jsonunion.driver "python merge_data.py %O %A %B"
+          git add data media
+          if git diff --cached --quiet; then echo "new=0" >> $GITHUB_OUTPUT; exit 0; fi
+          git commit -m "롤드컵 속보 $(date '+%m-%d %H:%M')"
+          for i in 1 2 3; do git pull --rebase && git push && break; sleep 5; done
+          echo "new=1" >> $GITHUB_OUTPUT
+      - name: 인스타 즉시 게시
+        if: steps.commit.outputs.new == '1'
+        run: |
+          python -u esports.py quick-publish
+          git add data
+          git diff --cached --quiet || (git commit -m "롤드컵 속보 게시 기록" && for i in 1 2 3; do git pull --rebase && git push && break; sleep 5; done)

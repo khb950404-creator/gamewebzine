@@ -247,7 +247,7 @@ def render_bracket(ms, title, out):
     order = ["High", "Mid", "Middle", "Low"]
     for g, lst in sorted(groups.items(), key=lambda kv: order.index(kv[0]) if kv[0] in order else 9):
         bo = lst[0].get("bo")
-        d.text((76, y), GROUP_KO.get(g, g) + (" · 단판" if bo == 1 else f" · {bo}판 2선승" if bo == 3 else ""),
+        d.text((76, y), (group_ko(lst[0]["round"]) or g) + (" · 단판" if bo == 1 else f" · {bo}판 2선승" if bo == 3 else ""),
                font=NB(30), fill=GOLD if g == "High" else SOFT if g in ("Mid", "Middle") else DIM)
         y += 50
         for m in lst:
@@ -320,7 +320,7 @@ def make_draw_article(stage="Swiss_Stage"):
         for t, w in ((m["t1"], win1), (m["t2"], not win1)):
             a_, b_ = allrec.get(kname(t), (0, 0))
             allrec[kname(t)] = (a_ + w, b_ + (not w))
-    fmt = lambda m: f"{datetime.fromtimestamp(m['ts'], KST):%m/%d %H:%M} [{GROUP_KO.get((m['round'] or ' ').split()[-1], '')}, Bo{m.get('bo')}] {kname(m['t1'])} vs {kname(m['t2'])}"
+    fmt = lambda m: f"{datetime.fromtimestamp(m['ts'], KST):%m/%d %H:%M} [{group_ko(m['round'])}, Bo{m.get('bo')}] {kname(m['t1'])} vs {kname(m['t2'])}"
     r = webzine.llm(DRAW_PROMPT.format(today=datetime.now(KST).strftime("%Y년 %m월 %d일"), rnd=rnd,
                                        matches="; ".join(fmt(m) for m in cur),
                                        rec=", ".join(f"{k} {w}승 {l}패" for k, (w, l) in allrec.items())))
@@ -575,14 +575,226 @@ def make_info_articles():
     return [m for m in made if m]
 
 
+# ---------- 속보: 한국팀 경기 직후 결과 카드 (AI 없이 즉시) ----------
+RAW = "https://raw.githubusercontent.com/khb950404-creator/gamewebzine/main/"
+def group_ko(round_name):
+    """스위스 라운드·조 이름 → 'N승 M패 조' (라운드마다 다르다)."""
+    p = (round_name or "").split()
+    if len(p) < 2 or not p[1].isdigit():
+        return ""
+    r, g = int(p[1]), (p[2] if len(p) > 2 else "")
+    table = {2: {"High": "1승 0패 조", "Low": "0승 1패 조"},
+             3: {"High": "2승 0패 조", "Mid": "1승 1패 조", "Middle": "1승 1패 조", "Low": "0승 2패 조"},
+             4: {"High": "2승 1패 조", "Low": "1승 2패 조"},
+             5: {"": "2승 2패 조", "High": "2승 2패 조"}}
+    return table.get(r, {}).get(g, "")
+
+
+def _batchim(word):
+    """마지막 글자에 받침이 있나 (한글·숫자·영문 발음 기준)."""
+    w = (word or "").strip()
+    if not w:
+        return False
+    c = w[-1]
+    if "가" <= c <= "힣":
+        return (ord(c) - 0xAC00) % 28 != 0
+    if c.isdigit():
+        return c in "013678"  # 영·일·삼·육·칠·팔
+    return c.lower() in "lmn"  # 엘·엠·엔 (그 외 알파벳은 모음으로 끝난다고 본다)
+
+
+def josa(word, with_b, without_b):
+    return word + (with_b if _batchim(word) else without_b)
+
+
+def _status(name, rec, stage):
+    w, l = rec.get(name, (0, 0))
+    if stage == "Knockout_Stage":
+        return None
+    if w >= 3:
+        return f"{w}승 {l}패 · 8강 진출 확정"
+    if l >= 3:
+        return f"{w}승 {l}패 · 탈락"
+    return f"{w}승 {l}패"
+
+
+def render_result(m, rec, stage, stage_ko, out):
+    """경기 결과 카드: 두 팀 로고 · 큰 스코어 · 이긴 팀 강조 · 진출/탈락 상태."""
+    img = Image.new("RGB", (W, H), BG)
+    d = ImageDraw.Draw(img)
+    for i in range(H):
+        k = max(0, 1 - i / (H * 0.7))
+        d.line([(0, i), (W, i)], fill=(int(12 + 50 * k), int(12 + 6 * k), int(15 + 8 * k)))
+    win1 = int(m["s1"]) > int(m["s2"])
+    rnd = (m["round"] or "").split()
+    grp = group_ko(m["round"])
+    sub = stage_ko + (f" {rnd[1]}라운드" if len(rnd) > 1 and rnd[1].isdigit() else "") + (f" · {grp}" if grp else "")
+    d.text((W // 2, 120), "LoL 월드 챔피언십 2026", font=NB(36), fill=RED, anchor="mm")
+    d.text((W // 2, 175), sub, font=NM(32), fill=SOFT, anchor="mm")
+    d.text((W // 2, 250), "경기 결과", font=BH(60), fill=WHITE, anchor="mm")
+    for side, t, win in ((0, m["t1"], win1), (1, m["t2"], not win1)):
+        cx = W // 4 if side == 0 else W * 3 // 4
+        lg = logo((t["logo"] or "").replace("/120px-", "/600px-"), 260)
+        if lg:
+            if not win:  # 진 팀 로고는 살짝 어둡게
+                a = lg.split()[-1].point(lambda v: int(v * 0.45))
+                lg.putalpha(a)
+            img.paste(lg, (cx - lg.width // 2, 520 - lg.height // 2), lg)
+        d.text((cx, 720), kname(t), font=BH(54) if t["name"] in KR else NB(46), fill=WHITE if win else DIM, anchor="mm")
+        if win:
+            d.text((cx, 785), "WIN", font=ANTON(44), fill=GOLD, anchor="mm")
+    d.text((W // 2, 520), f"{m['s1']}:{m['s2']}", font=ANTON(170), fill=WHITE, anchor="mm")
+    y = 900
+    for t in (m["t1"], m["t2"]):
+        if t["name"] in KR:
+            st = _status(t["name"], rec, stage)
+            if st:
+                d.rounded_rectangle((180, y, W - 180, y + 84), 42, fill=CARD, outline=RED if "확정" in st else LINE, width=2)
+                d.text((W // 2, y + 42), f"{kname(t)} {st}", font=NB(38), fill=WHITE, anchor="mm")
+                y += 104
+    dt = datetime.fromtimestamp(m["ts"], KST)
+    d.text((W // 2, H - 150), f"{dt.month}월 {dt.day}일 · 한국 시간", font=NR(28), fill=DIM, anchor="mm")
+    d.text((76, H - 70), "자료: Liquipedia", font=NR(24), fill=DIM)
+    d.text((W - 56, H - 70), "@webzinealttab", font=NB(28), fill=RED, anchor="ra")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    img.save(out, quality=92)
+    return out
+
+
+def result_text(m, rec, stage, stage_ko):
+    """속보 제목·캡션 (정해진 틀, 사실만)."""
+    win1 = int(m["s1"]) > int(m["s2"])
+    W_, L_ = (m["t1"], m["t2"]) if win1 else (m["t2"], m["t1"])
+    sw, sl = (m["s1"], m["s2"]) if win1 else (m["s2"], m["s1"])
+    kr_w, kr_l = W_["name"] in KR, L_["name"] in KR
+    st_w, st_l = _status(W_["name"], rec, stage), _status(L_["name"], rec, stage)
+    if stage == "Knockout_Stage":
+        tail = "다음 라운드 진출" if kr_w else "탈락"
+    elif kr_w and st_w and "확정" in st_w:
+        tail = "8강 진출 확정"
+    elif kr_l and st_l and "탈락" in st_l:
+        tail = "탈락"
+    else:
+        tail = ""
+    if kr_w:
+        title = f"[롤드컵] {kname(W_)}, {kname(L_)} {sw}:{sl} 제압" + (f"…{tail}" if tail else "")
+    else:
+        title = f"[롤드컵] {kname(L_)}, {kname(W_)}에 {sl}:{sw} 패배" + (f"…{tail}" if tail else "")
+    rnd = (m["round"] or "").split()
+    where = stage_ko + (f" {rnd[1]}라운드" if len(rnd) > 1 and rnd[1].isdigit() else "")
+    score = f"{sw}:{sl}"
+    lines = [f"2026 LoL 월드 챔피언십 {where} 경기에서 {josa(kname(W_), '이', '가')} {josa(kname(L_), '을', '를')} "
+             f"{josa(score, '으로', '로')} 꺾었다."]
+    for t, st in ((W_, st_w), (L_, st_l)):
+        if t["name"] in KR and st:
+            lines.append(f"{kname(t)}의 스위스 스테이지 전적은 {st.replace(' · ', ', ')}이다." if "·" in st
+                         else f"{kname(t)}의 스위스 스테이지 전적은 {st}가 됐다.")
+    return title, lines
+
+
+def quick_results(publish=True, limit=2):
+    """끝난 한국팀 경기 중 아직 안 올린 것 → 결과 카드 + 사이트 기사 + (publish 면) 인스타 즉시 게시."""
+    import webzine
+    webzine.load_env()
+    state = webzine.load_json(DATA / "esports.json", {})
+    done_keys = set(state.get("quick", []))
+    new = []
+    for stage, stage_ko in STAGES:
+        try:
+            ms = stage_matches(stage)
+        except Exception as e:
+            print(f"  ! {stage}: {e}")
+            continue
+        rec = records(ms)
+        for m in sorted(ms, key=lambda m: m["ts"]):
+            if not m["done"] or not (m["t1"]["name"] in KR or m["t2"]["name"] in KR):
+                continue
+            key = f"{m['ts']}-{m['t1']['short']}-{m['t2']['short']}".replace(" ", "")
+            if key in done_keys:
+                continue
+            new.append((key, m, rec, stage, stage_ko))
+    if not state.get("quick_init"):  # 처음 켤 때는 이미 지난 경기는 올리지 않고 표시만
+        state["quick"] = [k for k, *_ in new]
+        state["quick_init"] = True
+        webzine.save_json(DATA / "esports.json", state)
+        print(f"롤드컵 속보: 기존 경기 {len(new)}건은 건너뜀 (다음 경기부터)")
+        return []
+    out = []
+    arts = webzine.load_json(DATA / "articles.json", [])
+    for key, m, rec, stage, stage_ko in new[:limit]:
+        aid = "worlds26-m-" + hashlib.md5(key.encode()).hexdigest()[:8]
+        img = render_result(m, rec, stage, stage_ko, MEDIA / f"{aid}.jpg")
+        title, lines = result_text(m, rec, stage, stage_ko)
+        a = {"id": aid, "title": title, "tldr": lines, "why": "", "body": lines + ["경기 후 선수·감독 인터뷰는 별도 기사로 전한다."],
+             "category": "e스포츠", "platforms": ["PC"], "games": ["리그 오브 레전드"], "games_en": ["League of Legends"],
+             "trust": "확인", "status": "published", "ts": m["ts"], "written": time.time(),
+             "img": f"media/esports/{img.name}", "img_hd": f"media/esports/{img.name}", "img_src": "알트탭 (자료: Liquipedia)",
+             "sources": [{"name": "Liquipedia", "title": f"2026 World Championship - {stage.replace('_', ' ')}",
+                          "link": f"{BASE}/leagueoflegends/{EVENT}/{stage}", "official": False}],
+             "esports": True, "quick": True}
+        arts.append(a)
+        state.setdefault("quick", []).append(key)
+        out.append(a)
+        print(f"롤드컵 속보: {title}")
+    if out:
+        webzine.save_json(DATA / "articles.json", arts)
+        webzine.save_json(DATA / "esports.json", state)
+    return out
+
+
+def publish_quick(arts):
+    """결과 카드를 인스타 단일 이미지로 바로 게시 (이미지는 GitHub raw 주소 — 사이트 배포를 기다리지 않는다)."""
+    import ig_post as g
+    import os
+    if os.environ.get("IG_ENABLED") != "1" or not os.environ.get("IG_USER_ID"):
+        print("인스타 비활성 — 게시 생략")
+        return
+    uid = os.environ["IG_USER_ID"]
+    posted = g.load(g.POSTED, {})
+    for a in arts:
+        if a["id"] in posted:
+            continue
+        url = RAW + a["img"]
+        if not g.wait_url(url, tries=12):
+            print(f"  ! 이미지 주소 준비 안 됨: {url}")
+            continue
+        cap = "\n".join([a["title"], ""] + a["tldr"] + ["", "출처: Liquipedia", "",
+                          " ".join("#" + t for t in ["롤드컵", "LCK", "롤", "Worlds2026", "e스포츠", "리그오브레전드",
+                                                     "알트탭", "LeagueOfLegends", "esports"])])
+        tags = []
+        for k, ts in (("T1", ["T1", "페이커"]), ("젠지", ["젠지", "GenG"]), ("한화생명", ["한화생명e스포츠"]),
+                      ("디플러스", ["디플러스기아", "DK"])):
+            if k in a["title"] + " ".join(a["tldr"]):
+                tags += ts
+        cap += " " + " ".join("#" + t for t in tags)
+        try:
+            c = g.api("POST", f"{uid}/media", image_url=url, caption=cap)["id"]
+            g.wait_ready(c)
+            mid = g.api("POST", f"{uid}/media_publish", creation_id=c)["id"]
+            posted[a["id"]] = {"media": mid, "kind": "news", "date": datetime.now().strftime("%Y-%m-%d"),
+                               "ts": time.time(), "forced": True}
+            print(f"인스타 속보 게시: {a['title']} → {mid}")
+        except Exception as e:
+            print(f"  ! 속보 게시 실패: {e}")
+    g.save(g.POSTED, posted)
+
+
 if __name__ == "__main__":
     sys.stdout.reconfigure(encoding="utf-8")
-    if sys.argv[1:] == ["table"]:
+    if sys.argv[1:2] == ["quick"]:  # 속보 1단계: 결과 카드 + 기사 저장 (커밋·푸시는 워크플로가)
+        quick_results()
+    elif sys.argv[1:2] == ["quick-publish"]:  # 속보 2단계: 푸시된 이미지로 인스타 게시
+        import webzine
+        ids = set(webzine.load_json(DATA / "esports.json", {}).get("quick", []))
+        arts = [a for a in webzine.load_json(DATA / "articles.json", []) if a.get("quick")
+                and time.time() - a.get("written", 0) < 6 * 3600]
+        publish_quick(arts)
+    elif sys.argv[1:] == ["table"]:
         ms = korean(stage_matches("Swiss_Stage"))
         for m in ms:
             print(datetime.fromtimestamp(m["ts"], KST).strftime("%m/%d %H:%M"), m["round"], kname(m["t1"]), m["s1"], ":", m["s2"], kname(m["t2"]), m["done"])
         print(render_table(ms, "스위스 스테이지", ROOT / "out" / "worlds_table.jpg"))
     else:
-        make_article()
+        # 경기별 결과는 esports.yml 속보가 바로 올린다 → 여기선 대진표·전적표만 (결과 요약 기사는 중복이라 끔)
         make_draw_article()
         make_info_articles()  # 라운드 종료 전적표(라운드마다 1번)
