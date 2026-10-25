@@ -750,6 +750,39 @@ def wait_url(url, tries=24):
     return False
 
 
+def split_tags(caption):
+    """캡션 = 본문 + 맨 끝 해시태그 줄 → (본문, 해시태그). 본문은 깔끔하게, 해시태그는 첫 댓글로 단다."""
+    lines = caption.rstrip().split("\n")
+    tags = []
+    while lines and lines[-1].strip().startswith("#"):
+        tags.insert(0, lines.pop().strip())
+    return "\n".join(lines).rstrip(), " ".join(tags)
+
+
+def clean_caption(caption):
+    """댓글 방식이 막혀 있으면(권한 없음) 해시태그를 캡션에 그대로 둔다."""
+    if load(DATA / "state.json", {}).get("ig_comment_tags") is False:
+        return caption
+    return split_tags(caption)[0]
+
+
+def comment_tags(mid, caption):
+    """게시 직후 첫 댓글로 해시태그. 권한이 없으면 다음부터는 캡션에 넣도록 기록."""
+    body, tags = split_tags(caption)
+    if not tags or load(DATA / "state.json", {}).get("ig_comment_tags") is False:
+        return
+    try:
+        api("POST", f"{mid}/comments", message=tags)
+        st = load(DATA / "state.json", {})
+        st["ig_comment_tags"] = True
+        save(DATA / "state.json", st)
+    except Exception as e:
+        print(f"  ! 해시태그 댓글 실패 (다음부터 캡션에 넣음): {e}")
+        st = load(DATA / "state.json", {})
+        st["ig_comment_tags"] = False
+        save(DATA / "state.json", st)
+
+
 def wait_ready(cid, tries=30):
     for _ in range(tries):
         st = api("GET", cid, fields="status_code").get("status_code")
@@ -820,9 +853,10 @@ def _publish():
                 continue
             if kind == "reel":
                 c = api("POST", f"{uid}/media", media_type="REELS", video_url=f"{site_url()}{IGDIR}/{q['id']}/reel.mp4",
-                        caption=q["caption"], share_to_feed="true", thumb_offset="800")["id"]  # 훅 문구가 꽉 찬 순간을 썸네일로
+                        caption=clean_caption(q["caption"]), share_to_feed="true", thumb_offset="800")["id"]  # 훅 문구가 꽉 찬 순간을 썸네일로
                 wait_ready(c, tries=30)  # 영상 처리는 1~3분 걸림
                 mid = api("POST", f"{uid}/media_publish", creation_id=c)["id"]
+                comment_tags(mid, q["caption"])
                 posted[q["id"]] = {"media": mid, "kind": kind, "date": datetime.now().strftime("%Y-%m-%d"), "ts": time.time(),
                                    "forced": os.environ.get("IG_FORCE") == "1"}
                 queue.remove(q)
@@ -850,9 +884,11 @@ def _publish():
                     c = api("POST", f"{uid}/media", image_url=url, is_carousel_item="true")["id"]
                     wait_ready(c)
                 children.append(c)
-            parent = api("POST", f"{uid}/media", media_type="CAROUSEL", children=",".join(children), caption=q["caption"])["id"]
+            parent = api("POST", f"{uid}/media", media_type="CAROUSEL", children=",".join(children),
+                         caption=clean_caption(q["caption"]))["id"]
             wait_ready(parent)
             mid = api("POST", f"{uid}/media_publish", creation_id=parent)["id"]
+            comment_tags(mid, q["caption"])
             posted[q["id"]] = {"media": mid, "kind": q.get("kind", "news"), "appids": q.get("appids", []),
                                "date": datetime.now().strftime("%Y-%m-%d"), "ts": time.time(),
                                    "forced": os.environ.get("IG_FORCE") == "1"}

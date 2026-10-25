@@ -770,9 +770,10 @@ def publish_quick(arts):
                 tags += ts
         cap += " " + " ".join("#" + t for t in tags)
         try:
-            c = g.api("POST", f"{uid}/media", image_url=url, caption=cap)["id"]
+            c = g.api("POST", f"{uid}/media", image_url=url, caption=g.clean_caption(cap.replace(" #", "\n#", 1)))["id"]
             g.wait_ready(c)
             mid = g.api("POST", f"{uid}/media_publish", creation_id=c)["id"]
+            g.comment_tags(mid, cap.replace(" #", "\n#", 1))
             posted[a["id"]] = {"media": mid, "kind": "news", "date": datetime.now().strftime("%Y-%m-%d"),
                                "ts": time.time(), "forced": True}
             print(f"인스타 속보 게시: {a['title']} → {mid}")
