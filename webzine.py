@@ -394,7 +394,9 @@ class LLMDown(Exception):
 
 
 PAGE_IMGS = {}  # 원문 URL → 본문에 실린 이미지 목록 (full_text 가 채운다)
+RIOT_CREDIT = re.compile(r"[©ⓒ]\s*(Riot Games|라이엇 ?게임즈|LCK)", re.I)  # 라이엇이 언론에 제공한 공식 사진 표기
 IMG_SKIP = re.compile(r"logo|avatar|icon|sprite|badge|banner|author|profile|placeholder|emoji|tracking|pixel|"
+                      r"inventeam|inven_member|/bbs/|/reporter/|"
                       r"grac|esrb|pegi|rating|user-\d|header_menu|/shared/images/|hamburger|/static/|gravatar|ytimg\.com|"
                       r"\.svg|\.gif|1x1|thumb(nail)?s?/|-150x|-300x|_small|/ads?/", re.I)
 
@@ -542,13 +544,20 @@ def write_batch(cands):
         a["id"] = hashlib.md5("".join(sorted(s["id"] for s in srcs)).encode()).hexdigest()[:10]
         a["sources"] = [{"name": s["source"], "title": s["title"], "link": s["link"], "official": s["official"],
                          **({"img": s["img"]} if s.get("img") else {})} for s in srcs]
-        gal = []  # 공식 발표 원문에 실린 이미지 (매체 사진은 저작권 문제로 제외)
-        for s in [s for s in srcs if s["official"]]:
+        gal = []  # 공식 발표 원문에 실린 이미지 (매체가 찍은 사진은 저작권 문제로 제외)
+        riot = [s for s in srcs if s["source"] in ESPORTS_ONLY and RIOT_CREDIT.search(s.get("full") or "")]
+        for s in [s for s in srcs if s["official"]] + riot:
             for u in (s.get("imgs") or []) + PAGE_IMGS.get(s["link"], []):
                 key = re.sub(r"(-\d+x\d+|-scaled)(?=\.\w+$)", "", u.split("?")[0])  # 같은 사진의 크기별 사본은 하나만
                 if key not in [g["key"] for g in gal]:
-                    gal.append({"src": u, "credit": s["source"], "key": key})
-        if gal and gallery_fits(a):  # 숫자·업계 소식엔 관련 없는 이미지가 붙기 쉬워 제외
+                    gal.append({"src": u, "credit": "Riot Games" if s in riot else s["source"], "key": key})
+        if gal and riot:  # e스포츠 인터뷰·경기 기사: 선수 사진(라이엇 공식)을 대표 이미지로, 나머지는 본문에
+            a["img"] = a["img_hd"] = gal[0]["src"]
+            a["img_src"] = "Riot Games"
+            a["img_v"] = 2
+            if len(gal) > 1:
+                a["gallery"] = [{"src": g["src"], "credit": g["credit"]} for g in gal[1:5]]
+        elif gal and gallery_fits(a):  # 숫자·업계 소식엔 관련 없는 이미지가 붙기 쉬워 제외
             a["gallery"] = [{"src": g["src"], "credit": g["credit"]} for g in rank_gallery(a, gal)[:6]]
         a["ts"] = max(s["ts"] for s in srcs)
         a["written"] = time.time()

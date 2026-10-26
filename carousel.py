@@ -51,7 +51,7 @@ def safe(t):
 
 
 def slide_title(a, total):
-    img = shade(bg(a, **({"mono": 0.0, "bright": 1.0} if a.get("esports") else {"bright": 0.8})), 0.40, 240)
+    img = shade(bg(a, **({"mono": 0.0, "bright": 1.0} if a.get("esports") or a.get("img_src") == "Riot Games" else {"bright": 0.8})), 0.40, 240)
     d = frame(img, 1, total, show_dots=True)
     tf, lines = fit(d, safe(a["title"]), BH, 108, W - 150, 4)
     lh = int(tf.size * 1.17)
