@@ -278,7 +278,7 @@ JSON 하나만 출력:
            정보 전달 우선: 누가·무엇을·언제·얼마나를 구체적으로(게임명, 날짜, 가격, 수치, 플랫폼). 40~90자.
            "대규모 업데이트 진행", "다양한 콘텐츠 추가"처럼 뭉뚱그린 축약 금지 — 무엇이 추가됐는지 이름을 적어라.
            세 줄은 서로 다른 정보여야 한다. 같은 날짜·사실을 두 줄 이상에 반복 금지. 정보가 2개뿐이면 2줄만),
-  "why": "PC·콘솔 게이머에게 왜 중요한가 (1~2문장)",
+  "why": "부제: 제목 아래에 붙는 한 문장 요약 (50~90자, 리드를 보완하는 핵심 맥락, '~했다/~이다'로 끝. '~때문이다'·'왜 중요한가' 식 금지)",
   "body": ["문단1", "문단2", "문단3", "문단4", "문단5"],
   "category": "{cats} 중 하나",
   "platforms": ["PC","PS5","Xbox","Switch" 중 출처에 명시된 것만],
@@ -1642,16 +1642,43 @@ def seo_head(title, desc, path, img, ld):
 
 
 def page(title, body, desc=SITE_DESC, path="", img=None, ld=None):
+    art_css = ARTICLE_CSS if 'class="art"' in body else ""  # 기사 페이지 전용 스타일
     return f"""<!doctype html><html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)}</title>
 {seo_head(title, desc, path, img, ld)}
-<style>{CSS}</style>{ads_head()}</head><body>
+<style>{CSS}{art_css}</style>{ads_head()}</head><body>
 <header><div class="wrap"><a class="logo" href="{{root}}index.html" aria-label="알트탭"><span class="k k1">alt</span><em>+</em><span class="k k2">tab</span><span class="cur"></span></a>
 <div class="gnb"><a href="{{root}}index.html">뉴스</a><a href="{{root}}patches.html">패치노트</a><a href="{{root}}calendar.html">출시 캘린더</a><a href="{{root}}deals.html">할인</a></div>
 <a class="sbtn" href="{{root}}search.html" aria-label="검색"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></a></div></header>
 <div id="pg"></div><div class="wrap">{body}</div><footer><div><a href="{{root}}about.html">소개</a><a href="{{root}}privacy.html">개인정보처리방침</a><a href="{{root}}contact.html">문의</a></div>
 <p>AI가 공개 출처를 종합해 작성하고 팩트체크를 거친 기사입니다 · 원문은 각 기사 하단 출처 참고</p></footer>{MOTION_JS}</body></html>"""
 
+
+ARTICLE_CSS = """
+.art{font-size:17px}
+.art .kick{font-size:13px;font-weight:800;letter-spacing:.08em;color:var(--acc);margin-bottom:10px}
+.art h1{font-size:clamp(26px,4.2vw,36px);line-height:1.28;letter-spacing:-.8px;margin:0 0 14px;font-weight:850;word-break:keep-all}
+.art .dek{font-size:19px;line-height:1.55;color:var(--mut);margin:0 0 18px;word-break:keep-all}
+.art .byl{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;font-size:13px;color:var(--mut);padding:12px 0;
+ border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:24px}
+.art .byl>span:not(.b)+span::before{content:"";display:inline-block;width:3px;height:3px;border-radius:50%;background:var(--mut);
+ margin-right:14px;vertical-align:middle;opacity:.6}
+.art .hero{margin:0 0 28px}.art .hero img,.art figure img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:12px;display:block;background:var(--line)}
+.art figcaption{font-size:12px;color:var(--mut);margin-top:8px;text-align:right}
+.art .tldr{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px 18px;margin:0 0 30px}
+.art .tldr h2{font-size:12px;letter-spacing:.12em;color:var(--acc);margin:0 0 10px;font-weight:800}
+.art .tldr ol{margin:0;padding:0;list-style:none;counter-reset:t}
+.art .tldr li{counter-increment:t;position:relative;padding:8px 0 8px 34px;line-height:1.6;border-top:1px solid var(--line);word-break:keep-all}
+.art .tldr li:first-child{border-top:0}
+.art .tldr li::before{content:"0" counter(t);position:absolute;left:0;top:8px;font:800 14px ui-monospace,Consolas,monospace;color:var(--acc)}
+.art .abody p{line-height:1.9;margin:0 0 1.25em;word-break:keep-all}
+.art .abody figure{margin:28px 0}
+.art .src{margin-top:36px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px}
+.art .src h2{font-size:12px;letter-spacing:.12em;color:var(--mut);margin:0 0 8px;font-weight:800}
+.art .src ul{margin:0;padding-left:18px;font-size:14px;line-height:1.7}.art .src a{text-decoration:underline;text-underline-offset:3px}
+.art .note{text-align:center}
+@media(max-width:640px){.art{font-size:16px}.art .dek{font-size:17px}.art .tldr{padding:16px 16px 14px}}
+"""
 
 MOTION_JS = """<script>document.addEventListener('click',e=>{const b=e.target.closest('.yt');if(!b)return;
 const f=document.createElement('iframe');f.src='https://www.youtube-nocookie.com/embed/'+b.dataset.v+'?autoplay=1&rel=0';
@@ -2202,6 +2229,25 @@ COVER_COLORS = {"신작": ("#e5484d", "#7c1d3f"), "업데이트": ("#2563eb", "#
                 "하드웨어": ("#0f766e", "#042f2e"), "할인·이벤트": ("#d97706", "#5b2c06"), "e스포츠": ("#db2777", "#4a0d2a")}
 
 
+HOTLINK_BLOCK = ("inven.co.kr", "khgames.co.kr")
+
+
+def local_img(u):
+    """다른 사이트에서 불러오기를 막는 이미지는 media/ext/ 에 저장해 우리 주소로 (한 번만 받는다)."""
+    if not u or not u.startswith("http") or not any(h in u for h in HOTLINK_BLOCK):
+        return u
+    name = hashlib.md5(u.encode()).hexdigest()[:16] + ".jpg"
+    p = ROOT / "media" / "ext" / name
+    if not p.exists():
+        try:
+            p.parent.mkdir(parents=True, exist_ok=True)
+            req = urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0", "Referer": "https://www.inven.co.kr/"})
+            p.write_bytes(urllib.request.urlopen(req, timeout=20).read())
+        except Exception:
+            return u
+    return f"media/ext/{name}"
+
+
 def rel_img(u):
     return u if u.startswith("http") else "../" + u
 
@@ -2284,6 +2330,11 @@ def build():
     cal = load_json(DATA / "calendar.json", {"releases": []})["releases"]
     for a in articles + pending:
         try:
+            for k_ in ("img", "img_hd"):  # 핫링크 막힌 사진은 저장본으로
+                if a.get(k_):
+                    a[k_] = local_img(a[k_])
+            for g_ in a.get("gallery", []):
+                g_["src"] = local_img(g_.get("src", ""))
             tldr = "".join(f"<li>{esc(t)}</li>" for t in a.get("tldr", []))
             gal = [g for g in a.get("gallery", []) if g.get("src") and g["src"] != (a.get("img_hd") or a.get("img"))]
             body = ""
@@ -2308,12 +2359,20 @@ def build():
                   "mainEntityOfPage": site_url() + f"a/{a['id']}.html", "inLanguage": "ko",
                   "author": {"@type": "Organization", "name": SITE_NAME}, "publisher": {"@type": "Organization", "name": SITE_NAME},
                   **({"image": [img]} if img else {})}
-            html_ = page(a["title"] + " — " + SITE_NAME, f"""<div class="apage"><article>{meta(a)}<h1>{esc(a["title"])}</h1>
-    {f'<figure class="hero"><img src="{esc(rel_img(a.get("img_hd") or a["img"]))}" alt=""><figcaption>이미지: {esc(a.get("img_src") or "Steam 스토어")}</figcaption></figure>' if a.get("img") else cover_html(a)}
-    {f'<div class="tldr"><ul>{tldr}</ul></div>' if tldr else ''}
+            plats_ = " · ".join(a.get("platforms", []))
+            byline = (f'<div class="byl"><span class="b {esc(a["trust"])}">{esc(a["trust"])}</span>'
+                      f'<span>알트탭 편집부</span><span>{fmt_time(a.get("written", a["ts"]))}</span>'
+                      f'{f"<span>{esc(plats_)}</span>" if plats_ else ""}<span>출처 {len(a["sources"])}곳</span></div>')
+            html_ = page(a["title"] + " — " + SITE_NAME, f"""<div class="apage"><article class="art">
+    <div class="kick">{esc(a.get("category") or "뉴스")}</div>
+    <h1>{esc(a["title"])}</h1>
+    {f'<p class="dek">{esc(a["why"])}</p>' if a.get("why") else ''}
+    {byline}
+    {f'<figure class="hero"><img src="{esc(rel_img(a.get("img_hd") or a["img"]))}" alt="" referrerpolicy="no-referrer"><figcaption>이미지: {esc(a.get("img_src") or "Steam 스토어")}</figcaption></figure>' if a.get("img") else cover_html(a)}
+    {f'<section class="tldr"><h2>핵심 요약</h2><ol>{tldr}</ol></section>' if tldr else ''}
     {video_html(a)}
-    {f'<p class="why">{esc(a["why"])}</p>' if a.get("why") else ''}
-    {body}{related_html(a, articles)}{ad("ADSENSE_SLOT_ARTICLE")}<div class="src"><b>출처</b><ul>{srcs}</ul></div><p class="note">{note}</p></article>{sidebar_html(a, articles, apps, patches, cal)}</div>""", desc=desc[:160], path=f"a/{a['id']}.html", img=img, ld=ld)
+    <div class="abody">{body}</div>
+    {related_html(a, articles)}{ad("ADSENSE_SLOT_ARTICLE")}<div class="src"><h2>출처</h2><ul>{srcs}</ul></div><p class="note">{note}</p></article>{sidebar_html(a, articles, apps, patches, cal)}</div>""", desc=desc[:160], path=f"a/{a['id']}.html", img=img, ld=ld)
             (SITE / "a" / f"{a['id']}.html").write_text(html_.replace("{root}", "../"), encoding="utf-8")
         except Exception as e:  # 기사 한 건이 잘못돼도 사이트 빌드는 계속
             print(f"  ! 기사 페이지 실패 {a.get('id')}: {e}")
