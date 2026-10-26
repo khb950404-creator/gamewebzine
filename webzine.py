@@ -243,7 +243,7 @@ PROMPT = """너는 PC·콘솔 게이머를 위한 한국어 게임 웹진 기자
 제목은 사실을 압축한 보도 제목으로 (주어 + 핵심 사실), 낚시성 물음·말줄임 남발 금지.
 
 기사 작성 기준 (전문 게임 기자처럼 성의 있게):
-- 본문은 4~6문단, 문단마다 3~4문장. 출처 '본문'의 구체적 정보(수치, 날짜, 가격, 인물 발언, 새 기능·모드·콘텐츠, 개발 배경)를 최대한 살려라.
+- 본문은 4~5문단, 문단마다 2~4문장, 전체 550~900자 (모든 기사 같은 분량). 출처 '본문'의 구체적 정보(수치, 날짜, 가격, 인물 발언, 새 기능·모드·콘텐츠, 개발 배경)를 최대한 살려라.
 - 1문단: 무엇이 언제 발표됐나 (리드). 2~4문단: 세부 내용, 핵심 발언 인용("...라고 밝혔다"), 전작·경쟁작과의 맥락.
   마지막 문단: 출시일·업데이트 일정 등 게이머가 체크할 점 (출처에 있는 것만).
 - 같은 말 반복, "기대를 모으고 있다", "귀추가 주목된다" 같은 상투적 마무리 금지. 문장마다 새 정보가 있어야 한다.
@@ -293,6 +293,26 @@ JSON 하나만 출력:
 ]}}
 
 {issues}"""
+
+
+EXPAND = """너는 게임 매체의 데스크(편집장)다. 아래 기사들은 분량·구성이 기준에 못 미친다. 출처 자료만 근거로 기준에 맞게 보강하라.
+기준 (모든 기사 동일):
+- tldr: 서로 다른 핵심 사실 3줄, 각 40~90자, '~했다/~이다'로 끝나는 기사체
+- body: 4~5문단, 문단마다 2~4문장, 전체 550~900자. 1문단 리드(무엇이 언제), 2~3문단 세부·발언 인용·맥락, 마지막 문단 일정·향후
+- 출처에 없는 사실·수식·평가 금지. 정보가 정말 부족하면 지어내지 말고 있는 사실을 정확히 풀어 쓴다.
+- 문체: 전문 매체의 객관적 기사체. 과장·구어체·느낌표 금지.
+JSON 하나만: {{"articles": [{{"issue": 번호, "tldr": [...], "body": [...]}}]}}
+
+=== 출처 ===
+{issues}
+
+=== 보강할 기사 ===
+{articles}"""
+
+
+def needs_expand(a):
+    body = a.get("body") or []
+    return sum(len(p) for p in body) < 450 or len(body) < 3 or len(a.get("tldr") or []) < 3
 
 
 VERIFY = """너는 게임 웹진의 팩트체커다. 아래 기사들을 각 이슈의 출처 자료와 한 문장씩 대조하라.
@@ -372,10 +392,19 @@ def fix_versions(a, src_text=""):
     return a
 
 
+def norm_title(t):
+    """제목 표기 통일: 말줄임은 '…' 하나 + 띄어쓰기, 이모지·느낌표 제거, 끝 마침표 제거."""
+    t = re.sub(r"[🌀-🫿☀-➿]", "", t)
+    t = re.sub(r"\s*(\.{2,}|…+)\s*", "… ", t).replace("!", "").strip()
+    t = re.sub(r"\s{2,}", " ", t).rstrip(" .…")
+    return t
+
+
 def clean_article(a):
     """AI 출력 형식 바로잡기. 제목이 글자가 아니면(건너뛸 글 표시가 섞인 경우 등) None."""
     if not isinstance(a.get("title"), str) or not a["title"].strip() or a.get("skip"):
         return None
+    a["title"] = norm_title(a["title"])
     for k_ in ("why", "trust", "category", "video_q", "hook", "title_en", "hook_en"):
         if k_ in a and a[k_] is not None and not isinstance(a[k_], str):
             a[k_] = str(a[k_]) if not isinstance(a[k_], (dict, list)) else ""
@@ -529,6 +558,24 @@ def write_batch(cands):
             print(f"  팩트체크 수정 {sum(len(a.get('problems', [])) for a in checked.values())}건")
         except Exception as e:
             print(f"  ! 팩트체크 실패, 전부 검수 대기로 보냄: {e}")
+
+    # 품질 일관성: 분량·구성이 기준 미달인 기사는 한 번에 보강 (모든 기사가 같은 틀을 갖게)
+    short = [n for n, a in drafts.items() if needs_expand({**a, **checked.get(n, {})})]
+    if short and not any(a.get("untranslated") for a in drafts.values()):
+        try:
+            v = llm(EXPAND.format(issues="\n\n".join(issue_text(n, cands[n - 1]) for n in short),
+                                  articles=json.dumps([{**drafts[n], **checked.get(n, {}), "issue": n} for n in short],
+                                                      ensure_ascii=False)))
+            for x in (v or {}).get("articles", []):
+                n = x.get("issue")
+                if n in drafts and isinstance(x.get("body"), list) and len(x["body"]) >= 3:
+                    tgt = checked[n] if n in checked else drafts[n]
+                    tgt["body"] = x["body"]
+                    if isinstance(x.get("tldr"), list) and len(x["tldr"]) >= 2:
+                        tgt["tldr"] = x["tldr"]
+            print(f"  분량 보강 {len(short)}건")
+        except Exception as e:
+            print(f"  ! 분량 보강 실패: {e}")
 
     out = []
     for n, a in sorted(drafts.items()):
