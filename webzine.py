@@ -239,6 +239,9 @@ PROMPT = """너는 PC·콘솔 게이머를 위한 한국어 게임 웹진 기자
 - "루머": 유출, 데이터마이닝, 익명 소식통, "~라고 알려졌다/~할 수도" 같은 추측, 미확인 소문
 대부분의 게임 뉴스는 공식 발표를 전하는 기사다. 루머는 정말 확인되지 않은 정보에만 붙여라.
 
+문체: 전문 게임 매체 기자의 객관적 기사체. 감탄사·느낌표·과장("역대급", "미쳤다", "터졌다")·구어체·조롱 금지.
+제목은 사실을 압축한 보도 제목으로 (주어 + 핵심 사실), 낚시성 물음·말줄임 남발 금지.
+
 기사 작성 기준 (전문 게임 기자처럼 성의 있게):
 - 본문은 4~6문단, 문단마다 3~4문장. 출처 '본문'의 구체적 정보(수치, 날짜, 가격, 인물 발언, 새 기능·모드·콘텐츠, 개발 배경)를 최대한 살려라.
 - 1문단: 무엇이 언제 발표됐나 (리드). 2~4문단: 세부 내용, 핵심 발언 인용("...라고 밝혔다"), 전작·경쟁작과의 맥락.
@@ -557,7 +560,16 @@ def write_batch(cands):
             a["img_v"] = 2
             if len(gal) > 1:
                 a["gallery"] = [{"src": g["src"], "credit": g["credit"]} for g in gal[1:5]]
-        elif gal and gallery_fits(a):  # 숫자·업계 소식엔 관련 없는 이미지가 붙기 쉬워 제외
+        elif a.get("category") == "e스포츠" or "League of Legends" in (a.get("games_en") or []):
+            try:  # 롤 기사에 선수 사진이 없으면 게임 이미지(협곡 지도) 대신 팀 로고 표지
+                import esports
+                cov = esports.cover_for(a, esports.MEDIA / f"{a['id']}_cover.jpg")
+                if cov:
+                    a["img"] = a["img_hd"] = f"media/esports/{cov.name}"
+                    a["img_src"], a["img_v"] = "알트탭 (로고: Liquipedia)", 2
+            except Exception as e:
+                print(f"  ! 롤 표지 실패: {e}")
+        if gal and not riot and gallery_fits(a) and not a.get("gallery"):  # 숫자·업계 소식엔 관련 없는 이미지가 붙기 쉬워 제외
             a["gallery"] = [{"src": g["src"], "credit": g["credit"]} for g in rank_gallery(a, gal)[:6]]
         a["ts"] = max(s["ts"] for s in srcs)
         a["written"] = time.time()
@@ -1002,6 +1014,8 @@ def attach_images(articles, cache):
         if a.get("img") or a.get("img_v") == 2:  # 이미 있거나, 새 방식으로 찾아봤는데 없던 기사
             continue
         a["img"], a["img_v"] = None, 2
+        if "League of Legends" in (a.get("games_en") or []) or a.get("category") == "e스포츠":
+            continue  # 롤은 게임 DB 이미지가 협곡 지도라 쓰지 않는다 (선수 사진·팀 로고 표지만)
         names = []
         for g in (a.get("games_en") or []) + (a.get("games") or []):
             for v in (g, EDITION_RE.sub("", g)):

@@ -78,9 +78,13 @@ def stage_matches(stage):
         s1, s2 = (sc + ["", ""])[:2]
         fin = 'data-finished="finished"' in blk
         bo = re.search(r"\(Bo(\d)\)", re.sub(r"<[^>]+>", " ", blk))
+        bo_n = int(bo.group(1)) if bo else 1
+        need = bo_n // 2 + 1  # 단판 1승, 3판 2선승 2승, 5판 3선승 3승
+        wins = max(int(s1) if (s1 or "").isdigit() else 0, int(s2) if (s2 or "").isdigit() else 0)
+        # '끝남' 표시는 세트 단위로도 붙어서 믿지 않는다 → 이긴 팀이 필요한 승수를 채웠을 때만 경기 종료
         out.append({"round": prev[-1] if prev else "", "ts": int(ts.group(1)), "t1": t1, "t2": t2,
-                    "s1": s1 or "", "s2": s2 or "", "done": fin and (s1 or "") not in ("", "-"),
-                    "bo": int(bo.group(1)) if bo else None})
+                    "s1": s1 or "", "s2": s2 or "", "done": fin and wins >= need,
+                    "bo": bo_n})
     last = ""
     for x in out:  # 라운드 제목은 묶음의 첫 경기에만 붙으므로 뒤로 이어 준다
         x["round"] = x["round"] or last
@@ -207,7 +211,7 @@ def render_cover(ms, out):
     teams, seen = [], set()
     for m in sorted(ms, key=lambda m: -m["ts"]):
         for t in (m["t1"], m["t2"]):
-            if t["name"] in KR and t["name"] not in seen:
+            if t.get("name") and (t["name"] in KR or m.get("ts") == 0) and t["name"] not in seen:
                 seen.add(t["name"])
                 teams.append(t)
     img = Image.new("RGB", (W, H), BG)
@@ -678,10 +682,11 @@ def result_text(m, rec, stage, stage_ko):
         tail = "탈락"
     else:
         tail = ""
+    rec_l = (st_l or "").split(" · ")[0]
     if kr_w:
-        title = f"[롤드컵] {kname(W_)}, {kname(L_)} {sw}:{sl} 제압" + (f"…{tail}" if tail else "")
+        title = f"[롤드컵] {kname(W_)}, {kname(L_)}에 {sw}:{sl} 승리" + (f"… {tail}" if tail else "")
     else:
-        title = f"[롤드컵] {kname(L_)}, {kname(W_)}에 {sl}:{sw} 패배" + (f"…{tail}" if tail else "")
+        title = f"[롤드컵] {kname(L_)}, {kname(W_)}에 {sl}:{sw} 패배" + (f"… {tail}" if tail else f"… {rec_l}" if rec_l else "")
     rnd = (m["round"] or "").split()
     where = stage_ko + (f" {rnd[1]}라운드" if len(rnd) > 1 and rnd[1].isdigit() else "")
     score = f"{sw}:{sl}"
@@ -692,6 +697,39 @@ def result_text(m, rec, stage, stage_ko):
             lines.append(f"{kname(t)}의 스위스 스테이지 전적은 {st.replace(' · ', ', ')}이다." if "·" in st
                          else f"{kname(t)}의 스위스 스테이지 전적은 {st}가 됐다.")
     return title, lines
+
+
+def save_logos(ms):
+    import webzine
+    st = webzine.load_json(DATA / "esports.json", {})
+    lg = st.get("logos", {})
+    for m in ms:
+        for t in (m["t1"], m["t2"]):
+            if t.get("logo"):
+                lg[t["name"]] = t["logo"]
+    st["logos"] = lg
+    webzine.save_json(DATA / "esports.json", st)
+
+
+ALIAS = {"T1": ["T1", "티원", "페이커", "Faker"], "Gen.G Esports": ["Gen.G", "젠지", "GenG"],
+         "Hanwha Life Esports": ["HLE", "한화생명", "Hanwha"], "Dplus": ["Dplus", "디플러스", "DK"],
+         "KT Rolster": ["KT", "kt 롤스터"], "Invictus Gaming": ["IG"], "Bilibili Gaming": ["BLG"],
+         "Top Esports": ["TES"], "G2 Esports": ["G2"], "Anyone's Legend": ["AL", "애니원즈"],
+         "Movistar KOI": ["MKOI"], "Karmine Corp": ["KC", "카르민"], "CTBC Flying Oyster": ["CFO"],
+         "LYON": ["LYON"], "Team Liquid": ["TL", "리퀴드"], "LOS": ["LOS"], "Secret Whales": ["TSW"]}
+
+
+def cover_for(a, out):
+    """사진 없는 롤 기사 표지: 제목·요약에 나온 팀 로고 (없으면 대회 로고 대신 글자 표지)."""
+    import webzine
+    logos = webzine.load_json(DATA / "esports.json", {}).get("logos", {})
+    text = a.get("title", "") + " " + " ".join(a.get("tldr", [])[:1])
+    teams = []
+    for name, keys in ALIAS.items():
+        if any(re.search(r"(?<![A-Za-z])" + re.escape(k) + r"(?![A-Za-z])", text) for k in keys) and logos.get(name):
+            teams.append({"name": name, "logo": logos[name]})
+    fake = [{"ts": 0, "t1": t, "t2": {"name": "", "logo": None}} for t in teams[:4]]
+    return render_cover(fake, out) if teams else None
 
 
 def quick_results(publish=True, limit=2):
@@ -708,6 +746,7 @@ def quick_results(publish=True, limit=2):
             print(f"  ! {stage}: {e}")
             continue
         rec = records(ms)
+        save_logos(ms)
         for m in sorted(ms, key=lambda m: m["ts"]):
             if not m["done"] or not (m["t1"]["name"] in KR or m["t2"]["name"] in KR):
                 continue

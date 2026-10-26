@@ -138,6 +138,32 @@ def video_news(a):
 PLAYABLE = re.compile(r"무료|출시|배포|업데이트|패치|시즌 \d|확장팩|DLC|할인|얼리 액세스|베타|데모|체험판|지금 바로|오늘")
 
 
+_STOPT = set("롤드컵 공개 출시 발표 확정 기록 신규 대규모 이번 게임 소식 업데이트 공식 전격 역대 최대 규모 기대 화제 논란 "
+              "2026 라운드 스위스 스테이지".split())
+_ALIAS = {"gen.g": "geng", "젠지": "geng", "한화생명": "hle", "hanwha": "hle", "디플러스": "dk", "dplus": "dk", "kia": "dk"}
+
+
+def title_tokens(t):
+    t = (t or "").lower()
+    for k, v in _ALIAS.items():
+        t = t.replace(k, f" {v} ")
+    w = set(re.findall(r"[a-z0-9.%]+|[가-힣]{2,}", t))
+    w = {x[:-1] if len(x) > 2 and x.endswith(("은", "는", "이", "가", "을", "를", "의", "에", "와", "과", "로")) else x for x in w}
+    return {x for x in w if x not in _STOPT and len(x) > 1}
+
+
+def same_story(t1, t2):
+    """제목 두 개가 같은 사건인가: 핵심어 2개 이상 겹치고, 짧은 쪽 핵심어의 절반 이상이 겹치면 같은 소식."""
+    a, b = title_tokens(t1), title_tokens(t2)
+    s = a & b
+    return len(s) >= 2 and len(s) / max(1, min(len(a), len(b))) >= 0.5
+
+
+def recent_titles(posted, arts_by_id, hours=72):
+    return [arts_by_id[i]["title"] for i, p in posted.items()
+            if i in arts_by_id and time.time() - p.get("ts", 0) < hours * 3600]
+
+
 def is_big(a):
     import re as _re
     text = _re.sub(r"[^0-9a-z가-힣]", "", " ".join([a["title"]] + (a.get("games_en") or []) + (a.get("games") or [])).lower())
@@ -212,13 +238,17 @@ def pick(arts, posted, n, queued_ids=(), cap=True, by_pop=False):
     recent = [byid[i] for i, p in posted.items() if i in byid and time.time() - p.get("ts", 0) < 2 * 86400]
     recent += [byid[i] for i in queued_ids if i in byid]
     used = {g.lower() for a in recent for g in (a.get("games_en") or [])}
+    seen_t = [a["title"] for a in recent] + recent_titles(posted, byid)
     out = []
     for a in cand:
+        if any(same_story(a["title"], t) for t in seen_t):  # 이미 올렸거나 대기 중인 같은 소식
+            continue
         gs = {g.lower() for g in (a.get("games_en") or [])}
         if gs & used and not is_big(a):  # 대형 프랜차이즈는 소식이 많아 같은 게임이어도 올린다
             continue
         out.append(a)
         used |= gs
+        seen_t.append(a["title"])
         if len(out) >= room:
             break
     return out
@@ -563,7 +593,7 @@ def prepare():
                 render(a, SITE / IGDIR / a["id"] / "reel.mp4", lang=PROFILE, handle=HANDLE_P)
                 cap_ = caption(a) if PROFILE == "ko" else caption_en(a)
                 if is_brk:
-                    cap_ = ("🚨 [속보] " if PROFILE == "ko" else "🚨 BREAKING: ") + cap_
+                    cap_ = ("[속보] " if PROFILE == "ko" else "BREAKING: ") + cap_
                 queue.append({"id": a["id"], "kind": "reel", "files": ["reel.mp4"], "caption": cap_,
                               "hook": a.get("hook"), "hook_en": a.get("hook_en"), "breaking": is_brk})
                 reels_today += 0 if is_brk else 1
@@ -725,7 +755,7 @@ def caption(a):
     for t in tags:  # 대소문자만 다른 태그는 하나로 (#LeagueOfLegends / #LeagueofLegends)
         if t and t.lower() not in uniq:
             uniq[t.lower()] = t
-    lines += ["", question(a), "", " ".join("#" + t for t in list(uniq.values())[:30])]  # 인스타 한도 30개
+    lines += ["", " ".join("#" + t for t in list(uniq.values())[:30])]  # 인스타 한도 30개 (질문 문구 없이 기사체로)
     return "\n".join(lines)[:2100]
 
 
@@ -858,6 +888,12 @@ def _publish():
         if q.get("kind") != "story" and budget <= 0:
             continue
         if q["id"] in posted:
+            queue.remove(q)
+            continue
+        qt = (arts.get(q["id"]) or {}).get("title")
+        if qt and q.get("kind") not in ("story", "series", "deal") and any(
+                same_story(qt, t) for t in recent_titles(posted, arts, 72)):
+            print(f"  같은 소식 이미 게시 — 건너뜀: {qt}")
             queue.remove(q)
             continue
         try:
