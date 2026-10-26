@@ -71,7 +71,8 @@ def still_slide(a, head, lines, page, total):
 
 
 def cover(a, lines):
-    img = shade(bg({**a, "img_hd": best_image(a)}, mono=0.0, bright=0.85), 0.30, 235)  # 표지는 컬러
+    from carousel import photo_bg
+    img = photo_bg({**a, "img_hd": best_image(a)})  # 카드뉴스 표지와 같은 톤
     d = ImageDraw.Draw(img)
     f1, l1 = fit(d, safe(lines[0]), BH, 92, W - 152, 1, 60)
     f2, l2 = fit(d, safe(lines[1]), BH, 108, W - 152, 1, 72)  # 핵심 줄은 가능하면 한 줄로

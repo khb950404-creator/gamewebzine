@@ -27,62 +27,114 @@ CAT_EN = {"신작": "NEW GAME", "업데이트": "UPDATE", "업계": "INDUSTRY", 
           "e스포츠": "ESPORTS", "기타": "NEWS"}
 
 
+INK = (12, 12, 15)          # 본문 장 바탕
+MUTE = (150, 150, 160)      # 보조 글자
+RULE = (40, 40, 48)         # 구분선
+M = 76                      # 좌우 여백
+
+
 def frame(img, page, total, show_dots=False):
+    """모든 장 공통 틀: 맨 위 진행 표시줄 · 왼쪽 위 로고 · 오른쪽 위 쪽수 · 왼쪽 아래 계정명."""
     d = ImageDraw.Draw(img)
-    # 디자인 포인트: 로고의 '+' (가늘게 — 굵으면 의료용 십자가처럼 보임)
-    cx, cy, L, t = 100, 100, 26, 4
-    # 왼쪽 위 '+' 표시는 뺐다 (거슬린다는 피드백)
-    d.text((W - 56, 70), f"{page}/{total}", font=NB(30), fill=LIME, anchor="ra")
-    d.text((W - 56, H - 70), HANDLE_NOW[0], font=NB(32), fill=LIME, anchor="ra")
+    d.rectangle((0, 0, W, 6), fill=(255, 255, 255, 40) if img.mode == "RGBA" else (34, 34, 40))
+    d.rectangle((0, 0, int(W * page / max(1, total)), 6), fill=LIME)
+    x = M
+    for part, col in (("ALT", WHITE), ("+", LIME), ("TAB", WHITE)):
+        d.text((x, 62), part, font=ANTON(34), fill=col)
+        x += d.textlength(part, font=ANTON(34)) + 2
+    d.text((W - M, 64), f"{page:02d} / {total:02d}", font=NM(26), fill=MUTE, anchor="ra")
+    d.text((M, H - 64), HANDLE_NOW[0], font=NM(26), fill=MUTE, anchor="ls")
     return d
+
+
+def kicker(d, x, y, text, fill=None):
+    """작은 분류 표시 (빨간 막대 + 글자)."""
+    d.rectangle((x, y + 6, x + 6, y + 34), fill=fill or LIME)
+    d.text((x + 20, y), text, font=NB(30), fill=fill or LIME)
+    return y + 64
+
+
+def photo_bg(a, strength=0.92):
+    """표지 배경: 컬러 사진 + 아래쪽으로 짙어지는 그라데이션 (제목 자리)."""
+    im = bg(a, mono=0.1, bright=0.95, contrast=1.05).convert("RGB")
+    grad = Image.new("L", (1, H))
+    for y in range(H):
+        t = max(0.0, (y - H * 0.30) / (H * 0.55))
+        top = max(0.0, (H * 0.16 - y) / (H * 0.16)) * 0.55
+        grad.putpixel((0, y), int(255 * min(0.97, top + strength * t ** 1.1)))
+    return Image.composite(Image.new("RGB", (W, H), INK), im, grad.resize((W, H)))
+
+
+def paper():
+    return Image.new("RGB", (W, H), INK)
 
 
 HANDLE_NOW = [HANDLE]
 
 
 def text_bg(a):
-    """본문 장 배경: 같은 이미지를 흐리고 아주 어둡게 → 장이 넘어가도 한 세트로 보이게."""
-    im = bg(a, bright=0.5).filter(ImageFilter.GaussianBlur(18))
-    return Image.blend(im, Image.new("RGB", (W, H), (10, 10, 12)), 0.55)
+    """본문 장 배경: 단색 (글이 잘 읽히고 모든 게시물이 같은 톤)."""
+    return paper()
 
 
 def safe(t):
     return t.replace("…", "...").replace("·", ", ").replace("ㆍ", ", ")  # 블랙한산스에 없는 글자
 
 
-def slide_title(a, total):
-    img = shade(bg(a, **({"mono": 0.0, "bright": 1.0} if a.get("esports") or a.get("img_src") == "Riot Games" else {"bright": 0.8})), 0.40, 240)
-    d = frame(img, 1, total, show_dots=True)
-    tf, lines = fit(d, safe(a["title"]), BH, 108, W - 150, 4)
-    lh = int(tf.size * 1.17)
-    y = H - 230 - len(lines) * lh
-    label = f"{a.get('trust')} · {a.get('category')}" if LANG == "ko" else         f"{TRUST_EN.get(a.get('trust'), 'NEWS')} · {CAT_EN.get(a.get('category'), 'NEWS')}"
-    d.text((76, y - 70), label, font=NB(34), fill=LIME)
+def cover_text(img, kick, title, sub=None, page=1, total=1):
+    """표지 글자 배치 (모든 표지 공통): 분류 → 제목 → 한 줄 부제, 아래쪽 정렬."""
+    d = frame(img, page, total)
+    tf, lines = fit(d, safe(title), BH, 100, W - 2 * M, 4, 64)
+    lh = int(tf.size * 1.18)
+    sub_l = []
+    if sub:
+        sf, sub_l = fit(d, sub, NM, 34, W - 2 * M, 2, 28)
+    y = H - 150 - len(lines) * lh - (len(sub_l) * 50 + 24 if sub_l else 0)
+    # 글자 뒤는 제목 길이에 맞춰 충분히 어둡게 (밝은 사진에서도 읽히게)
+    top = max(0, y - 74 - 260)
+    mask = Image.new("L", (1, H))
+    for yy in range(H):
+        k = 0.0 if yy < top else min(1.0, (yy - top) / 300)
+        mask.putpixel((0, yy), int(235 * k))
+    img.paste(Image.new("RGB", (W, H), INK), (0, 0), mask.resize((W, H)))
+    d = frame(img, page, total)
+    kicker(d, M, y - 74, kick)
     for ln in lines:
-        d.text((76, y), ln, font=tf, fill=WHITE)
+        d.text((M, y), ln, font=tf, fill=WHITE)
         y += lh
+    if sub_l:
+        y += 24
+        for ln in sub_l:
+            d.text((M, y), ln, font=sf, fill=(205, 205, 212))
+            y += 50
     return img
 
 
+def slide_title(a, total):
+    label = f"{a.get('category') or '뉴스'} · {a.get('trust')}" if LANG == "ko" else \
+        f"{CAT_EN.get(a.get('category'), 'NEWS')} · {TRUST_EN.get(a.get('trust'), 'NEWS')}"
+    return cover_text(photo_bg(a), label, a["title"], None, 1, total)
+
+
 def slide_heading(d, y, label):
-    d.rectangle((76, y + 8, 90, y + 44), fill=LIME)
-    d.text((108, y), label, font=BH(48), fill=LIME)
-    return y + 100
+    return kicker(d, M, y, label) + 10
 
 
 def slide_summary(a, total, page=2):
     img = text_bg(a)
     d = frame(img, page, total)
-    y = slide_heading(d, 300, L[LANG]["key"])
+    y = slide_heading(d, 190, L[LANG]["key"])
     from ig_post import to_card_tone
     pts = a.get("tldr", [])[:3] if LANG == "en" else [to_card_tone(x) for x in a.get("tldr", [])[:3]]
     for i, t in enumerate(pts, 1):
-        d.text((76, y), f"{i:02d}", font=ANTON(64), fill=LIME)
-        pf, ls = fit(d, t, NB, 46, W - 250, 5)  # 정보 전달 우선: 줄이지 말고 줄 수를 늘린다
-        plh = int(pf.size * 1.39)
+        if i > 1:
+            d.line([(M, y - 34), (W - M, y - 34)], fill=RULE, width=2)
+        d.text((M, y - 4), f"{i:02d}", font=ANTON(54), fill=LIME)
+        pf, ls = fit(d, t, NM, 44, W - M - 170, 5)  # 정보 전달 우선: 줄이지 말고 줄 수를 늘린다
+        plh = int(pf.size * 1.45)
         for k, ln in enumerate(ls):
-            d.text((180, y + 6 + k * plh), ln, font=pf, fill=WHITE)
-        y += max(1, len(ls)) * plh + 60
+            d.text((M + 94, y + k * plh), ln, font=pf, fill=WHITE)
+        y += max(1, len(ls)) * plh + 70
     if a.get("why") and y < H - 330:  # 요약이 길어 자리가 없으면 '왜 중요한가'는 생략 (본문·캡션에 있음)
         y += 10
         d.line([(76, y), (W - 76, y)], fill=(70, 70, 76), width=2)
@@ -110,8 +162,8 @@ def gallery_imgs(a):
 def body_pages(a):
     """본문 문단을 카드 한 장 높이에 맞게 나눈다. 공식 이미지가 있는 장은 위쪽에 사진 칸을 둔다."""
     probe = ImageDraw.Draw(Image.new("RGB", (W, H)))
-    f, lh, bottom = NR(38), 62, H - 170
-    top_of = lambda k: 230
+    f, lh, bottom = NR(38), 62, H - 150
+    top_of = lambda k: 190
     pages, cur, y = [], [], top_of(0)
     for para in a.get("body", []):
         ls = wrap(probe, para, f, W - 152)
@@ -129,10 +181,10 @@ def body_pages(a):
 def slide_body(a, paras, page, total, idx, n):
     img = text_bg(a)
     d = frame(img, page, total)
-    y = 230  # '자세히 (1/2)' 머리글 없이 본문만 (쪽수는 오른쪽 위에 이미 있음)
+    y = 190  # '자세히 (1/2)' 머리글 없이 본문만 (쪽수는 오른쪽 위에 이미 있음)
     for ls in paras:
         for ln in ls:
-            d.text((76, y), ln, font=NR(38), fill=SOFT)
+            d.text((M, y), ln, font=NR(38), fill=(226, 226, 232))
             y += 62
         y += 34
     return img
@@ -142,22 +194,22 @@ def slide_photo(a, im, credit, page, total):
     """공식 발표 이미지 한 장: 잘리지 않게 원본 비율로 가운데, 뒤는 같은 사진을 흐리게."""
     from cards import cover_fit
     back = cover_fit(im, W, H).crop((0, 0, W, H)).filter(ImageFilter.GaussianBlur(28))
-    img = Image.blend(back.convert("RGB"), Image.new("RGB", (W, H), (10, 10, 12)), 0.6)
-    r = min(W / im.width, (H - 360) / im.height)
+    img = Image.blend(back.convert("RGB"), Image.new("RGB", (W, H), INK), 0.72)
+    r = min((W - 2 * M) / im.width, (H - 360) / im.height)
     ph = im.resize((int(im.width * r), int(im.height * r)), Image.LANCZOS)
     img.paste(ph, ((W - ph.width) // 2, (H - ph.height) // 2))
     d = frame(img, page, total)
     if credit:
-        d.text((76, H - 70), ("이미지: " if LANG == "ko" else "Image: ") + credit, font=NR(28), fill=SOFT)
+        d.text((W - M, H - 64), ("이미지 " if LANG == "ko" else "Image ") + credit, font=NM(24), fill=MUTE, anchor="rs")
     return img
 
 
 def slide_end(a, total):
     img = text_bg(a)
     d = frame(img, total, total)
-    y = slide_heading(d, 300, L[LANG]["src"])
+    y = slide_heading(d, 190, L[LANG]["src"])
     for s in a.get("sources", [])[:4]:
-        if y > H - 520:  # 아래 버튼과 겹치지 않게
+        if y > H - 420:
             break
         d.text((76, y), (L[LANG]["official"] if s.get("official") else "") + s["name"], font=NB(38), fill=WHITE)
         sf, sl = fit(d, s["title"], NR, 30, W - 152, 2, 22)
@@ -166,12 +218,17 @@ def slide_end(a, total):
             d.text((76, y), ln, font=sf, fill=(170, 170, 178))
         y += 80
     if a.get("img_src"):
-        d.text((76, y), f"{L[LANG]['img']}: {a['img_src']}", font=NR(28), fill=(150, 150, 158))
-    # 행동 유도
-    d.rounded_rectangle((76, H - 330, W - 76, H - 170), 24, fill=LIME)
-    d.text((W // 2, H - 280), L[LANG]["cta1"], font=NB(40), fill=WHITE, anchor="mm")
-    d.text((W // 2, H - 220), L[LANG]["cta2"], font=BH(56 if LANG == "ko" else 50), fill=WHITE, anchor="mm")
+        d.text((M, y), f"{L[LANG]['img']} {a['img_src']}", font=NR(28), fill=MUTE)
+    sign_off(d)
     return img
+
+
+def sign_off(d, line=None):
+    """마지막 장 서명 (버튼 대신 차분하게)."""
+    d.line([(M, H - 250), (W - M, H - 250)], fill=RULE, width=2)
+    d.text((M, H - 200), "ALT+TAB", font=ANTON(44), fill=WHITE)
+    d.text((M, H - 140), line or ("PC·콘솔 게임 뉴스를 매일 정리합니다" if LANG == "ko" else "Daily PC & console game news"),
+           font=NM(30), fill=MUTE)
 
 
 def best_image(a):
@@ -210,36 +267,21 @@ def build_weekly_top(arts, handle=None):
     HANDLE_NOW[0] = handle or HANDLE
     from ig_post import to_card_tone
     total = len(arts) + 2
-    cover = shade(bg({**arts[0], "img_hd": best_image(arts[0])}, bright=0.7), 0.25, 240)
-    d = frame(cover, 1, total)
-    d.text((76, 640), "이번 주", font=BH(110), fill=WHITE)
-    d.text((76, 770), "게임 뉴스", font=BH(110), fill=WHITE)
-    d.text((76 + d.textlength("게임 뉴스 ", font=BH(110)), 910), "TOP" + str(len(arts)), font=ANTON(150), fill=LIME, anchor="ls")
-    d.text((76, 960), "가장 화제였던 소식만 골랐습니다", font=NM(36), fill=SOFT)
-    slides = [cover]
+    slides = [cover_text(photo_bg({**arts[0], "img_hd": best_image(arts[0])}), "주간 TOP" + str(len(arts)),
+                         f"이번 주 게임 뉴스 TOP{len(arts)}", "가장 화제였던 소식을 골랐습니다", 1, total)]
     for i, a in enumerate(arts, 1):
-        a2 = {**a, "img_hd": best_image(a)}
-        img = shade(bg(a2, bright=0.8), 0.35, 242)
-        d = frame(img, i + 1, total)
-        d.text((76, 600), f"{i}", font=ANTON(200), fill=LIME)
-        y = 840
-        tf2, tl2 = fit(d, safe(a["title"]), BH, 88, W - 152, 3)
-        for ln in tl2:
-            d.text((76, y), ln, font=tf2, fill=WHITE)
-            y += int(tf2.size * 1.18)
-        if a.get("tldr"):
-            tf3, tl3 = fit(d, to_card_tone(a["tldr"][0]), NM, 38, W - 152, 2, 26)
-            for ln in tl3:
-                d.text((76, y + 20), ln, font=tf3, fill=SOFT)
-                y += int(tf3.size * 1.47)
-        slides.append(img)
-    end = text_bg(arts[0])
+        sub = to_card_tone(a["tldr"][0]) if a.get("tldr") else None
+        slides.append(cover_text(photo_bg({**a, "img_hd": best_image(a)}), f"No.{i}", a["title"], sub, i + 1, total))
+    end = paper()
     d = frame(end, total, total)
-    d.text((76, 420), "매주 일요일", font=BH(90), fill=WHITE)
-    d.text((76, 530), "한 주 정리", font=BH(90), fill=LIME)
-    d.rounded_rectangle((76, H - 330, W - 76, H - 170), 24, fill=LIME)
-    d.text((W // 2, H - 280), L["ko"]["cta1"], font=NB(40), fill=WHITE, anchor="mm")
-    d.text((W // 2, H - 220), L["ko"]["cta2"], font=BH(56), fill=WHITE, anchor="mm")
+    y = slide_heading(d, 190, "이번 주 TOP" + str(len(arts)))
+    for i, a in enumerate(arts, 1):
+        tf, tl = fit(d, safe(a["title"]), NM, 36, W - 2 * M - 70, 2, 28)
+        d.text((M, y), f"{i:02d}", font=ANTON(40), fill=LIME)
+        for k, ln in enumerate(tl):
+            d.text((M + 70, y + k * 50), ln, font=tf, fill=WHITE)
+        y += len(tl) * 50 + 34
+    sign_off(d, "매주 일요일, 한 주의 게임 뉴스를 정리합니다")
     slides.append(end)
     return slides
 
@@ -275,38 +317,21 @@ def build_weekly_releases(games, title_top="이번 주", handle=None):
     wd = "월화수목금토일"
     def g2a(g):
         return {"img": g.get("img_hd") or g.get("img"), "img_hd": g.get("img_hd") or g.get("img")}
-    cover = shade(bg(g2a(games[0]), bright=0.7), 0.25, 240)
-    d = frame(cover, 1, total)
-    d.text((76, 640), title_top, font=BH(110), fill=WHITE)
-    d.text((76, 770), "출시 게임", font=BH(110), fill=WHITE)
-    d.text((76 + d.textlength("출시 게임 ", font=BH(110)), 910), str(len(games)), font=ANTON(150), fill=LIME, anchor="ls")
-    d.text((76, 960), "저장해두고 하나씩 체크하세요", font=NM(36), fill=SOFT)
-    slides = [cover]
+    slides = [cover_text(photo_bg(g2a(games[0])), "주간 출시", f"{title_top} 출시 게임 {len(games)}",
+                         "출시일을 한눈에 정리했습니다", 1, total)]
     for i, g in enumerate(games, 1):
-        img = shade(bg(g2a(g), bright=0.8), 0.35, 242)
-        d = frame(img, i + 1, total)
         dt = datetime.strptime(g["date"], "%Y-%m-%d")
-        d.text((76, 790), f"{dt.month}/{dt.day}", font=ANTON(150), fill=LIME, anchor="ls")
-        d.text((76 + d.textlength(f"{dt.month}/{dt.day} ", font=ANTON(150)), 790), f"{wd[dt.weekday()]}요일",
-               font=BH(60), fill=LIME, anchor="ls")
-        y = 840
-        tf2, tl2 = fit(d, safe(g["name"]), BH, 92, W - 152, 3)
-        for ln in tl2:
-            d.text((76, y), ln, font=tf2, fill=WHITE)
-            y += int(tf2.size * 1.18)
-        info = " / ".join(g.get("platforms") or [])
-        if info:
-            tf3, tl3 = fit(d, info, NM, 38, W - 152, 2, 26)
-            for ln in tl3:
-                d.text((76, y + 20), ln, font=tf3, fill=SOFT)
-                y += int(tf3.size * 1.47)
-        slides.append(img)
-    end = text_bg(g2a(games[0]))
+        slides.append(cover_text(photo_bg(g2a(g)), f"{dt.month}/{dt.day} {wd[dt.weekday()]}요일", g["name"],
+                                 " · ".join(g.get("platforms") or []) or None, i + 1, total))
+    end = paper()
     d = frame(end, total, total)
-    d.text((76, 420), "매주 월요일", font=BH(90), fill=WHITE)
-    d.text((76, 530), "출시 게임 정리", font=BH(90), fill=LIME)
-    d.rounded_rectangle((76, H - 330, W - 76, H - 170), 24, fill=LIME)
-    d.text((W // 2, H - 280), "저장하고 출시일 놓치지 말기", font=NB(40), fill=WHITE, anchor="mm")
-    d.text((W // 2, H - 220), L["ko"]["cta2"], font=BH(56), fill=WHITE, anchor="mm")
+    y = slide_heading(d, 190, "이번 주 출시 일정")
+    for g in games:
+        dt = datetime.strptime(g["date"], "%Y-%m-%d")
+        d.text((M, y), f"{dt.month}/{dt.day}", font=ANTON(40), fill=LIME)
+        tf, tl = fit(d, safe(g["name"]), NM, 36, W - 2 * M - 130, 1, 26)
+        d.text((M + 130, y + 2), tl[0], font=tf, fill=WHITE)
+        y += 76
+    sign_off(d, "매주 월요일, 그 주의 출시 게임을 정리합니다")
     slides.append(end)
     return slides
