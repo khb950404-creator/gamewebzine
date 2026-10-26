@@ -32,7 +32,8 @@ _last = [0.0]
 
 def api(**params):
     """Liquipedia API (요청 간격 2초 이상, gzip 필수)."""
-    wait = 2.2 - (time.time() - _last[0])
+    # Liquipedia 이용 규칙: action=parse 는 30초에 1번 (그 외 2초) — 어기면 429로 막힌다
+    wait = (31 if params.get("action") == "parse" else 2.2) - (time.time() - _last[0])
     if wait > 0:
         time.sleep(wait)
     q = "&".join(f"{k}={urllib.parse.quote(str(v))}" for k, v in {**params, "format": "json"}.items())
