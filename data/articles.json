@@ -49997,5 +49997,382 @@
   "img": null,
   "img_v": 2,
   "video_v": 1
+ },
+ {
+  "title": "취소된 파라노말 액티비티 신작, 공포 게임 '플레이어블 아카이브'로 무료 공개",
+  "tldr": [
+   "개발사 다크스톤 디지털과 유통사 드레드XP가 취소된 게임을 다듬은 '플레이어블 아카이브'를 스팀에 무료로 출시했다.",
+   "파라마운트의 프로젝트 취소로 폐기될 뻔했던 '파라노말 액티비티: 쓰레숄드'의 일부 완성본을 재구성한 작품이다.",
+   "파운드 푸티지 연출 기반의 단편 심리 공포 게임으로, 저장 기능이 없어 30분에서 60분 동안 한 번에 플레이해야 한다."
+  ],
+  "why": "제작 취소 판정을 받았던 유명 영화 IP 기반 공포 게임이 독립 타이틀의 형태로 게이머들에게 무료 제공된다.",
+  "body": [
+   "올해 초 개발이 취소됐던 유명 공포 영화 기반 신작이 무료 단편 게임의 형태로 게이머들을 찾아왔다. 배급사 드레드XP와 '더 모추어리 어시스턴트' 개발사 다크스톤 디지털은 심리 공포 게임 '플레이어블 아카이브(Playable Archive)'를 PC 스팀 플랫폼에 무료로 출시했다고 27일 밝혔다.",
+   "이번 작품의 원형은 파라마운트의 결정으로 개발이 무산됐던 영화 스핀오프 타이틀 '파라노말 액티비티: 쓰레숄드'다. 주택 리모델링 공사 중 정체불명의 물건을 건드린 젊은 부부의 이야기를 다루며, 오컬트 의식과 기괴한 상징, 흔들리는 카메라 영상 등 파운드 푸티지 장르 특유의 공포 요소를 담아냈다.",
+   "개발자 브라이언 클라크는 스팀 공지를 통해 프로젝트 취소 후 심한 탈진을 겪었으나, 작업물을 그대로 사장시키는 대신 완성된 부분을 다듬어 선보이자는 배급사의 제안으로 출시를 결정했다고 설명했다. 그는 \"많은 분량이 폐기됐지만 구축해 둔 결과물을 세상에 보여줄 수 있어 자랑스럽다\"라며 할로윈 시즌을 맞이한 공포 팬들을 위한 선물이라고 전했다.",
+   "'플레이어블 아카이브'의 플레이 타임은 30분에서 60분 안팎이다. 게임 내에 저장 시스템이 지원되지 않기 때문에 중간 중단 없이 한 번에 플레이를 마쳐야 한다."
+  ],
+  "category": "신작",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "플레이어블 아카이브"
+  ],
+  "games_en": [
+   "Playable Archive"
+  ],
+  "hook": "취소작이 무료 출시?",
+  "title_en": "Canceled Paranormal Activity Game Drops Free on Steam",
+  "tldr_en": [
+   "DarkStone Digital and DreadXP released Playable Archive as a free standalone horror experience on Steam.",
+   "The project salvages work from Paranormal Activity: Threshold, which was canceled by Paramount earlier this year.",
+   "The found-footage title features a 30 to 60-minute duration and requires a single playthrough without save mechanics."
+  ],
+  "hook_en": "Canceled horror game resurrected",
+  "video_q": null,
+  "trust": "공식",
+  "fixes": [
+   "팩트체크 미완료"
+  ],
+  "force_review": true,
+  "status": "published",
+  "id": "a76413920d",
+  "sources": [
+   {
+    "name": "IGN",
+    "title": "Canned Paranormal Activity Game Back From The Dead as Playable Archive, Free on Steam",
+    "link": "https://www.ign.com/articles/canned-paranormal-activity-game-back-from-the-dead-as-playable-archive-free-on-steam",
+    "official": false
+   },
+   {
+    "name": "Gematsu",
+    "title": "The Mortuary Assistant developer releases free micro horror game Playable Archive for PC",
+    "link": "https://www.gematsu.com/2026/10/the-mortuary-assistant-developer-releases-free-micro-horror-game-playable-archive-for-pc",
+    "official": false
+   }
+  ],
+  "ts": 1793043835.0,
+  "written": 1793081077.7299628,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5356470/3e3dd7a994a836e1d4402e10821822658e4fba76/header.jpg?t=1793026232",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5356470/c0b98896ed806d3541bcc5fe7bdd89cf30e09b2e/ss_c0b98896ed806d3541bcc5fe7bdd89cf30e09b2e.1920x1080.jpg?t=1793026232",
+  "appid": 5356470,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "탈옥 PS5로 스팀 PC 게임 구동… 전용 런처 '플레이든' 등장",
+  "tldr": [
+   "탈옥된 PS5에서 스팀 라이브러리 게임을 로컬 구동할 수 있는 전용 런처 '플레이든'이 공개됐다.",
+   "PS5용 Wine 포트를 활용해 윈도우 환경을 구현하며 다이렉트3D 11과 12 그래픽 구동 및 스팀 클라우드 저장을 지원한다.",
+   "듀얼센스는 엑스박스 컨트롤러로 인식되며 키보드·마우스 입력과 해상도 및 프레임 조절 기능도 제공된다."
+  ],
+  "why": "콘솔 보안 취약점을 이용해 PS5 기기에서 PC 플랫폼인 스팀 라이브러리를 직접 실행하는 홈브루 런처가 개발됐다.",
+  "body": [
+   "탈옥된 플레이스테이션 5(PS5) 콘솔에서 스팀 라이브러리의 PC 게임을 직접 설치하고 실행할 수 있는 비공식 런처가 공개됐다. 해외 외신들은 깃허브를 통해 배포된 오픈소스 런처 프로젝트 '플레이든(Playden)'이 콘솔 유저들 사이에서 큰 주목을 받고 있다고 27일 보도했다.",
+   "플레이든은 PS5용으로 포팅된 윈도우 호환 레이어 '와인(Wine)'을 기반으로 작동하는 알파 단계의 소프트웨어다. 이용자가 자신의 스팀 계정으로 로그인해 라이선스를 확인한 뒤 게임을 직접 다운로드하고, 개별 애플리케이션 형태로 기기 홈 화면에 등록해 실행하는 구조다. 다이렉트3D 11은 DXVK를, 다이렉트3D 12는 VKD3D-프로톤을 통해 지원한다.",
+   "해당 런처는 스팀 클라우드 세이브 연동을 지원하며 해상도, 그래픽 프리셋, 프레임 레이트, 컨트롤러 매핑 옵션 등을 세밀하게 변경할 수 있다. 구동 시 듀얼센스 컨트롤러는 엑스박스 패드로 인식되어 진동 기능을 제공하며, PC 환경처럼 마우스와 키보드 조작도 가능하다. 스팀 계정 연동 외에도 외장 드라이브나 FTP를 통한 게임 파일 직접 설치도 지원한다.",
+   "개발자는 향후 GOG와 에픽게임즈 스토어 등 타 PC 플랫폼 지원과 락스타, EA, 유비소프트 전용 런처 지원을 추가할 계획이라고 밝혔다. 다만 해당 프로그램은 소니 공식 인가를 받지 않은 탈옥 기기 전용 홈브루 소프트웨어로, 이용 시 보안 및 기기 고장 위험이 따른다."
+  ],
+  "category": "하드웨어",
+  "platforms": [
+   "PS5",
+   "PC"
+  ],
+  "games": [],
+  "games_en": [],
+  "hook": "PS5로 스팀 게임을?",
+  "title_en": "New Launcher Playden Runs Steam PC Games on Jailbroken PS5",
+  "tldr_en": [
+   "An experimental launcher called Playden enables jailbroken PS5 consoles to natively run Steam games.",
+   "The software utilizes a PS5 Wine port with DXVK and VKD3D-Proton to deliver Direct3D 11 and 12 compatibility.",
+   "It supports Steam Cloud saves, graphics tweaks, mouse and keyboard inputs, and emulates the DualSense as an Xbox controller."
+  ],
+  "hook_en": "Steam on PS5?",
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [
+   "팩트체크 미완료"
+  ],
+  "force_review": true,
+  "status": "published",
+  "id": "51019cee14",
+  "sources": [
+   {
+    "name": "Insider Gaming",
+    "title": "Playden Lets Players Run Their Steam Games on a Jailbroken PS5",
+    "link": "https://insider-gaming.com/playden-lets-players-run-their-steam-games-on-a-jailbroken-ps5/",
+    "official": false
+   },
+   {
+    "name": "PC Gamer",
+    "title": "A whole host of Steam PC games can now run locally on a jailbroken PlayStation 5, including Portal, Left 4 Dead 2, and many more",
+    "link": "https://www.pcgamer.com/hardware/a-whole-host-of-steam-pc-games-can-now-run-locally-on-a-jailbroken-playstation-5-including-portal-left-4-dead-2-and-many-more/",
+    "official": false
+   }
+  ],
+  "ts": 1793040159.0,
+  "written": 1793081077.7312198,
+  "img": null,
+  "img_v": 2,
+  "video_v": 1
+ },
+ {
+  "title": "캡콤 \"‘귀무자’ 난이도 적절, 유저 데이터가 입증\"",
+  "tldr": [
+   "캡콤 니헤이 사토루 디렉터가 '귀무자'의 난이도 논란에 대해 내부 통계로 적절성을 확인했다고 밝혔다.",
+   "일부 유저의 '너무 쉽다'는 비판과 달리 플레이어들이 사망과 극복을 반복하며 성취감을 얻는 설계 의도에 부합했다는 설명이다.",
+   "제작진은 본작이 세키로나 인왕 같은 극단적인 고난도 액션이 아닌 대중적 액션 어드벤처를 지향했다고 강조했다."
+  ],
+  "why": "체험판 이후 지속된 전투 난이도 부족 지적에 대해 캡콤 개발진이 실제 이용자 진행 데이터를 근거로 반박했다.",
+  "body": [
+   "캡콤의 밀리언셀러 액션 신작 '귀무자'를 둘러싼 전투 난이도 논란에 대해 개발 총괄이 입을 열었다. 캡콤의 니헤이 사토루 디렉터는 외신 인터뷰를 통해 이용자 플레이 데이터를 분석한 결과 게임 난이도가 개발팀의 당초 목표에 정확히 부합했다고 27일 밝혔다.",
+   "이번 작품은 출시 전 체험판 공개 당시 적들의 공격성이 낮아 너무 쉽게 설계됐다는 비판을 하드코어 액션 팬들로부터 받았다. 완성본에서는 3가지 기본 난이도와 버튼 입력 보조 기능을 제공하고 1회차를 완료해야 최고 난도인 '카니지(Carnage)' 모드가 열리도록 구현됐으나, 초반부터 강한 도전을 원했던 게이머들 사이에서는 여전히 논쟁이 이어져 왔다.",
+   "니헤이 디렉터는 인터뷰에서 \"인게임 데이터를 살펴본 결과 플레이어들이 실패하고 쓰러지면서도 점차 극복해 나가는 흐름이 확인됐다\"라며, \"의도했던 대로 스토리를 전개하면서도 적을 쓰러뜨렸을 때 적절한 성취감을 느낄 수 있는 수준으로 완성됐다\"라고 설명했다.",
+   "이어 그는 \"본작은 '세키로: 섀도우 다이 트와이스'나 '인왕' 시리즈처럼 극도로 가혹한 난이도를 지향한 타이틀이 아니었다\"라고 덧붙이며 전반적인 액션 유저층을 포용하기 위한 밸런스 조정이었음을 명확히 했다."
+  ],
+  "category": "기타",
+  "platforms": [],
+  "games": [
+   "귀무자"
+  ],
+  "games_en": [
+   "Onimusha: Way of the Sword"
+  ],
+  "hook": "귀무자 너무 쉽다고?",
+  "title_en": "Capcom Defends Onimusha: Way of the Sword Difficulty with Player Data",
+  "tldr_en": [
+   "Director Satoru Nihei stated player data proves Onimusha: Way of the Sword achieved its intended balance.",
+   "Capcom clarified the game was tuned for accessible satisfaction rather than Soulslike brutality seen in Sekiro or Nioh.",
+   "The team confirmed players face defeat and overcome challenges across the story without excessive frustration."
+  ],
+  "hook_en": "Is Onimusha too easy?",
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [
+   "팩트체크 미완료",
+   "게임명 표기 '귀무자: 웨이 오브 더 소드' → '귀무자'"
+  ],
+  "force_review": true,
+  "status": "published",
+  "id": "ccb5057c98",
+  "sources": [
+   {
+    "name": "Push Square",
+    "title": "Capcom Says Onimusha: Way of the Sword Isn't Too Easy, and the Player Data Proves It",
+    "link": "https://www.pushsquare.com/news/2026/10/capcom-says-onimusha-way-of-the-sword-isnt-too-easy-and-the-player-data-proves-it",
+    "official": false
+   },
+   {
+    "name": "Eurogamer",
+    "title": "Despite initial player concerns, Capcom feels good about Onimusha: Way of the Sword's difficulty, and says it has the data to prove it got it right",
+    "link": "https://www.eurogamer.net/onimusha-way-of-the-sword-enemy-difficulty-capcom",
+    "official": false
+   }
+  ],
+  "ts": 1793037600.0,
+  "written": 1793081077.731391,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2638890/ce31174fea86d0bafa21b26e853dcd0b7326e36f/header.jpg?t=1790383151",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2638890/40e49fbd098140a69e897dcce736cba5eae8662f/ss_40e49fbd098140a69e897dcce736cba5eae8662f.1920x1080.jpg?t=1790383151",
+  "appid": 2638890,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "2026 골든 조이스틱 어워즈 올해의 게임 후보 공개… 붉은사막 등 12개작 격돌",
+  "tldr": [
+   "제44회 골든 조이스틱 어워즈가 붉은사막과 포르자 호라이즌 6 등 올해의 게임 후보 12종을 공개했다.",
+   "11월 19일 출시를 앞둔 GTA 6는 심사 집계 기간(2025년 11월 8일~2026년 10월 25일)에 포함되지 않아 명단에서 제외됐다.",
+   "대중 온라인 투표는 10월 30일까지 공식 홈페이지에서 진행되며 최종 수상작은 11월 11일 런던 생중계로 발표된다."
+  ],
+  "why": "세계 최고 권위의 대중 참여형 게임 시상식에서 한 해를 대표하는 12개 대작의 최종 GOTY 후보군이 확정됐다.",
+  "body": [
+   "세계적인 권위를 자랑하는 게임 시상식 '골든 조이스틱 어워즈 2026(GJA 2026)'의 최고 영예인 '올해의 게임(Ultimate Game of the Year, UGOTY)' 후보 12개 작품이 공식 발표됐다. 주최 측은 26일 후보 명단을 공개함과 동시에 글로벌 게이머들을 대상으로 대중 투표를 시작했다고 전했다.",
+   "올해 시상식의 UGOTY 후보에는 펄어비스의 '붉은사막'을 비롯해 마이크로소프트의 '포르자 호라이즌 6', 캡콤의 '바이오하자드 레퀴엠'과 '프라그마타' 등이 이름을 올렸다. 또한 '007 퍼스트 라이트', '빅 워크', '컨트롤 레조넌트', '디스패치', '팬텀 블레이드 제로', '포켓몬 포코피아', '스타워즈: 갤럭틱 레이서', '더 블러드 오브 던워커'까지 총 12개 대형 타이틀이 경쟁을 펼친다.",
+   "올해 최대 기대작으로 손꼽히는 '그랜드 테프트 오토 6(GTA 6)'는 이번 후보 명단에서 빠졌다. 주최 측 심사 대상 출시일 기준이 2025년 11월 8일부터 2026년 10월 25일까지로 제한되어, 오는 11월 19일 정식 출시되는 GTA 6는 출품 요건을 충족하지 못했기 때문이다.",
+   "제44회 골든 조이스틱 어워즈의 대중 투표는 공식 홈페이지에서 10월 30일까지 진행된다. 툼 레이더 시리즈의 라라 크로프트 성우 알릭스 윌턴 리건이 사회를 맡으며, 최종 수상작은 11월 11일 영국 런던에서 열리는 글로벌 라이브 스트리밍을 통해 공개된다."
+  ],
+  "category": "업계",
+  "platforms": [],
+  "games": [
+   "붉은사막",
+   "포르자 호라이즌 6",
+   "팬텀 블레이드 제로",
+   "프라그마타",
+   "바이오하자드 레퀴엠"
+  ],
+  "games_en": [
+   "Crimson Desert",
+   "Forza Horizon 6",
+   "Phantom Blade Zero",
+   "PRAGMATA",
+   "Resident Evil Requiem"
+  ],
+  "hook": "올해 최고의 게임은?",
+  "title_en": "Golden Joystick Awards 2026 Ultimate GOTY Nominees Revealed",
+  "tldr_en": [
+   "The 44th Golden Joystick Awards unveiled 12 Ultimate GOTY nominees including Crimson Desert and Forza Horizon 6.",
+   "Grand Theft Auto 6 was deemed ineligible as its November 19 launch falls outside the eligibility window ending October 25.",
+   "Public voting runs through October 30, with winners to be broadcast live from London on November 11."
+  ],
+  "hook_en": "Who wins GOTY 2026?",
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [
+   "팩트체크 미완료"
+  ],
+  "force_review": true,
+  "status": "published",
+  "id": "660168e331",
+  "sources": [
+   {
+    "name": "Insider Gaming",
+    "title": "Golden Joystick Awards 2026 GOTY Nominees Revealed",
+    "link": "https://insider-gaming.com/golden-joystick-awards-2026-goty-nominees-revealed/",
+    "official": false
+   },
+   {
+    "name": "Pure Xbox",
+    "title": "Xbox Is Officially Up For 'Game Of The Year' At The Golden Joystick Awards 2026",
+    "link": "https://www.purexbox.com/news/2026/10/xbox-is-officially-up-for-game-of-the-year-at-the-golden-joystick-awards-2026",
+    "official": false
+   }
+  ],
+  "ts": 1793037068.0,
+  "written": 1793081077.731561,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2483190/bd1e762f4720cb68af365f2e41d002f14dd74fbf/header_alt_assets_5.jpg?t=1791312088",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2483190/706eb79418b2a74192de059693ddcbfaa803108a/ss_706eb79418b2a74192de059693ddcbfaa803108a.1920x1080.jpg?t=1791312088",
+  "appid": 2483190,
+  "img_src": "Steam 스토어",
+  "video_v": 1,
+  "video": {
+   "id": "YHhwdyWkwTQ",
+   "title": "Crimson Desert - Launch Trailer | PS5 Games",
+   "channel": "PlayStation"
+  },
+  "proofread": 1793081261.4459393,
+  "edited": 1793081261.4670997
+ },
+ {
+  "title": "'사이버펑크 2077', 엣지러너 2 효과로 스팀 동시 접속자 18만 명 돌파",
+  "tldr": [
+   "사이버펑크 2077이 주말 동안 스팀 동시 접속자 수 18만 7,215명을 기록하며 3년 만에 최고치를 달성했다.",
+   "넷플릭스 애니메이션 '엣지러너' 시즌 2 공개와 함께 배포된 2.5 대형 업데이트, 70% 할인 행사가 흥행을 견인했다.",
+   "CD 프로젝트 레드의 파베우 사스코 부디렉터는 이용자들에게 감사를 표하며 2.5 패치에 대한 피드백을 요청했다."
+  ],
+  "why": "넷플릭스 애니메이션 시즌 2 방영과 연계 퀘스트를 담은 대규모 패치가 결합하며 출시 6년 차 RPG에 대규모 역주행이 발생했다.",
+  "body": [
+   "출시 6년 차를 맞은 CD 프로젝트 레드(CDPR)의 '사이버펑크 2077'이 주말 동안 PC 스팀 플랫폼에서 18만 명이 넘는 동시 접속자를 모으며 역주행 돌풍을 일으켰다. 스팀 통계 집계 사이트 스팀DB에 따르면 지난 주말 사이버펑크 2077의 스팀 최고 동시 접속자 수는 18만 7,215명을 기록했다.",
+   "이번 기록은 지난 2023년 10월 대형 확장팩 '팬텀 리버티'와 2.0 업데이트 공개 당시 27만 명을 달성한 이후 약 3년 만에 기록한 최고 수치다. 지난 2022년 방영 당시에도 스팀 최고 동시 접속자 13만 6,724명을 끌어모았던 애니메이션 흥행 효과가 시즌 2에서도 다시 한번 입증됐다.",
+   "이번 급등세는 지난주 공개된 넷플릭스 애니메이션 '사이버펑크: 엣지러너' 시즌 2와 신규 콘텐츠 패치가 맞물린 결과다. CDPR은 신작 애니메이션 방영에 맞춰 프리퀄 연계 스토리 퀘스트, 무기 양손 사용 기능, 신규 사이버웨어 커스터마이징 등을 도입한 2.5 업데이트를 배포하고, 스팀에서 70% 대규모 할인 행사를 함께 시작했다.",
+   "차기작 개발을 이끄는 파베우 사스코 부디렉터는 개인 SNS를 통해 \"주말 동안 스팀에서만 18만 7천 명의 동시 접속자를 기록해 감격스럽다\"라며 감사를 전했다. 이어 \"2.5 업데이트에서 개선할 점이나 부족한 부분에 대해 기탄없는 피드백을 전달해 달라\"고 덧붙였다."
+  ],
+  "category": "업계",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "사이버펑크 2077"
+  ],
+  "games_en": [
+   "Cyberpunk 2077"
+  ],
+  "hook": "스팀 18만 명 재돌파",
+  "title_en": "Cyberpunk 2077 Hits 187K Steam Peak Following Edgerunners S2",
+  "tldr_en": [
+   "Cyberpunk 2077 surged to 187,215 concurrent players on Steam, marking its highest peak since Phantom Liberty in 2023.",
+   "The influx was fueled by the premiere of Edgerunners Season 2, the 2.5 content update, and a 70% Steam discount.",
+   "Associate director Paweł Sasko thanked players on social media and opened calls for community feedback on the patch."
+  ],
+  "hook_en": "187K concurrent players",
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [
+   "팩트체크 미완료"
+  ],
+  "force_review": true,
+  "status": "published",
+  "id": "963f69d38c",
+  "sources": [
+   {
+    "name": "GameSpot",
+    "title": "Cyberpunk 2077 Hits Its Biggest Steam Player Peak Since Phantom Liberty, And You Can Guess Why",
+    "link": "https://www.gamespot.com/articles/cyberpunk-2077-hits-its-biggest-steam-player-peak-since-phantom-liberty-and-you-can-guess-why/",
+    "official": false
+   },
+   {
+    "name": "GamesRadar",
+    "title": "Cyberpunk 2077 lead says it's been a \"hell of a weekend\" as the RPG hits new Steam high",
+    "link": "https://www.gamesradar.com/games/cyberpunk/cyberpunk-2077-lead-says-its-been-a-hell-of-a-weekend-as-the-rpg-hit-its-highest-steam-player-count-in-3-years-thanks-to-edgerunners-2-and-2-5-update/",
+    "official": false
+   }
+  ],
+  "ts": 1793026635.0,
+  "written": 1793081077.7317398,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/26b96fa9c8af43189cbecbbc329ade29d9c9cf3e/header_koreana.jpg?t=1784714077",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/ss_2f649b68d579bf87011487d29bc4ccbfdd97d34f.1920x1080.jpg?t=1784714077",
+  "appid": 1091500,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "밸브, 취향 맞춤형 신작 추천 '스팀 퍼스널 캘린더' 정식 도입",
+  "tldr": [
+   "밸브가 1년간의 실험실 테스트를 거친 맞춤형 신작 탐색 기능 '퍼스널 캘린더'를 스팀에 정식 출시했다.",
+   "플레이어가 가장 많이 즐긴 타이틀 및 유사 성향 유저 데이터를 분석해 향후 8주간의 출시작을 월별로 정리해 준다.",
+   "알고리즘 추천 정보는 매일 갱신되며, 유저가 특정 장르에 갇히는 필터 버블을 막기 위해 다양한 장르 풀을 반영한다."
+  ],
+  "why": "스팀 실험실에서 1년 동안 검증받은 개인 맞춤형 게임 출시일 탐색 기능이 모든 이용자에게 정식 배포됐다.",
+  "body": [
+   "밸브가 지난 1년간 스팀 랩(Steam Labs)에서 실험적으로 운영해 온 맞춤형 신작 추천 기능 '퍼스널 캘린더(Personal Calendar)'를 정식 서비스로 전환했다. 외신들은 27일 밸브가 베타 테스트를 종료하고 모든 이용자가 스팀 스토어 홈페이지와 전용 페이지에서 해당 기능을 이용할 수 있도록 업데이트했다고 보도했다.",
+   "퍼스널 캘린더는 이용자의 게임 취향에 맞춰 향후 출시될 기대작과 최신 출시작을 월별 캘린더 형태로 정리해 보여주는 도구다. 기존의 단순 나열형 추천과 달리 일정 기반의 정돈된 인터페이스를 제공해 발매 예정작 정보를 한눈에 파악할 수 있도록 돕는다.",
+   "밸브의 설명에 따르면 추천 알고리즘은 세 가지 지표를 토대로 작동한다. 플레이어가 실제로 가장 많은 시간을 투자한 게임 목록을 분석한 뒤, 플레이 성향이 유사한 다른 게이머들의 찜 목록과 플레이 기록을 교차 검증해 추천작을 선별한다. 짧게 플레이하고 만 게임은 통계 산출에서 제외되며, 캘린더에 표시되는 8주 분량의 추천 데이터는 매일 새롭게 갱신된다.",
+   "밸브는 추천 시스템이 특정 장르에만 편중되어 유저를 고립시키는 '필터 버블' 현상을 경계하고 있다고 밝혔다. 밸브 측은 \"취향에 맞는 게임만 반복해서 보여주기보다는, 각 출시일에 맞춰 다양한 장르의 폭넓은 타이틀 풀에서 추천작을 함께 구성하도록 설계했다\"고 설명했다."
+  ],
+  "category": "업데이트",
+  "platforms": [
+   "PC"
+  ],
+  "games": [],
+  "games_en": [],
+  "hook": "스팀 신기능 정식 출시",
+  "title_en": "Valve Launches Steam Personal Calendar Feature After 1-Year Beta",
+  "tldr_en": [
+   "Valve officially rolled out Personal Calendar on Steam following nearly a full year of testing in Steam Labs.",
+   "The feature curates upcoming games over an eight-week window organized into an intuitive monthly calendar based on play habits.",
+   "Recommendations refresh daily and pull from a broader pool across genres to prevent users from becoming trapped in a filter bubble."
+  ],
+  "hook_en": "Steam calendar is live",
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [
+   "팩트체크 미완료"
+  ],
+  "force_review": true,
+  "status": "published",
+  "id": "fe30ca12f3",
+  "sources": [
+   {
+    "name": "PC Gamer",
+    "title": "I have jumped in WoW: Forever's beta 7738 times, roughly 135 jumps an hour, and if you'd like to find out if you beat me there's a stat tracker",
+    "link": "https://www.pcgamer.com/games/world-of-warcraft/i-have-jumped-in-wow-forevers-beta-7738-times-roughly-135-jumps-an-hour-and-if-youd-like-to-find-out-if-you-beat-me-theres-a-stat-tracker/",
+    "official": false
+   },
+   {
+    "name": "Eurogamer",
+    "title": "After a year of testing, one of Steam's best features is finally out of beta, making it easier to find games you might actually like",
+    "link": "https://www.eurogamer.net/steam-personal-calendar-full-release",
+    "official": false
+   }
+  ],
+  "ts": 1793026369.0,
+  "written": 1793081077.7320855,
+  "img": null,
+  "img_v": 2,
+  "video_v": 1
  }
 ]
