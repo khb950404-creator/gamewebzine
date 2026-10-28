@@ -56118,9 +56118,8 @@
  {
   "title": "밸브, 스팀 넥스트 페스트 AI 양산작 논란에 \"해결책 모색 중\"",
   "tldr": [
-   "밸브 관계자들은 최근 한국에서 열린 스팀 인디 커넥트 행사에서 스팀 넥스트 페스트의 AI 양산작 및 복제작 범람 문제를 공식 언급했다.",
-   "밸브 측은 이벤트 초반 이틀간의 완전히 무작위인 노출 알고리즘이 저품질 게임 노출의 원인이라고 해명했다.",
-   "개발자 접근을 제한하는 대신 플랫폼을 더 스마트하게 개선하는 방향으로 문제를 해결하겠다고 밝혔다."
+   "밸브 관계자들은 최근 열린 행사에서 스팀 넥스트 페스트의 AI 양산작 및 복제작 범람 문제를 공식 언급했다.",
+   "밸브 측은 이벤트 초반 이틀간의 완전히 무작위인 노출 알고리즘이 저품질 게임 노출의 원인이라고 해명했다."
   ],
   "why": "밸브가 스팀 넥스트 페스트를 뒤덮은 생성형 AI 양산작 논란에 대해 공식적인 입장을 내놓고 개선 의지를 밝혔다.",
   "body": [
@@ -56151,7 +56150,10 @@
   "video_q": "Valve Steam Next Fest AI slop response",
   "trust": "공식",
   "fixes": [
-   "행사 발언 내용 중 일부 외신 오역 및 루머성 표현 교정"
+   "행사 발언 내용 중 일부 외신 오역 및 루머성 표현 교정",
+   "[교열] tldr 1번 줄의 '한국에서 열린 스팀 인디 커넥트 행사에서'는 출처에 없는 내용이므로 삭제함",
+   "[교열] tldr 3번 줄은 2번 줄과 내용이 중복되므로 5번 규칙에 따라 삭제함",
+   "[교열] 어색한 문장 및 주서호응 정비"
   ],
   "status": "published",
   "id": "714a1b0719",
@@ -56187,7 +56189,9 @@
   "img_v": 2,
   "img_hd": "https://images.igdb.com/igdb/image/upload/t_720p/co7qqu.jpg",
   "img_src": "IGDB",
-  "video_v": 1
+  "video_v": 1,
+  "proofread": 1793221711.4316413,
+  "edited": 1793221711.4625065
  },
  {
   "title": "아마존, 알렉사플러스 탑재 차세대 에코 기기 3종 및 '에코 타임' 공개",
@@ -57330,6 +57334,334 @@
   "img": "https://i.ytimg.com/vi/vdgqO1BngP8/hqdefault.jpg",
   "img_v": 2,
   "img_src": "PlayStation Blog",
+  "video_v": 1
+ },
+ {
+  "title": "모던 워페어 4, 어뷰징 잡으려다 '전술핵' 도전과제 막혀 유저 반발",
+  "tldr": [
+   "인피니티 워드가 '콜 오브 듀티: 모던 워페어 4'의 개인전 승리 조건을 30킬에서 25킬로 낮췄다.",
+   "계정 부스팅을 막기 위한 조치였으나 30연킬이 필요한 전술핵 콜링 카드 획득이 원천 차단됐다.",
+   "게임의 100% 완료가 불가능해진 이용자들은 요구 조건 수정이나 패치 롤백을 강하게 요구했다."
+  ],
+  "why": "인피니티 워드가 개인전 승리 점수를 25점으로 하향하면서 30연속 처치가 필요한 전술핵 달성이 불가능해져 이용자들의 불만이 커졌다.",
+  "body": [
+   "개발사 인피니티 워드가 '콜 오브 듀티: 모던 워페어 4' 멀티플레이의 개인전(Free-for-All) 모드에 적용한 최신 밸런스 패치로 인해 이용자들의 원성을 사고 있다. 비정상적인 계정 부스팅 행위를 차단하기 위해 승리 점수를 하향 조정했으나, 그 여파로 게임 내 특정 도전과제 달성이 시스템상 완전히 막혀버렸기 때문이다.",
+   "인피니티 워드는 공식 SNS를 통해 개인전 매치에 두 가지 조정 사항을 적용했다고 발표했다. 먼저 개인전 모드에 참가할 수 있는 파티 인원을 파티원 1명으로 제한했으며, 경기 승리에 필요한 처치 수를 기존 30킬에서 25킬로 낮췄다. 이는 최근 친구들과 파티를 맺고 개인전에 난입해 서로 처치 수를 몰아주며 전술핵 킬스트릭을 파밍하던 악성 어뷰징을 뿌리 뽑기 위한 조치였다.",
+   "하지만 이번 점수 제한 변경으로 인해 '그라운드 제로(Ground Zero)' 콜링 카드를 정상적으로 획득할 수 없게 되면서 큰 논란이 불거졌다. 해당 콜링 카드를 해금하려면 개인전 경기에서 사망하지 않고 30연속 처치를 기록해 전술핵을 호출해야 하는데, 경기 승리 기준이 25킬로 줄어들면서 30킬에 도달하기 전에 매치가 강제로 종료되기 때문이다.",
+   "게임의 모든 도전과제를 100% 완료하려는 이용자들은 필수 과제가 원천 봉쇄됐다며 불만을 쏟아내고 있다. 커뮤니티에서는 콜링 카드 조건을 수정하거나 개인전 승리 킬 수를 30킬로 되돌려야 한다는 지적이 빗발치고 있다. 한편 이번 패치는 시리즈의 대표적인 상징 맵인 '쉬프먼트(Shipment)'가 게임에 추가된 직후 적용됐다."
+  ],
+  "category": "업데이트",
+  "platforms": [
+   "Xbox"
+  ],
+  "games": [
+   "콜 오브 듀티: 모던 워페어 4"
+  ],
+  "games_en": [
+   "Call of Duty: Modern Warfare 4"
+  ],
+  "hook": "전술핵 막힌 모던4?",
+  "title_en": "Modern Warfare 4 Patch Makes FFA Tactical Nuke Impossible",
+  "tldr_en": [
+   "Infinity Ward reduced the Modern Warfare 4 Free-for-All win score from 30 to 25 kills to curb boosting.",
+   "The change accidentally made the 30-killstreak Tactical Nuke and its Ground Zero Calling Card unattainable.",
+   "Frustrated players are urging the developers to revert the score limit or rework the challenge requirements."
+  ],
+  "hook_en": "Nuke Challenge Broken?",
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [
+   "팩트체크 미완료"
+  ],
+  "force_review": true,
+  "status": "published",
+  "id": "9f2025b518",
+  "sources": [
+   {
+    "name": "Xbox Wire",
+    "title": "Call of Duty: Modern Warfare 4 and Call of Duty: Warzone Season 1: All You Need to Know",
+    "link": "https://news.xbox.com/en-us/2026/10/28/call-of-duty-modern-warfare-4-and-call-of-duty-warzone-season-1-all-you-need-to-know/",
+    "official": true
+   },
+   {
+    "name": "IGN",
+    "title": "Call of Duty: Modern Warfare 4 Patch Makes It Impossible to Get a Nuke in Free-for-All",
+    "link": "https://www.ign.com/articles/controversial-modern-warfare-4-free-for-all-change-nukes",
+    "official": false
+   },
+   {
+    "name": "IGN",
+    "title": "Call of Duty: Modern Warfare 4 Season 1 Adds 6 New Maps, New Weapons, and a New DMZ Area",
+    "link": "https://www.ign.com/articles/call-of-duty-modern-warfare-4-season-1-adds-6-new-maps-new-weapons-and-a-new-dmz-area",
+    "official": false
+   }
+  ],
+  "ts": 1793210400.0,
+  "written": 1793221496.5706213,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4435490/1b43b29d30d31ec134f876d30ed1a13706875a25/header_koreana.jpg?t=1791569657",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4435490/ee5f6b6aebe4dc9e86b49c4e309d361b132df308/ss_ee5f6b6aebe4dc9e86b49c4e309d361b132df308.1920x1080.jpg?t=1791569657",
+  "appid": 4435490,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "'와우: 포에버', 대규모 업데이트 주기 4개월로 확정… 2027년 로드맵 공개",
+  "tldr": [
+   "블리자드가 '월드 오브 워크래프트: 포에버'의 대규모 콘텐츠 패치 주기를 4개월(17주)로 확정했다.",
+   "최신 본편의 8주 패치 피로감과 과거 6개월 공백을 절충해 1년에 세 차례 주요 업데이트를 선보인다.",
+   "첫 번째 대형 업데이트는 2027년 봄 시작되며 신규 레이드와 던전, 새 PvP 시즌이 개막할 예정이다."
+  ],
+  "why": "블리자드가 11월 4일 출시를 앞둔 '와우: 포에버'에 4개월 단위의 여유로운 콘텐츠 순환 로드맵을 적용한다고 밝혔다.",
+  "body": [
+   "블리자드 엔터테인먼트의 신작 MMORPG '월드 오브 워크래프트: 포에버(World of Warcraft: Forever)'가 기존 본편보다 여유로운 4개월 주기로 콘텐츠를 업데이트한다. 오는 11월 4일 정식 출시를 앞둔 가운데, 개발진은 최신 확장팩의 급박한 패치 주기와 과거 클래식 버전의 긴 콘텐츠 가뭄을 보완하는 새로운 운영 계획을 공개했다.",
+   "크리스 지어헛(Kris Zierhut) 수석 게임 디자이너는 IGN과의 인터뷰에서 대규모 업데이트를 4개월(17주) 간격으로, 즉 1년에 세 차례 진행할 방침이라고 밝혔다. 그는 \"디스커버리 시즌의 8~10주 간격은 지나치게 빨랐으며, 과거 6개월 이상 이어진 콘텐츠 가뭄 역시 피해야 한다\"라며 \"4개월 간격이 게임의 본래 템포를 지키면서 유저들에게 안정감을 주는 최적의 주기라고 확신한다\"라고 설명했다.",
+   "업데이트 주기가 길어지더라도 패치 간 공백이 느껴지지 않도록 단계적 콘텐츠 오픈 방식이 도입된다. 지어헛 디자이너는 \"패치 당일에 방대한 분량을 한꺼번에 쏟아붓고 4개월간 침묵하는 방식이 아니다\"라며 \"타임 이벤트 캘린더를 통해 4개월에 걸쳐 콘텐츠를 점진적으로 해금해 지속적인 활력을 불어넣을 것\"이라고 덧붙였다.",
+   "블리즈컨 2026에서 공개된 로드맵에 따르면 '와우: 포에버'의 첫 번째 대규모 업데이트는 2027년 봄에 진행된다. 여기에는 신규 공격대와 던전, 퀘스트가 포함되며 새로운 PvP 시즌이 개막한다. 이어 2027년 여름에는 또 다른 신규 레이드와 클래식 공격대 개편, 신규 던전 2종, 전설 아이템 및 퀘스트 라인, 레거시 시스템 업데이트가 순차적으로 적용될 예정이다.",
+   "'월드 오브 워크래프트: 포에버'는 오는 11월 4일 정식 서비스를 시작한다. 신규 종족을 사전 구매한 이용자는 현재 캐릭터 사전 생성이 가능하다."
+  ],
+  "category": "업데이트",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "월드 오브 워크래프트: 포에버"
+  ],
+  "games_en": [
+   "World of Warcraft: Forever"
+  ],
+  "hook": "와우 포에버 로드맵",
+  "title_en": "WoW: Forever Confirms Four-Month Content Update Cycle",
+  "tldr_en": [
+   "Blizzard announced that World of Warcraft: Forever will receive major content updates every four months.",
+   "The 17-week schedule strikes a balance between retail WoW's 8-week rush and classic content droughts.",
+   "The first major update lands in Spring 2027 with new raids, dungeons, quests, and a new PvP season."
+  ],
+  "hook_en": "WoW Forever Roadmap",
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [
+   "팩트체크 미완료"
+  ],
+  "force_review": true,
+  "status": "published",
+  "id": "129862b643",
+  "sources": [
+   {
+    "name": "PC Gamer",
+    "title": "WoW: Forever's update schedule will be 'a little more laid back' than the main MMO",
+    "link": "https://www.pcgamer.com/games/world-of-warcraft/wow-forevers-update-schedule-will-be-a-little-more-laid-back-than-the-main-mmo/",
+    "official": false
+   },
+   {
+    "name": "GameSpot",
+    "title": "WoW: Forever Content Updates Will Come Slower Than You Might Expect",
+    "link": "https://www.gamespot.com/articles/wow-forever-content-updates-will-come-slower-than-you-might-expect/",
+    "official": false
+   }
+  ],
+  "ts": 1793218235.0,
+  "written": 1793221496.571979,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar6lm8.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar6lm8.jpg",
+  "img_src": "IGDB",
+  "video_v": 1
+ },
+ {
+  "title": "'더 디비전' 시리즈 누적 이용자 5,000만 명 돌파… 3편 개발 순항",
+  "tldr": [
+   "유비소프트 매시브 엔터테인먼트가 '더 디비전' 시리즈 출시 10주년을 맞아 누적 이용자 5,000만 명을 돌파했다.",
+   "줄리안 제라이티가 다이스로 이적했으나 2편 디렉터인 마티아스 칼손이 '더 디비전 3' 제작을 이어받았다.",
+   "'더 디비전 2'의 신규 DLC '에코즈 오브 센트럴 파크'는 오는 11월 3일 정식 출시된다."
+  ],
+  "why": "유비소프트 매시브가 '더 디비전' 10주년을 맞아 대기록을 발표하고 디렉터 교체 속에서도 3편 개발을 안정적으로 지속하고 있다.",
+  "body": [
+   "유비소프트 산하 매시브 엔터테인먼트가 루트 슈터 시리즈 '더 디비전'의 출시 10주년을 맞아 전 세계 누적 이용자 수 5,000만 명을 돌파했다고 공식 발표했다. 2016년 1편 출시 이후 2019년 2편과 다수의 스핀오프를 거치며 대형 프랜차이즈로 자리 잡은 성과다.",
+   "매시브 엔터테인먼트는 현재 차기작 '톰 클랜시의 더 디비전 3'를 적극 개발 중이다. 프로젝트를 이끌던 줄리안 제라이티(Julian Gerighty) 총괄 프로듀서는 최근 '배틀필드' 개발사 다이스(DICE)로 이적했다. 그는 퇴사 전 인터뷰를 통해 \"더 디비전 3의 개발은 비밀이 아니며 거대한 작품이 될 것\"이라며 \"매시브 내부에서 1편만큼 큰 파급력을 줄 신작을 만들기 위해 치열하게 작업하고 있다\"라고 밝힌 바 있다.",
+   "제라이티의 빈자리는 '더 디비전 2'의 게임 디렉터를 역임했던 마티아스 칼손(Mathias Karlson) 크리에이티브 디렉터가 넘겨받았다. 매시브 엔터테인먼트는 공식 SNS를 통해 \"요원들이여 걱정하지 말라\"며 \"줄리안과 함께 세계를 구축했던 팀이 그대로 남아 변함없는 헌신으로 프로젝트를 이끌고 있다\"라고 유저들을 안심시켰다.",
+   "매시브는 자체 스노우드롭 엔진과 '더 디비전' 지식재산권에 역량을 집중하기 위해 내부 조직을 개편해 왔다. 차기작의 구체적인 출시 시점은 공개되지 않았으나, 전작 '더 디비전 2'의 신규 DLC인 '센트럴 파크의 메아리(Echoes of Central Park)'가 오는 11월 3일 출시된다. 이번 DLC는 호러 테마의 회상 캠페인과 보관함 확장, 레벨 부스트 등을 선보인다."
+  ],
+  "category": "업계",
+  "platforms": [],
+  "games": [
+   "더 디비전",
+   "더 디비전 2",
+   "더 디비전 3"
+  ],
+  "games_en": [
+   "Tom Clancy's The Division",
+   "Tom Clancy's The Division 2",
+   "Tom Clancy's The Division 3"
+  ],
+  "hook": "디비전 5천만 명 돌파",
+  "title_en": "The Division Surpasses 50 Million Players as Sequel Progresses",
+  "tldr_en": [
+   "Ubisoft and Massive Entertainment announced that The Division franchise has surpassed 50 million players.",
+   "Mathias Karlson took over creative direction for The Division 3 following Julian Gerighty's departure to DICE.",
+   "The Division 2's new DLC, Echoes of Central Park, is set to launch on November 3."
+  ],
+  "hook_en": "50M Division Players",
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [
+   "팩트체크 미완료"
+  ],
+  "force_review": true,
+  "status": "published",
+  "id": "8eff18ca58",
+  "sources": [
+   {
+    "name": "Push Square",
+    "title": "Golf Has Never Been More Chaotic Than in This Viral Multiplayer Hit, Coming to PS5 in 2027",
+    "link": "https://www.pushsquare.com/news/2026/10/golf-has-never-been-more-chaotic-than-in-this-viral-multiplayer-hit-coming-to-ps5-in-2027",
+    "official": false
+   },
+   {
+    "name": "IGN",
+    "title": "With The Division 3 Still in Active Development, Ubisoft Announces The Division Franchise Has Hit More Than 50 Million Players",
+    "link": "https://www.ign.com/articles/the-division-series-50-million-players",
+    "official": false
+   }
+  ],
+  "ts": 1793215800.0,
+  "written": 1793221496.5723987,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2221490/1752d41865b56f94a3a4d0f474c4c1c343854222/header_alt_assets_12_koreana.jpg?t=1791884938",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2221490/fff0cf0868189a363c4e36ea3e6cf50ff0b653f6/ss_fff0cf0868189a363c4e36ea3e6cf50ff0b653f6.1920x1080.jpg?t=1791884938",
+  "appid": 2221490,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "'에이리언: 아이솔레이션 2', 실물 패키지 제작 확정… 마이크 소리 감지 기능 탑재",
+  "tldr": [
+   "크리에이티브 어셈블리가 생존 공포 신작 '에이리언: 아이솔레이션 2'의 2027년 디스크 실물 패키지 출시를 확인했다.",
+   "플레이어의 비명이나 주변 소음이 제노모프를 유인하는 마이크 토글 기능이 공식 도입된다.",
+   "전작 수개월 뒤를 배경으로 하며 혹독한 날씨의 야외 환경에서 지능적으로 사냥하는 제노모프를 마주하게 된다."
+  ],
+  "why": "크리에이티브 어셈블리가 질의응답 영상을 통해 2027년 디스크 패키지 출시와 현실 소음 감지 시스템을 공식 발표했다.",
+  "body": [
+   "크리에이티브 어셈블리가 개발 중인 생존 공포 신작 '에이리언: 아이솔레이션 2'의 구체적인 게임플레이 요소와 패키지 출시 계획이 공개됐다. 개발진은 17분 분량의 공식 질의응답 영상을 통해 팬들의 질문에 답하며 2027년 실물 패키지 출시와 마이크 연동 시스템을 포함한 주요 특징들을 공유했다.",
+   "개발진은 실물 패키지 제작 여부에 대해 확고한 긍정의 뜻을 밝히며 \"에이리언 특유의 아날로그적 감성을 유지하는 것은 개발의 핵심 기둥 중 하나\"라고 설명했다. 이는 소니가 2028년 플레이스테이션 디스크 생산 중단 계획을 밝힌 가운데, 2027년 출시를 통해 디스크 패키지를 차질 없이 선보이겠다는 방침이다. 아울러 2014년 출시된 전작의 원작 개발진 중 약 3분의 1이 이번 속편 제작에 다시 합류했다.",
+   "이번 작의 가장 주목할 기능은 이용자의 실제 마이크 입력을 게임 사운드에 연동하는 옵션이다. 방 안에서 지르는 비명, 책상에 컵을 내려놓는 소리, 반려견의 짖는 소리 등 마이크로 입력되는 모든 실생활 소음이 게임 안으로 피드백되어 제노모프나 기타 적들을 유인할 수 있다. 배경은 1편으로부터 수개월 후로 설정되었으며, 극단적인 날씨와 탁 트인 야외 공간을 활용해 더 높은 지능으로 플레이어를 추적하는 단 한 마리의 제노모프를 상대해야 한다.",
+   "심도와 조명, 원작 영화풍 필터를 정밀하게 조절할 수 있는 포토 모드도 지원된다. 알 호프(Al Hope) 크리에이티브 디렉터는 \"밀폐된 실내에서 탈출했을 때의 안도감 직후, 노출된 야외에서 느끼는 취약함을 롤러코스터처럼 오가도록 레벨을 설계했다\"라고 강조했다.",
+   "'에이리언: 아이솔레이션 2'는 2027년 PC, PS5, Xbox Series X/S, 닌텐도 스위치 2 플랫폼으로 정식 출시될 예정이다."
+  ],
+  "category": "신작",
+  "platforms": [
+   "PC",
+   "PS5",
+   "Xbox",
+   "Switch"
+  ],
+  "games": [
+   "에이리언: 아이솔레이션 2"
+  ],
+  "games_en": [
+   "Alien: Isolation 2"
+  ],
+  "hook": "내 비명에 반응한다?",
+  "title_en": "Alien: Isolation 2 Confirms Physical Release and Mic Detection",
+  "tldr_en": [
+   "Creative Assembly confirmed a physical disc release for Alien: Isolation 2 ahead of its 2027 launch.",
+   "A microphone detection feature will feed real-world sounds like screaming into the game to alert the Xenomorph.",
+   "Set months after the first game, the sequel features outdoor environments and a more intelligent alien."
+  ],
+  "hook_en": "Alien Hears You",
+  "video_q": "Alien: Isolation 2 developer Q&A trailer",
+  "trust": "보도",
+  "fixes": [
+   "팩트체크 미완료"
+  ],
+  "force_review": true,
+  "status": "published",
+  "id": "128d7af7dd",
+  "sources": [
+   {
+    "name": "Eurogamer",
+    "title": "Alien: Isolation 2 devs commit to a physical edition: \"Staying true to the analogue nature of Alien is one of our pillars\"",
+    "link": "https://www.eurogamer.net/alien-isolation-2-commit-physical-edition",
+    "official": false
+   },
+   {
+    "name": "IGN",
+    "title": "Alien: Isolation 2 Team Confirms Physical Edition, Photo Mode, and New Gameplay Details",
+    "link": "https://www.ign.com/articles/alien-isolation-2-team-confirms-physical-edition-photo-mode-and-new-gameplay-details",
+    "official": false
+   }
+  ],
+  "ts": 1793214968.0,
+  "written": 1793221496.572569,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4665290/b0895fc50086be11afc1b94671992cd801915ec1/header_koreana.jpg?t=1782805186",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4665290/86a80a6dfe3c12d2ebdcb5a143259850a5e56018/ss_86a80a6dfe3c12d2ebdcb5a143259850a5e56018.1920x1080.jpg?t=1782805186",
+  "appid": 4665290,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "반다이남코, 신작 '기동전사 건담 배틀 오퍼레이션 3' 발표… PS5·PC 크로스플레이",
+  "tldr": [
+   "반다이남코가 건담 게임 40주년 방송을 통해 신작 '기동전사 건담 배틀 오퍼레이션 3'를 최초 공개했다.",
+   "PS5와 PC(Steam) 플랫폼으로 부분유료화 출시되며 플랫폼 간 크로스플레이와 한국어 자막을 지원한다.",
+   "우주세기와 '건담 SEED' 기체가 등장하며 오는 11월 20일과 22일 일본 지역 네트워크 테스트를 진행한다."
+  ],
+  "why": "반다이남코가 건담 40주년을 맞아 팀 액션 신작 '배틀 오퍼레이션 3'를 발표하고 11월 네트워크 테스트 일정을 확정했다.",
+  "body": [
+   "반다이남코 엔터테인먼트와 개발사 반다이남코 포지 디지탈스가 팀 배틀 액션 신작 '기동전사 건담 배틀 오퍼레이션 3'를 공식 발표했다. 건담 게임 40주년 기념 생방송을 통해 베일을 벗은 이번 작품은 인기 액션 시리즈의 정식 넘버링 후속작으로, 플레이스테이션 5와 PC(스팀) 플랫폼으로 출시된다.",
+   "이번 작품은 전작과 마찬가지로 부분유료화(F2P) 방식으로 서비스되며, PS5와 PC 이용자 간의 크로스플레이를 지원한다. 이용자들은 커뮤니티 허브인 베이스캠프를 거점으로 삼아 거점 점령 및 방어전을 펼치게 된다. 모빌슈트 조종뿐 아니라 보병 유닛을 활용한 전략 플레이가 가능하며 전황을 뒤집는 'SP 스킬'도 새롭게 도입된다. 음성은 한국어 자막과 함께 일본어, 영어, 중국어 더빙을 지원한다.",
+   "출시 시점에는 '기동전사 건담', '기동전사 건담 제08MS소대', '기동전사 건담 0083 스타더스트 메모리' 등 우주세기 대표작들과 비우주세기 인기작인 '기동전사 건담 SEED'의 모빌슈트들이 참전한다. 개발진은 게임 출시 첫해 동안 비우주세기 작품군에서 2~3개 시리즈 기체를 추가로 선보일 계획이다.",
+   "정식 출시에 앞서 11월 20일과 22일 양일간 일본 지역 한정 크로스플레이 네트워크 테스트가 실시된다. 테스트는 하루 세 차례 정해진 시간대에 진행되며, 개발진은 향후 글로벌 유저들을 위한 오픈 네트워크 테스트도 별도로 진행할 예정이라고 전했다."
+  ],
+  "category": "신작",
+  "platforms": [
+   "PC",
+   "PS5"
+  ],
+  "games": [
+   "기동전사 건담 배틀 오퍼레이션 3"
+  ],
+  "games_en": [
+   "Mobile Suit Gundam: Battle Operation 3"
+  ],
+  "hook": "건담 배오페 3 공개!",
+  "title_en": "Mobile Suit Gundam: Battle Operation 3 Announced for PS5 and PC",
+  "tldr_en": [
+   "Bandai Namco officially unveiled Mobile Suit Gundam: Battle Operation 3 during the Gundam 40th anniversary stream.",
+   "The free-to-play team battle action title supports cross-play between PS5 and PC via Steam with Korean localization.",
+   "A network test will run in Japan on November 20 and 22, featuring Universal Century and Gundam SEED units."
+  ],
+  "hook_en": "Gundam Battle Operation 3",
+  "video_q": "Mobile Suit Gundam Battle Operation 3 announcement trailer",
+  "trust": "보도",
+  "fixes": [
+   "팩트체크 미완료"
+  ],
+  "force_review": true,
+  "status": "published",
+  "id": "8afed31743",
+  "sources": [
+   {
+    "name": "Siliconera",
+    "title": "Mobile Suit Gundam Battle Operation 3 Heading to PS5 and PC",
+    "link": "https://www.siliconera.com/mobile-suit-gundam-battle-operation-3-heading-to-ps5-and-pc/",
+    "official": false
+   },
+   {
+    "name": "Gematsu",
+    "title": "Mobile Suit Gundam: Battle Operation 3 announced for PS5, PC",
+    "link": "https://www.gematsu.com/2026/10/mobile-suit-gundam-battle-operation-3-announced-for-ps5-pc",
+    "official": false
+   }
+  ],
+  "ts": 1793214000.0,
+  "written": 1793221496.572735,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2303000/a5a86be4fc6b62ecfe4969fd836cbbc4180f286c/header.jpg?t=1793187042",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2303000/c4020684e5db0eb015a60f7e29263953962963c2/ss_c4020684e5db0eb015a60f7e29263953962963c2.1920x1080.jpg?t=1793187042",
+  "appid": 2303000,
+  "img_src": "Steam 스토어",
   "video_v": 1
  }
 ]
