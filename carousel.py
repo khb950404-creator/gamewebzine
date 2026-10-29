@@ -240,6 +240,32 @@ def best_image(a):
     return hd
 
 
+def slide_check(a, total, page):
+    """체크 포인트: 한국 시간·원화 가격·조건 같은 실용 정보 표 (저장하고 싶은 장)."""
+    img = paper()
+    d = frame(img, page, total)
+    y = slide_heading(d, 190, "체크 포인트")
+    for c in a["check"][:6]:
+        kf, kl = fit(d, c["k"], BH, 34, 250, 2, 26)
+        vf, vl = fit(d, c["v"], NM, 40, W - M * 2 - 290, 3, 30)
+        h = max(len(kl) * int(kf.size * 1.35), len(vl) * int(vf.size * 1.45))
+        for i, ln in enumerate(kl):
+            d.text((M, y + 4 + i * int(kf.size * 1.35)), ln, font=kf, fill=MUTE)
+        for i, ln in enumerate(vl):
+            d.text((M + 290, y + i * int(vf.size * 1.45)), ln, font=vf, fill=WHITE)
+        y += h + 34
+        d.line([(M, y - 18), (W - M, y - 18)], fill=RULE, width=2)
+        if y > H - 260:
+            break
+    if a.get("takeaway") and y < H - 330:
+        y += 20
+        d.rectangle([M, y, M + 8, y + 100], fill=LIME)
+        tf, tl = fit(d, a["takeaway"], NM, 38, W - M * 2 - 40, 3, 28)
+        for i, ln in enumerate(tl):
+            d.text((M + 36, y + i * int(tf.size * 1.5)), ln, font=tf, fill=WHITE)
+    return img
+
+
 def build_carousel(a, lang="ko", handle=None):
     global LANG
     LANG = lang
@@ -248,14 +274,17 @@ def build_carousel(a, lang="ko", handle=None):
     if lang == "en":  # 영문: 제목·핵심 3줄·출처 (본문은 한국어라 생략)
         a = {**a, "title": a.get("title_en") or a["title"], "tldr": a.get("tldr_en") or [], "why": "", "body": []}
     gal = gallery_imgs(a)[:3]
-    pages = body_pages(a)[:max(1, 10 - 3 - len(gal))]
-    total = 2 + len(gal) + len(pages) + 1
+    chk = 1 if lang == "ko" and a.get("check") else 0
+    pages = body_pages(a)[:max(1, 10 - 3 - chk - len(gal))]
+    total = 2 + chk + len(gal) + len(pages) + 1
     slides = [slide_title(a, total)]
     for k, (im, cr) in enumerate(gal):
         slides.append(slide_photo(a, im, cr, 2 + k, total))
     slides.append(slide_summary(a, total, page=2 + len(gal)))
+    if chk:
+        slides.append(slide_check(a, total, 3 + len(gal)))
     for k, p in enumerate(pages, 1):
-        slides.append(slide_body(a, p, 2 + len(gal) + k, total, k, len(pages)))
+        slides.append(slide_body(a, p, 2 + chk + len(gal) + k, total, k, len(pages)))
     slides.append(slide_end(a, total))
     return slides
 

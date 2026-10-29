@@ -756,6 +756,10 @@ def caption(a):
     tags += ["".join(ch for ch in g if ch.isalnum()) for g in (a.get("games_en") or [])[:2]]
     srcs = [s_["name"] for s_ in a.get("sources", [])]
     lines = [a["title"], ""] + [to_news_tone(t) for t in a.get("tldr", [])[:3]]
+    if a.get("check"):  # 저장하고 다시 볼 실용 정보
+        lines += ["", "[체크 포인트]"] + [f"▪ {c['k']}: {c['v']}" for c in a["check"][:6]]
+    if a.get("takeaway"):
+        lines += ["", a["takeaway"]]
     if srcs:
         lines += ["", "출처: " + srcs[0] + (f" 외 {len(srcs) - 1}곳" if len(srcs) > 1 else "")]
     uniq = {}
