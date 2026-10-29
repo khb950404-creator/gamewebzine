@@ -296,7 +296,7 @@ def render_tips(items, out_path, hook_text, key="tips", handle=None):
     dark = Image.new("RGB", (RW, RH), BG)
     scenes = []
     for x in items:
-        src = fetch_img(x["img"]) or Image.new("RGB", (RW, RH), (40, 40, 44))
+        src = fetch_img(x["img"]) or (x.get("img2") and fetch_img(x["img2"])) or Image.new("RGB", (RW, RH), (40, 40, 44))
         big = grade(cover_fit(src, int(RW * 1.15), int(RH * 1.15)), mono=0.3, bright=0.6)
 
         def draw(d, x=x):
@@ -310,8 +310,8 @@ def render_tips(items, out_path, hook_text, key="tips", handle=None):
                 d.text((76, y), ln, font=nf, fill=WHITE)
                 y += int(nf.size * 1.2)
             y += 24
-            for t in x["lines"][:2]:
-                tf, tls = fit(PROBE, t, NM, 44, SAFE_R - 76, 3, 32)
+            for t in x["lines"][:3]:
+                tf, tls = fit(PROBE, t, NM, 42, SAFE_R - 76, 2, 32)
                 for ln in tls:
                     if y > SAFE_B - 40:
                         break

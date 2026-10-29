@@ -39,16 +39,67 @@ def epic_free():
     return out
 
 
+TAG_PROMPT = """게임 '{name}'이 무슨 게임인지 한국어 한 줄(18~32자)로. 광고 문구·감탄 금지, 장르와 핵심 플레이만 사실대로.
+예: "LA 배경 1인칭 좀비 액션 RPG", "열차를 지키는 로그라이크 덱빌딩", "툼 레이더 4·5·6편 합본 리마스터"
+스팀 소개: {desc}
+장르: {genres}
+JSON: {{"line": "..."}}"""
+
+
+def steam_info(name):
+    """스팀에서 게임 정보: 무슨 게임인지 한 줄 + 정가 + 세로 키아트."""
+    import urllib.parse
+    q = json.loads(urllib.request.urlopen("https://store.steampowered.com/api/storesearch/?cc=kr&l=korean&term="
+                                          + urllib.parse.quote(name), timeout=20).read()).get("items") or []
+    if not q:
+        return None
+    app = q[0]["id"]
+    d = json.loads(urllib.request.urlopen(f"https://store.steampowered.com/api/appdetails?appids={app}&cc=kr&l=koreana",
+                                          timeout=20).read())[str(app)].get("data") or {}
+    desc = re.split(r"(?<=[.!?다])\s", re.sub(r"<[^>]+>", "", d.get("short_description") or ""))[0].strip()
+    pr = d.get("price_overview") or {}
+    cats = {c["description"] for c in d.get("categories", [])}
+    mode = "협동 지원" if any("협동" in c for c in cats) else ("멀티플레이" if any("멀티" in c for c in cats) else "싱글 플레이")
+    genres = [g["description"] for g in d.get("genres", []) if g["description"] not in ("인디", "앞서 해보기")][:2]
+    fact = " · ".join(filter(None, [", ".join(genres), mode, "한국어 지원" if "한국어" in (d.get("supported_languages") or "") else ""]))
+    try:  # 광고 문구 대신 '무슨 게임인지' 한 줄 (실패하면 장르·모드 사실만)
+        import webzine
+        r = webzine.llm(TAG_PROMPT.format(name=name, desc=d.get("short_description", ""), genres=", ".join(genres)), prefer_lite=True) or {}
+        desc = (r.get("line") or "").strip() or fact
+    except Exception:
+        desc = fact
+    return {"appid": app, "desc": desc[:60], "fact": fact, "price": pr.get("initial_formatted") or pr.get("final_formatted") or "",
+            "genres": [g["description"] for g in d.get("genres", [])][:2],
+            "img": f"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/{app}/library_600x900_2x.jpg",
+            "img2": d.get("header_image")}
+
+
 def ps_plus(arts):
-    """최근 PS 플러스 월간 게임 기사의 체크 포인트에서 기간·라인업."""
+    """최근 PS 플러스 월간 게임 기사 → 게임마다 한 장면 (이름·무슨 게임·정가·기간)."""
     for a in sorted(arts, key=lambda a: -a.get("written", a["ts"])):
         if time.time() - a.get("written", a["ts"]) > 20 * 86400:
             break
-        if "PS 플러스" in a["title"] and a.get("check") and a.get("img"):
-            c = {x["k"]: x["v"] for x in a["check"]}
-            if c.get("라인업") and c.get("기간"):
-                return {"name": "PS 플러스 " + c["기간"].split("~")[0].split("월")[0] + "월 게임", "img": a.get("img_hd") or a["img"],
-                        "chip": "구독자 무료", "lines": [c["라인업"], c["기간"] + " 라이브러리 추가"]}
+        c = {x["k"]: x["v"] for x in a.get("check") or []}
+        if "PS 플러스" not in a["title"] or not c.get("라인업") or not c.get("기간"):
+            continue
+        out = []
+        for g in [x.strip() for x in c["라인업"].split(",") if x.strip()]:
+            info = None
+            en = dict(zip(a.get("games") or [], a.get("games_en") or [])).get(g, g)  # 스팀 검색은 영문명으로
+            try:
+                info = steam_info(en) or steam_info(re.sub(r"4-6", "IV-VI", en))
+            except Exception as e:
+                print(f"  ! 스팀 정보 실패 {g}: {e}")
+            lines = []
+            if info:
+                lines.append(info["desc"])
+                if info["fact"] and info["fact"] != info["desc"]:
+                    lines.append(info["fact"])
+            lines.append(f"{c['기간'].replace('(화)', '').replace('(월)', '')} 무료" + (f" (정가 {info['price'].replace('₩ ', '₩')})" if info and info["price"] else ""))
+            out.append({"name": g, "img": (info or {}).get("img") or a.get("img_hd") or a["img"], "img2": (info or {}).get("img2"),
+                        "chip": "PS 플러스", "lines": lines})
+        return out
+    return []
 
 
 def free_games(arts):
@@ -57,10 +108,8 @@ def free_games(arts):
         items += epic_free()
     except Exception as e:
         print(f"  ! 에픽 무료 게임 조회 실패: {e}")
-    p = ps_plus(arts)
-    if p:
-        items.append(p)
-    return items[:5]
+    items += ps_plus(arts)
+    return items[:6]
 
 
 def chip_of(a):
@@ -74,6 +123,14 @@ def chip_of(a):
     return f"{m[1]}/{m[2]}까지" if m else "체크"
 
 
+def lines_of(a, n=3):
+    """알맹이: 체크 포인트 중 날짜·숫자·고유명사가 있는 행을 '항목 값'으로."""
+    rows = [c for c in a.get("check") or [] if c["k"] not in ("플랫폼",)]
+    rows.sort(key=lambda c: -len(re.findall(r"\d", c["v"])))
+    out = [f"{c['k']}  {c['v']}" for c in rows[:n]]
+    return out or [a["takeaway"]]
+
+
 def weekly_checklist(arts, popularity, n=4):
     """이번 주 놓치면 손해인 것: 정리 문장(takeaway)이 있는 최근 기사 중 인기순, 게임당 하나."""
     cand = [a for a in arts if a.get("takeaway") and a.get("img") and time.time() - a.get("written", a["ts"]) < 7 * 86400]
@@ -85,7 +142,7 @@ def weekly_checklist(arts, popularity, n=4):
         used |= keys
         name = a.get("subject") or (a.get("games") or [re.split(r"[,…]", a["title"])[0]])[0]
         items.append({"name": name, "img": a.get("img_hd") or a["img"], "chip": chip_of(a),
-                      "lines": [a["takeaway"]], "id": a["id"]})
+                      "lines": lines_of(a), "id": a["id"]})
         if len(items) == n:
             break
     return items
