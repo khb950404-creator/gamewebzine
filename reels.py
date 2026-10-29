@@ -88,7 +88,7 @@ def zoomed(big, z):
 
 
 def hook_layer(text, accent, ink=WHITE):
-    """화면 가운데 큰 훅 문구 + 강조 띠."""
+    """화면 가운데 큰 훅 문구 (형광펜 띠 없이 흰 글자 + 그림자)."""
     f, ls = fit(PROBE, text, BH, 132, RW - 140, 2, 72)
     lh = int(f.size * 1.22)
     y0 = RH // 2 - len(ls) * lh // 2 - 60
@@ -98,10 +98,8 @@ def hook_layer(text, accent, ink=WHITE):
             w = d.textlength(ln, font=f)
             x = (RW - w) / 2
             y = y0 + i * lh
-            l, t, r, b = d.textbbox((x, y), ln, font=f)  # 실제 글자 영역에 맞춰 띠를 그린다
-            pad = int(f.size * 0.16)
-            d.rectangle((l - pad * 1.4, t - pad, r + pad * 1.4, b + pad), fill=accent)
-            d.text((x, y), ln, font=f, fill=ink)
+            d.text((x + 4, y + 5), ln, font=f, fill=(0, 0, 0, 170))
+            d.text((x, y), ln, font=f, fill=WHITE)
     return layer(draw)
 
 
