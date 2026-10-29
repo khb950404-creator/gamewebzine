@@ -559,6 +559,13 @@ def regen_one(q, arts):
         if (folder / "reel.mp4").exists():
             return
         folder.mkdir(parents=True, exist_ok=True)
+        if a and q.get("trailer"):
+            try:
+                from trailer_reel import build as build_trailer
+                build_trailer(a, folder / "reel.mp4")
+                return
+            except Exception as e:
+                print(f"  ! 트레일러 재생성 실패, 일반 릴스로: {e}")
         if a:
             from reels import render
             a = {**a, "hook": a.get("hook") or q.get("hook"), "hook_en": a.get("hook_en") or q.get("hook_en")}
@@ -623,11 +630,21 @@ def prepare():
                 from reels import render
                 ensure_hook(a, PROFILE)
                 (SITE / IGDIR / a["id"]).mkdir(parents=True, exist_ok=True)
-                render(a, SITE / IGDIR / a["id"] / "reel.mp4", lang=PROFILE, handle=HANDLE_P)
+                trailer = None
+                if PROFILE == "ko" and a.get("appid") and video_news(a):
+                    try:  # 기사와 맞는 공식 트레일러가 있으면 소리 그대로 세로 편집해서 올린다
+                        from trailer_reel import build as build_trailer
+                        trailer = build_trailer(a, SITE / IGDIR / a["id"] / "reel.mp4")
+                    except Exception as e:
+                        print(f"  ! 트레일러 릴스 안 됨, 일반 릴스로: {e}")
+                if not trailer:
+                    render(a, SITE / IGDIR / a["id"] / "reel.mp4", lang=PROFILE, handle=HANDLE_P)
                 cap_ = caption(a) if PROFILE == "ko" else caption_en(a)
+                if trailer:
+                    cap_ = cap_.replace("\n출처:", f"\n영상: {trailer} (게임사 공식)\n출처:", 1)
                 if is_brk:
                     cap_ = ("[속보] " if PROFILE == "ko" else "BREAKING: ") + cap_
-                queue.append({"id": a["id"], "kind": "reel", "files": ["reel.mp4"], "caption": cap_,
+                queue.append({"id": a["id"], "kind": "reel", "files": ["reel.mp4"], "caption": cap_, "trailer": bool(trailer),
                               "hook": a.get("hook"), "hook_en": a.get("hook_en"), "breaking": is_brk})
                 reels_today += 0 if is_brk else 1
                 print(f"인스타 준비({'속보 ' if is_brk else ''}릴스): {a['title']}")
