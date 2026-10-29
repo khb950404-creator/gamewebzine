@@ -291,9 +291,68 @@ def render_deals(deals, out_path, hook_text, key="deals", handle=None):
     return out_path
 
 
+def render_tips(items, out_path, hook_text, key="tips", handle=None):
+    """실전 꿀팁 릴스: 훅 → 항목마다 키아트 + 칩(무료·날짜) + 이름 + 무엇을 언제까지 → '저장' 마무리."""
+    dark = Image.new("RGB", (RW, RH), BG)
+    scenes = []
+    for x in items:
+        src = fetch_img(x["img"]) or Image.new("RGB", (RW, RH), (40, 40, 44))
+        big = grade(cover_fit(src, int(RW * 1.15), int(RH * 1.15)), mono=0.3, bright=0.6)
+
+        def draw(d, x=x):
+            cf = BH(54)
+            w = d.textlength(x["chip"], font=cf)
+            d.rounded_rectangle((76, 860, 76 + w + 48, 950), 16, fill=RED)
+            d.text((100, 905), x["chip"], font=cf, fill=WHITE, anchor="lm")
+            y = 990
+            nf, nls = fit(PROBE, x["name"].replace("™", "").replace("®", ""), BH, 80, SAFE_R - 76, 2)
+            for ln in nls:
+                d.text((76, y), ln, font=nf, fill=WHITE)
+                y += int(nf.size * 1.2)
+            y += 24
+            for t in x["lines"][:2]:
+                tf, tls = fit(PROBE, t, NM, 44, SAFE_R - 76, 3, 32)
+                for ln in tls:
+                    if y > SAFE_B - 40:
+                        break
+                    d.text((76, y), ln, font=tf, fill=SOFT)
+                    y += int(tf.size * 1.45)
+                y += 10
+        scenes.append((big, layer(draw)))
+    hook = hook_layer(hook_text, RED)
+    end = layer(lambda d: (d.text((RW // 2, 820), "놓치기 전에", font=BH(84), fill=WHITE, anchor="mm"),
+                           d.text((RW // 2, 930), "저장해두세요", font=BH(84), fill=RED, anchor="mm")))
+    shade = shade_mask(0.2, 250)
+    T_HOOK, T_S, T_END = 1.4, 2.6, 1.8  # 읽을 글이 있어 할인 릴스보다 길게
+    total = T_HOOK + T_S * len(scenes) + T_END
+    v = Video(out_path, total, key)
+    first = scenes[0][0] if scenes else dark
+    for f in range(int(total * FPS)):
+        t = f / FPS
+        if t < T_HOOK:
+            im = Image.composite(dark, zoomed(first, 1.1), Image.new("L", (RW, RH), 160)).convert("RGBA")
+            show(im, hook, 1.0, scale=pop(t / 0.5))
+        elif t < T_HOOK + T_S * len(scenes):
+            k = int((t - T_HOOK) // T_S)
+            tt = t - T_HOOK - k * T_S
+            big, info = scenes[k]
+            im = Image.composite(dark, zoomed(big, 1.0 + 0.05 * tt / T_S), shade).convert("RGBA")
+            e = ease(tt / 0.35)
+            show(im, info, e, (1 - e) * 50)
+            ImageDraw.Draw(im).text((SAFE_R - 20, SAFE_T), f"{k + 1}/{len(scenes)}", font=ANTON(64), fill=RED, anchor="ra")
+        else:
+            tt = t - T_HOOK - T_S * len(scenes)
+            im = Image.composite(dark, zoomed(first, 1.05), Image.new("L", (RW, RH), 200)).convert("RGBA")
+            e = ease(tt / 0.5)
+            show(im, end, e, (1 - e) * 40)
+        v.write(im)
+    v.close()
+    return out_path
+
+
 if __name__ == "__main__":
     sys.stdout.reconfigure(encoding="utf-8")
-    arts = {a["id"]: a for a in json.loads((ROOT / "data/articles.json").read_text(encoding="utf-8"))}
+    arts ={a["id"]: a for a in json.loads((ROOT / "data/articles.json").read_text(encoding="utf-8"))}
     out = ROOT / "out" / "reels"
     out.mkdir(parents=True, exist_ok=True)
     for i in sys.argv[1:] or ["5e9b636987"]:

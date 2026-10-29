@@ -424,6 +424,29 @@ def prepare_deals(queue, posted):
                                                + ["", "가장 놀라운 소식은 몇 번인가요?", "",
                                                   "#게임뉴스 #주간게임뉴스 #게임소식 #알트탭 #gamingnews #gaming #videogames #game #games #videogame #gamer #게임 #게이머"])})
             print("인스타 준비: 주간 TOP5")
+    # ⑥ 실전 꿀팁 릴스 (저장 유도): 수요일 18시 '이번 주 놓치면 손해', 금요일 9시 '이번 주 공짜 게임'
+    import tips
+    from reels import render_tips
+    tag_tip = ["게임꿀팁", "게임정보", "게임뉴스", "알트탭", "무료게임", "gaming", "gamingnews", "videogames", "game", "gamer", "ps5", "pcgaming", "게임", "게이머"]
+    for tkey, day, hour, title, build in (
+            ("chk", 2, 18, "이번 주 놓치면 손해", lambda: tips.weekly_checklist(load(DATA / "articles.json", []), popularity)),
+            ("free", 4, 9, None, lambda: tips.free_games(load(DATA / "articles.json", [])))):
+        k_ = f"{tkey}-{now.isocalendar()[0]}-{now.isocalendar()[1]:02d}"
+        if not (force or (now.weekday() == day and now.hour >= hour)) or k_ in keys:
+            continue
+        try:
+            items = build()
+        except Exception as e:
+            print(f"  ! 꿀팁 {tkey} 실패: {e}")
+            continue
+        if len(items) < 2:
+            continue
+        hook = title or f"이번 주 공짜 게임 {len(items)}개"
+        (SITE / IGDIR / k_).mkdir(parents=True, exist_ok=True)
+        render_tips(items, SITE / IGDIR / k_ / "reel.mp4", hook, key=k_)
+        queue.append({"id": k_, "kind": "reel", "files": ["reel.mp4"], "hook": hook, "tips": items,
+                      "caption": tips.caption(f"[알트탭 꿀팁] {hook}", items, tag_tip)})
+        print(f"인스타 준비: 꿀팁 릴스 {hook}")
     # ⑤ 월요일 시리즈: 이번 주 출시 게임 (월요일 9시 이후, 주 1회) — 저장 유도형
     rk_ = f"rel-{now.isocalendar()[0]}-{now.isocalendar()[1]:02d}"
     if (force or (now.weekday() == 0 and now.hour >= 9)) and rk_ not in keys:
@@ -540,6 +563,9 @@ def regen_one(q, arts):
             from reels import render
             a = {**a, "hook": a.get("hook") or q.get("hook"), "hook_en": a.get("hook_en") or q.get("hook_en")}
             render(a, folder / "reel.mp4", lang=PROFILE, handle=HANDLE_P)
+        elif q.get("tips"):  # 꿀팁 릴스
+            from reels import render_tips
+            render_tips(q["tips"], folder / "reel.mp4", q["hook"], key=q["id"])
         elif q.get("appids"):  # 할인 릴스
             rebuild_deal(q)
     elif kind == "series":

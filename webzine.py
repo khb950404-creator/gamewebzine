@@ -323,7 +323,8 @@ DEEPEN = """너는 게임 매체의 취재 데스크다. 오늘은 {today}. 아�
 "context": 배경 문단 1개 (3~4문장, 200~350자). 이 소식이 왜 의미 있는지 사실로 보여줘라:
   전작·이전 발표와 무엇이 달라졌나, 판매량·동접·평가 같은 수치, 개발사 최근 상황, 경쟁작과 비교. 평가성 수식어 금지, 숫자와 사실로.
 "takeaway": 독자에게 주는 한 문장 (40~80자): 지금 무엇을 하면/알면 되는가. 예: "캠페인을 먼저 하려면 10월 16일 전에 어느 에디션이든 예약하면 된다." 광고·권유 말투 금지, 사실 기반.
-JSON 하나만: {{"articles": [{{"issue": 번호, "check": [...], "context": "...", "takeaway": "..."}}]}}
+"subject": 이 정보의 대상 짧은 이름 (4~16자, 게임명이나 'PS 플러스 11월 게임'처럼. 회사명 단독 금지).
+JSON 하나만: {{"articles": [{{"issue": 번호, "check": [...], "context": "...", "takeaway": "...", "subject": "..."}}]}}
 
 === 기사 ===
 {articles}"""
@@ -354,6 +355,8 @@ def deepen(drafts, checked):
         body = tgt.get("body") or drafts[n].get("body") or []
         if 120 <= len(ctx) <= 500 and len(body) >= 2:  # 배경 문단은 마지막 문단(일정) 앞에
             tgt["body"] = body[:-1] + [ctx] + body[-1:]
+        if 2 <= len((x.get("subject") or "").strip()) <= 20:
+            tgt["subject"] = x["subject"].strip()
         if (x.get("takeaway") or "").strip():
             tgt["takeaway"] = x["takeaway"].strip()
         k += 1
