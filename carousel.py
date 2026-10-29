@@ -84,7 +84,11 @@ def safe(t):
 def cover_text(img, kick, title, sub=None, page=1, total=1):
     """표지 글자 배치 (모든 표지 공통): 분류 → 제목 → 한 줄 부제, 아래쪽 정렬."""
     d = frame(img, page, total)
-    tf, lines = fit(d, safe(title), BH, 100, W - 2 * M, 4, 64)
+    if "\n" in title:  # 두 줄 제목이 정해져 있으면 줄 그대로, 가장 긴 줄에 맞춘 크기로
+        lines = [safe(x) for x in title.split("\n")]
+        tf = min((fit(d, x, BH, 112, W - 2 * M, 1, 64)[0] for x in lines), key=lambda f: f.size)
+    else:
+        tf, lines = fit(d, safe(title), BH, 100, W - 2 * M, 4, 64)
     lh = int(tf.size * 1.18)
     sub_l = []
     if sub:
@@ -193,11 +197,11 @@ def slide_body(a, paras, page, total, idx, n):
 def slide_photo(a, im, credit, page, total):
     """공식 발표 이미지 한 장: 잘리지 않게 원본 비율로 가운데, 뒤는 같은 사진을 흐리게."""
     from cards import cover_fit
-    back = cover_fit(im, W, H).crop((0, 0, W, H)).filter(ImageFilter.GaussianBlur(28))
-    img = Image.blend(back.convert("RGB"), Image.new("RGB", (W, H), INK), 0.72)
-    r = min((W - 2 * M) / im.width, (H - 360) / im.height)
-    ph = im.resize((int(im.width * r), int(im.height * r)), Image.LANCZOS)
-    img.paste(ph, ((W - ph.width) // 2, (H - ph.height) // 2))
+    img = cover_fit(im, W, H).crop((0, 0, W, H)).convert("RGB")  # 사진 위주: 화면 가득 (구도 맞춘 크롭)
+    shade_ = Image.new("L", (1, H))
+    for y in range(H):  # 위·아래 가장자리만 살짝 어둡게 (로고·쪽수·출처 글자 자리)
+        shade_.putpixel((0, y), int(150 * max(0.0, 1 - y / 180, (y - (H - 160)) / 160)))
+    img = Image.composite(Image.new("RGB", (W, H), INK), img, shade_.resize((W, H)))
     d = frame(img, page, total)
     if credit:
         d.text((W - M, H - 64), ("이미지 " if LANG == "ko" else "Image ") + credit, font=NM(24), fill=MUTE, anchor="rs")
@@ -266,26 +270,39 @@ def slide_check(a, total, page):
     return img
 
 
+def steam_shots(appid, n=4):
+    """게임 공식 스크린샷 (스팀 상점)."""
+    import urllib.request
+    try:
+        d = json.loads(urllib.request.urlopen(urllib.request.Request(
+            f"https://store.steampowered.com/api/appdetails?appids={appid}&filters=screenshots",
+            headers={"User-Agent": "Mozilla/5.0"}), timeout=20).read())[str(appid)].get("data") or {}
+        return [x["path_full"] for x in d.get("screenshots", [])[:n]]
+    except Exception:
+        return []
+
+
 def build_carousel(a, lang="ko", handle=None):
+    """사진 위주: 표지(사진 + 두 줄 제목 + 한 줄 부제) → 사진들. 설명은 캡션(본문)에 쓴다."""
     global LANG
     LANG = lang
     HANDLE_NOW[0] = handle or HANDLE
     a = {**a, "img_hd": best_image(a)}
-    if lang == "en":  # 영문: 제목·핵심 3줄·출처 (본문은 한국어라 생략)
-        a = {**a, "title": a.get("title_en") or a["title"], "tldr": a.get("tldr_en") or [], "why": "", "body": []}
-    gal = gallery_imgs(a)[:3]
-    chk = 1 if lang == "ko" and a.get("check") else 0
-    pages = body_pages(a)[:max(1, 10 - 3 - chk - len(gal))]
-    total = 2 + chk + len(gal) + len(pages) + 1
-    slides = [slide_title(a, total)]
-    for k, (im, cr) in enumerate(gal):
+    if lang == "en":
+        a = {**a, "title": a.get("title_en") or a["title"], "ig_head": None, "ig_sub": None}
+    photos = gallery_imgs(a)[:6]
+    if len(photos) < 3 and a.get("appid") and not a.get("esports"):
+        from cards import fetch_img
+        for u in steam_shots(a["appid"], 6 - len(photos)):
+            im = fetch_img(u)
+            if im:
+                photos.append((im, "Steam"))
+    total = 1 + len(photos)
+    label = a.get("category") or "뉴스" if lang == "ko" else CAT_EN.get(a.get("category"), "NEWS")
+    head = a.get("ig_head") or a["title"]
+    slides = [cover_text(photo_bg(a), label, head, a.get("ig_sub"), 1, total)]
+    for k, (im, cr) in enumerate(photos):
         slides.append(slide_photo(a, im, cr, 2 + k, total))
-    slides.append(slide_summary(a, total, page=2 + len(gal)))
-    if chk:
-        slides.append(slide_check(a, total, 3 + len(gal)))
-    for k, p in enumerate(pages, 1):
-        slides.append(slide_body(a, p, 2 + chk + len(gal) + k, total, k, len(pages)))
-    slides.append(slide_end(a, total))
     return slides
 
 

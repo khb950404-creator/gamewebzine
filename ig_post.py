@@ -490,6 +490,46 @@ PROOF_PROMPT = """너는 한국 게임 매체의 교열 기자다. 아래 기사
 JSON 하나만 출력: {{"title": ..., "tldr": [...], "why": ..., "hook": ..., "games": [...], "fixes": ["무엇을 왜 고쳤는지"]}}"""
 
 
+IG_COPY = """너는 인스타그램 매거진(예: @etc_zine)의 에디터다. 아래 게임 기사로 인스타 게시물을 만든다.
+사진 위에는 짧게, 설명은 본문(캡션)에 충실하게.
+"ig_head": 표지 제목 두 줄 [윗줄, 아랫줄] 각 6~14자. 사실을 담되 궁금하게. 예: ["GTA 6 맵 크기", "GTA 5의 두 배"], ["팬텀 블레이드 제로", "첫날 29만 명 접속"]
+"ig_sub": 표지 한 줄 부제 20~34자, 핵심 숫자·날짜. 예: "11월 19일 출시, PS5 용량 약 210GB"
+"ig_body": 캡션 본문 문단 5~7개 (해요체 '~했습니다/~인데요/~예정입니다'). 첫 문단은 한 문장 리드.
+  기사·체크 포인트에 있는 구체적 사실(이름, 날짜, 가격, 수치, 조건, 발언)을 빠짐없이 풀어 쓴다. 겉핥기 금지 — 독자가 '그래서 무엇을·언제·얼마에'를 알게.
+  배경 맥락 한 문단 포함. 마지막 문단은 정리 한 문장. 감탄·과장·이모지·질문 유도 금지. 출처에 없는 사실 금지.
+JSON 하나만: {{"ig_head": [..,..], "ig_sub": "..", "ig_body": ["..", ".."]}}
+
+기사: {art}"""
+
+
+def ig_copy(a):
+    """etc_zine 식: 표지엔 짧은 두 줄 제목, 본문은 캡션에 해요체로 충실하게."""
+    if a.get("ig_body"):
+        return a
+    try:
+        import webzine
+        art = {k: a.get(k) for k in ("title", "why", "tldr", "body", "check", "takeaway", "platforms")}
+        r = webzine.llm(IG_COPY.format(art=json.dumps(art, ensure_ascii=False))) or {}
+        head = r.get("ig_head")
+        if isinstance(head, list) and len(head) == 2 and all(isinstance(x, str) and x.strip() for x in head):
+            a["ig_head"] = "\n".join(x.strip() for x in head)
+        if isinstance(r.get("ig_sub"), str):
+            a["ig_sub"] = r["ig_sub"].strip()
+        body = [x.strip() for x in r.get("ig_body") or [] if isinstance(x, str) and x.strip()]
+        if len(body) >= 3:
+            a["ig_body"] = body
+        arts = load(DATA / "articles.json", [])
+        for x in arts:
+            if x["id"] == a["id"]:
+                for k in ("ig_head", "ig_sub", "ig_body"):
+                    if k in a:
+                        x[k] = a[k]
+        save(DATA / "articles.json", arts)
+    except Exception as e:
+        print(f"  ! 인스타 본문 작성 실패 (기존 요약으로): {e}")
+    return a
+
+
 def proofread(a):
     """인스타 게시 직전 교열: 게임명 표기·맞춤법·어색한 문장·숫자. 고친 내용은 기사에도 반영."""
     if a.get("proofread"):
@@ -624,6 +664,7 @@ def prepare():
     for a in cands:
         if PROFILE == "ko":
             proofread(a)  # 게시 전 교열 (게임명·맞춤법·어색한 문장)
+            ig_copy(a)    # 표지 두 줄 제목 + 해요체 캡션 본문
         is_brk = a in breaking
         if is_brk or (want_reel and reels_today < int(os.environ.get("IG_REELS_DAILY", 3))):
             try:  # 릴스: 도달이 가장 넓은 형식 → 하루 상위 기사 몇 건은 영상으로
@@ -798,10 +839,16 @@ def caption(a):
     tags += [TAG_EN[a["category"]]] if a.get("category") in TAG_EN else []
     tags += ["".join(ch for ch in g if ch.isalnum()) for g in (a.get("games_en") or [])[:2]]
     srcs = [s_["name"] for s_ in a.get("sources", [])]
-    lines = [a["title"], ""] + [to_news_tone(t) for t in a.get("tldr", [])[:3]]
+    if a.get("ig_body"):  # 인스타 매거진식: 리드 → 본문 → 정보 블록
+        lines = []
+        for p_ in a["ig_body"]:
+            lines += [p_, ""]
+        lines = lines[:-1]
+    else:
+        lines = [a["title"], ""] + [to_news_tone(t) for t in a.get("tldr", [])[:3]]
     if a.get("check"):  # 저장하고 다시 볼 실용 정보
-        lines += ["", "[체크 포인트]"] + [f"▪ {c['k']}: {c['v']}" for c in a["check"][:6]]
-    if a.get("takeaway"):
+        lines += [""] + [f"▪ {c['k']}: {c['v']}" for c in a["check"][:6]]
+    if a.get("takeaway") and not a.get("ig_body"):
         lines += ["", a["takeaway"]]
     if srcs:
         lines += ["", "출처: " + srcs[0] + (f" 외 {len(srcs) - 1}곳" if len(srcs) > 1 else "")]
