@@ -34,8 +34,8 @@ env:
   THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
   THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
   IG_ENABLED: ${{ vars.IG_ENABLED }}
-  IG_DAILY: ${{ vars.IG_DAILY || '2' }}   # 카드뉴스는 하루 2건 (도달은 릴스가 담당)
-  IG_REELS_DAILY: ${{ vars.IG_REELS_DAILY || '4' }}
+  IG_DAILY: ${{ vars.IG_DAILY || '1' }}   # 카드뉴스는 하루 1건 (사진·표가 핵심인 것만, 도달은 릴스가 담당)
+  IG_REELS_DAILY: ${{ vars.IG_REELS_DAILY || '3' }}
   IG_FORCE: ${{ contains(github.event.head_commit.message, '[ig-now]') && '1' || '' }}
   IGDB_CLIENT_SECRET: ${{ secrets.IGDB_CLIENT_SECRET }}
   MAX_ARTICLES: ${{ vars.MAX_ARTICLES || '12' }}

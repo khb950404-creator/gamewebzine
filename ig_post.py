@@ -222,7 +222,11 @@ def pick(arts, posted, n, queued_ids=(), cap=True, by_pop=False):
                      and not p.get("forced"))
     room = min(n, int(os.environ.get("IG_DAILY", 3)) - done_today) if cap else n
     prio_only = room <= 0
-    if prio_only:  # 하루 한도가 차도 롤드컵·GTA 6 소식은 실행마다 1건씩 올린다
+    if prio_only:  # 하루 한도가 차도 롤드컵·GTA 6 소식은 하루 2건까지 더
+        total_today = sum(1 for p in posted.values() if p.get("date") == today and p.get("kind") != "story"
+                          and not p.get("forced"))
+        if total_today >= int(os.environ.get("IG_DAILY", 1)) + int(os.environ.get("IG_REELS_DAILY", 3)) + 2:
+            return []  # 하루 전체 게시량 상한 (기본 6건)
         room = 1
     cand = [a for a in arts if a.get("status", "published") == "published" and a.get("img") and not a.get("noig")
             and a["id"] not in posted and a.get("trust") != "루머"
@@ -579,7 +583,10 @@ def prepare():
     cands = breaking[:]
     cands += [a for a in (pick([a for a in arts if a["id"] not in queued], posted, 1, queued, cap=False, by_pop=True)
                           if want_reel else []) if a["id"] not in {b["id"] for b in cands}]
-    cands += [a for a in pick([a for a in arts if a["id"] not in queued], posted, int(os.environ.get("IG_PER_RUN", 1)), queued)
+    # 카드뉴스는 사진·표가 핵심인 기사만 (선수 사진·결과표·공식 이미지) — 나머지 소식은 릴스로만
+    visual = lambda a: a.get("esports") or a.get("img_src") == "Riot Games" or a.get("gallery")
+    cands += [a for a in pick([a for a in arts if a["id"] not in queued and visual(a)], posted,
+                              int(os.environ.get("IG_PER_RUN", 1)), queued)
               if a["id"] not in {c["id"] for c in cands}]
     for a in cands:
         if PROFILE == "ko":
