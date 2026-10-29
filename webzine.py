@@ -249,6 +249,8 @@ PROMPT = """너는 PC·콘솔 게이머를 위한 한국어 게임 웹진 기자
 - 같은 말 반복, "기대를 모으고 있다", "귀추가 주목된다" 같은 상투적 마무리 금지. 문장마다 새 정보가 있어야 한다.
 - "이전 시리즈를 뛰어넘는", "눈길을 사로잡고 있다"처럼 출처에 없는 평가·수식 문장 금지. 출처에 없는 플랫폼(예: 콘솔 전용 게임에 PC)을 쓰지 마라.
 - 출처 정보가 적으면 문단을 억지로 늘리지 말고 짧게 써라 (2~3문단도 괜찮다).
+- 겉핥기 금지: 독자가 기사를 읽고 '그래서 나는 언제·얼마에·어떻게'를 알 수 있어야 한다. 출처에 있는 일시는 한국 시간(KST)으로 환산하고,
+  가격·에디션별 차이·참여 조건·지역 제한·한국어 지원 여부가 출처에 있으면 반드시 본문에 넣어라. 발표문 홍보 문구를 옮기지 말고 구체적 변경점·수치를 써라.
 
 e스포츠(롤드컵·LCK): 경기 결과 단순 보도(누가 몇 대 몇으로 이겼다, 일차 종합, 대진 확정)는 skip — 결과 속보는 별도로 즉시 올린다.
 경기 후 선수·감독 인터뷰, 논란·이적·부상 같은 이슈 기사는 뉴스 가치가 높다 — skip 하지 마라.
@@ -308,6 +310,54 @@ JSON 하나만: {{"articles": [{{"issue": 번호, "tldr": [...], "body": [...]}}
 
 === 보강할 기사 ===
 {articles}"""
+
+
+DEEPEN = """너는 게임 매체의 취재 데스크다. 오늘은 {today}. 아래 기사들은 발표 내용을 옮기는 데 그쳐 독자에게 실질적 도움이 부족하다.
+구글 검색으로 각 기사를 '한국 게이머가 실제로 판단·행동하는 데 필요한 정보'로 보강하라. 검색으로 확인된 사실만 쓴다. 확인 안 되면 빼라 (추측·지어내기 금지).
+
+각 기사마다:
+"check": 독자 체크리스트 2~6개 [{{"k": 항목, "v": 값}}]. 해당되는 것만, 구체적 값으로:
+  출시·시작 일시(한국 시간 KST로 환산해 '10월 20일(화) 오전 2시' 식), 한국 가격(원화, 에디션별), 플랫폼, 한국어 지원(자막/음성),
+  참여·수령 방법과 조건(예약 구매 필요 여부, 에디션 조건), PC 최소/권장 사양 핵심, 용량, 크로스플레이, 게임패스 포함 여부 등.
+  값이 확인 안 되면 그 항목은 넣지 마라. '미정'이면 '미정'으로.
+"context": 배경 문단 1개 (3~4문장, 200~350자). 이 소식이 왜 의미 있는지 사실로 보여줘라:
+  전작·이전 발표와 무엇이 달라졌나, 판매량·동접·평가 같은 수치, 개발사 최근 상황, 경쟁작과 비교. 평가성 수식어 금지, 숫자와 사실로.
+"takeaway": 독자에게 주는 한 문장 (40~80자): 지금 무엇을 하면/알면 되는가. 예: "캠페인을 먼저 하려면 10월 16일 전에 어느 에디션이든 예약하면 된다." 광고·권유 말투 금지, 사실 기반.
+JSON 하나만: {{"articles": [{{"issue": 번호, "check": [...], "context": "...", "takeaway": "..."}}]}}
+
+=== 기사 ===
+{articles}"""
+
+
+def deepen(drafts, checked):
+    """검색으로 실용 정보(KST 일시·원화 가격·한국어·조건)와 배경 맥락 보강 — 겉핥기 기사 방지."""
+    arts = [{"issue": n, **{k: ({**a, **checked.get(n, {})}).get(k) for k in ("title", "tldr", "body", "games", "platforms")}}
+            for n, a in drafts.items() if not a.get("untranslated")]
+    if not arts:
+        return
+    try:
+        v = llm(DEEPEN.format(today=datetime.now().strftime("%Y년 %m월 %d일"), articles=json.dumps(arts, ensure_ascii=False)),
+                search=True) or {}
+    except Exception as e:
+        print(f"  ! 심층 보강 실패: {e}")
+        return
+    k = 0
+    for x in v.get("articles", []):
+        n = x.get("issue")
+        if n not in drafts:
+            continue
+        tgt = checked[n] if n in checked else drafts[n]
+        chk = [c for c in (x.get("check") or []) if isinstance(c, dict) and c.get("k") and c.get("v")][:6]
+        if chk:
+            tgt["check"] = chk
+        ctx = (x.get("context") or "").strip()
+        body = tgt.get("body") or drafts[n].get("body") or []
+        if 120 <= len(ctx) <= 500 and len(body) >= 2:  # 배경 문단은 마지막 문단(일정) 앞에
+            tgt["body"] = body[:-1] + [ctx] + body[-1:]
+        if (x.get("takeaway") or "").strip():
+            tgt["takeaway"] = x["takeaway"].strip()
+        k += 1
+    print(f"  심층 보강 {k}건")
 
 
 def needs_expand(a):
@@ -530,6 +580,11 @@ def issue_text(n, c):
     return f"=== 이슈 {n} ===\n" + "\n".join(out)
 
 
+def check_html(a):
+    rows = "".join(f"<dt>{esc(c['k'])}</dt><dd>{esc(c['v'])}</dd>" for c in a.get("check") or [] if c.get("k") and c.get("v"))
+    return f'<section class="chk"><h2>체크 포인트</h2><dl>{rows}</dl></section>' if rows else ""
+
+
 def write_batch(cands):
     """후보 이슈들을 한 번에 작성 → 한 번에 팩트체크. 반환: 기사 목록(이슈 순서)."""
     KNOWN[:] = [a for a in load_json(DATA / "articles.json", []) if time.time() - a.get("written", a["ts"]) < 30 * 86400]
@@ -576,6 +631,8 @@ def write_batch(cands):
             print(f"  분량 보강 {len(short)}건")
         except Exception as e:
             print(f"  ! 분량 보강 실패: {e}")
+
+    deepen(drafts, checked)
 
     out = []
     for n, a in sorted(drafts.items()):
@@ -1677,6 +1734,13 @@ ARTICLE_CSS = """
 .art .src h2{font-size:12px;letter-spacing:.12em;color:var(--mut);margin:0 0 8px;font-weight:800}
 .art .src ul{margin:0;padding-left:18px;font-size:14px;line-height:1.7}.art .src a{text-decoration:underline;text-underline-offset:3px}
 .art .note{text-align:center}
+.art .chk{border:1px solid var(--line);border-radius:14px;margin:0 0 30px;overflow:hidden}
+.art .chk h2{font-size:12px;letter-spacing:.12em;color:var(--acc);margin:0;padding:14px 20px 8px;font-weight:800}
+.art .chk dl{margin:0;display:grid;grid-template-columns:max-content 1fr}
+.art .chk dt,.art .chk dd{margin:0;padding:10px 20px;border-top:1px solid var(--line);font-size:15px;line-height:1.6;word-break:keep-all}
+.art .chk dt{color:var(--mut);font-weight:700;padding-right:8px}
+.art .take{border-left:4px solid var(--acc);padding:4px 0 4px 16px;font-weight:600;line-height:1.7;margin:8px 0 0}
+.art .take b{display:block;font-size:12px;letter-spacing:.12em;color:var(--acc);margin-bottom:4px}
 @media(max-width:640px){.art{font-size:16px}.art .dek{font-size:17px}.art .tldr{padding:16px 16px 14px}}
 """
 
@@ -2370,8 +2434,10 @@ def build():
     {byline}
     {f'<figure class="hero"><img src="{esc(rel_img(a.get("img_hd") or a["img"]))}" alt="" referrerpolicy="no-referrer"><figcaption>이미지: {esc(a.get("img_src") or "Steam 스토어")}</figcaption></figure>' if a.get("img") else cover_html(a)}
     {f'<section class="tldr"><h2>핵심 요약</h2><ol>{tldr}</ol></section>' if tldr else ''}
+    {check_html(a)}
     {video_html(a)}
     <div class="abody">{body}</div>
+    {f'<p class="take"><b>정리</b>{esc(a["takeaway"])}</p>' if a.get("takeaway") else ''}
     {related_html(a, articles)}{ad("ADSENSE_SLOT_ARTICLE")}<div class="src"><h2>출처</h2><ul>{srcs}</ul></div><p class="note">{note}</p></article>{sidebar_html(a, articles, apps, patches, cal)}</div>""", desc=desc[:160], path=f"a/{a['id']}.html", img=img, ld=ld)
             (SITE / "a" / f"{a['id']}.html").write_text(html_.replace("{root}", "../"), encoding="utf-8")
         except Exception as e:  # 기사 한 건이 잘못돼도 사이트 빌드는 계속
