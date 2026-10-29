@@ -939,6 +939,16 @@ def run():
             print("LLM 호출 실패 - 이번 후보는 다음 실행 때 재시도")
             failed = True
     articles += new
+    # 심층 보강이 실패한 최근 기사는 다음 실행에서 다시 (기사당 3번까지)
+    late = [x for x in articles if not x.get("check") and not x.get("esports") and x.get("deep_try", 0) < 3
+            and time.time() - x.get("written", x["ts"]) < 2 * 86400 and x.get("status") == "published"][-5:]
+    if late:
+        for x in late:
+            x["deep_try"] = x.get("deep_try", 0) + 1
+        try:
+            deepen({i: x for i, x in enumerate(late)}, {})
+        except Exception as e:
+            print(f"  ! 보강 재시도 실패: {e}")
     cache = load_json(DATA / "steam_apps.json", {})
     for step in (lambda: resolve_names(new, cache), lambda: attach_images(articles, cache), lambda: find_videos(new, cache), lambda: collect_patches(cache), lambda: collect_calendar(cache),
                  lambda: collect_deals(cache), collect_all_deals):
