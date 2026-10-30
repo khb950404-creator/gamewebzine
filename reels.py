@@ -105,9 +105,9 @@ def hook_layer(text, accent, ink=WHITE):
 
 class Video:
     def __init__(self, out_path, seconds, key):
-        from bgm import make as make_bgm  # 직접 합성한 잔잔한 배경음 (저작권 걱정 없음)
+        from bgm import make as make_bgm  # 곡은 게시물 폴더 이름(=큐 id)으로 고른다 → 게시할 때 같은 곡을 캡션에 표기
         self.music = Path(out_path).with_suffix(".wav")
-        make_bgm(self.music, seconds=seconds + 0.5, key=key)
+        make_bgm(self.music, seconds=seconds + 0.5, key=Path(out_path).parent.name or key)
         cmd = [ffmpeg_bin(), "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{RW}x{RH}",
                "-r", str(FPS), "-i", "-", "-i", str(self.music), "-shortest",
                "-c:v", "libx264", "-pix_fmt", "yuv420p", "-preset", "medium", "-crf", "21", "-profile:v", "high",

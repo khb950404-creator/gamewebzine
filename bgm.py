@@ -1,4 +1,8 @@
-"""릴스 배경음: 저작권 걱정 없는 직접 합성 앰비언트 (게임 메뉴 화면 느낌).
+"""릴스 배경음.
+
+기본: media/bgm/ 의 실제 곡 (Kevin MacLeod, incompetech.com, CC BY 4.0 — 캡션에 credit() 표기 필수).
+  곡마다 가장 에너지 높은 50초 구간만 잘라 둔 것. 게시물 id 로 곡을 골라 게시할 때도 같은 곡을 표기할 수 있게 한다.
+곡이 없으면: 직접 합성 앰비언트 (아래 pad/arp).
 
 신스 패드(코드) + 아주 작은 아르페지오. 코드 진행 3종을 기사마다 번갈아 쓴다.
   python bgm.py   # out/reels/bgm_*.wav 샘플
@@ -71,7 +75,33 @@ def arp(seconds, prog, rng):
     return out
 
 
+TRACKS = Path(__file__).parent / "media" / "bgm"
+
+
+def track(key):
+    fs = sorted(TRACKS.glob("*.mp3"))
+    return fs[int(hashlib.md5(key.encode()).hexdigest(), 16) % len(fs)] if fs else None
+
+
+def credit(key):
+    t = track(key)
+    return f'음악: "{t.stem.replace("_", " ")}" Kevin MacLeod (incompetech.com) · CC BY 4.0' if t else ""
+
+
 def make(path, seconds=11.5, key=""):
+    t = track(key)
+    if t:
+        import subprocess
+        from reels import ffmpeg_bin
+        fo = max(0.0, seconds - 1.2)
+        subprocess.run([ffmpeg_bin(), "-y", "-loglevel", "error", "-i", str(t), "-t", f"{seconds:.2f}",
+                        "-af", f"loudnorm=I=-18:TP=-2,afade=t=out:st={fo:.2f}:d=1.2", "-ar", str(SR), "-ac", "2", str(path)],
+                       check=True, timeout=120)
+        return path
+    return synth(path, seconds, key)
+
+
+def synth(path, seconds=11.5, key=""):
     h = int(hashlib.md5(key.encode()).hexdigest(), 16)
     prog = PROGRESSIONS[h % len(PROGRESSIONS)]
     rng = np.random.default_rng(h % 2**32)

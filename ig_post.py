@@ -1003,8 +1003,14 @@ def _publish():
                 print(f"  ! 사이트에 아직 파일 없음, 다음 기회에: {q['id']}")  # 오래 기다리지 않음 (시간 초과 방지)
                 continue
             if kind == "reel":
+                cap = q["caption"]
+                if not q.get("trailer"):  # 배경음 곡 표기 (CC BY 조건)
+                    from bgm import credit
+                    if credit(q["id"]) and "음악:" not in cap:
+                        body, tg = split_tags(cap)  # 해시태그 줄은 맨 끝에 남겨야 첫 댓글로 분리된다
+                        cap = body + "\n" + credit(q["id"]) + ("\n\n" + tg if tg else "")
                 c = api("POST", f"{uid}/media", media_type="REELS", video_url=f"{site_url()}{IGDIR}/{q['id']}/reel.mp4",
-                        caption=clean_caption(q["caption"]), share_to_feed="true", thumb_offset="800")["id"]  # 훅 문구가 꽉 찬 순간을 썸네일로
+                        caption=clean_caption(cap), share_to_feed="true", thumb_offset="800")["id"]  # 훅 문구가 꽉 찬 순간을 썸네일로
                 wait_ready(c, tries=30)  # 영상 처리는 1~3분 걸림
                 mid = api("POST", f"{uid}/media_publish", creation_id=c)["id"]
                 comment_tags(mid, q["caption"])
