@@ -249,6 +249,11 @@ def cover_fit(img, w, h, smart=True):
             faces = sorted([f for f in _people(img) if 0.15 <= f[0] <= 0.85], key=lambda f: -f[2])
             objs = [o for o in ([] if faces else _objects(img)) if 0.15 <= (o[0] + o[2]) / 2 <= 0.85]
             if not faces and not objs:  # 사람·동물·탈것 같은 주인공이 없으면 배경 위주 → 풍경 구도
+                # 사람 선호 구도 모델(FocalNet)이 우선, 실패하면 손으로 짠 풍경 규칙
+                from focal import best_crop
+                c = best_crop(img, w / h, min_scale=1.0)
+                if c:
+                    return img.crop((c[0], c[1], c[0] + c[2], c[1] + c[3])).resize((w, h), Image.LANCZOS)
                 x, y = _landscape(img, grid, ew, eh, w, h)
                 return img.crop((x, y, x + w, y + h))
             subx, suby, look, is_face = _subject(grid, ew, eh, faces)

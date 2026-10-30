@@ -1,7 +1,7 @@
 """트레일러 릴스: 게임사 공식 트레일러(스팀 상점 영상)를 소리 그대로, 세로 화면으로 간단히 편집.
 
   화면: 흐린 트레일러 배경 + 가운데 원본 16:9 영상, 위에 제목, 아래 핵심 정보 2~3줄, 출처 표기
-  길이: 최대 MAX_SEC 초, 끝에서 소리·화면 페이드아웃
+  길이: 최대 MAX_SEC 초 — 컷이 가장 촘촘한 구간(하이라이트), 끝에서 소리·화면 페이드아웃
 
   python trailer_reel.py <기사ID>   # out/trailer/<ID>.mp4
 """
@@ -35,6 +35,25 @@ def match_movie(a, movies):
     if not hit and re.search(r"출시|발매|정식", a.get("title", "")) and not re.search(r"DLC|확장|업데이트|시즌|패치|모드|판", a.get("title", "")):
         hit = [m for m in movies if re.search(r"launch|release", m["name"], re.I)]
     return max(hit, key=lambda m: m.get("id", 0)) if hit else None  # 같은 조건이면 최신 영상
+
+
+def highlight_start(raw, dur):
+    """장면 전환(컷)이 가장 촘촘한 MAX_SEC 구간의 시작점. 앞쪽 로고·검은 화면과 끝 타이틀 카드를 건너뛴다.
+    (PySceneDetect 와 같은 방식을 ffmpeg 내장 scene 점수로) 짧은 영상이거나 실패하면 0."""
+    if dur <= MAX_SEC + 3:
+        return 0.0
+    try:
+        log = subprocess.run([ffmpeg_bin(), "-i", str(raw), "-an", "-vf", "scale=320:-2,select='gt(scene,0.3)',showinfo",
+                              "-f", "null", "-"], capture_output=True, text=True, timeout=300).stderr
+        cuts = [float(x) for x in re.findall(r"pts_time:([0-9.]+)", log)]
+    except Exception:
+        return 0.0
+    if len(cuts) < 4:
+        return 0.0
+    tail = dur - MAX_SEC - 3  # 끝 3초(로고·출시일 카드)는 남겨 두지 않는다
+    starts = [0.0] + [c for c in cuts if c <= tail]
+    best = max(starts, key=lambda t: (sum(t <= c < t + MAX_SEC for c in cuts), -t))
+    return max(0.0, best - 0.05)
 
 
 def info_lines(a):
@@ -77,12 +96,13 @@ def build(a, out):
         raise RuntimeError("기사와 맞는 스팀 공식 트레일러 없음")
     src = mv.get("hls_h264") or (mv.get("mp4") or {}).get("max")
     raw = out.with_suffix(".src.mp4")
-    subprocess.run([ffmpeg_bin(), "-y", "-loglevel", "error", "-i", src, "-t", str(MAX_SEC), "-c", "copy", str(raw)],
+    subprocess.run([ffmpeg_bin(), "-y", "-loglevel", "error", "-i", src, "-t", "150", "-c", "copy", str(raw)],
                    check=True, timeout=300)
     probe = subprocess.run([ffmpeg_bin(), "-i", str(raw)], capture_output=True, text=True).stderr
     h, m, sec = probe.split("Duration: ")[1].split(",")[0].split(":")
-    dur = int(h) * 3600 + int(m) * 60 + float(sec)
-    dur = min(dur, MAX_SEC)
+    full = int(h) * 3600 + int(m) * 60 + float(sec)
+    ss = highlight_start(raw, full)
+    dur = min(full - ss, MAX_SEC)
     credit = ", ".join((a.get("publishers") or [])[:1]) or (a.get("games") or [""])[0]
     credit = f"{credit} 공식 트레일러".strip()
     png = out.with_suffix(".panel.png")
@@ -93,15 +113,15 @@ def build(a, out):
           f"boxblur=24:2,eq=brightness=-0.32:saturation=0.8[bg];[b]scale={RW}:{VH}:force_original_aspect_ratio=decrease,"
           f"pad={RW}:{VH}:(ow-iw)/2:(oh-ih)/2[fg];[bg][fg]overlay=0:{VY}[v1];[v1][1:v]overlay=0:0,"
           f"fade=t=out:st={fo}:d=1.5,fps=30,setsar=1,format=yuv420p[o]")
-    cmd = [ffmpeg_bin(), "-y", "-loglevel", "error", "-i", str(raw), "-loop", "1", "-i", str(png),
-           "-filter_complex", vf + (f";[0:a]afade=t=out:st={fo}:d=1.5,aresample=44100[ao]" if has_audio else ""),
+    cmd = [ffmpeg_bin(), "-y", "-loglevel", "error", "-ss", f"{ss:.2f}", "-i", str(raw), "-loop", "1", "-i", str(png),
+           "-filter_complex", vf + (f";[0:a]afade=t=in:d={0.4 if ss else 0},afade=t=out:st={fo}:d=1.5,aresample=44100[ao]" if has_audio else ""),
            "-map", "[o]"] + (["-map", "[ao]", "-c:a", "aac", "-b:a", "160k"] if has_audio else []) + [
            "-t", f"{dur:.2f}", "-c:v", "libx264", "-preset", "medium", "-crf", "21", "-profile:v", "high",
            "-movflags", "+faststart", str(out)]
     subprocess.run(cmd, check=True, timeout=600)
     raw.unlink(missing_ok=True)
     png.unlink(missing_ok=True)
-    print(f"트레일러 릴스: {mv['name']} ({dur:.0f}초, 소리 {'있음' if has_audio else '없음'})")
+    print(f"트레일러 릴스: {mv['name']} ({ss:.0f}초부터 {dur:.0f}초, 소리 {'있음' if has_audio else '없음'})")
     return mv["name"]
 
 

@@ -929,9 +929,18 @@ def run():
         print(f"공략·가이드 제외 {len(guides)}건")
     print(f"새 항목 {len(fresh)}건")
     # 건너뛰는 이슈를 감안해 여유 있게 후보를 뽑고, 작성된 것 중 상위 MAX 건만 쓴다
-    cands = cluster(fresh)[:MAX_ARTICLES_PER_RUN + 8]
+    clusters = cluster(fresh)
+    try:  # 커뮤니티(펨코 PC/콘솔 인기글)에서 화제인 이슈는 우선순위를 올린다
+        from community import fm_hot, boost
+        hot = fm_hot()
+        save_json(DATA / "fm_hot.json", hot)
+        names = {g: e for a in articles for g, e in zip(a.get("games") or [], a.get("games_en") or []) if len(g) >= 2}
+        clusters = boost(clusters, hot, tokens, names)
+    except Exception as e:
+        print(f"  ! 커뮤니티 화제 신호 실패: {e}")
+    cands = clusters[:MAX_ARTICLES_PER_RUN + 8]
     for c in cands:
-        print(f"후보: {c['items'][0]['title'][:70]} (출처 {len(c['items'])}, 점수 {c['score']:.1f})")
+        print(f"후보: {c['items'][0]['title'][:70]} (출처 {len(c['items'])}, 점수 {c['score']:.1f})" + (f" ★화제: {c['hot'][:30]}" if c.get("hot") else ""))
     failed, new = False, []
     if cands:
         try:
