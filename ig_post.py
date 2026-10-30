@@ -472,9 +472,9 @@ def prepare_deals(queue, posted):
     if force or now.hour >= 9:
         today = now.strftime("%Y-%m-%d")
         storied = {(p.get("hl"), str(p.get("key"))) for p in posted.values() if p.get("hl")} |                   {(q.get("hl"), str(q.get("key"))) for q in queue if q.get("hl")}
-        live = {k for h, k in storied}
+        done = [p.get("hl") for p in posted.values() if p.get("hl") and p.get("date") == today] +                [q.get("hl") for q in queue if q.get("hl")]  # 하루 상한은 실행마다가 아니라 날짜 기준
         # 할인: 마감일을 아는 것만 (끝나면 내려야 하므로), 하루 3장까지
-        n = 0
+        n = done.count("deal")
         for x in dc.pick_deals(30):
             if n >= 3:
                 break
@@ -492,7 +492,7 @@ def prepare_deals(queue, posted):
             return 2 if re.sub(r"[^a-z0-9]", "", r["title"].lower()) in covered else 1 if len(r.get("platforms") or []) >= 3 else 0
         soon = sorted([r for r in cal if today < r["date"] <= (now + timedelta(days=21)).strftime("%Y-%m-%d") and r.get("img") and notable(r)],
                       key=lambda r: (-notable(r), r["date"]))
-        n = 0
+        n = done.count("release")
         for r in soon:
             if n >= 2:
                 break

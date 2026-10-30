@@ -63,6 +63,7 @@ jobs:
         continue-on-error: true   # 실패해도 경고로 표시하고 기존 기사로 빌드·배포는 계속
         run: |
           python -u webzine.py
+          pip install -q pillow   # esports.py 는 결과표 이미지를 그린다 (설치 전에 돌아 매번 실패하던 것 수정)
           python -u esports.py || true   # 롤드컵 기간: 한국팀 새 결과가 있으면 결과표 + 기사
 
       - name: 할인 정보 갱신 (push 때)
