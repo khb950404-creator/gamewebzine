@@ -59579,8 +59579,7 @@
   "title": "넷플릭스, '배틀그라운드' 실사 드라마 제작… 도널드 글로버 주연·연출",
   "tldr": [
    "넷플릭스와 크래프톤이 'PUBG: 배틀그라운드'를 기반으로 한 실사 드라마 시리즈 제작을 공식화했다.",
-   "도널드 글로버가 주연, 연출, 각본, 총괄 프로듀서를 맡고 그의 동생 스티븐 글로버가 공동 각본으로 참여한다.",
-   "크래프톤 엔터테인먼트 부문 LV3H의 장태석, 이수진 등이 총괄 프로듀서로 합류해 유니버스 확장에 나선다."
+   "도널드 글로버가 주연, 연출, 각본, 총괄 프로듀서를 맡고 그의 동생 스티븐 글로버가 공동 각본으로 참여한다."
   ],
   "why": "글로벌 배틀로얄 흥행작 배틀그라운드가 도널드 글로버와 손잡고 넷플릭스 실사 시리즈로 영상화된다.",
   "body": [
@@ -59609,7 +59608,9 @@
   "hook_en": "Donald Glover in PUBG series",
   "video_q": null,
   "trust": "공식",
-  "fixes": [],
+  "fixes": [
+   "[교열] tldr 3번 줄이 1, 2번 줄의 사실과 겹치는 내용(크래프톤 참여 등)을 반복하고 있어 규칙 5번에 따라 제거함"
+  ],
   "status": "published",
   "id": "70cacdd91c",
   "sources": [
@@ -59658,7 +59659,20 @@
   "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/578080/c16e2f2d122cae77a1cbaca19263df0f2d2214fa/ss_c16e2f2d122cae77a1cbaca19263df0f2d2214fa.1920x1080.jpg?t=1786493086",
   "appid": 578080,
   "img_src": "Steam 스토어",
-  "video_v": 1
+  "video_v": 1,
+  "proofread": 1793329678.6495643,
+  "edited": 1793329678.6748374,
+  "ig_head": "배틀그라운드 실사 드라마\n넷플릭스 제작 공식화",
+  "ig_sub": "도널드 글로버 주연·연출 참여, 세부 일정과 줄거리는 추후 공개",
+  "ig_body": [
+   "크래프톤의 글로벌 배틀로얄 게임 'PUBG: 배틀그라운드'가 넷플릭스 실사 드라마 시리즈로 제작됩니다.",
+   "드라마 '아틀란타'와 '미스터 & 미세스 스미스'로 알려진 도널드 글로버가 주연, 연출, 각본, 총괄 프로듀서를 맡습니다.",
+   "각본과 총괄 제작에는 도널드 글로버의 동생이자 오랜 협업자인 스티븐 글로버가 공동으로 참여합니다.",
+   "네온 TV의 마이클 셰퍼와 팜 우데오르지, 크래프톤 엔터테인먼트 부문 LV3H의 장태석과 이수진도 총괄 프로듀서로 합류했습니다.",
+   "배틀그라운드는 2017년 출시 이후 현대 배틀로얄 장르의 흥행을 견인했으며 현재 스팀에서 일일 최고 동시 접속자 수 78만 5,000명 이상을 기록하고 있습니다.",
+   "크래프톤은 아디 샨카 감독의 PUBG 애니메이션 시리즈에 이어 이번 실사화 프로젝트를 통해 IP의 영상 미디어 확장을 본격화하고 있습니다.",
+   "이번 넷플릭스 실사 시리즈의 세부적인 줄거리와 방영 일정은 추후 공개될 예정입니다."
+  ]
  },
  {
   "title": "유비소프트 \"어쌔신 크리드 추가 리메이크 없다… 차기작 개발 집중\"",
@@ -59942,6 +59956,667 @@
   "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1154030/810475ff9a2f935b7b2d10b53e521e46e7226301/ss_810475ff9a2f935b7b2d10b53e521e46e7226301.1920x1080.jpg?t=1791968871",
   "appid": 1154030,
   "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "로그라이크 경영 심판 '프로바블리 스톨른', 직업 해금 조건 공개",
+  "tldr": [
+   "프로바블리 스톨른은 게임 시작 시 고유한 직업을 선택해 자신만의 비즈니스 제국을 건설하는 로그라이크 경영 게임이다.",
+   "플레이어는 런 도중 특정 조건을 만족하거나 크레딧을 소모해 새로운 직업을 해금하고 전환할 수 있다.",
+   "물리·화학·농업 등 다양한 직업마다 해금 방식과 필요한 재화 수치가 상이해 전략적인 선택이 요구된다."
+  ],
+  "why": "로그라이크 경영 심판 '프로바블리 스톨른'에서 플레이어가 런 도중 직업을 바꾸고 해금하기 위해 충족해야 할 구체적인 조건과 필요 재화가 공개됐다.",
+  "body": [
+   "비즈니스 제국을 경영하는 로그라이크 게임 '프로바블리 스톨른'에서 플레이어가 활용할 수 있는 다양한 직업들의 구체적인 해금 조건이 공개됐다. 게임 시작 시 기본 직업을 선택해 모험을 떠날 수 있지만, 런 도중 새로운 직업을 새롭게 채택하여 전환하는 것도 가능하다.",
+   "물주상업(Water Trading)은 시작 직업으로 고르거나 야외에서 300 크레딧을 주고 구매해 해금할 수 있다. 와인제조(Winemaking)는 은퇴한 와인 양조업자를 200 크레딧에 구매하면 열린다.",
+   "수직농업(Hydroponic Farming)은 관련 농부로 시작하거나 은퇴한 농부를 350 크레딧에 영입하면 해금된다. 식물유전학(Plant Genetics)은 은퇴한 농부를 먼저 산 뒤 1,250 크레딧을 추가로 지불해야 이용할 수 있다.",
+   "화학(Chemistry)은 화학자로 시작하거나 1,000 크레딧의 은퇴한 화학자를 구매해 해금 가능하다. 총포제작(Gunsmithing)은 시작 직업 외에도 650 크레딧으로 은퇴한 총포공을 고용해 열 수 있다.",
+   "제련(Smelting)은 6일 차에 닥터 잭슨으로부터 무료로 획득하며, 쥐 목축(Rat Ranching)은 목동으로 시작하거나 750 크레딧으로 해금할 수 있다. 구축하려는 사업 스타일에 맞춰 적절한 직업을 선택하는 것이 게임의 핵심이다."
+  ],
+  "category": "신작",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "프로바블리 스톨른"
+  ],
+  "games_en": [
+   "Probably Stolen"
+  ],
+  "hook": "직업 해금 조건",
+  "title_en": "Guide Details All Unlock Requirements for Trades in Probably Stoled",
+  "tldr_en": [
+   "Probably Stolen is a business management roguelike where players build empires using various Trades.",
+   "Players can unlock and switch to new Trades mid-run by meeting specific credit costs and requirements.",
+   "Each Trade features distinct unlocking conditions that demand strategic planning from players."
+  ],
+  "hook_en": "Trade Unlock Guide",
+  "video_q": "Probably Stolen gameplay trailer",
+  "trust": "공식",
+  "fixes": [],
+  "status": "published",
+  "id": "9457ac150b",
+  "sources": [
+   {
+    "name": "Steam News",
+    "title": "All Trades in Probably Stolen and how to unlock them",
+    "link": "https://store.steampowered.com/news/group/38204750/view/719046160957835151",
+    "official": true
+   },
+   {
+    "name": "Destructoid",
+    "title": "All Trades in Probably Stolen and how to unlock them",
+    "link": "https://www.destructoid.com/all-trades-in-probably-stolen-and-how-to-unlock-them/",
+    "official": false
+   }
+  ],
+  "ts": 1793324275.0,
+  "written": 1793329419.4485915,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar6f1b.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar6f1b.jpg",
+  "img_src": "IGDB",
+  "video_v": 1
+ },
+ {
+  "title": "리메이크로 돌아오는 '진격의 거인 3', 원작 초월 스토리와 전투 시스템 예고",
+  "tldr": [
+   "진격의 거인 3는 단순한 애니메이션 복원을 넘어 원작의 처음부터 끝까지의 흐름을 아우르는 리메이크 타이틀로 개발 중이다.",
+   "플레이어는 첫 임무에서 분대를 잃고 트라우마를 겪은 뛰어난 엔지니어 겸 입체기동장치 천재 캐릭터를 조작한다.",
+   "제작진은 숙련된 플레이어를 위한 깊이 있는 전투 요소와 참신한 내러티브를 함께 녹여내는 데 집중했다."
+  ],
+  "why": "7년 만의 후속작인 '진격의 거인 3' 프로듀서 히데오 스즈키가 인터뷰를 통해 단순 애니메이션 재현을 넘어선 리메이크 방향성과 독특한 오리지널 주인공 설정을 밝혔다.",
+  "body": [
+   "인기 액션 게임 시리즈의 최신작 '진격의 거인 3'가 단순한 애니메이션 판박이가 아닌 전면적인 스토리 리메이크 형태로 개발 중이다. 전작인 '진격의 거인 2: 파이널 배틀' 이후 무려 7년 만에 명맥을 잇는 이번 작품은 원작의 완결까지의 서사를 처음부터 끝까지 다시 따라간다.",
+   "제작 총괄을 맡은 스즈키 히데오 프로듀서는 애니메이션 방영 중속에 맞춰 단순 신규 분량만으로는 온전한 하나의 게임 콘텐츠를 만들기 부족하다 판단해 이야기 전체를 관통하는 재구성을 택했다고 밝혔다. 이에 따라 원작 애니메이션의 전체적인 흐름을 유지하되 게임만의 독창적인 서사와 전투 경험을 가미했다.",
+   "이번 작에서 플레이어는 신참 시절 첫 임무에서 동료를 모두 잃고 극심한 트라우마에 시달리는 오리지널 캐릭터를 조작하게 된다. 거인 공포증을 안고 전투를 포기하려 했으나 뛰어난 엔지니어링 능력과 입체기동장치 재능 덕분에 후배를 양성하고 장비를 수리하는 독특한 위치에 머무는 인물이다.",
+   "제작진은 이처럼 깊은 상처를 지닌 파괴된 내면의 인물을 주인공으로 내세워 기존 게임들이 잘 다루지 않았던 심리적 묘사를 강화했다. 아울러 숙련된 게이머들도 만족할 수 있도록 전투 시스템의 깊이와 난이도 조절에도 공을 들였다고 강조했다.",
+   "원작의 서사를 색다른 시각에서 재해석한 '진격의 거인 3'는 팬들에게 새로운 몰입감을 선사할 예정이다."
+  ],
+  "category": "신작",
+  "platforms": [
+   "PC",
+   "PS5",
+   "Xbox",
+   "Switch"
+  ],
+  "games": [
+   "진격의 거인 3"
+  ],
+  "games_en": [
+   "Attack on Titan 3"
+  ],
+  "hook": "진격의 거인 3 리메이크",
+  "title_en": "Attack on Titan 3 Producer Discusses Story Retelling and Traumatized Protagonist",
+  "tldr_en": [
+   "Attack on Titan 3 acts as a complete series retelling rather than a direct sequel to the previous game.",
+   "Players control a heavily traumatized squad leader who stays on as an elite engineer and ODM gear genius.",
+   "Developers aim to blend advanced combat mechanics for veterans with a deeper psychological narrative."
+  ],
+  "hook_en": "Titan 3 Retelling",
+  "video_q": "Attack on Titan 3 trailer",
+  "trust": "공식",
+  "fixes": [],
+  "status": "published",
+  "id": "da36757ca9",
+  "sources": [
+   {
+    "name": "Steam News",
+    "title": "Attack on Titan 3: The Final Preview",
+    "link": "https://store.steampowered.com/news/group/9869/view/705535362075723583",
+    "official": true,
+    "img": "https://assets-prd.ignimgs.com/2026/10/29/attackontitan3-finalpreview-blogroll-1793313620466.jpg"
+   }
+  ],
+  "ts": 1793324284.0,
+  "written": 1793329419.4496608,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar60b9.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar60b9.jpg",
+  "img_src": "IGDB",
+  "video_v": 1
+ },
+ {
+  "title": "'슬레이 더 스파이어 2', 대형 베타 패치 11월 12일 출시 확정",
+  "tldr": [
+   "메가크리 게임즈는 슬레이 더 스파이어 2의 신규 대형 베타 패치를 오는 11월 12일에 배포할 예정이다.",
+   "이번 업데이트에는 얼리 액세스 로드맵에 포함되었던 대규모 신규 콘텐츠와 시스템 디자인 개편이 적용된다.",
+   "개발진은 안정성 검증을 위해 신규 콘텐츠를 우선 실험용 베타 브랜치에 독점 적용한 뒤 순차적으로 본편에 반영한다."
+  ],
+  "why": "로그라이크 덱빌딩 히트작 '슬레이 더 스파이어 2'의 개발진이 오랜 기간 공들여 온 핵심 콘텐츠가 담긴 첫 대형 베타 패치 일정을 공식화했다.",
+  "body": [
+   "인기 덱빌딩 로그라이크 후속작 '슬레이 더 스파이어 2'의 대규모 콘텐츠 업데이트 일정이 확정됐다. 개발사 메가크리 게임즈는 월간 소식지를 통해 차기 대형 베타 패치를 오는 11월 12일에 출시한다고 밝혔다.",
+   "지난 8월 휴가 주간을 제외하고 꾸준히 개발에 매진해 온 제작진은 얼리 액세스 출시 당시 로드맵으로 약속했던 핵심 기능들을 대거 구현했다. 해당 콘텐츠들은 높은 완성도와 세심한 밸런스 조정을 거치기 위해 기획, UX 디자인, 아트, 애니메이션 작업에 오랜 시간이 소요된 것으로 전해졌다.",
+   "신규 콘텐츠는 우선 안정성 검증과 유저 피드백 수렴을 위해 실험용 베타 브랜치(v0.111.0 기반)에 먼저 적용된다. 메인 브랜치는 기존의 상대적으로 안정적인 버전 환경을 유지하면서 향후 수정 사항을 순차적으로 흡수할 방침이다.",
+   "한편 개발진은 오는 11월 21일부터 22일까지 중국 상하이에서 개최되는 '위플레이 2026'에 참가한다. 현장에서는 슬레이 더 스파이어 2 전용 부스를 운영해 체험 빌드를 공개하고 독점 굿즈 판매 및 개발자 Q&A 행사를 진행할 예정이다.",
+   "이번 11월 베타 패치는 게임의 메타와 밸런스에 큰 변화를 예고하고 있어 팬들의 기대를 모으고 있다."
+  ],
+  "category": "업데이트",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "슬레이 더 스파이어 2"
+  ],
+  "games_en": [
+   "Slay the Spire 2"
+  ],
+  "hook": "11월 12일 베타 패치",
+  "title_en": "Slay the Spire 2 Major Beta Patch Scheduled for November 12 Release",
+  "tldr_en": [
+   "Slay the Spire 2 will release its next major experimental beta patch on November 12.",
+   "The upcoming update includes large-scale content features originally promised in the early access roadmap.",
+   "Developers will also showcase the game with exclusive demos and fan events at WePlay 2026 in Shanghai."
+  ],
+  "hook_en": "Spire 2 Beta Date",
+  "video_q": "Slay the Spire 2 update trailer",
+  "trust": "공식",
+  "fixes": [],
+  "status": "published",
+  "id": "a586ed2109",
+  "sources": [
+   {
+    "name": "Steam News",
+    "title": "The Neowsletter - October 2026",
+    "link": "https://store.steampowered.com/news/app/2868840/view/680764929940133586",
+    "official": true,
+    "img": "https://clan.akamai.steamstatic.com/images/44971832/5a6427023b212d36df3fb93dbeb48160d5d332c7.png"
+   }
+  ],
+  "ts": 1793323498.0,
+  "written": 1793329419.4498184,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2868840/b0958d387dc366211e0f353443710cfcf9fdb020/header.jpg?t=1787169309",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2868840/1a373a95229aab0cfd97f553ecbe86092364bb9c/ss_1a373a95229aab0cfd97f553ecbe86092364bb9c.1920x1080.jpg?t=1787169309",
+  "appid": 2868840,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "코모도, PC·스팀덱 겨냥 스팀 퍼블리셔 할인 이벤트 개막",
+  "tldr": [
+   "유통사 코모도가 PC와 스팀덱 유저들을 대상으로 대규모 스팀 퍼블리셔 할인 프로모션을 시작했다.",
+   "이번 행사를 통해 원샷: PC + 월드 머신 에디션 번들과 포켓 매니저 등 주요 인디 타이틀이 할인 대상에 포함됐다.",
+   "할인 행사는 오는 11월 12일까지 진행되며 다양한 명작 타이틀을 합리적인 가격에 만나볼 수 있다."
+  ],
+  "why": "코모도가 스팀 플랫폼을 통해 PC와 스팀덱 유저들을 위한 엄선된 인디 게임 라인업 할인 행사를 시작하며 11월 12일까지 세일을 이어간다.",
+  "body": [
+   "글로벌 게임 유통사 코모도가 PC 및 스팀덱 유저를 위한 대규모 퍼블리셔 할인 행사를 시작했다. 이번 세일은 늦은 밤 PC 게이밍을 즐기거나 휴대용 기기로 게임을 즐기는 유저들을 겨냥해 다채로운 인기 타이틀로 구성됐다.",
+   "대표 할인 상품으로는 독창적인 퍼즐 어드벤처 '원샷'의 오리지널 버전과 월드 머신 에디션을 함께 묶은 '원샷: PC + WME 번들'이 포함됐다. 해당 번들은 휴대성과 몰입감을 모두 챙긴 구성으로 주목받고 있다.",
+   "음산하고 아름다운 분위기의 미스터리 호러 게임 '포켓 미러 ~ 골덴어트라움' 역시 할인 목록에 올라 매력적인 미스터리 경험을 선사한다. 아울러 적의 능력을 흡수하며 로봇 군단과 맞서는 액션 게임 '카피 키티' 등도 할인가에 제공된다.",
+   "이번 코모도 퍼블리셔 할인 이벤트는 오는 11월 12일까지 스팀 스토어를 통해 진행된다.",
+   "다양한 플랫폼 환경에 최적화된 명작 인디 게임들을 소장할 수 있는 좋은 기회가 될 것으로 보인다."
+  ],
+  "category": "할인·이벤트",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "원샷",
+   "포켓 미러",
+   "카피 키티"
+  ],
+  "games_en": [
+   "OneShot",
+   "Pocket Mirror",
+   "Copy Kitty"
+  ],
+  "hook": "코모도 퍼블리셔 할인",
+  "title_en": "KOMODO Launches Steam Publisher Sale Featuring OneShot and Pocket Mirror",
+  "tldr_en": [
+   "KOMODO has kicked off a new publisher sale on Steam targeting PC and Steam Deck users.",
+   "Featured titles include the OneShot PC and World Machine Edition bundle, Pocket Mirror, and Copy Kitty.",
+   "The promotional sale will remain active through November 12."
+  ],
+  "hook_en": "Komodo Steam Sale",
+  "video_q": "KOMODO publisher sale trailer",
+  "trust": "공식",
+  "fixes": [],
+  "status": "published",
+  "id": "69da19dbb5",
+  "sources": [
+   {
+    "name": "Steam News",
+    "title": "KOMODO Publisher Sale is Back!",
+    "link": "https://store.steampowered.com/news/group/42579597/view/677384695610082535",
+    "official": true,
+    "img": "https://clan.akamai.steamstatic.com/images/42579597/2ef1f1325dc4e3f41f55431d9f5099b6775b1e77.jpg"
+   }
+  ],
+  "ts": 1793322059.0,
+  "written": 1793329419.4499996,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/420530/header.jpg?t=1785326211",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/420530/ss_8a8639313a9cfc5d39e17fad5fe4b819379f1101.1920x1080.jpg?t=1785326211",
+  "appid": 420530,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "2026 LCK AS 하반기 리그 플레이오프, 31일 막 오른다",
+  "tldr": [
+   "2026 LCK 아카데미 시리즈 하반기 리그 플레이오프가 오는 31일 온라인으로 개막해 11월 8일까지 열린다.",
+   "풀리그 정상을 차지한 T1 이스포츠 아카데미 루키즈와 디플러스 기아 유스가 상위 시드를 확보해 2라운드에 직행했다.",
+   "총 6개 팀이 5판 3선승제 세미 더블 엘리미네이션 방식으로 우승 트로피와 상금 250만 원을 두고 격돌한다."
+  ],
+  "why": "국내 리그 오브 레전드 3부 리그인 LCK AS 하반기 대회가 풀리그를 마치고 상위 6개 팀의 본격적인 토너먼트 경쟁에 돌입한다.",
+  "body": [
+   "국내 리그 오브 레전드(LoL) 유망주들의 산실인 '2026 LCK 아카데미 시리즈(LCK AS)' 하반기 아카데미 리그가 오는 31일부터 플레이오프에 돌입한다. 라이엇 게임즈가 주최하고 한국e스포츠협회가 공동 주관하며 우리은행이 후원하는 이번 대회는 11월 8일 최종 결승전을 치른다.",
+   "앞서 지난 25일 마무리된 풀리그에서는 T1 이스포츠 아카데미 루키즈(T1A)가 지난해 상반기 이후 네 시즌 연속 1위를 지키며 강력한 우승 후보임을 입증했다. 디플러스 기아 유스가 그 뒤를 이어 2위를 기록해 두 팀은 상위 시드를 받고 1라운드를 면제받았다.",
+   "나머지 플레이오프 진출 자리는 DN 수퍼스 아카데미, KT 롤스터 아카데미, 한화생명e스포츠, 한진 브리온 아카데미가 차지했다. 특히 한진 브리온 아카데미는 접전 끝에 농심 이스포츠 아카데미를 제치고 마지막 티켓을 거머쥐었다.",
+   "오는 31일 첫날 경기에는 오후 2시 DN 수퍼스와 한진 브리온의 대결이 열리며, 오후 5시에는 KT 롤스터와 한화생명e스포츠가 맞붙는다. 승리 팀들은 11월 1일 각각 T1A와 디플러스 기아를 상대한다. 모든 경기는 5판 3선승제 세미 더블 엘리미네이션 방식으로 진행된다.",
+   "대회 총상금은 우승 250만 원, 준우승 150만 원이며, 3·4위 팀에게는 각각 100만 원이 수여된다. 모든 경기는 LCK 챌린저스 리그 공식 SOOP과 치지직 채널을 통해 오후 2시부터 생중계된다."
+  ],
+  "category": "e스포츠",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "리그 오브 레전드"
+  ],
+  "games_en": [
+   "League of Legends"
+  ],
+  "hook": "LCK AS PO 개막",
+  "title_en": "2026 LCK Academy Series Lower Half Playoffs Begin October 31",
+  "tldr_en": [
+   "The 2026 LCK Academy Series lower half playoffs will start on October 31 and run until November 8.",
+   "T1 Esports Academy Rookies and Dplus Kia Youth secured top seeds after dominating the regular pool play.",
+   "Six teams will compete in a best-of-five double elimination bracket for a 2.5 million KRW grand prize."
+  ],
+  "hook_en": "LCK AS Playoffs",
+  "video_q": "LCK Academy Series highlights",
+  "trust": "공식",
+  "fixes": [],
+  "status": "published",
+  "id": "5ab1448bb2",
+  "sources": [
+   {
+    "name": "경향게임스",
+    "title": "‘LCK AS’ 하반기 아카데미 리그, 31일 플레이오프 개막",
+    "link": "https://www.khgames.co.kr/news/articleView.html?idxno=309844",
+    "official": false
+   },
+   {
+    "name": "인벤",
+    "title": "LCK 아카데미 시리즈 하반기 리그, 31일 플레이오프 개막",
+    "link": "https://www.inven.co.kr/webzine/news/?news=322771",
+    "official": false
+   }
+  ],
+  "ts": 1793329249.780062,
+  "written": 1793329419.459283,
+  "img": null,
+  "img_v": 2,
+  "video_v": 1
+ },
+ {
+  "title": "트라이에이스, '엔드 오브 에이터니 인핸스드 리마스터' PS5·PC 출시",
+  "tldr": [
+   "트라이에이스가 플레이스테이션 5와 PC 스팀 플랫폼을 통해 '엔드 오브 에이터니 인핸스드 리마스터'를 정식 출시했다.",
+   "신작은 네이티브 4K 해상도와 HDR 지원을 비롯해 최대 120프레임 구동과 텍스처 업스케일링 등 그래픽 옵션을 대폭 강화했다.",
+   "기존 PS4 및 PC판 소유자는 업그레이드 DLC를 통해 9.99달러에 신기능을 이용할 수 있으며 신규 구매가는 34.99달러다."
+  ],
+  "why": "트라이에이스의 독창적인 건스팽글 RPG '엔드 오브 에이터니'가 차세대 콘솔과 PC 환경에 맞춰 시각적·기술적 완성도를 높인 인핸스드 리마스터로 새롭게 등장했다.",
+  "body": [
+   "개발사 트라이에이스가 명작 RPG '엔드 오브 에이터니'의 차세대 개선판인 '엔드 오브 에이터니 인핸스드 리마스터'를 플레이스테이션 5와 스팀을 통해 정식 출시했다. 오리지널 타이틀은 지난 2010년 첫선을 보인 바 있다.",
+   "이번 인핸스드 버전은 네이티브 4K 출력과 HDR을 지원하며, PC 버전 기준 최대 120프레임 주사율 구동과 고해상도 업스케일 텍스처를 적용해 비주얼 완성도를 극대화했다. 또한 전투 진행 속도를 높여주는 2배속 모드가 새롭게 추가되어 제피르, 바슈론, 리안의 총격 전투를 더욱 속도감 있게 즐길 수 있다.",
+   "가격은 기본 정가 기준 34.99달러(약 3만 4,990원)이며, 유럽 지역은 34.99유로, 영국은 28.99파운드, 일본은 4,070엔으로 책정됐다. 기존 PS4 및 PC 스팀용 '엔드 오브 에이터니 4K/HD 에디션' 소유자는 9.99달러의 업그레이드 DLC를 통해 전환할 수 있다.",
+   "멸망 직전의 먼 미래를 배경으로 거대한 환경 제어 기계 '바젤' 위에서 벌어지는 독특한 건액션과 모토이 사쿠라바, 고헤이 타나카의 웅장한 사운드트랙이 현대적인 그래픽으로 재탄생했다.",
+   "시스펑크 감성과 화려한 총기 전투를 재현한 이번 리마스터는 고해상도 환경에서 원작의 깊이를 한층 더 선명하게 전달할 예정이다."
+  ],
+  "category": "신작",
+  "platforms": [
+   "PC",
+   "PS5"
+  ],
+  "games": [
+   "엔드 오브 에이터니"
+  ],
+  "games_en": [
+   "Resonance of Fate"
+  ],
+  "hook": "엔드 오브 에이터니 출시",
+  "title_en": "Resonance of Fate Enhanced Remaster Launches for PS5 and PC",
+  "tldr_en": [
+   "Resonance of Fate Enhanced Remaster is now available on PlayStation 5 and PC via Steam.",
+   "The upgraded version supports native 4K, HDR, upscaled textures, and frame rates up to 120fps.",
+   "Existing owners of the 4K/HD edition can upgrade for $9.99 while new purchases cost $34.99."
+  ],
+  "hook_en": "Resonance Remaster Out",
+  "video_q": "Resonance of Fate Enhanced Remaster trailer",
+  "trust": "공식",
+  "fixes": [],
+  "status": "published",
+  "id": "c0c9695ad1",
+  "sources": [
+   {
+    "name": "Gematsu",
+    "title": "Resonance of Fate Enhanced Remaster now available for PS5, PC",
+    "link": "https://www.gematsu.com/2026/10/resonance-of-fate-enhanced-remaster-now-available-for-ps5-pc",
+    "official": false
+   },
+   {
+    "name": "Siliconera",
+    "title": "Resonance of Fate: Enhanced Remaster DLC Announced",
+    "link": "https://www.siliconera.com/resonance-of-fate-enhanced-remaster-dlc-announced/",
+    "official": false
+   }
+  ],
+  "ts": 1793319342.0,
+  "written": 1793329419.4594734,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/hyptvklvwljzr0rcidtb.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/hyptvklvwljzr0rcidtb.jpg",
+  "img_src": "IGDB",
+  "video_v": 1
+ },
+ {
+  "title": "팬픽션 아카이브 'AO3', 긴급 서버 점검으로 최대 4주간 접속 중단",
+  "tldr": [
+   "글로벌 팬픽션 저장소 'AO3'가 비상 점검에 돌입하면서 사이트 복구에 최소 2주에서 최대 4주가 소요될 전망이다.",
+   "운영진은 전체 시스템 복구 전 읽기 전용 형태의 '열화 버전'을 조기에 가동하기 위해 희망적인 노력을 기울이고 있다.",
+   "방대한 문학 작품을 보관해 온 핵심 웹사이트의 장기 마비 소식에 전 세계 이용자들은 큰 충격에 빠졌다."
+  ],
+  "why": "전 세계 수많은 팬픽션 독자들과 커뮤니티가 의존해 온 거대 아카이브 사이트 'AO3'가 예기치 못한 대규모 긴급 점검으로 수주간 문을 닫는다.",
+  "body": [
+   "전 세계 팬픽션 독자들의 '알렉산드리아 도서관'으로 불리는 대형 아카이브 사이트 '아카이브 오브 아워 오운(AO3)'이 비상 점검으로 인해 장기간 접속이 중단됐다. 사이트를 관리하는 비영리 조직 OTW 측은 최초 몇 시간 내 해결될 것으로 보았던 문제가 심각해 최소 2주에서 최대 4주가 소요될 것이라고 밝혔다.",
+   "AO3는 수천만 건에 달하는 다양한 장르의 팬 문학 작품을 자원봉사자들의 힘으로 무료 운영해 온 인터넷의 핵심 인프라 중 하나다. 이번 점검 소식이 소셜 미디어를 통해 알려지자 수백만 명의 이용자들이 충격을 표출하며 큰 혼란이 빚어졌다.",
+   "운영진은 완전한 기능 복구에 2~4주가 소요될 것으로 예상하면서도, 유저들이 불편을 덜 수 있도록 사이트의 읽기 전용 '열화 버전'을 더 빠른 시일 내에 임시 오픈하기 위해 총력을 기울이고 있다고 전했다.",
+   "아직 이번 긴급 점검의 정확한 원인은 공식 발표되지 않았으나, 최근 기승을 부리는 AI 에이전트의 위협이나 최근 대두된 PHP 프로그래밍 언어의 심각한 보안 취약점 등이 원인 중 하나로 지목되고 있다.",
+   "이용자들은 점검 기간 동안 기존에 로컬 기기에 다운로드해 둔 작품이나 웨이백 머신 등의 아카이브 도구를 통해 작품을 열람할 수 있으나, 작가들에게 쿠도나 댓글 등의 반응을 남기는 것은 당분간 불가능하다."
+  ],
+  "category": "업계",
+  "platforms": [
+   "PC"
+  ],
+  "games": [],
+  "games_en": [],
+  "hook": "AO3 접속 중단",
+  "title_en": "Archive of Our Own Faces Up to 4-Week Outage Following Emergency Maintenance",
+  "tldr_en": [
+   "Popular fanfiction repository Archive of Our Own (AO3) has gone offline for extended emergency maintenance.",
+   "The administration estimates full service restoration will take between two to four weeks.",
+   "Developers are hopeful to launch a degraded, read-only version of the archive sooner to assist readers."
+  ],
+  "hook_en": "AO3 Down for Weeks",
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [],
+  "status": "published",
+  "id": "2d7832356e",
+  "sources": [
+   {
+    "name": "Kotaku",
+    "title": "Archive Of Our Own Might Be Down For Several Weeks And Fanfic Readers Are (Rightfully) Crashing Out",
+    "link": "https://kotaku.com/archive-of-our-own-might-be-down-for-several-weeks-and-fanfic-readers-are-rightfully-crashing-out-2000751155",
+    "official": false
+   },
+   {
+    "name": "IGN",
+    "title": "Archive of Our Own Could Be Down for Up to 4 Weeks After Going Dark for Emergency Maintenance",
+    "link": "https://www.ign.com/articles/archive-of-our-own-could-be-down-for-up-to-4-weeks-after-going-dark-for-emergency-maintenance",
+    "official": false
+   }
+  ],
+  "ts": 1793305814.0,
+  "written": 1793329419.459599,
+  "deep_try": 1,
+  "img": null,
+  "img_v": 2,
+  "video_v": 1
+ },
+ {
+  "title": "'메트로이드 프라임 3' 수석 엔지니어, '메트로이드 프라임 4' 오토바이 구간 비판",
+  "tldr": [
+   "원작 메트로이드 프라임 트릴로지의 수석 엔지니어 잭 매튜스가 메트로이드 프라임 4의 솔 밸리 오토바이 구간을 강하게 지적했다.",
+   "그는 기존에 존재하지 않았던 방대한 오픈월드 지형 시스템을 구축하느라 핵심 개발 자원이 낭비되었다고 분석했다.",
+   "새로운 시스템 도입은 개발 일정에 불필요한 위험을 초래했으며, 기존 던전 설계와는 겉돌았다는 지적이다."
+  ],
+  "why": "'메트로이드 프라임' 시리즈의 핵심 개발자가 신작 '메트로이드 프라임 4'의 오픈월드 오토바이 탐험 구간이 개발 자원을 분산시킨 악수였다고 평가했다.",
+  "body": [
+   "명작 SF 액션 어드벤처 '메트로이드 프라임' 오리지널 삼부작의 수석 엔지니어였던 잭 매튜스가 최신작 '메트로이드 프라임 4'의 오토바이 이동 구간인 '솔 밸리'에 대해 날카로운 비판을 제기했다. 그는 한 인터뷰를 통해 해당 사막 지역이 게임의 완성도에 독이 된 자원 낭비라고 평가했다.",
+   "매튜스는 전작들의 던전 제작 노하우와 도구셋은 퓨어 그린이나 볼트 포지 같은 전통적인 바이옴 구조에 그대로 적용할 수 있어 효율적이었다고 설명했다. 하지만 솔 밸리는 시리즈 역사상 전례가 없는 완전히 새로운 지형 시스템을 바닥부터 구축해야 하는 도전 과제였다고 지적했다.",
+   "그는 솔 밸리를 '젤다의 전설 바람의 지휘봉'에 등장하는 바다 지역에 비유하며, 메트로이드 시리즈의 핵심인 1인칭 탐험 문법과 동떨어진 채 자원만 분산시키는 요소라고 꼬집었다. 새로운 기술과 적 AI를 제작하느라 소모된 개발력은 다른 핵심 콘텐츠의 완성도를 높이는 데 쓰였어야 했다는 주장이다.",
+   "특히 매튜스는 기존에 검증되지 않은 새로운 게임플레이 요소를 도입하는 것은 생산 일정 측면에서 엄청난 위험을 동반한다고 강조했다. 닌텐도의 외주 개발 전환 과정에서 레트로 스튜디오가 전작의 유산을 온전히 살리지 못한 채 기존 기획을 강요받은 정황도 언급됐다.",
+   "'메트로이드 프라임 4'는 샘스 아란의 시그니처인 밀도 높은 던전 탐험으로 호평받는 한편, 광활한 오픈월드 사막 주행 요소는 플레이어들 사이에서도 호불호가 갈리고 있다."
+  ],
+  "category": "업계",
+  "platforms": [
+   "Switch"
+  ],
+  "games": [
+   "메트로이드 프라임 4",
+   "메트로이드 프라임"
+  ],
+  "games_en": [
+   "Metroid Prime 4",
+   "Metroid Prime"
+  ],
+  "hook": "프라임 4 오토바이 비판",
+  "title_en": "Metroid Prime Trilogy Lead Engineer Calls MP4 Motorcycle Sections a Resource Waste",
+  "tldr_en": [
+   "Original Metroid Prime trilogy lead technical engineer Jack Mathews criticized Metroid Prime 4's Sol Valley motorcycle section.",
+   "Mathews argued that building an unprecedented open-world terrain system from scratch caused an unnecessary split in developer resources.",
+   "He compared the desert hub to The Wind Waker's sea, noting it introduced major production risks without serving core gameplay."
+  ],
+  "hook_en": "MP4 Bike Criticized",
+  "video_q": "Metroid Prime 4 Sol Valley gameplay",
+  "trust": "보도",
+  "fixes": [],
+  "status": "published",
+  "id": "f1664f3260",
+  "sources": [
+   {
+    "name": "Kotaku",
+    "title": "Here’s A Metroid Prime Trilogy Dev’s Take On Why Metroid Prime 4′s Bike Sections Sucked",
+    "link": "https://kotaku.com/heres-a-metroid-prime-trilogy-devs-take-on-why-metroid-prime-4s-bike-sections-sucked-2000751031",
+    "official": false
+   },
+   {
+    "name": "VGC",
+    "title": "Metroid Prime Trilogy engineer explains why he thinks the motorcycle sections in Metroid Prime 4 were ‘just a waste’",
+    "link": "https://www.videogameschronicle.com/news/metroid-prime-trilogy-engineer-explains-why-he-thinks-the-motorcycle-sections-in-metroid-prime-4-were-just-a-waste/",
+    "official": false
+   }
+  ],
+  "ts": 1793302635.0,
+  "written": 1793329419.4598541,
+  "deep_try": 1,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar30l9.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar30l9.jpg",
+  "img_src": "IGDB",
+  "video_v": 1
+ },
+ {
+  "title": "번지, '데스티니 가디언즈' 과거 캠페인 복원 작업 2028년 초 완료 목표",
+  "tldr": [
+   "번지가 과거 삭제했던 '데스티니 가디언즈'의 핵심 확장팩 캠페인과 레이드 콘텐츠를 되살리는 복원 작업을 본격 착수했다.",
+   "현재 사전 제작 단계인 해당 프로젝트는 내년 1월이나 2월에 본격적인 풀 프로덕션에 돌입해 약 12개월간 진행된다.",
+   "모든 복원 작업이 순조롭게 마무리될 경우 플레이어들은 오는 2028년 초에 공식적으로 언볼팅된 콘텐츠를 만나볼 수 있다."
+  ],
+  "why": "번지가 '데스티니 가디언즈'의 볼트행 콘텐츠 복원 로드맵을 공개하고 2028년 초 완료를 목표로 1년여간의 본격적인 대장정에 돌입한다고 발표했다.",
+  "body": [
+   "번지가 과거 콘텐츠 볼트 시스템으로 격리시켰던 방대한 '데스티니 가디언즈' 오리지널 캠페인과 레이드 콘텐츠를 게임으로 되돌리는 복원 프로젝트의 구체적인 일정을 공유했다. 번지 제품 책임자 조스 딘의 발표에 따르면, 팀은 현재 사전 제작 단계를 거쳐 내년 초 본격적인 풀 프로덕션 체제로 진입할 예정이다.",
+   "이번 언볼팅 대상에는 붉은 전쟁, 포세이큰, 오시리스의 저주, 전쟁지능 캠페인을 비롯해 관련 스트라이크, 레이드 레이어, 그리고 오랜 커뮤니티 요청을 받아온 '내버나기(Menagerie)' 활동이 포함된다. 모든 플레이어에게 무료로 제공되는 이번 복원 작업은 약 12개월의 정식 제작 기간을 거쳐 오는 2028년 초 완료될 전망이다.",
+   "기본 복원 목표 외에도 번지는 자유 로밍 지역, 역대 시즌 활동(해상전부터 코일까지), 레이드 무기 업데이트, PvP 맵 등을 포함한 광범위한 '스트레치 골' 목록을 검토하고 있다. 또한 '데스티니 클래식' 형태의 오리지널 경험 제공을 암시하는 '데스티니 레거시' 프로젝트와 수수께끼의 비밀 이벤트도 예고됐다.",
+   "번지는 다가오는 2027년 2월 추가적인 상세 정보를 공개하며 팬들과 소통을 이어갈 계획이다. 과거의 실수를 반성하고 커뮤니티의 신뢰를 회복하려는 번지가 '마라톤' 프로젝트와 함께 향후 디딤돌을 어떻게 다져나갈지 이목이 집중된다."
+  ],
+  "category": "업데이트",
+  "platforms": [
+   "PC",
+   "PS5",
+   "Xbox"
+  ],
+  "games": [
+   "데스티니 가디언즈"
+  ],
+  "games_en": [
+   "Destiny 2"
+  ],
+  "hook": "데스티니 2 콘텐츠 복원",
+  "title_en": "Bungie Confirms Destiny 2 Content Unvaulting Will Take Until Early 2028",
+  "tldr_en": [
+   "Bungie has outlined a detailed timeline to unvault classic Destiny 2 campaigns, raids, and the Menagerie activity.",
+   "The studio is currently in pre-production and will enter a 12-month full production phase starting early next year.",
+   "The complete unvaulting process is targeted for completion in the early months of 2028."
+  ],
+  "hook_en": "Destiny 2 Unvault 2028",
+  "video_q": "Destiny 2 unvaulting trailer",
+  "trust": "공식",
+  "fixes": [
+   "게임명 표기 '데스티니 2' → '데스티니 가디언즈'"
+  ],
+  "status": "published",
+  "id": "5b6201c97d",
+  "sources": [
+   {
+    "name": "Push Square",
+    "title": "Destiny 2 Content Unvaulting Won't Take Place Until 2028",
+    "link": "https://www.pushsquare.com/news/2026/10/destiny-2-content-unvaulting-wont-take-place-until-2028",
+    "official": false
+   },
+   {
+    "name": "Rock Paper Shotgun",
+    "title": "It sounds like you shouldn't expect Destiny 2's campaign unvaulting to be ready until 2028, as Bungie tease their plans for the future of the series",
+    "link": "https://www.rockpapershotgun.com/it-sounds-like-you-shouldnt-expect-destiny-2s-campaign-unvaulting-to-be-ready-until-2028-as-bungie-tease-their-plans-for-the-future-of-the-series",
+    "official": false
+   }
+  ],
+  "ts": 1793302200.0,
+  "written": 1793329419.4599693,
+  "deep_try": 1,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1085660/34e901dac9d959129d25c4b7ae8def80df99827e/header_koreana.jpg?t=1781815889",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1085660/d7038cee22b9de60003e7bbc07d65069ad6044ab/ss_d7038cee22b9de60003e7bbc07d65069ad6044ab.1920x1080.jpg?t=1781815889",
+  "appid": 1085660,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "유비소프트, '어쌔신 크리드 발할라' 출시 6년 만에 뉴 게임+ 추가",
+  "tldr": [
+   "유비소프트가 지난 2020년 출시된 오픈월드 RPG '어쌔신 크리드 발할라'에 뉴 게임 플러스 모드를 오는 11월 5일 도입한다.",
+   "이번 업데이트에는 전용 난이도 스케일링을 비롯해 새로운 룬, 치트, 보관함 시스템 및 신규 장비 강화 재료 '미스릴'이 추가된다.",
+   "3년 전 마지막 패치를 선언했던 개발진이 유저들의 가장 강력한 요청을 받아들여 대규모 사후 지원에 나섰다."
+  ],
+  "why": "유비소프트가 '어쌔신 크리드 발할라'의 마지막 대형 업데이트 이후 3년, 출시 기준으로는 6년 만에 팬들이토록 원하던 뉴 게임 플러스 모드를 전격 배포한다.",
+  "body": [
+   "유비소프트가 오픈월드 액션 RPG '어쌔신 크리드 발할라'의 대대적인 신규 패치를 예고해 게이머들을 놀라게 했다. 지난 2020년 11월 첫 출시된 이래 2023년 2월 공식적인 마지막 업데이트를 마쳤던 게임에 팬들이토록 염원하던 '뉴 게임 플러스(New Game+)' 모드가 전격 추가된다.",
+   "신규 뉴 게임 플러스 모드는 오는 11월 5일 업데이트될 예정이며, 기존 캐릭터의 진행도와 장비를 유지한 채 새로운 이야기로 다시 모험을 시작할 수 있다. 이번 모드에는 적과 레벨, 장비가 모두 유기적으로 조율되는 '전용 NG+ 스케일링' 시스템이 탑재된다.",
+   "이와 함께 신규 룬, 도전 과제, 보관함 시스템이 도입되며, 신들의 장비를 업그레이드하는 데 쓰이는 새로운 제작 재료인 '미스릴'이 새롭게 등장한다. 유비소프트는 이번 모드 외에도 최신 세대 콘솔을 위한 추가적인 성능 및 그래픽 업그레이드 패치 노트를 며칠 내로 상세히 공개할 방침이다.",
+   "발할라는 출시 당시 방대한 분량으로 호평받았으나 뉴 게임 플러스가 부재해 아쉬움을 남겼다. 수년이 지난 시점에서 유비소프트가 구작에 이례적인 대형 사후 지원을 단행하면서 팬들의 환호가 이어지고 있다."
+  ],
+  "category": "업데이트",
+  "platforms": [
+   "PC",
+   "PS5",
+   "Xbox"
+  ],
+  "games": [
+   "어쌔신 크리드 발할라"
+  ],
+  "games_en": [
+   "Assassin's Creed Valhalla"
+  ],
+  "hook": "발할라 뉴 게임+",
+  "title_en": "Assassin's Creed Valhalla Getting New Game+ Mode Six Years After Launch",
+  "tldr_en": [
+   "Ubisoft is adding a New Game+ mode to Assassin's Creed Valhalla on November 5.",
+   "The long-requested patch features dedicated level scaling, new runes, achievements, and the Mithril crafting material.",
+   "This marks a surprise return to the open-world RPG three years after its supposed final update."
+  ],
+  "hook_en": "Valhalla New Game+",
+  "video_q": "Assassin's Creed Valhalla New Game Plus",
+  "trust": "공식",
+  "fixes": [],
+  "status": "published",
+  "id": "08c0ec8c7f",
+  "sources": [
+   {
+    "name": "IGN",
+    "title": "Assassin's Creed Valhalla Is Getting New Game+ 6 Years After Release",
+    "link": "https://www.ign.com/articles/assassins-creed-valhalla-is-getting-new-game-six-years-after-release",
+    "official": false
+   },
+   {
+    "name": "Push Square",
+    "title": "Assassin's Creed Valhalla Gets New Game+ Patch, More Than Three Years After Its 'Final' Update",
+    "link": "https://www.pushsquare.com/news/2026/10/assassins-creed-valhalla-gets-new-gameplus-patch-more-than-three-years-after-its-final-update",
+    "official": false
+   }
+  ],
+  "ts": 1793299223.0,
+  "written": 1793329419.4600813,
+  "deep_try": 1,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2208920/header.jpg?t=1792777686",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2208920/ss_103481084a59b34837113daf27c04679caf743f3.1920x1080.jpg?t=1792777686",
+  "appid": 2208920,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "세가, '버추어 파이터 크로스로드'에 원작 출신 '리오넬 라팔' 참전 확정",
+  "tldr": [
+   "세가와 RGG 스튜디오가 개발 중인 3D 대전 격투 신작 '버추어 파이터 크로스로드'에 신규 참전 캐릭터를 공개했다.",
+   "버추어 파이터 2 출신의 프랑스인 격투가 '리오넬 라팔'이 한층 성숙한 모습으로 주인공 시엘로와 맞선다.",
+   "2027년 출시를 앞둔 크로스로드는 전통적인 대전 모드와 동남아시아 배경의 시네마틱 싱글 플레이를 지원한다."
+  ],
+  "why": "세가가 '버추어 파이터 크로스로드'의 최신 트레일러를 통해 시리즈 개성 넘치는 캐릭터 '리오넬 라팔'의 합류를 공식화하고 기대감을 높였다.",
+  "body": [
+   "세가와 용과 같이 스튜디오(RGG Studio)가 개발 중인 3D 대전 격투 게임 부활작 '버추어 파이터 크로스로드'의 새로운 캐릭터 정보가 공개됐다. 이번 트레일러의 주인공은 버추어 파이터 2부터 활약해 온 개성파 프랑스 격투가 '리오넬 라팔'이다.",
+   "공식 자료에 따르면 소년 시절 천방지축이었던 라팔은 '리오넬 라팔'이라는 정식 명칭과 함께 한층 성숙하고 강력해진 모습으로 돌아왔다. 게임 내 스토리 모드에서는 신규 주인공인 '시엘로'와 치열한 스파링을 벌이며 빌라사파라 시티에 찾아온 미스터리한 배경을 암시한다.",
+   "RGG 스튜디오가 제작 중인 '버추어 파이터 크로스로드'는 가상의 동남아시아 도시 '빌라사파라'를 배경으로 한 몰입감 넘치는 시네마틱 싱글 플레이 스토리와 시리즈 특유의 정통 대전 액션을 결합한 타이틀이다. '스트리트 파이터 6' 및 '철권 8'의 강력한 대항마로 기대를 모으고 있다.",
+   "정식 출시일은 아직 확정되지 않았으며 2027년 발매를 목표로 개발이 진행 중이다. 세가는 출시 시기가 다가옴에 따라 주요 캐릭터들의 참전 소식을 순차적으로 공개할 예정이다."
+  ],
+  "category": "신작",
+  "platforms": [
+   "PS5"
+  ],
+  "games": [
+   "버추어 파이터 크로스로드",
+   "버추어 파이터 2"
+  ],
+  "games_en": [
+   "Virtua Fighter Crossroads",
+   "Virtua Fighter 2"
+  ],
+  "hook": "리오넬 라팔 참전",
+  "title_en": "Lionel Rafale Joins Roster in SEGA's Virtua Fighter Crossroads",
+  "tldr_en": [
+   "SEGA and RGG Studio have revealed a new trailer for Virtua Fighter Crossroads featuring Lionel Rafale.",
+   "The flamboyant French martial artist returns with an aged-up design to spar with protagonist Cielo.",
+   "The cinematic 3D fighting game revival is currently scheduled for release in 2027."
+  ],
+  "hook_en": "Lion Rafale Returns",
+  "video_q": "Virtua Fighter Crossroads trailer",
+  "trust": "공식",
+  "fixes": [],
+  "status": "published",
+  "id": "6f64b27501",
+  "sources": [
+   {
+    "name": "Push Square",
+    "title": "Virtua Fighter's 'Cocky Kid' Lionel Rafale Returns in Crossroads on PS5",
+    "link": "https://www.pushsquare.com/news/2026/10/virtua-fighters-cocky-kid-lionel-rafale-returns-in-crossroads-on-ps5",
+    "official": false
+   },
+   {
+    "name": "Gematsu",
+    "title": "Virtua Fighter Crossroads adds Lionel Rafale",
+    "link": "https://www.gematsu.com/2026/10/virtua-fighter-crossroads-adds-lionel-rafale",
+    "official": false
+   }
+  ],
+  "ts": 1793296800.0,
+  "written": 1793329419.4603176,
+  "deep_try": 1,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar60b5.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar60b5.jpg",
+  "img_src": "IGDB",
   "video_v": 1
  }
 ]
