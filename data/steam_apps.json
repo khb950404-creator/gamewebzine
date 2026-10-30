@@ -19278,6 +19278,50 @@
  "itad:3884860": "019e9a72-2c6b-7011-b89e-ab5193c4153c",
  "itad:1477590": "018d937f-4b57-7087-b347-745f399a4401",
  "itad:4530370": "01a0d846-ecea-7394-ba8d-f39d2e544207",
+ "id:1297900": {
+  "appid": 1297900,
+  "name": "Gothic 1 Remake",
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1297900/6bc8c205a107e552f14631524f25cdf88743515a/header.jpg?t=1787564876",
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1297900/09d4206dedf6fa71a14a375325482c43ef03f201/ss_09d4206dedf6fa71a14a375325482c43ef03f201.1920x1080.jpg?t=1787564876",
+  "info": {
+   "date": "2026년 6월 5일",
+   "soon": false,
+   "genres": [
+    "액션",
+    "RPG"
+   ],
+   "dev": "Alkimia Interactive",
+   "pub": "Alkimia Interactive",
+   "ko": false,
+   "ko_voice": false,
+   "price": "₩ 39,750",
+   "discount": 25,
+   "meta": null
+  }
+ },
+ "id:4012810": {
+  "appid": 4012810,
+  "name": "STEINS;GATE RE:BOOT",
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4012810/07418d40a3fdd2f403bfa506f50051f4254fa02a/header.jpg?t=1793263257",
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4012810/26a7cff71d04ccca868c51551e2e7907441d6532/ss_26a7cff71d04ccca868c51551e2e7907441d6532.1920x1080.jpg?t=1793263257",
+  "info": {
+   "date": "2026년 8월 19일",
+   "soon": false,
+   "genres": [
+    "어드벤처",
+    "캐주얼"
+   ],
+   "dev": "MAGES. Inc.",
+   "pub": "Spike Chunsoft Co., Ltd.",
+   "ko": false,
+   "ko_voice": false,
+   "price": "₩ 55,350",
+   "discount": 10,
+   "meta": null
+  }
+ },
+ "itad:1297900": "018d937f-4cfa-70bf-b146-bf78801a012b",
+ "itad:4012810": "019aa01e-4faf-72cc-858d-99bbb5b94974",
  "ig:사이버펑크2077": null,
  "ig:매직더개더링": null,
  "ig:포르자호라이즌6": null,
@@ -19404,27 +19448,5 @@
  "ig:theelderscrollsvi": {
   "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/sc144sh.jpg",
   "hd": "https://images.igdb.com/igdb/image/upload/t_1080p/sc144sh.jpg"
- },
- "id:4012810": {
-  "appid": 4012810,
-  "name": "STEINS;GATE RE:BOOT",
-  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4012810/07418d40a3fdd2f403bfa506f50051f4254fa02a/header.jpg?t=1793263257",
-  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4012810/26a7cff71d04ccca868c51551e2e7907441d6532/ss_26a7cff71d04ccca868c51551e2e7907441d6532.1920x1080.jpg?t=1793263257",
-  "info": {
-   "date": "2026년 8월 19일",
-   "soon": false,
-   "genres": [
-    "어드벤처",
-    "캐주얼"
-   ],
-   "dev": "MAGES. Inc.",
-   "pub": "Spike Chunsoft Co., Ltd.",
-   "ko": false,
-   "ko_voice": false,
-   "price": "₩ 55,350",
-   "discount": 10,
-   "meta": null
-  }
- },
- "itad:4012810": "019aa01e-4faf-72cc-858d-99bbb5b94974"
+ }
 }
