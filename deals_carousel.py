@@ -211,7 +211,8 @@ def story(x):
     if x.get("meta"):
         badge(d, bx, y, f"메타 {x['meta']}", (60, 60, 68), f=NB(36))
     if x.get("expiry"):
-        d.text((76, y + 110), f"{int(x['expiry'][5:7])}월 {int(x['expiry'][8:10])}일까지", font=NM(40), fill=SOFT)
+        e = datetime.strptime(x["expiry"][:10], "%Y-%m-%d")
+        d.text((76, y + 110), f"{e.month}월 {e.day}일 ({'월화수목금토일'[e.weekday()]})까지 할인", font=BH(56), fill=WHITE)
     d.text((SW // 2, SH - 120), HANDLE, font=NB(38), fill=GOLD, anchor="mm")
     return img
 
@@ -221,6 +222,47 @@ def build(n=7, skip=(), **cover):
     total = len(deals) + 2
     return [slide_cover(deals, total, **cover)] + [slide_deal(x, i + 2, total) for i, x in enumerate(deals)] + [slide_end(deals, total)], deals
 
+
+
+WD = "월화수목금토일"
+
+
+def release_story(r):
+    """출시 예정: 인스타 스토리 1장 (9:16). 하이라이트 '출시예정'용 — 출시일이 지나면 하이라이트에서 내린다."""
+    SW, SH = 1080, 1920
+    img = Image.new("RGB", (SW, SH), (12, 12, 14))
+    im = fetch_img(key_art(r["appid"], r["img"]) if r.get("appid") else r["img"])
+    if im:
+        top = grade(cover_fit(im, SW, 1180), mono=0.15, bright=0.9, contrast=1.05)
+        img.paste(top, (0, 0))
+        fade = Image.new("L", (1, 1180))
+        for yy in range(1180):
+            fade.putpixel((0, yy), int(max(0, (yy - 700) / 480) ** 1.3 * 255))
+        img.paste(Image.new("RGB", (SW, 1180), (12, 12, 14)), (0, 0), fade.resize((SW, 1180)))
+    d = ImageDraw.Draw(img)
+    plus(d, 100, 180)
+    d.text((150, 180), "출시 예정", font=BH(56), fill=WHITE, anchor="lm", stroke_width=3, stroke_fill=(10, 10, 12))
+    day = datetime.strptime(r["date"], "%Y-%m-%d")
+    left = (day.date() - datetime.now().date()).days
+    chip = "오늘 출시" if left <= 0 else f"D-{left}"
+    d.rounded_rectangle((76, 1000, 76 + d.textlength(chip, font=ANTON(130)) + 56, 1170), 18, fill=RED)
+    d.text((104, 1085), chip, font=ANTON(130), fill=WHITE, anchor="lm")
+    y = 1220
+    nf, nl = fit(d, r["title"].replace("™", "").replace("®", ""), BH, 88, SW - 152, 2, 52)
+    for ln in nl:
+        d.text((76, y), ln, font=nf, fill=WHITE)
+        y += int(nf.size * 1.22)
+    y += 30
+    d.text((76, y), f"{day.month}월 {day.day}일 ({WD[day.weekday()]}) 출시", font=BH(64), fill=WHITE)
+    y += 100
+    meta = " · ".join(x for x in [", ".join(r.get("platforms") or []), r.get("genre") or ""] if x)
+    if meta:
+        f2, l2 = fit(d, meta, NM, 44, SW - 152, 2, 34)
+        for ln in l2:
+            d.text((76, y), ln, font=f2, fill=SOFT)
+            y += int(f2.size * 1.4)
+    d.text((SW // 2, SH - 120), HANDLE, font=NB(38), fill=RED, anchor="mm")
+    return img
 
 if __name__ == "__main__":
     sys.stdout.reconfigure(encoding="utf-8")

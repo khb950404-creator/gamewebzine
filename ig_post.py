@@ -307,6 +307,11 @@ def deal_caption(deals, head):
 
 def rebuild_deal(q):
     import deals_carousel as dc
+    if q.get("hl") == "release":
+        r = next((r for r in load(DATA / "calendar.json", {}).get("releases", []) if str(r.get("appid") or r["title"]) == q.get("key")), None)
+        if r:
+            save_slides(q["id"], [dc.release_story(r)])
+        return
     pool = {x["appid"]: x for x in dc.pick_deals(200)}
     deals = [pool[a] for a in q.get("appids", []) if a in pool]
     if not deals:
@@ -462,14 +467,43 @@ def prepare_deals(queue, posted):
                                                + ["", "이 중에 바로 살 게임 있나요?", "",
                                                   "#신작게임 #출시예정 #게임추천 #알트탭 #newgames #gamereleases #gaming #game #games #videogame #gamer #ps5 #nintendoswitch #pcgaming #게임 #게이머"])})
             print(f"인스타 준비: 이번 주 출시 게임 {len(games)}")
-    # ③ 오늘의 딜 스토리 (매일 9시 이후 하루 한 번, 최근 7일 소개한 게임 제외)
-    sk = f"story-{now.strftime('%Y-%m-%d')}"
-    if (force or now.hour >= 9) and sk not in keys:
-        cand = [x for x in dc.pick_deals(30) if x["appid"] not in skip]
-        if cand:
-            x = cand[0]
-            queue.append({"id": sk, "kind": "story", "files": save_slides(sk, [dc.story(x)]), "appids": [x["appid"]]})
-            print(f"인스타 준비: 오늘의 딜 {x['name']}")
+    # ③ 스토리 (매일 9시 이후): 하이라이트 '할인중'·'출시예정'용으로 게임 하나당 한 장씩, 끝나는 날(end)을 기록.
+    #    하이라이트 넣고 빼기는 API 가 없어 평일 학습 작업이 크롬으로 한다 (data/ig_posted.json 의 hl·end 를 보고).
+    if force or now.hour >= 9:
+        today = now.strftime("%Y-%m-%d")
+        storied = {(p.get("hl"), str(p.get("key"))) for p in posted.values() if p.get("hl")} |                   {(q.get("hl"), str(q.get("key"))) for q in queue if q.get("hl")}
+        live = {k for h, k in storied}
+        # 할인: 마감일을 아는 것만 (끝나면 내려야 하므로), 하루 3장까지
+        n = 0
+        for x in dc.pick_deals(30):
+            if n >= 3:
+                break
+            if not x.get("expiry") or x["expiry"][:10] <= today or ("deal", str(x["appid"])) in storied:  # 오늘 끝나는 건 제외
+                continue
+            sk = f"story-deal-{x['appid']}-{today}"
+            queue.append({"id": sk, "kind": "story", "hl": "deal", "key": str(x["appid"]), "end": x["expiry"][:10],
+                          "files": save_slides(sk, [dc.story(x)]), "appids": [x["appid"]]})
+            n += 1
+            print(f"인스타 준비: 할인 스토리 {x['name']} (~{x['expiry'][:10]})")
+        # 출시 예정: 앞으로 21일 안에 나오는 게임, 하루 2장까지 (이미지 있는 것)
+        cal = load(DATA / "calendar.json", {}).get("releases", [])
+        covered = {re.sub(r"[^a-z0-9]", "", g.lower()) for a in load(DATA / "articles.json", []) for g in a.get("games_en") or []}
+        def notable(r):  # 우리 기사에서 다룬 게임 > 3개 이상 플랫폼 동시 출시 (무명작 제외)
+            return 2 if re.sub(r"[^a-z0-9]", "", r["title"].lower()) in covered else 1 if len(r.get("platforms") or []) >= 3 else 0
+        soon = sorted([r for r in cal if today < r["date"] <= (now + timedelta(days=21)).strftime("%Y-%m-%d") and r.get("img") and notable(r)],
+                      key=lambda r: (-notable(r), r["date"]))
+        n = 0
+        for r in soon:
+            if n >= 2:
+                break
+            key = str(r.get("appid") or r["title"])
+            if ("release", key) in storied:
+                continue
+            sk = f"story-rel-{re.sub(r'[^a-z0-9]+', '-', key.lower())[:40]}-{today}"
+            queue.append({"id": sk, "kind": "story", "hl": "release", "key": key, "end": r["date"],
+                          "files": save_slides(sk, [dc.release_story(r)]), "appids": [r["appid"]] if r.get("appid") else []})
+            n += 1
+            print(f"인스타 준비: 출시 예정 스토리 {r['title']} ({r['date']})")
 
 
 PROOF_PROMPT = """너는 한국 게임 매체의 교열 기자다. 아래 기사가 인스타그램에 나가기 전 마지막 검수를 한다.
@@ -970,7 +1004,7 @@ def _publish():
     today = datetime.now().strftime("%Y-%m-%d")
     def fresh(q):
         if q.get("kind") == "story":
-            return q["id"].endswith(today)
+            return q["id"].endswith(today) or q["id"].endswith(today.replace("-", ""))
         a = arts.get(q["id"])
         return a is None or time.time() - a.get("written", a["ts"]) < 30 * 3600
     dropped = [q["id"] for q in queue if not fresh(q)]
@@ -1027,7 +1061,8 @@ def _publish():
                 mid = api("POST", f"{uid}/media_publish", creation_id=c)["id"]
                 posted[q["id"]] = {"media": mid, "kind": kind, "appids": q.get("appids", []),
                                    "date": datetime.now().strftime("%Y-%m-%d"), "ts": time.time(),
-                                   "forced": os.environ.get("IG_FORCE") == "1"}
+                                   "forced": os.environ.get("IG_FORCE") == "1",
+                                   **{k: q[k] for k in ("hl", "key", "end") if k in q}}
                 queue.remove(q)
                 print(f"인스타 스토리 게시: {q['id']}")
                 continue

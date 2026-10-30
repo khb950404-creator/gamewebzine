@@ -290,61 +290,113 @@ def render_deals(deals, out_path, hook_text, key="deals", handle=None):
 
 
 def render_tips(items, out_path, hook_text, key="tips", handle=None):
-    """실전 꿀팁 릴스: 훅 → 항목마다 키아트 + 칩(무료·날짜) + 이름 + 무엇을 언제까지 → '저장' 마무리."""
+    """실전 꿀팁 릴스: 훅 → 항목마다 [공식 트레일러 클립 배경 + 날짜 칩 + 큰 이름 + 핵심 2줄] → '저장' 마무리.
+    트레일러가 없는 게임은 키아트를 천천히 확대. 위쪽 스토리식 진행 막대로 몇 번째인지 보여 준다."""
+    from clips import Clip
     dark = Image.new("RGB", (RW, RH), BG)
+    T_HOOK, T_S, T_END = 1.5, 3.2, 1.6
     scenes = []
     for x in items:
-        src = fetch_img(x["img"]) or (x.get("img2") and fetch_img(x["img2"])) or Image.new("RGB", (RW, RH), (40, 40, 44))
-        big = grade(cover_fit(src, int(RW * 1.15), int(RH * 1.15)), mono=0.3, bright=0.6)
+        src = fetch_img(x.get("img")) or (x.get("img2") and fetch_img(x["img2"])) or Image.new("RGB", (RW, RH), (40, 40, 44))
+        big = grade(cover_fit(src, int(RW * 1.15), int(RH * 1.15)), mono=0.15, bright=0.7)
+        clip = None
+        if x.get("appid"):
+            c = Clip(x["appid"], T_S + (T_HOOK if not scenes else 0))
+            clip = c if c.ok else None
 
         def draw(d, x=x):
-            cf = BH(54)
+            rows = []
+            for t in x["lines"][:2]:
+                k, _, v = t.partition("  ")
+                rows.append((k, v.replace(" (KST)", "")) if v else ("", t))
+            # 아래에서부터 쌓는다: 안전 영역 바닥에 맞춰 정렬
+            nf, nls = fit(PROBE, x["name"].replace("™", "").replace("®", ""), BH, 118, SAFE_R - 76, 2, 72)
+            blocks = []
+            for k, v in rows:
+                vf, vls = fit(PROBE, v, NB, 54, SAFE_R - 76, 2, 40)
+                blocks.append((k, vf, vls))
+            h = 92 + 26 + len(nls) * int(nf.size * 1.12) + 30
+            h += sum((44 if k else 0) + len(vls) * int(vf.size * 1.3) + 22 for k, vf, vls in blocks)
+            y = SAFE_B - h
+            cf = BH(56)
             w = d.textlength(x["chip"], font=cf)
-            d.rounded_rectangle((76, 860, 76 + w + 48, 950), 16, fill=RED)
-            d.text((100, 905), x["chip"], font=cf, fill=WHITE, anchor="lm")
-            y = 990
-            nf, nls = fit(PROBE, x["name"].replace("™", "").replace("®", ""), BH, 80, SAFE_R - 76, 2)
+            d.rounded_rectangle((76, y, 76 + w + 52, y + 92), 18, fill=RED)
+            d.text((102, y + 46), x["chip"], font=cf, fill=WHITE, anchor="lm")
+            y += 92 + 26
             for ln in nls:
+                d.text((76 + 4, y + 5), ln, font=nf, fill=(0, 0, 0, 150))
                 d.text((76, y), ln, font=nf, fill=WHITE)
-                y += int(nf.size * 1.2)
-            y += 24
-            for t in x["lines"][:3]:
-                tf, tls = fit(PROBE, t, NM, 42, SAFE_R - 76, 2, 32)
-                for ln in tls:
-                    if y > SAFE_B - 40:
-                        break
-                    d.text((76, y), ln, font=tf, fill=SOFT)
-                    y += int(tf.size * 1.45)
-                y += 10
-        scenes.append((big, layer(draw)))
+                y += int(nf.size * 1.12)
+            y += 30
+            for k, vf, vls in blocks:
+                if k:
+                    d.text((76, y), k, font=NM(36), fill=(255, 120, 110))
+                    y += 44
+                for ln in vls:
+                    d.text((76 + 3, y + 3), ln, font=vf, fill=(0, 0, 0, 160))
+                    d.text((76, y), ln, font=vf, fill=WHITE)
+                    y += int(vf.size * 1.3)
+                y += 22
+        scenes.append((big, clip, layer(draw)))
+    n = len(scenes)
+
+    def bars(im, k, p):
+        d = ImageDraw.Draw(im)
+        gap, x0, x1, y = 10, 60, RW - 60, 110
+        w = (x1 - x0 - gap * (n - 1)) / max(1, n)
+        for i in range(n):
+            a = x0 + i * (w + gap)
+            d.rounded_rectangle((a, y, a + w, y + 8), 4, fill=(85, 85, 90))
+            f = 1 if i < k else (p if i == k else 0)
+            if f > 0:
+                d.rounded_rectangle((a, y, a + w * f, y + 8), 4, fill=WHITE)
+
     hook = hook_layer(hook_text, RED)
-    end = layer(lambda d: (d.text((RW // 2, 820), "놓치기 전에", font=BH(84), fill=WHITE, anchor="mm"),
-                           d.text((RW // 2, 930), "저장해두세요", font=BH(84), fill=RED, anchor="mm")))
-    shade = shade_mask(0.2, 250)
-    T_HOOK, T_S, T_END = 1.4, 2.6, 1.8  # 읽을 글이 있어 할인 릴스보다 길게
-    total = T_HOOK + T_S * len(scenes) + T_END
+    end = layer(lambda d: (d.text((RW // 2, 820), "놓치기 전에", font=BH(96), fill=WHITE, anchor="mm"),
+                           d.text((RW // 2, 950), "저장해두세요", font=BH(96), fill=RED, anchor="mm")))
+    shade = shade_mask(0.38, 240)
+    top = Image.new("L", (1, RH))
+    for yy in range(RH):
+        top.putpixel((0, yy), int(max(0, 1 - yy / 360) * 150))
+    top = top.resize((RW, RH))
+    total = T_HOOK + T_S * n + T_END
     v = Video(out_path, total, key)
-    first = scenes[0][0] if scenes else dark
+    gens = [c.frames() if c else None for _, c, _ in scenes]
+    still_t = [0] * n
+    last = dark
     for f in range(int(total * FPS)):
         t = f / FPS
-        if t < T_HOOK:
-            im = Image.composite(dark, zoomed(first, 1.1), Image.new("L", (RW, RH), 160)).convert("RGBA")
-            show(im, hook, 1.0, scale=pop(t / 0.5))
-        elif t < T_HOOK + T_S * len(scenes):
-            k = int((t - T_HOOK) // T_S)
-            tt = t - T_HOOK - k * T_S
-            big, info = scenes[k]
-            im = Image.composite(dark, zoomed(big, 1.0 + 0.05 * tt / T_S), shade).convert("RGBA")
-            e = ease(tt / 0.35)
-            show(im, info, e, (1 - e) * 50)
-            ImageDraw.Draw(im).text((SAFE_R - 20, SAFE_T), f"{k + 1}/{len(scenes)}", font=ANTON(64), fill=RED, anchor="ra")
+        if t < T_HOOK + T_S * n:
+            k = 0 if t < T_HOOK else int((t - T_HOOK) // T_S)
+            k = min(k, n - 1)
+            big, clip, info = scenes[k]
+            if gens[k]:
+                bg = next(gens[k])
+            else:
+                still_t[k] += 1
+                bg = zoomed(big, 1.0 + 0.08 * still_t[k] / (FPS * (T_S + T_HOOK)))
+            last = bg
+            if t < T_HOOK:
+                im = Image.composite(dark, bg, Image.new("L", (RW, RH), 130)).convert("RGBA")
+                show(im, hook, 1.0, scale=pop(t / 0.5))  # 첫 프레임부터 보이게 (썸네일)
+            else:
+                tt = t - T_HOOK - k * T_S
+                im = Image.blend(bg, dark, 0.3 if gens[k] else 0.45)  # 글자가 잘 읽히게 전체를 한 톤 낮추고 (정지 키아트는 더)
+                im = Image.composite(dark, im, shade)
+                im = Image.composite(dark, im, top).convert("RGBA")
+                e = ease(tt / 0.3)
+                show(im, info, e, (1 - e) * 60)
+                bars(im, k, tt / T_S)
         else:
-            tt = t - T_HOOK - T_S * len(scenes)
-            im = Image.composite(dark, zoomed(first, 1.05), Image.new("L", (RW, RH), 200)).convert("RGBA")
-            e = ease(tt / 0.5)
+            tt = t - T_HOOK - T_S * n
+            im = Image.composite(dark, last, Image.new("L", (RW, RH), 190)).convert("RGBA")
+            e = ease(tt / 0.4)
             show(im, end, e, (1 - e) * 40)
         v.write(im)
     v.close()
+    for _, c, _ in scenes:
+        if c:
+            c.close()
     return out_path
 
 

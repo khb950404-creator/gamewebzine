@@ -1,7 +1,7 @@
 """git 병합 드라이버: data/*.json 을 '덮어쓰기' 대신 합친다.
 
 로컬과 GitHub Actions 가 동시에 기사를 쓰면 git 이 파일 통째로 한쪽을 골라 다른 쪽 기사가 사라졌다.
-  - articles.json (목록): id 기준으로 합침. 같은 기사는 더 최근에 고친 쪽(edited/proofread/written)을 쓴다.
+  - articles.json (목록): id 기준으로 합침. 같은 기사는 더 최근에 고친 쪽(edited/proofread/written) 값을 쓰되, 한쪽에만 있는 필드는 합친다.
   - ig_posted.json, seen.json 등 (딕셔너리·목록): 합집합.
 git 이 호출: python merge_data.py %O %A %B   (%A 에 결과를 쓴다)
 """
@@ -29,8 +29,12 @@ def main(base, ours, theirs):
             by = {}
             for x in b + a:  # 같은 시각이면 ours(a)가 이긴다
                 k = x["id"]
-                if k not in by or stamp(x) >= stamp(by[k]):
+                if k not in by:
                     by[k] = x
+                elif stamp(x) >= stamp(by[k]):  # 최근 쪽이 이기되, 상대에만 있는 필드(보강한 체크 포인트 등)는 살린다
+                    by[k] = {**by[k], **x}
+                else:
+                    by[k] = {**x, **by[k]}
             out = sorted(by.values(), key=lambda x: x.get("written", x.get("ts", 0)) or 0)
         else:
             out = list(dict.fromkeys(json.dumps(x, sort_keys=True) for x in a + b))

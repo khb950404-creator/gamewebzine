@@ -97,6 +97,7 @@ def ps_plus(arts):
                     lines.append(info["fact"])
             lines.append(f"{c['기간'].replace('(화)', '').replace('(월)', '')} 무료" + (f" (정가 {info['price'].replace('₩ ', '₩')})" if info and info["price"] else ""))
             out.append({"name": g, "img": (info or {}).get("img") or a.get("img_hd") or a["img"], "img2": (info or {}).get("img2"),
+                        "appid": (info or {}).get("appid"),
                         "chip": "PS 플러스", "lines": lines})
         return out
     return []
@@ -112,15 +113,41 @@ def free_games(arts):
     return items[:6]
 
 
+def _dates(text):
+    """'11월 12일' 들 → 올해(연말이면 내년) datetime 목록."""
+    now = datetime.now(KST) if "KST" in globals() else datetime.now()
+    out = []
+    for mo, d in re.findall(r"(\d{1,2})월 (\d{1,2})일", text):
+        try:
+            y = now.year + (1 if int(mo) < now.month - 6 else 0)
+            out.append(datetime(y, int(mo), int(d)).date())
+        except ValueError:
+            pass
+    return out
+
+
+def upcoming(a):
+    """오늘 이후 챙길 날짜가 있는 기사만 '놓치면 손해' 대상 (이미 지난 출시·마감은 뺀다)."""
+    today = datetime.now().date()
+    text = " ".join(c["v"] for c in a.get("check") or []) + " " + a.get("takeaway", "")
+    return any(d >= today for d in _dates(text))
+
+
 def chip_of(a):
-    """칩: 기사에서 가장 먼저 챙길 날짜 + 무엇 (예: '11/12 프리로드', '11/2 마감')."""
+    """칩: 오늘 이후 가장 먼저 챙길 날짜 + 무엇 (예: '11/12 프리로드', '11/2 마감')."""
+    today = datetime.now().date()
+    keys = ("마감", "프리로드", "시작", "기간", "출시", "발매", "배포")
+    hits = []
     for c in a.get("check") or []:
-        m = re.search(r"(\d{1,2})월 (\d{1,2})일", c["v"])
-        if m and any(k in c["k"] for k in ("마감", "프리로드", "시작", "기간", "출시")):
-            k = next(k for k in ("마감", "프리로드", "시작", "기간", "출시") if k in c["k"])
-            return f"{m[1]}/{m[2]} {'시작' if k == '기간' else k}"
-    m = re.search(r"(\d{1,2})월 (\d{1,2})일", a.get("takeaway", ""))
-    return f"{m[1]}/{m[2]}까지" if m else "체크"
+        ds = [d for d in _dates(c["v"]) if d >= today]
+        if ds and any(k in c["k"] for k in keys):
+            k = next(k for k in keys if k in c["k"])
+            hits.append((ds[0], '시작' if k == '기간' else k))
+    if hits:
+        d, k = min(hits)  # 가장 먼저 오는 날 (출시보다 프리로드가 먼저)
+        return f"{d.month}/{d.day} {k}"
+    ds = [d for d in _dates(a.get("takeaway", "")) if d >= today]
+    return f"{ds[0].month}/{ds[0].day}까지" if ds else "체크"
 
 
 def lines_of(a, n=3):
@@ -133,7 +160,8 @@ def lines_of(a, n=3):
 
 def weekly_checklist(arts, popularity, n=4):
     """이번 주 놓치면 손해인 것: 정리 문장(takeaway)이 있는 최근 기사 중 인기순, 게임당 하나."""
-    cand = [a for a in arts if a.get("takeaway") and a.get("img") and time.time() - a.get("written", a["ts"]) < 7 * 86400]
+    cand = [a for a in arts if a.get("takeaway") and a.get("img") and time.time() - a.get("written", a["ts"]) < 10 * 86400
+            and upcoming(a)]
     items, used = [], set()
     for a in sorted(cand, key=lambda a: -popularity(a)):
         keys = {g.lower() for g in (a.get("games") or []) + (a.get("games_en") or [])} | {str(a.get("appid") or a["id"]), a["img"]}
@@ -141,7 +169,7 @@ def weekly_checklist(arts, popularity, n=4):
             continue
         used |= keys
         name = a.get("subject") or (a.get("games") or [re.split(r"[,…]", a["title"])[0]])[0]
-        items.append({"name": name, "img": a.get("img_hd") or a["img"], "chip": chip_of(a),
+        items.append({"name": name, "img": a.get("img_hd") or a["img"], "chip": chip_of(a), "appid": a.get("appid"), "art": a["id"],
                       "lines": lines_of(a), "id": a["id"]})
         if len(items) == n:
             break

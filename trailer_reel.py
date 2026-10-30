@@ -37,10 +37,10 @@ def match_movie(a, movies):
     return max(hit, key=lambda m: m.get("id", 0)) if hit else None  # 같은 조건이면 최신 영상
 
 
-def highlight_start(raw, dur):
+def highlight_start(raw, dur, win=MAX_SEC, tail_skip=3):
     """장면 전환(컷)이 가장 촘촘한 MAX_SEC 구간의 시작점. 앞쪽 로고·검은 화면과 끝 타이틀 카드를 건너뛴다.
     (PySceneDetect 와 같은 방식을 ffmpeg 내장 scene 점수로) 짧은 영상이거나 실패하면 0."""
-    if dur <= MAX_SEC + 3:
+    if dur <= win + tail_skip:
         return 0.0
     try:
         log = subprocess.run([ffmpeg_bin(), "-i", str(raw), "-an", "-vf", "scale=320:-2,select='gt(scene,0.3)',showinfo",
@@ -50,9 +50,9 @@ def highlight_start(raw, dur):
         return 0.0
     if len(cuts) < 4:
         return 0.0
-    tail = dur - MAX_SEC - 3  # 끝 3초(로고·출시일 카드)는 남겨 두지 않는다
+    tail = dur - win - tail_skip  # 끝(로고·출시일 카드)는 남겨 두지 않는다
     starts = [0.0] + [c for c in cuts if c <= tail]
-    best = max(starts, key=lambda t: (sum(t <= c < t + MAX_SEC for c in cuts), -t))
+    best = max(starts, key=lambda t: (sum(t <= c < t + win for c in cuts), -t))
     return max(0.0, best - 0.05)
 
 
