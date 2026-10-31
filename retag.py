@@ -1,81 +1,33 @@
-"""기존 게시물의 해시태그 댓글 재작성 (1회성).
-  python retag.py list   게시물과 해시태그 댓글을 출력만 한다
-  python retag.py apply  data/retag.json({media: "태그들"})대로 새 댓글을 달고, 옛 해시태그 댓글은 숨김을 시도한다
-"""
+"""기존 게시물에 새 해시태그 댓글 달기 (1회성). data/retag.json = {media: "태그들"}.
+API 는 계정 본인 댓글을 목록으로 주지 않아 옛 댓글은 손대지 못한다."""
 import json
-import os
 import sys
 import time
 from pathlib import Path
 
 import ig_post as g
 
-ROOT = Path(__file__).parent
-PLAN = ROOT / "data" / "retag.json"
 GAP = 25  # 한꺼번에 몰아 달면 스팸으로 잡힐 수 있어 간격을 둔다
 
 
-def medias():
-    out, after = [], None
-    while True:
-        p = {"fields": "id,caption,media_type,timestamp", "limit": 50}
-        if after:
-            p["after"] = after
-        r = g.api("GET", f"{os.environ[g.UID_ENV]}/media", **p)
-        out += r.get("data", [])
-        after = r.get("paging", {}).get("cursors", {}).get("after") if r.get("paging", {}).get("next") else None
-        if not after:
-            return out
-
-
-def tag_comments(mid):
-    r = g.api("GET", f"{mid}/comments", fields="id,text,username,hidden", limit=50)
-    return [c for c in r.get("data", []) if c.get("text", "").lstrip().startswith("#")]
-
-
-def main(mode):
-    if mode == "raw":
-        for mid in ("17916227772498931", "18117935203886667"):
-            print(mid, g.api("GET", mid, fields="comments_count,caption")["comments_count"])
-            for f in ("id,text,username,hidden", "id,text", "id"):
-                try:
-                    print(f, json.dumps(g.api("GET", f"{mid}/comments", fields=f), ensure_ascii=False)[:600])
-                except Exception as e:
-                    print(f, "오류", str(e)[:300])
-        return
-    if mode == "list":
-        ms = medias()
-        print("게시물", len(ms))
-        for m in ms:
-            cs = tag_comments(m["id"])
-            head = " / ".join(x for x in (m.get("caption") or "").split("\n") if x.strip())[:230]
-            print(json.dumps({"id": m["id"], "t": m["media_type"], "at": m["timestamp"][:10], "cap": head,
-                              "tags": [c["text"] for c in cs]}, ensure_ascii=False))
-        return
-    plan = json.loads(PLAN.read_text(encoding="utf-8"))
-    ok = fail = hidden = 0
+def main():
+    plan = json.loads((Path(__file__).parent / "data" / "retag.json").read_text(encoding="utf-8"))
+    ok = streak = 0
     for mid, tags in plan.items():
         try:
-            old = tag_comments(mid)
-            if any(c["text"].strip() == tags.strip() for c in old):
-                print(mid, "이미 반영됨")
-                continue
-            g.api("POST", f"{mid}/comments", message=tags)
+            print(mid, "완료", g.api("POST", f"{mid}/comments", message=tags).get("id"), tags)
             ok += 1
-            for c in old:
-                try:
-                    g.api("POST", c["id"], hide="true")
-                    hidden += 1
-                except Exception as e:
-                    print(mid, "옛 댓글 숨김 실패", str(e)[:200])
-            print(mid, "완료", tags)
+            streak = 0
         except Exception as e:
-            fail += 1
             print(mid, "실패", str(e)[:300])
+            streak += 1
+            if streak >= 3:
+                print("연속 실패로 중단")
+                break
         time.sleep(GAP)
-    print(f"새 댓글 {ok}, 실패 {fail}, 옛 댓글 숨김 {hidden}")
+    print(f"새 댓글 {ok} / {len(plan)}")
 
 
 if __name__ == "__main__":
     sys.stdout.reconfigure(encoding="utf-8")
-    main(sys.argv[1] if len(sys.argv) > 1 else "list")
+    main()
