@@ -1,0 +1,25 @@
+name: ig-retag
+
+# 기존 게시물 해시태그 댓글 재작성 (수동 실행 전용)
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: list 또는 apply
+        default: list
+
+env:
+  TZ: Asia/Seoul
+  IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+  IG_USER_ID: ${{ secrets.IG_USER_ID }}
+
+jobs:
+  retag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -u retag.py ${{ inputs.mode }}
