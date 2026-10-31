@@ -71,6 +71,11 @@ ESPORTS_KW = re.compile(r"롤드컵|LCK|월즈|Worlds|\bT1\b|젠지|한화생명
                         r"Faker|Chovy|쵸비|룰러|캐니언|제우스|케리아|쇼메이커|기인|구마유시", re.I)
 
 
+def src_official(s):
+    """Steam 피드의 /news/group/ 글은 매체 기사 중계가 대부분이라 공식 출처로 치지 않는다 (개발사 글은 /news/app/)."""
+    return bool(s.get("official")) and "/news/group/" not in s.get("link", "")
+
+
 def fetch_feed(name, url, official):
     try:
         raw = urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=20).read()
@@ -89,7 +94,8 @@ def fetch_feed(name, url, official):
         except Exception:
             ts = time.time()
         img = None
-        if official:  # 공식 출처만: 매체 사진은 저작권 문제로 쓰지 않는다
+        item_official = src_official({"official": official, "link": link})
+        if item_official:  # 공식 출처만: 매체 사진은 저작권 문제로 쓰지 않는다
             blob = ET.tostring(it, encoding="unicode")
             m = re.search(r'(?:url|src)="(https?://[^"]+?\.(?:jpe?g|png|webp)[^"]*)"', html.unescape(blob), re.I)
             img = m[1] if m else None
@@ -99,9 +105,9 @@ def fetch_feed(name, url, official):
                     imgs.append(u)
         items.append({
             "id": hashlib.md5(link.encode()).hexdigest()[:12],
-            "source": name, "official": official, "title": title, "link": link,
+            "source": name, "official": item_official, "title": title, "link": link,
             "summary": strip_html(it.findtext("description"))[:2500], "ts": ts, "img": img,
-            **({"imgs": imgs[:8]} if official and imgs else {}),
+            **({"imgs": imgs[:8]} if item_official and imgs else {}),
         })
     if name in ESPORTS_ONLY:
         items = [i for i in items if ESPORTS_KW.search(i["title"])]
@@ -238,6 +244,13 @@ PROMPT = """너는 PC·콘솔 게이머를 위한 한국어 게임 웹진 기자
 - "보도": 매체 한 곳의 취재·분석 기사. 유출이나 익명 제보가 아니면 루머가 아니다
 - "루머": 유출, 데이터마이닝, 익명 소식통, "~라고 알려졌다/~할 수도" 같은 추측, 미확인 소문
 대부분의 게임 뉴스는 공식 발표를 전하는 기사다. 루머는 정말 확인되지 않은 정보에만 붙여라.
+팬 프로젝트·모드 제작자의 발표는 "공식"이 아니라 "보도"다.
+
+취재 윤리:
+- 매체 한 곳의 취재(보도·루머)는 1~2문단 안에 어느 매체의 보도인지 밝혀라("IGN에 따르면"). Steam News는 전달 창구이므로 매체명으로 쓰지 말고, 제목·본문에서 확인되는 발표 주체나 원 매체를 밝혀라.
+- 회사가 주장한 내용과 확인된 사실을 구분하라. 회사의 말은 "~라고 밝혔다"로 쓰고, 회사 입장만 있는 분쟁·논란은 상대측 입장이 출처에 있으면 함께 쓰고 없으면 없다고 밝혀라.
+- 유출·익명 정보에 "확인됐다"를 쓰지 마라. 회사가 공식 확인하지 않았다는 점을 본문에 적어라.
+- 말한 사람 없는 해석("~로 풀이된다", "~로 분석된다", "~할 전망이다", "반가운 소식이 될 것으로 보인다") 금지. 해석은 출처에서 누가 그렇게 말했는지 밝힐 때만 쓴다.
 
 문체: 전문 게임 매체 기자의 객관적 기사체. 감탄사·느낌표·과장("역대급", "미쳤다", "터졌다")·구어체·조롱 금지.
 제목은 사실을 압축한 보도 제목으로 (주어 + 핵심 사실), 낚시성 물음·말줄임 남발 금지.
@@ -371,6 +384,7 @@ def needs_expand(a):
 VERIFY = """너는 게임 웹진의 팩트체커다. 아래 기사들을 각 이슈의 출처 자료와 한 문장씩 대조하라.
 출처에 근거가 없는 주장(추측, 배경 설명으로 지어낸 사실, 틀린 날짜·수치·플랫폼)은 삭제하거나 출처에 맞게 고쳐라.
 특히 패치·업데이트 버전 번호(예: 2.5), 시즌 번호, 가격, 날짜는 출처와 한 글자도 다르면 안 되고, 제목·요약·본문끼리도 같아야 한다.
+말한 사람 없는 해석("~로 풀이된다", "~할 전망이다")은 삭제하고, 유출·익명 정보에 쓴 "확인됐다"는 "~라고 보도했다"로 고쳐라. 매체 한 곳의 보도인데 매체명이 없으면 넣어라.
 문체와 구조는 유지하고, 문제없는 문장은 건드리지 마라. trust 값도 규칙에 맞는지 확인하라
 (공식=회사 발표를 전한 경우 포함, 확인=2개 이상 매체, 보도=매체 한 곳의 취재, 루머=유출·익명 소식통·추측만).
 
@@ -1165,7 +1179,7 @@ def attach_images(articles, cache):
                     a["img"], a["img_src"] = im, "IsThereAnyDeal"
                     break
         if not a["img"]:
-            off = next((s_ for s_ in a.get("sources", []) if s_.get("official") and s_.get("img")), None)
+            off = next((s_ for s_ in a.get("sources", []) if src_official(s_) and s_.get("img")), None)
             if off:
                 a["img"], a["img_src"] = off["img"], off["name"]
         n += bool(a["img"])
@@ -1824,7 +1838,7 @@ def static_pages():
 <h2>문의</h2><p>개인정보 관련 문의: {esc(email)}</p>"""),
         "contact": ("문의", f"""<p>기사 오류 제보, 보도 요청, 광고·제휴 문의는 아래 이메일로 보내주세요.</p>
 <p><a href="mailto:{esc(email)}"><b>{esc(email)}</b></a></p>
-<p>오류 제보 시 기사 주소와 정정 근거(출처 링크)를 함께 보내주시면 빠르게 반영하겠습니다.</p>"""),
+<p>오류 제보 시 기사 주소와 정정 근거(출처 링크)를 함께 보내주시면 빠르게 반영하겠습니다. 정정한 내용은 해당 기사 상단에 날짜·사유와 함께 표시합니다.</p>"""),
     }
     for name, (title, body) in pages.items():
         (SITE / f"{name}.html").write_text(
@@ -2440,7 +2454,7 @@ def build():
                     g = gal[i]
                     body += (f'<figure class="hero"><img src="{esc(rel_img(g["src"]))}" alt="" loading="lazy" referrerpolicy="no-referrer"'
                              f' onerror="this.parentNode.remove()"><figcaption>이미지: {esc(g["credit"])}</figcaption></figure>')
-            srcs = "".join(f'<li>{"[공식] " if s["official"] else ""}{esc(s["name"])} — '
+            srcs = "".join(f'<li>{"[공식] " if src_official(s) else ""}{esc(s["name"])} — '
                            f'<a href="{esc(s["link"])}" target="_blank" rel="noopener">{esc(s["title"])}</a></li>'
                            for s in a["sources"])
             note = "※ 아직 번역·재작성되지 않은 원문 요약입니다." if a.get("untranslated") else \
@@ -2451,7 +2465,7 @@ def build():
                 img = site_url() + img
             ld = {"@context": "https://schema.org", "@type": "NewsArticle", "headline": a["title"][:110],
                   "description": desc[:300], "datePublished": datetime.fromtimestamp(a.get("written", a["ts"]), timezone.utc).isoformat(),
-                  "dateModified": datetime.fromtimestamp(a.get("written", a["ts"]), timezone.utc).isoformat(),
+                  "dateModified": datetime.fromtimestamp(a.get("edited") or a.get("written", a["ts"]), timezone.utc).isoformat(),
                   "mainEntityOfPage": site_url() + f"a/{a['id']}.html", "inLanguage": "ko",
                   "author": {"@type": "Organization", "name": SITE_NAME}, "publisher": {"@type": "Organization", "name": SITE_NAME},
                   **({"image": [img]} if img else {})}
@@ -2464,6 +2478,7 @@ def build():
     <h1>{esc(a["title"])}</h1>
     {f'<p class="dek">{esc(a["why"])}</p>' if a.get("why") else ''}
     {byline}
+    {f'<p class="note"><b>정정</b> {esc(a["correction"])}</p>' if a.get("correction") else ''}
     {f'<figure class="hero"><img src="{esc(rel_img(a.get("img_hd") or a["img"]))}" alt="" referrerpolicy="no-referrer"><figcaption>이미지: {esc(a.get("img_src") or "Steam 스토어")}</figcaption></figure>' if a.get("img") else cover_html(a)}
     {f'<section class="tldr"><h2>핵심 요약</h2><ol>{tldr}</ol></section>' if tldr else ''}
     {check_html(a)}
