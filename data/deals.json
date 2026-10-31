@@ -1,5 +1,5 @@
 {
- "updated": "10.31 14:16",
+ "updated": "10.31 15:05",
  "deals": [
   {
    "appid": 4530370,
@@ -163,10 +163,31 @@
    "best": 8600
   },
   {
+   "appid": 648800,
+   "name": "Raft",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/648800/header.jpg?t=1727184011",
+   "rank": 6,
+   "discount": 33,
+   "initial": 21000,
+   "final": 14070,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "어드벤처",
+    "인디",
+    "시뮬레이션"
+   ],
+   "meta": null,
+   "shops": [],
+   "ever_low": 14070,
+   "best": 14070
+  },
+  {
    "appid": 3240220,
    "name": "Grand Theft Auto V 인핸스드",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3240220/header_koreana.jpg?t=1781187782",
-   "rank": 6,
+   "rank": 7,
    "discount": 50,
    "initial": 36790,
    "final": 18390,
@@ -187,7 +208,7 @@
    "appid": 2246340,
    "name": "Monster Hunter Wilds",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2246340/header.jpg?t=1787549555",
-   "rank": 7,
+   "rank": 8,
    "discount": 25,
    "initial": 45800,
    "final": 34350,
@@ -234,13 +255,13 @@
    "best": 30915
   },
   {
-   "appid": 648800,
-   "name": "Raft",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/648800/header.jpg?t=1727184011",
-   "rank": 8,
-   "discount": 33,
-   "initial": 21000,
-   "final": 14070,
+   "appid": 3024130,
+   "name": "동물 마을 레스토랑 이야기",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3024130/c7690919a0c21c1337f3bc53b436c1590dacf34d/header_koreana.jpg?t=1792767934",
+   "rank": 9,
+   "discount": 40,
+   "initial": 17000,
+   "final": 10200,
    "low": true,
    "ko": true,
    "ko_voice": false,
@@ -251,14 +272,14 @@
    ],
    "meta": null,
    "shops": [],
-   "ever_low": 14070,
-   "best": 14070
+   "ever_low": 10200,
+   "best": 10200
   },
   {
    "appid": 881020,
    "name": "Granblue Fantasy: Relink",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/881020/header.jpg?t=1792403376",
-   "rank": 9,
+   "rank": 10,
    "discount": 40,
    "initial": 49800,
    "final": 29880,
@@ -282,27 +303,6 @@
    ],
    "ever_low": 27920,
    "best": 29880
-  },
-  {
-   "appid": 3024130,
-   "name": "동물 마을 레스토랑 이야기",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3024130/c7690919a0c21c1337f3bc53b436c1590dacf34d/header_koreana.jpg?t=1792767934",
-   "rank": 10,
-   "discount": 40,
-   "initial": 17000,
-   "final": 10200,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "어드벤처",
-    "인디",
-    "시뮬레이션"
-   ],
-   "meta": null,
-   "shops": [],
-   "ever_low": 10200,
-   "best": 10200
   },
   {
    "appid": 3026450,
@@ -445,59 +445,10 @@
    "best": 8960
   },
   {
-   "appid": 3764200,
-   "name": "BIOHAZARD requiem",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3764200/46a28870620bab1c2bc4de903bdcbcf4e423c58b/header_koreana.jpg?t=1779840172",
-   "rank": 15,
-   "discount": 30,
-   "initial": 79800,
-   "final": 55860,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "액션",
-    "어드벤처"
-   ],
-   "meta": 92,
-   "shops": [
-    {
-     "shop": "Humble Store",
-     "krw": 65320,
-     "cut": 30,
-     "url": "https://itad.link/019a366b-a64e-72bd-b98a-8f5ec103728f/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GameBillet",
-     "krw": 77386,
-     "cut": 17,
-     "url": "https://itad.link/019a7398-9936-736c-85c7-166f3490b29c/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "DLGamer",
-     "krw": 93320,
-     "cut": 0,
-     "url": "https://itad.link/01a08bec-deab-72a5-a05d-f38eecf17b67/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "DLGamer",
-     "krw": 105440,
-     "cut": 0,
-     "url": "https://itad.link/01a08bec-deb1-7002-b280-f3b97525fc35/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 55042,
-   "best": 55860
-  },
-  {
    "appid": 4261080,
    "name": "원정 길드",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4261080/fbfb2ed246a192c3d828923c8aabf07b7eb25d80/header_koreana.jpg?t=1793348479",
-   "rank": 16,
+   "rank": 15,
    "discount": 34,
    "initial": 13500,
    "final": 8910,
@@ -512,6 +463,55 @@
    "shops": [],
    "ever_low": 8910,
    "best": 8910
+  },
+  {
+   "appid": 1903340,
+   "name": "클레르 옵스퀴르: 33 원정대",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1903340/be3305b02d4db0dffa3458537118423bf2792d7e/header.jpg?t=1782830877",
+   "rank": 16,
+   "discount": 20,
+   "initial": 54800,
+   "final": 43840,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "액션",
+    "RPG"
+   ],
+   "meta": 91,
+   "shops": [
+    {
+     "shop": "GreenManGaming",
+     "krw": 39600,
+     "cut": 28,
+     "url": "https://itad.link/0195945e-461a-71e1-aaaf-e22d197222bd/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GameBillet",
+     "krw": 46653,
+     "cut": 30,
+     "url": "https://itad.link/0196431f-2733-7076-af7b-88f3bdc09e1f/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "PlanetPlay",
+     "krw": 48005,
+     "cut": 28,
+     "url": "https://itad.link/019852bb-3fd5-710e-ac95-e2d01bf57ec5/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GamesPlanet US",
+     "krw": 50560,
+     "cut": 24,
+     "url": "https://itad.link/019642c3-b653-70f2-9b7b-11d9abd96515/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 38700,
+   "best": 39600
   },
   {
    "appid": 3357650,
@@ -563,59 +563,79 @@
    "best": 55840
   },
   {
-   "appid": 1903340,
-   "name": "클레르 옵스퀴르: 33 원정대",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1903340/be3305b02d4db0dffa3458537118423bf2792d7e/header.jpg?t=1782830877",
+   "appid": 3764200,
+   "name": "BIOHAZARD requiem",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3764200/46a28870620bab1c2bc4de903bdcbcf4e423c58b/header_koreana.jpg?t=1779840172",
    "rank": 18,
-   "discount": 20,
-   "initial": 54800,
-   "final": 43840,
+   "discount": 30,
+   "initial": 79800,
+   "final": 55860,
    "low": true,
    "ko": true,
    "ko_voice": false,
    "genres": [
     "액션",
-    "RPG"
+    "어드벤처"
    ],
-   "meta": 91,
+   "meta": 92,
    "shops": [
     {
-     "shop": "GreenManGaming",
-     "krw": 39600,
-     "cut": 28,
-     "url": "https://itad.link/0195945e-461a-71e1-aaaf-e22d197222bd/?app=g6au43",
+     "shop": "Humble Store",
+     "krw": 65320,
+     "cut": 30,
+     "url": "https://itad.link/019a366b-a64e-72bd-b98a-8f5ec103728f/?app=g6au43",
      "cur": "KRW"
     },
     {
      "shop": "GameBillet",
-     "krw": 46653,
-     "cut": 30,
-     "url": "https://itad.link/0196431f-2733-7076-af7b-88f3bdc09e1f/?app=g6au43",
+     "krw": 77386,
+     "cut": 17,
+     "url": "https://itad.link/019a7398-9936-736c-85c7-166f3490b29c/?app=g6au43",
      "cur": "KRW"
     },
     {
-     "shop": "PlanetPlay",
-     "krw": 48005,
-     "cut": 28,
-     "url": "https://itad.link/019852bb-3fd5-710e-ac95-e2d01bf57ec5/?app=g6au43",
+     "shop": "DLGamer",
+     "krw": 93320,
+     "cut": 0,
+     "url": "https://itad.link/01a08bec-deab-72a5-a05d-f38eecf17b67/?app=g6au43",
      "cur": "KRW"
     },
     {
-     "shop": "GamesPlanet US",
-     "krw": 50560,
-     "cut": 24,
-     "url": "https://itad.link/019642c3-b653-70f2-9b7b-11d9abd96515/?app=g6au43",
+     "shop": "DLGamer",
+     "krw": 105440,
+     "cut": 0,
+     "url": "https://itad.link/01a08bec-deb1-7002-b280-f3b97525fc35/?app=g6au43",
      "cur": "KRW"
     }
    ],
-   "ever_low": 38700,
-   "best": 39600
+   "ever_low": 55042,
+   "best": 55860
+  },
+  {
+   "appid": 3241660,
+   "name": "R.E.P.O.",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3241660/1ea445e044a2d5b09cfa8291350b63ebed6e5741/header.jpg?t=1791817973",
+   "rank": 19,
+   "discount": 35,
+   "initial": 10700,
+   "final": 6950,
+   "low": true,
+   "ko": false,
+   "ko_voice": false,
+   "genres": [
+    "액션",
+    "앞서 해보기"
+   ],
+   "meta": null,
+   "shops": [],
+   "ever_low": 6950,
+   "best": 6950
   },
   {
    "appid": 252490,
    "name": "Rust",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/252490/header.jpg?t=1781536981",
-   "rank": 19,
+   "rank": 20,
    "discount": 50,
    "initial": 42000,
    "final": 21000,
@@ -641,30 +661,31 @@
    "best": 21000
   },
   {
-   "appid": 3241660,
-   "name": "R.E.P.O.",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3241660/1ea445e044a2d5b09cfa8291350b63ebed6e5741/header.jpg?t=1791817973",
-   "rank": 20,
-   "discount": 35,
-   "initial": 10700,
-   "final": 6950,
+   "appid": 2399830,
+   "name": "ARK: Survival Ascended",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2399830/d934813ca531af0fce69fe36bc972f1c90d1aa19/header.jpg?t=1779293241",
+   "rank": 21,
+   "discount": 75,
+   "initial": 61000,
+   "final": 15250,
    "low": true,
-   "ko": false,
+   "ko": true,
    "ko_voice": false,
    "genres": [
     "액션",
-    "앞서 해보기"
+    "어드벤처",
+    "인디"
    ],
    "meta": null,
    "shops": [],
-   "ever_low": 6950,
-   "best": 6950
+   "ever_low": 15250,
+   "best": 15250
   },
   {
    "appid": 568220,
    "name": "Lobotomy Corporation | Monster Management Simulation",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/568220/header.jpg?t=1636694188",
-   "rank": 21,
+   "rank": 22,
    "discount": 66,
    "initial": 26000,
    "final": 8840,
@@ -679,27 +700,6 @@
    "shops": [],
    "ever_low": 8840,
    "best": 8840
-  },
-  {
-   "appid": 2315050,
-   "name": "우리는 여기에 있었다 투모로우",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2315050/1e74865089e86e73fe7abefec0f5b59c1ce48305/header_alt_assets_3.jpg?t=1792501768",
-   "rank": 22,
-   "discount": 10,
-   "initial": 21000,
-   "final": 18900,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "액션",
-    "어드벤처",
-    "캐주얼"
-   ],
-   "meta": null,
-   "shops": [],
-   "ever_low": 18900,
-   "best": 18900
   },
   {
    "appid": 4312190,
@@ -722,122 +722,10 @@
    "best": 6790
   },
   {
-   "appid": 2399830,
-   "name": "ARK: Survival Ascended",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2399830/d934813ca531af0fce69fe36bc972f1c90d1aa19/header.jpg?t=1779293241",
-   "rank": 24,
-   "discount": 75,
-   "initial": 61000,
-   "final": 15250,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "액션",
-    "어드벤처",
-    "인디"
-   ],
-   "meta": null,
-   "shops": [],
-   "ever_low": 15250,
-   "best": 15250
-  },
-  {
-   "appid": 2223980,
-   "name": "Nomad Drive",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2223980/433d5727162af686f0e7d56de539f8476fb0cf0e/header.jpg?t=1793120442",
-   "rank": 25,
-   "discount": 10,
-   "initial": 17000,
-   "final": 15300,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "어드벤처",
-    "캐주얼",
-    "인디"
-   ],
-   "meta": null,
-   "shops": [],
-   "ever_low": 15300,
-   "best": 15300
-  },
-  {
-   "appid": 2756930,
-   "name": "PUMP IT UP RISE",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2756930/1d4754555c1781e5650e69257554419e5dd00813/header.jpg?t=1793090023",
-   "rank": 26,
-   "discount": 34,
-   "initial": 44900,
-   "final": 29630,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "액션",
-    "캐주얼"
-   ],
-   "meta": null,
-   "shops": [],
-   "ever_low": 26940,
-   "best": 29630
-  },
-  {
-   "appid": 1604030,
-   "name": "V Rising",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1604030/be49834ab147ad22ba17005fb847c93917d18b97/header.jpg?t=1792831894",
-   "rank": 27,
-   "discount": 55,
-   "initial": 34500,
-   "final": 15520,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "액션",
-    "어드벤처",
-    "대규모 멀티플레이어"
-   ],
-   "meta": null,
-   "shops": [
-    {
-     "shop": "AllYouPlay",
-     "krw": 9200,
-     "cut": 80,
-     "url": "https://itad.link/0193baeb-c0c7-70c2-bb3b-58558576e648/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "Gamesporium",
-     "krw": 15180,
-     "cut": 56,
-     "url": "https://itad.link/01a12125-1760-71ba-a774-f8d86d6826c9/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GamesPlanet US",
-     "krw": 20973,
-     "cut": 55,
-     "url": "https://itad.link/018d9386-f072-7024-861b-3619de6430f1/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "PlanetPlay",
-     "krw": 21001,
-     "cut": 55,
-     "url": "https://itad.link/019852bc-96c8-73ea-b053-906f9f3cd5f4/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 8022,
-   "best": 9200
-  },
-  {
    "appid": 3008130,
    "name": "Dying Light: The Beast",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3008130/474a86847984d68aa1485734e450c0a86ada03b3/header.jpg?t=1789646537",
-   "rank": 28,
+   "rank": 24,
    "discount": 50,
    "initial": 65800,
    "final": 32900,
@@ -884,130 +772,171 @@
    "best": 29610
   },
   {
-   "appid": 3322630,
-   "name": "Culdcept BEGINS",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3322630/1af09cd578c01c35fa6ffe1bb9747d7ed43308dc/header_koreana.jpg?t=1792469222",
-   "rank": 29,
+   "appid": 2756930,
+   "name": "PUMP IT UP RISE",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2756930/1d4754555c1781e5650e69257554419e5dd00813/header.jpg?t=1793090023",
+   "rank": 25,
+   "discount": 34,
+   "initial": 44900,
+   "final": 29630,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "액션",
+    "캐주얼"
+   ],
+   "meta": null,
+   "shops": [],
+   "ever_low": 26940,
+   "best": 29630
+  },
+  {
+   "appid": 2223980,
+   "name": "Nomad Drive",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2223980/433d5727162af686f0e7d56de539f8476fb0cf0e/header.jpg?t=1793120442",
+   "rank": 26,
    "discount": 10,
-   "initial": 59800,
-   "final": 53820,
+   "initial": 17000,
+   "final": 15300,
    "low": true,
    "ko": true,
    "ko_voice": false,
    "genres": [
     "어드벤처",
     "캐주얼",
-    "전략"
+    "인디"
    ],
    "meta": null,
    "shops": [],
-   "ever_low": 53820,
-   "best": 53820
+   "ever_low": 15300,
+   "best": 15300
   },
   {
-   "appid": 322330,
-   "name": "Don't Starve Together",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/322330/050ea9c51a4e96f707309d33b7cdd38e0a6cbfff/header_alt_assets_51.jpg?t=1792687779",
-   "rank": 30,
-   "discount": 66,
-   "initial": 15500,
-   "final": 5270,
-   "low": true,
-   "ko": true,
-   "ko_voice": true,
-   "genres": [
-    "액션",
-    "어드벤처",
-    "인디"
-   ],
-   "meta": 83,
-   "shops": [
-    {
-     "shop": "GamersGate",
-     "krw": 6129,
-     "cut": 69,
-     "url": "https://itad.link/01a111b8-d523-71d7-b0ff-1187a0500c66/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "PlanetPlay",
-     "krw": 13950,
-     "cut": 10,
-     "url": "https://itad.link/01a11332-bc21-7162-9774-36dd61709f6f/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "WinGameStore",
-     "krw": 14653,
-     "cut": 27,
-     "url": "https://itad.link/018d9386-50bc-70b3-b7a5-c2ddcc692426/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "MacGameStore",
-     "krw": 14653,
-     "cut": 27,
-     "url": "https://itad.link/018d9386-50bc-70b3-b7a5-c2ddcb94fac7/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 1550,
-   "best": 5270
-  },
-  {
-   "appid": 264710,
-   "name": "서브노티카",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/264710/header.jpg?t=1777456112",
-   "rank": 31,
-   "discount": 75,
-   "initial": 33700,
-   "final": 8420,
+   "appid": 2315050,
+   "name": "우리는 여기에 있었다 투모로우",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2315050/1e74865089e86e73fe7abefec0f5b59c1ce48305/header_alt_assets_3.jpg?t=1792501768",
+   "rank": 27,
+   "discount": 10,
+   "initial": 21000,
+   "final": 18900,
    "low": true,
    "ko": true,
    "ko_voice": false,
    "genres": [
+    "액션",
     "어드벤처",
-    "인디"
+    "캐주얼"
    ],
-   "meta": 87,
+   "meta": null,
+   "shops": [],
+   "ever_low": 18900,
+   "best": 18900
+  },
+  {
+   "appid": 1604030,
+   "name": "V Rising",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1604030/be49834ab147ad22ba17005fb847c93917d18b97/header.jpg?t=1792831894",
+   "rank": 28,
+   "discount": 55,
+   "initial": 34500,
+   "final": 15520,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "액션",
+    "어드벤처",
+    "대규모 멀티플레이어"
+   ],
+   "meta": null,
    "shops": [
     {
+     "shop": "AllYouPlay",
+     "krw": 9200,
+     "cut": 80,
+     "url": "https://itad.link/0193baeb-c0c7-70c2-bb3b-58558576e648/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "Gamesporium",
+     "krw": 15180,
+     "cut": 56,
+     "url": "https://itad.link/01a12125-1760-71ba-a774-f8d86d6826c9/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
      "shop": "GamesPlanet US",
-     "krw": 35987,
+     "krw": 20973,
+     "cut": 55,
+     "url": "https://itad.link/018d9386-f072-7024-861b-3619de6430f1/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "PlanetPlay",
+     "krw": 21001,
+     "cut": 55,
+     "url": "https://itad.link/019852bc-96c8-73ea-b053-906f9f3cd5f4/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 8022,
+   "best": 9200
+  },
+  {
+   "appid": 4108000,
+   "name": "Machine Party",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4108000/00ae7d0e0fd0ad72635bddb1dd80ee68cc94eed5/header.jpg?t=1790860377",
+   "rank": 29,
+   "discount": 25,
+   "initial": 8800,
+   "final": 6600,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "액션",
+    "인디"
+   ],
+   "meta": null,
+   "shops": [
+    {
+     "shop": "PlanetPlay",
+     "krw": 7920,
      "cut": 10,
-     "url": "https://itad.link/018d9386-d619-7279-ab68-a339bca526bd/?app=g6au43",
+     "url": "https://itad.link/01a16b7e-8cbb-7152-8d7e-727a2fe86db6/?app=g6au43",
      "cur": "KRW"
     },
     {
      "shop": "Humble Store",
-     "krw": 39987,
-     "cut": 0,
-     "url": "https://itad.link/018d9386-d619-7279-ab68-a339ac737d50/?app=g6au43",
+     "krw": 8520,
+     "cut": 20,
+     "url": "https://itad.link/01a034bd-d0b7-739e-9c63-e5d00fd6c4cf/?app=g6au43",
      "cur": "KRW"
     },
     {
-     "shop": "IndieGala Store",
-     "krw": 39987,
-     "cut": 0,
-     "url": "https://itad.link/018d9585-c2f0-708a-90bc-6758f01b403b/?app=g6au43",
+     "shop": "Fanatical",
+     "krw": 9055,
+     "cut": 15,
+     "url": "https://itad.link/019fcd3a-f0fd-7157-9afa-cb4667b25634/?app=g6au43",
      "cur": "KRW"
     },
     {
-     "shop": "GamesPlanet FR",
-     "krw": 40344,
+     "shop": "Playsum",
+     "krw": 9588,
      "cut": 10,
-     "url": "https://itad.link/018d9386-d619-7279-ab68-a339bb958e52/?app=g6au43",
+     "url": "https://itad.link/01a163a6-1375-7308-b04a-656368669a74/?app=g6au43",
      "cur": "KRW"
     }
    ],
-   "ever_low": 8420,
-   "best": 8420
+   "ever_low": 6600,
+   "best": 6600
   },
   {
    "appid": 1943950,
    "name": "Escape the Backrooms",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1943950/f3dac53a5d3e68a4bb67786872b4693260049b26/header.jpg?t=1792608971",
-   "rank": 32,
+   "rank": 30,
    "discount": 20,
    "initial": 10500,
    "final": 8400,
@@ -1056,7 +985,7 @@
    "appid": 3447040,
    "name": "하늘의 궤적 the 1st",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3447040/header_koreana.jpg?t=1762838814",
-   "rank": 33,
+   "rank": 31,
    "discount": 50,
    "initial": 85900,
    "final": 42950,
@@ -1072,59 +1001,173 @@
    "best": 42950
   },
   {
-   "appid": 4108000,
-   "name": "Machine Party",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4108000/00ae7d0e0fd0ad72635bddb1dd80ee68cc94eed5/header.jpg?t=1790860377",
+   "appid": 3322630,
+   "name": "Culdcept BEGINS",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3322630/1af09cd578c01c35fa6ffe1bb9747d7ed43308dc/header_koreana.jpg?t=1792469222",
+   "rank": 32,
+   "discount": 10,
+   "initial": 59800,
+   "final": 53820,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "어드벤처",
+    "캐주얼",
+    "전략"
+   ],
+   "meta": null,
+   "shops": [],
+   "ever_low": 53820,
+   "best": 53820
+  },
+  {
+   "appid": 322330,
+   "name": "Don't Starve Together",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/322330/050ea9c51a4e96f707309d33b7cdd38e0a6cbfff/header_alt_assets_51.jpg?t=1792687779",
+   "rank": 33,
+   "discount": 66,
+   "initial": 15500,
+   "final": 5270,
+   "low": true,
+   "ko": true,
+   "ko_voice": true,
+   "genres": [
+    "액션",
+    "어드벤처",
+    "인디"
+   ],
+   "meta": 83,
+   "shops": [
+    {
+     "shop": "GamersGate",
+     "krw": 6129,
+     "cut": 69,
+     "url": "https://itad.link/01a111b8-d523-71d7-b0ff-1187a0500c66/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "PlanetPlay",
+     "krw": 13950,
+     "cut": 10,
+     "url": "https://itad.link/01a11332-bc21-7162-9774-36dd61709f6f/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "WinGameStore",
+     "krw": 14653,
+     "cut": 27,
+     "url": "https://itad.link/018d9386-50bc-70b3-b7a5-c2ddcc692426/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "MacGameStore",
+     "krw": 14653,
+     "cut": 27,
+     "url": "https://itad.link/018d9386-50bc-70b3-b7a5-c2ddcb94fac7/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 1550,
+   "best": 5270
+  },
+  {
+   "appid": 251570,
+   "name": "7 Days to Die",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/251570/header.jpg?t=1793041682",
    "rank": 34,
-   "discount": 25,
-   "initial": 8800,
-   "final": 6600,
+   "discount": 45,
+   "initial": 47000,
+   "final": 25850,
    "low": true,
    "ko": true,
    "ko_voice": false,
    "genres": [
     "액션",
+    "어드벤처",
     "인디"
    ],
    "meta": null,
    "shops": [
     {
-     "shop": "PlanetPlay",
-     "krw": 7920,
-     "cut": 10,
-     "url": "https://itad.link/01a16b7e-8cbb-7152-8d7e-727a2fe86db6/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "Humble Store",
-     "krw": 8520,
-     "cut": 20,
-     "url": "https://itad.link/01a034bd-d0b7-739e-9c63-e5d00fd6c4cf/?app=g6au43",
+     "shop": "GreenManGaming",
+     "krw": 25900,
+     "cut": 45,
+     "url": "https://itad.link/018d9386-ef31-712b-a389-cc56544cf2c8/?app=g6au43",
      "cur": "KRW"
     },
     {
      "shop": "Fanatical",
-     "krw": 9055,
-     "cut": 15,
-     "url": "https://itad.link/019fcd3a-f0fd-7157-9afa-cb4667b25634/?app=g6au43",
+     "krw": 29987,
+     "cut": 50,
+     "url": "https://itad.link/019b3669-f5ac-7184-9faa-6e3c08054a61/?app=g6au43",
      "cur": "KRW"
     },
     {
-     "shop": "Playsum",
-     "krw": 9588,
-     "cut": 10,
-     "url": "https://itad.link/01a163a6-1375-7308-b04a-656368669a74/?app=g6au43",
+     "shop": "Humble Store",
+     "krw": 59987,
+     "cut": 0,
+     "url": "https://itad.link/018d9386-ef31-712b-a389-cc5654722927/?app=g6au43",
      "cur": "KRW"
     }
    ],
-   "ever_low": 6600,
-   "best": 6600
+   "ever_low": 23900,
+   "best": 25850
+  },
+  {
+   "appid": 264710,
+   "name": "서브노티카",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/264710/header.jpg?t=1777456112",
+   "rank": 35,
+   "discount": 75,
+   "initial": 33700,
+   "final": 8420,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "어드벤처",
+    "인디"
+   ],
+   "meta": 87,
+   "shops": [
+    {
+     "shop": "GamesPlanet US",
+     "krw": 35987,
+     "cut": 10,
+     "url": "https://itad.link/018d9386-d619-7279-ab68-a339bca526bd/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "Humble Store",
+     "krw": 39987,
+     "cut": 0,
+     "url": "https://itad.link/018d9386-d619-7279-ab68-a339ac737d50/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "IndieGala Store",
+     "krw": 39987,
+     "cut": 0,
+     "url": "https://itad.link/018d9585-c2f0-708a-90bc-6758f01b403b/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GamesPlanet FR",
+     "krw": 40344,
+     "cut": 10,
+     "url": "https://itad.link/018d9386-d619-7279-ab68-a339bb958e52/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 8420,
+   "best": 8420
   },
   {
    "appid": 4304900,
    "name": "파고 또 파고",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4304900/010f859ebf2d63a51cbf3932553cbf242ff8ca2c/header_koreana.jpg?t=1792418287",
-   "rank": 35,
+   "rank": 36,
    "discount": 25,
    "initial": 8000,
    "final": 6000,
@@ -1142,10 +1185,39 @@
    "best": 6000
   },
   {
+   "appid": 2827200,
+   "name": "미메시스",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2827200/113ba0aea608eaac6b27d1d20017d384bef82b9f/header_alt_assets_2.jpg?t=1792982032",
+   "rank": 37,
+   "discount": 60,
+   "initial": 11000,
+   "final": 4400,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "액션",
+    "어드벤처",
+    "캐주얼"
+   ],
+   "meta": null,
+   "shops": [
+    {
+     "shop": "GreenManGaming",
+     "krw": 4400,
+     "cut": 60,
+     "url": "https://itad.link/019be1dc-235b-7361-8a86-945e2c3f17fc/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 4400,
+   "best": 4400
+  },
+  {
    "appid": 1295660,
    "name": "시드 마이어의 문명 VII",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1295660/header.jpg?t=1789481137",
-   "rank": 36,
+   "rank": 38,
    "discount": 50,
    "initial": 83000,
    "final": 41500,
@@ -1191,53 +1263,10 @@
    "best": 37400
   },
   {
-   "appid": 251570,
-   "name": "7 Days to Die",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/251570/header.jpg?t=1793041682",
-   "rank": 37,
-   "discount": 45,
-   "initial": 47000,
-   "final": 25850,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "액션",
-    "어드벤처",
-    "인디"
-   ],
-   "meta": null,
-   "shops": [
-    {
-     "shop": "GreenManGaming",
-     "krw": 25900,
-     "cut": 45,
-     "url": "https://itad.link/018d9386-ef31-712b-a389-cc56544cf2c8/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "Fanatical",
-     "krw": 29987,
-     "cut": 50,
-     "url": "https://itad.link/019b3669-f5ac-7184-9faa-6e3c08054a61/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "Humble Store",
-     "krw": 59987,
-     "cut": 0,
-     "url": "https://itad.link/018d9386-ef31-712b-a389-cc5654722927/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 23900,
-   "best": 25850
-  },
-  {
    "appid": 4922630,
    "name": "The Long Dark: Iron Road",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4922630/0b918724bd55061f2e3b9f259ad044f524ed9f5f/header.jpg?t=1793123897",
-   "rank": 38,
+   "rank": 39,
    "discount": 10,
    "initial": 28000,
    "final": 25200,
@@ -1253,35 +1282,6 @@
    "shops": [],
    "ever_low": 25200,
    "best": 25200
-  },
-  {
-   "appid": 2827200,
-   "name": "미메시스",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2827200/113ba0aea608eaac6b27d1d20017d384bef82b9f/header_alt_assets_2.jpg?t=1792982032",
-   "rank": 39,
-   "discount": 60,
-   "initial": 11000,
-   "final": 4400,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "액션",
-    "어드벤처",
-    "캐주얼"
-   ],
-   "meta": null,
-   "shops": [
-    {
-     "shop": "GreenManGaming",
-     "krw": 4400,
-     "cut": 60,
-     "url": "https://itad.link/019be1dc-235b-7361-8a86-945e2c3f17fc/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 4400,
-   "best": 4400
   },
   {
    "appid": 4039770,
@@ -1325,10 +1325,92 @@
    "best": 60030
   },
   {
+   "appid": 493520,
+   "name": "GTFO",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/493520/header.jpg?t=1773842359",
+   "rank": 42,
+   "discount": 74,
+   "initial": 49990,
+   "final": 13000,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "액션"
+   ],
+   "meta": 78,
+   "shops": [
+    {
+     "shop": "Gamesporium",
+     "krw": 14353,
+     "cut": 70,
+     "url": "https://itad.link/01a15331-8e25-7338-9cc8-8f035ba2573c/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "Fanatical",
+     "krw": 45640,
+     "cut": 14,
+     "url": "https://itad.link/019956cc-8ffb-7016-8c04-f06579d2d1c1/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 13000,
+   "best": 13000
+  },
+  {
+   "appid": 2129530,
+   "name": "REANIMAL",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2129530/4cdda917a0155258a2e7909d7869f35d8f980f96/header.jpg?t=1791191985",
+   "rank": 43,
+   "discount": 25,
+   "initial": 42000,
+   "final": 31500,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "어드벤처"
+   ],
+   "meta": 80,
+   "shops": [
+    {
+     "shop": "GamersGate",
+     "krw": 26775,
+     "cut": 36,
+     "url": "https://itad.link/019aa1d3-d1a8-7172-b68e-e1d3a4ca9b21/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GameBillet",
+     "krw": 30867,
+     "cut": 42,
+     "url": "https://itad.link/019abc3b-2b46-717f-8461-73b696cbd05e/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "Gamesporium",
+     "krw": 31500,
+     "cut": 25,
+     "url": "https://itad.link/01a12125-2d45-70c0-bf31-1174e341ee2d/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GreenManGaming",
+     "krw": 31500,
+     "cut": 25,
+     "url": "https://itad.link/019a96d6-92e7-71fd-9978-ace1d4e77080/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 30744,
+   "best": 26775
+  },
+  {
    "appid": 739630,
    "name": "Phasmophobia",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/739630/6283e4bf96c6e8160492ae12016f0c9a308a75d9/header_alt_assets_13.jpg?t=1791632508",
-   "rank": 42,
+   "rank": 44,
    "discount": 30,
    "initial": 21500,
    "final": 15050,
@@ -1346,64 +1428,58 @@
    "best": 15050
   },
   {
-   "appid": 4012810,
-   "name": "STEINS;GATE RE:BOOT",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4012810/07418d40a3fdd2f403bfa506f50051f4254fa02a/header.jpg?t=1793263257",
-   "rank": 43,
-   "discount": 10,
-   "initial": 61500,
-   "final": 55350,
+   "appid": 4386090,
+   "name": "How To Destroy A City",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4386090/30b83aa0c4e3f4496a8c10e32652f97aca243cbb/header.jpg?t=1793372704",
+   "rank": 45,
+   "discount": 20,
+   "initial": 6700,
+   "final": 5360,
    "low": true,
-   "ko": false,
-   "ko_voice": false,
+   "ko": true,
+   "ko_voice": true,
    "genres": [
-    "어드벤처",
     "캐주얼"
    ],
    "meta": null,
    "shops": [],
-   "ever_low": 55350,
-   "best": 55350
+   "ever_low": 5360,
+   "best": 5360
   },
   {
-   "appid": 493520,
-   "name": "GTFO",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/493520/header.jpg?t=1773842359",
-   "rank": 44,
-   "discount": 74,
-   "initial": 49990,
-   "final": 13000,
+   "appid": 242760,
+   "name": "The Forest",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/242760/header.jpg?t=1699381053",
+   "rank": 46,
+   "discount": 80,
+   "initial": 20500,
+   "final": 4100,
    "low": true,
    "ko": true,
    "ko_voice": false,
    "genres": [
-    "액션"
+    "액션",
+    "어드벤처",
+    "인디"
    ],
-   "meta": 78,
+   "meta": 83,
    "shops": [
     {
-     "shop": "Gamesporium",
-     "krw": 14348,
-     "cut": 70,
-     "url": "https://itad.link/01a15331-8e25-7338-9cc8-8f035ba2573c/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "Fanatical",
-     "krw": 45640,
-     "cut": 14,
-     "url": "https://itad.link/019956cc-8ffb-7016-8c04-f06579d2d1c1/?app=g6au43",
+     "shop": "Humble Store",
+     "krw": 26653,
+     "cut": 0,
+     "url": "https://itad.link/018d9386-dd18-7395-b9cf-9151e9bb687a/?app=g6au43",
      "cur": "KRW"
     }
    ],
-   "ever_low": 13000,
-   "best": 13000
+   "ever_low": 2050,
+   "best": 4100
   },
   {
    "appid": 418370,
    "name": "BIOHAZARD 7 resident evil",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/418370/header_koreana.jpg?t=1778464947",
-   "rank": 45,
+   "rank": 47,
    "discount": 60,
    "initial": 24800,
    "final": 9920,
@@ -1449,10 +1525,31 @@
    "best": 8928
   },
   {
+   "appid": 4118900,
+   "name": "EZ2ON REBOOT : R - NIGHT TRAVELER",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4118900/761b876ed2cf5ca6ba9bf8a2c210fa3b19a77e6e/header.jpg?t=1787220067",
+   "rank": 48,
+   "discount": 15,
+   "initial": 39600,
+   "final": 33660,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "액션",
+    "캐주얼",
+    "스포츠"
+   ],
+   "meta": null,
+   "shops": [],
+   "ever_low": 33660,
+   "best": 33660
+  },
+  {
    "appid": 1023700,
    "name": "Palais de Reine",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1023700/header.jpg?t=1696626650",
-   "rank": 46,
+   "rank": 49,
    "discount": 50,
    "initial": 32000,
    "final": 16000,
@@ -1483,53 +1580,13 @@
    "best": 16000
   },
   {
-   "appid": 4386090,
-   "name": "How To Destroy A City",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4386090/30b83aa0c4e3f4496a8c10e32652f97aca243cbb/header.jpg?t=1793372704",
-   "rank": 47,
-   "discount": 20,
-   "initial": 6700,
-   "final": 5360,
-   "low": true,
-   "ko": true,
-   "ko_voice": true,
-   "genres": [
-    "캐주얼"
-   ],
-   "meta": null,
-   "shops": [],
-   "ever_low": 5360,
-   "best": 5360
-  },
-  {
-   "appid": 4118900,
-   "name": "EZ2ON REBOOT : R - NIGHT TRAVELER",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4118900/761b876ed2cf5ca6ba9bf8a2c210fa3b19a77e6e/header.jpg?t=1787220067",
-   "rank": 48,
-   "discount": 15,
-   "initial": 39600,
-   "final": 33660,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "액션",
-    "캐주얼",
-    "스포츠"
-   ],
-   "meta": null,
-   "shops": [],
-   "ever_low": 33660,
-   "best": 33660
-  },
-  {
-   "appid": 242760,
-   "name": "The Forest",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/242760/header.jpg?t=1699381053",
-   "rank": 49,
-   "discount": 80,
-   "initial": 20500,
-   "final": 4100,
+   "appid": 1304930,
+   "name": "The Outlast Trials",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1304930/e3b17cf268afa51334b63124a2fe0aef3f1d136b/header_alt_assets_4.jpg?t=1792554994",
+   "rank": 50,
+   "discount": 70,
+   "initial": 42000,
+   "final": 12600,
    "low": true,
    "ko": true,
    "ko_voice": false,
@@ -1538,67 +1595,18 @@
     "어드벤처",
     "인디"
    ],
-   "meta": 83,
+   "meta": null,
    "shops": [
     {
      "shop": "Humble Store",
-     "krw": 26653,
-     "cut": 0,
-     "url": "https://itad.link/018d9386-dd18-7395-b9cf-9151e9bb687a/?app=g6au43",
+     "krw": 15987,
+     "cut": 70,
+     "url": "https://itad.link/018d9386-a7e2-72a8-8939-b09f82ecf29e/?app=g6au43",
      "cur": "KRW"
     }
    ],
-   "ever_low": 2050,
-   "best": 4100
-  },
-  {
-   "appid": 275850,
-   "name": "No Man's Sky",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/275850/2c6e38b43a5309dfcd3cc0f0134e222b0fa2d1b1/header_alt_assets_25.jpg?t=1789479023",
-   "rank": 50,
-   "discount": 60,
-   "initial": 63000,
-   "final": 25200,
-   "low": true,
-   "ko": true,
-   "ko_voice": true,
-   "genres": [
-    "액션",
-    "어드벤처"
-   ],
-   "meta": 61,
-   "shops": [
-    {
-     "shop": "PlanetPlay",
-     "krw": 22680,
-     "cut": 64,
-     "url": "https://itad.link/0198684d-3026-7024-88f6-ed597cd24336/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "Gamesporium",
-     "krw": 25200,
-     "cut": 60,
-     "url": "https://itad.link/01a12125-3487-72a7-86db-ac1cd14a3a28/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GreenManGaming",
-     "krw": 25200,
-     "cut": 60,
-     "url": "https://itad.link/018d9386-a364-7191-a460-0483e5f1501d/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "Playsum",
-     "krw": 26616,
-     "cut": 67,
-     "url": "https://itad.link/01984bf9-d53a-7303-add1-03689f26b7bb/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 23807,
-   "best": 22680
+   "ever_low": 4200,
+   "best": 12600
   },
   {
    "appid": 883710,
@@ -1649,333 +1657,100 @@
    "best": 8964
   },
   {
-   "appid": 1089090,
-   "name": "원피스 해적무쌍 4",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1089090/header_koreana.jpg?t=1763698599",
+   "appid": 4012810,
+   "name": "STEINS;GATE RE:BOOT",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4012810/07418d40a3fdd2f403bfa506f50051f4254fa02a/header.jpg?t=1793263257",
    "rank": 52,
-   "discount": 80,
-   "initial": 49800,
-   "final": 9960,
+   "discount": 10,
+   "initial": 61500,
+   "final": 55350,
    "low": true,
-   "ko": true,
+   "ko": false,
    "ko_voice": false,
    "genres": [
-    "액션"
+    "어드벤처",
+    "캐주얼"
    ],
-   "meta": 75,
-   "shops": [
-    {
-     "shop": "GameBillet",
-     "krw": 9267,
-     "cut": 83,
-     "url": "https://itad.link/018d9386-a5f2-70be-b9d1-296fbbcf92da/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GamesPlanet US",
-     "krw": 9320,
-     "cut": 83,
-     "url": "https://itad.link/018d9386-a5f2-70be-b9d1-296fa812ffda/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GamesPlanet FR",
-     "krw": 10448,
-     "cut": 83,
-     "url": "https://itad.link/018d9386-a5f2-70be-b9d1-296fa9dda5d2/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GamesPlanet DE",
-     "krw": 10448,
-     "cut": 83,
-     "url": "https://itad.link/018d9386-a5f2-70be-b9d1-296fa8c10ad2/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 9205,
-   "best": 9267
+   "meta": null,
+   "shops": [],
+   "ever_low": 55350,
+   "best": 55350
   },
   {
-   "appid": 2129530,
-   "name": "REANIMAL",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2129530/4cdda917a0155258a2e7909d7869f35d8f980f96/header.jpg?t=1791191985",
+   "appid": 940230,
+   "name": "Geoplanetical",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/940230/cd3828ba0e43c85eeccb5c1705112278bb32dcf6/header.jpg?t=1793199295",
    "rank": 53,
-   "discount": 25,
-   "initial": 42000,
-   "final": 31500,
+   "discount": 10,
+   "initial": 29900,
+   "final": 26910,
    "low": true,
    "ko": true,
-   "ko_voice": false,
+   "ko_voice": true,
    "genres": [
+    "인디",
+    "시뮬레이션",
+    "앞서 해보기"
+   ],
+   "meta": null,
+   "shops": [],
+   "ever_low": 26910,
+   "best": 26910
+  },
+  {
+   "appid": 275850,
+   "name": "No Man's Sky",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/275850/2c6e38b43a5309dfcd3cc0f0134e222b0fa2d1b1/header_alt_assets_25.jpg?t=1789479023",
+   "rank": 54,
+   "discount": 60,
+   "initial": 63000,
+   "final": 25200,
+   "low": true,
+   "ko": true,
+   "ko_voice": true,
+   "genres": [
+    "액션",
     "어드벤처"
    ],
-   "meta": 80,
+   "meta": 61,
    "shops": [
     {
-     "shop": "GamersGate",
-     "krw": 26775,
-     "cut": 36,
-     "url": "https://itad.link/019aa1d3-d1a8-7172-b68e-e1d3a4ca9b21/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GameBillet",
-     "krw": 30867,
-     "cut": 42,
-     "url": "https://itad.link/019abc3b-2b46-717f-8461-73b696cbd05e/?app=g6au43",
+     "shop": "PlanetPlay",
+     "krw": 22680,
+     "cut": 64,
+     "url": "https://itad.link/0198684d-3026-7024-88f6-ed597cd24336/?app=g6au43",
      "cur": "KRW"
     },
     {
      "shop": "Gamesporium",
-     "krw": 31500,
-     "cut": 25,
-     "url": "https://itad.link/01a12125-2d45-70c0-bf31-1174e341ee2d/?app=g6au43",
+     "krw": 25200,
+     "cut": 60,
+     "url": "https://itad.link/01a12125-3487-72a7-86db-ac1cd14a3a28/?app=g6au43",
      "cur": "KRW"
     },
     {
      "shop": "GreenManGaming",
-     "krw": 31500,
-     "cut": 25,
-     "url": "https://itad.link/019a96d6-92e7-71fd-9978-ace1d4e77080/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 30744,
-   "best": 26775
-  },
-  {
-   "appid": 1588550,
-   "name": "Cairn",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1588550/71e5578eafba9258a4850146079e271366a7d99c/header_alt_assets_0.jpg?t=1793289602",
-   "rank": 54,
-   "discount": 30,
-   "initial": 32000,
-   "final": 22400,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "액션",
-    "어드벤처",
-    "인디"
-   ],
-   "meta": null,
-   "shops": [
-    {
-     "shop": "PlanetPlay",
-     "krw": 23040,
-     "cut": 28,
-     "url": "https://itad.link/019dba72-2ac8-7118-8915-4aad4e5f5cc3/?app=g6au43",
+     "krw": 25200,
+     "cut": 60,
+     "url": "https://itad.link/018d9386-a364-7191-a460-0483e5f1501d/?app=g6au43",
      "cur": "KRW"
     },
-    {
-     "shop": "WinGameStore",
-     "krw": 31987,
-     "cut": 20,
-     "url": "https://itad.link/019c0aee-f23e-733a-9623-17eccf38685c/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "Fortuna Digital",
-     "krw": 32000,
-     "cut": 0,
-     "url": "https://itad.link/019f41af-2fec-737e-a819-de4cd97d34be/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GreenManGaming",
-     "krw": 32000,
-     "cut": 0,
-     "url": "https://itad.link/019bb302-7eed-7201-ba0f-bfce0651079e/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 18432,
-   "best": 22400
-  },
-  {
-   "appid": 728880,
-   "name": "Overcooked! 2",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/728880/9305414f49b2f7aee7f7198dc507d6b66383fdd6/header.jpg?t=1789548883",
-   "rank": 55,
-   "discount": 66,
-   "initial": 50670,
-   "final": 17230,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "액션",
-    "캐주얼",
-    "인디"
-   ],
-   "meta": 81,
-   "shops": [
     {
      "shop": "Playsum",
-     "krw": 10188,
-     "cut": 10,
-     "url": "https://itad.link/01941e05-9788-722e-a000-862ba43b40ac/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GamersGate",
-     "krw": 10202,
-     "cut": 10,
-     "url": "https://itad.link/018d9386-a7ed-7225-8c09-7e759749ab73/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "Zapagames",
-     "krw": 11320,
-     "cut": 0,
-     "url": "https://itad.link/01a08df7-c2f5-70d9-a983-8253786f0a03/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "Gamesporium",
-     "krw": 11321,
-     "cut": 0,
-     "url": "https://itad.link/01a12125-2474-70a4-ba1e-e027539c0e9e/?app=g6au43",
+     "krw": 26616,
+     "cut": 67,
+     "url": "https://itad.link/01984bf9-d53a-7303-add1-03689f26b7bb/?app=g6au43",
      "cur": "KRW"
     }
    ],
-   "ever_low": 2838,
-   "best": 10188
-  },
-  {
-   "appid": 534380,
-   "name": "Dying Light 2 Stay Human: Reloaded Edition",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/534380/header.jpg?t=1788258144",
-   "rank": 56,
-   "discount": 80,
-   "initial": 66000,
-   "final": 13200,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "액션",
-    "어드벤처",
-    "RPG"
-   ],
-   "meta": null,
-   "shops": [
-    {
-     "shop": "Gamesporium",
-     "krw": 11880,
-     "cut": 82,
-     "url": "https://itad.link/01a1683f-6256-71d1-ad60-7f8f7af3a033/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GamesPlanet US",
-     "krw": 14840,
-     "cut": 81,
-     "url": "https://itad.link/018d9386-54fb-7132-b28c-2ee3758c3565/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GamesPlanet FR",
-     "krw": 15979,
-     "cut": 82,
-     "url": "https://itad.link/018d9386-54fb-7132-b28c-2ee375355b11/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GamesPlanet DE",
-     "krw": 15979,
-     "cut": 82,
-     "url": "https://itad.link/018d9386-54fb-7132-b28c-2ee373fe9bfe/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 13200,
-   "best": 11880
-  },
-  {
-   "appid": 3450310,
-   "name": "Europa Universalis V",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3450310/f5d84baaf8401cfe979d73802e5fe14ae9863dbe/header_alt_assets_3_koreana.jpg?t=1793206771",
-   "rank": 57,
-   "discount": 20,
-   "initial": 66000,
-   "final": 52800,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "전략"
-   ],
-   "meta": null,
-   "shops": [
-    {
-     "shop": "GameBillet",
-     "krw": 63933,
-     "cut": 20,
-     "url": "https://itad.link/019a4fe3-03aa-7358-b0b0-470b2a33adf0/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "PlanetPlay",
-     "krw": 64809,
-     "cut": 19,
-     "url": "https://itad.link/019ae793-4ad7-7302-879b-ab41484229b5/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GamersGate",
-     "krw": 64882,
-     "cut": 19,
-     "url": "https://itad.link/019a4fe3-14b1-7098-8853-b21c12ebbaee/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "Fanatical",
-     "krw": 65587,
-     "cut": 18,
-     "url": "https://itad.link/019a4fe2-d396-71ca-b730-9816542f127d/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 52800,
-   "best": 52800
-  },
-  {
-   "appid": 1304930,
-   "name": "The Outlast Trials",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1304930/e3b17cf268afa51334b63124a2fe0aef3f1d136b/header_alt_assets_4.jpg?t=1792554994",
-   "rank": 58,
-   "discount": 70,
-   "initial": 42000,
-   "final": 12600,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "액션",
-    "어드벤처",
-    "인디"
-   ],
-   "meta": null,
-   "shops": [
-    {
-     "shop": "Humble Store",
-     "krw": 15987,
-     "cut": 70,
-     "url": "https://itad.link/018d9386-a7e2-72a8-8939-b09f82ecf29e/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 4200,
-   "best": 12600
+   "ever_low": 23807,
+   "best": 22680
   },
   {
    "appid": 477160,
    "name": "Human Fall Flat",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/477160/9258286b309480a3ce438c07cb51fadf3ea2f1d1/header_alt_assets_27.jpg?t=1793018738",
-   "rank": 59,
+   "rank": 55,
    "discount": 70,
    "initial": 20500,
    "final": 6150,
@@ -2022,59 +1797,60 @@
    "best": 5228
   },
   {
-   "appid": 2713000,
-   "name": "Resonance: A Plague Tale Legacy",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2713000/fd497979801c646561040243e1aa64a73d11f13a/header.jpg?t=1790254824",
-   "rank": 60,
-   "discount": 20,
-   "initial": 65000,
-   "final": 52000,
+   "appid": 1588550,
+   "name": "Cairn",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1588550/71e5578eafba9258a4850146079e271366a7d99c/header_alt_assets_0.jpg?t=1793289602",
+   "rank": 56,
+   "discount": 30,
+   "initial": 32000,
+   "final": 22400,
    "low": true,
    "ko": true,
    "ko_voice": false,
    "genres": [
     "액션",
-    "어드벤처"
+    "어드벤처",
+    "인디"
    ],
-   "meta": 84,
+   "meta": null,
    "shops": [
     {
-     "shop": "GamesPlanet US",
-     "krw": 49987,
-     "cut": 25,
-     "url": "https://itad.link/019fa305-62fe-705c-b20d-86f5070767fc/?app=g6au43",
+     "shop": "PlanetPlay",
+     "krw": 23040,
+     "cut": 28,
+     "url": "https://itad.link/019dba72-2ac8-7118-8915-4aad4e5f5cc3/?app=g6au43",
      "cur": "KRW"
     },
     {
-     "shop": "AllYouPlay",
-     "krw": 50533,
-     "cut": 24,
-     "url": "https://itad.link/019ffb28-8fb5-7381-a25a-e394a2f0b9fa/?app=g6au43",
+     "shop": "WinGameStore",
+     "krw": 31987,
+     "cut": 20,
+     "url": "https://itad.link/019c0aee-f23e-733a-9623-17eccf38685c/?app=g6au43",
      "cur": "KRW"
     },
     {
-     "shop": "GamesPlanet FR",
-     "krw": 56039,
-     "cut": 25,
-     "url": "https://itad.link/019fa305-4225-708b-96fa-93ae843f4d2d/?app=g6au43",
+     "shop": "Fortuna Digital",
+     "krw": 32000,
+     "cut": 0,
+     "url": "https://itad.link/019f41af-2fec-737e-a819-de4cd97d34be/?app=g6au43",
      "cur": "KRW"
     },
     {
-     "shop": "GamesPlanet DE",
-     "krw": 56039,
-     "cut": 25,
-     "url": "https://itad.link/019fa305-20f9-737b-ac35-6066cc3190fd/?app=g6au43",
+     "shop": "GreenManGaming",
+     "krw": 32000,
+     "cut": 0,
+     "url": "https://itad.link/019bb302-7eed-7201-ba0f-bfce0651079e/?app=g6au43",
      "cur": "KRW"
     }
    ],
-   "ever_low": 44960,
-   "best": 49987
+   "ever_low": 18432,
+   "best": 22400
   },
   {
    "appid": 239140,
    "name": "Dying Light",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/239140/9d1b810b85ae46a0acbdfddf583ccbb81271183e/header.jpg?t=1782913513",
-   "rank": 61,
+   "rank": 57,
    "discount": 90,
    "initial": 27400,
    "final": 2740,
@@ -2093,7 +1869,7 @@
    "appid": 4715160,
    "name": "Finals Week ✍🏻",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4715160/3d05c4f85866620b0b47754e30414cb4414b42dc/header.jpg?t=1793289966",
-   "rank": 62,
+   "rank": 58,
    "discount": 38,
    "initial": 8950,
    "final": 5550,
@@ -2111,129 +1887,129 @@
    "best": 5550
   },
   {
-   "appid": 940230,
-   "name": "Geoplanetical",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/940230/cd3828ba0e43c85eeccb5c1705112278bb32dcf6/header.jpg?t=1793199295",
-   "rank": 63,
+   "appid": 2087540,
+   "name": "Escape from Playtime",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2087540/ae8bd1812254242c63c873d45f134d4056535439/header.jpg?t=1792598504",
+   "rank": 59,
    "discount": 10,
-   "initial": 29900,
-   "final": 26910,
-   "low": true,
-   "ko": true,
-   "ko_voice": true,
-   "genres": [
-    "인디",
-    "시뮬레이션",
-    "앞서 해보기"
-   ],
-   "meta": null,
-   "shops": [],
-   "ever_low": 26910,
-   "best": 26910
-  },
-  {
-   "appid": 2688950,
-   "name": "플래닛 코스터 2",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2688950/header_koreana.jpg?t=1792674586",
-   "rank": 64,
-   "discount": 65,
-   "initial": 53000,
-   "final": 18550,
-   "low": true,
-   "ko": true,
-   "ko_voice": true,
-   "genres": [
-    "시뮬레이션",
-    "전략"
-   ],
-   "meta": 76,
-   "shops": [
-    {
-     "shop": "GameBillet",
-     "krw": 28653,
-     "cut": 57,
-     "url": "https://itad.link/019329f9-5601-7275-ba8f-07844706cc8b/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "Playsum",
-     "krw": 30000,
-     "cut": 55,
-     "url": "https://itad.link/0191eb6f-4b1b-70e7-b622-e105165687df/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "PlanetPlay",
-     "krw": 30003,
-     "cut": 55,
-     "url": "https://itad.link/019852bc-0a58-72d1-a9e9-4dea4775bcd1/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GamersGate",
-     "krw": 30044,
-     "cut": 55,
-     "url": "https://itad.link/0191ebc7-06a2-7210-af11-9214f995adcb/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 18550,
-   "best": 18550
-  },
-  {
-   "appid": 2362060,
-   "name": "코드 베인 II",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2362060/955e8f3fce6d832c286ac8013657ed6fc51f1f85/header.jpg?t=1790931038",
-   "rank": 65,
-   "discount": 50,
-   "initial": 79800,
-   "final": 39900,
+   "initial": 10950,
+   "final": 9850,
    "low": true,
    "ko": true,
    "ko_voice": false,
    "genres": [
     "액션",
+    "어드벤처",
+    "인디"
+   ],
+   "meta": null,
+   "shops": [],
+   "ever_low": 9850,
+   "best": 9850
+  },
+  {
+   "appid": 534380,
+   "name": "Dying Light 2 Stay Human: Reloaded Edition",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/534380/header.jpg?t=1788258144",
+   "rank": 60,
+   "discount": 80,
+   "initial": 66000,
+   "final": 13200,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "액션",
+    "어드벤처",
     "RPG"
    ],
    "meta": null,
    "shops": [
     {
-     "shop": "GameBillet",
-     "krw": 39733,
-     "cut": 57,
-     "url": "https://itad.link/01999486-df35-7124-bd75-cab4c2f82977/?app=g6au43",
+     "shop": "Gamesporium",
+     "krw": 11880,
+     "cut": 82,
+     "url": "https://itad.link/01a1683f-6256-71d1-ad60-7f8f7af3a033/?app=g6au43",
      "cur": "KRW"
     },
     {
      "shop": "GamesPlanet US",
-     "krw": 39747,
-     "cut": 57,
-     "url": "https://itad.link/019981b6-7bbc-708f-91cc-c74d16c17388/?app=g6au43",
+     "krw": 14840,
+     "cut": 81,
+     "url": "https://itad.link/018d9386-54fb-7132-b28c-2ee3758c3565/?app=g6au43",
      "cur": "KRW"
     },
     {
-     "shop": "Humble Store",
-     "krw": 46653,
-     "cut": 50,
-     "url": "https://itad.link/01999bc0-00ec-705e-83c2-43da947132b1/?app=g6au43",
+     "shop": "GamesPlanet FR",
+     "krw": 15979,
+     "cut": 82,
+     "url": "https://itad.link/018d9386-54fb-7132-b28c-2ee375355b11/?app=g6au43",
      "cur": "KRW"
     },
     {
-     "shop": "DLGamer",
-     "krw": 93320,
-     "cut": 0,
-     "url": "https://itad.link/01a08bed-0fcf-7171-be04-e940806af8ab/?app=g6au43",
+     "shop": "GamesPlanet DE",
+     "krw": 15979,
+     "cut": 82,
+     "url": "https://itad.link/018d9386-54fb-7132-b28c-2ee373fe9bfe/?app=g6au43",
      "cur": "KRW"
     }
    ],
-   "ever_low": 39840,
-   "best": 39733
+   "ever_low": 13200,
+   "best": 11880
+  },
+  {
+   "appid": 594650,
+   "name": "Hunt: Showdown 1896",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/594650/8cf55bcd74fc14c93f3a9cc7d0a442afabab6f88/header_alt_assets_29.jpg?t=1791385253",
+   "rank": 61,
+   "discount": 60,
+   "initial": 36700,
+   "final": 14680,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "액션"
+   ],
+   "meta": 81,
+   "shops": [
+    {
+     "shop": "GameBillet",
+     "krw": 14347,
+     "cut": 64,
+     "url": "https://itad.link/019b5137-9af8-70f0-baf1-4e7f3cad5807/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "PlanetPlay",
+     "krw": 14400,
+     "cut": 64,
+     "url": "https://itad.link/019b3801-1acf-705b-9127-b9863694763b/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "Fanatical",
+     "krw": 14787,
+     "cut": 63,
+     "url": "https://itad.link/019b45b0-ef79-724f-9c5f-597d45991422/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GamesPlanet US",
+     "krw": 15373,
+     "cut": 62,
+     "url": "https://itad.link/018d9386-77ad-73fe-b6cf-3e7ed1f2c67f/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 14252,
+   "best": 14347
   },
   {
    "appid": 3812600,
    "name": "ReStory: Chill Electronics Repairs",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3812600/a0e671f412783ac7fc153376fd0a7aaa52643f18/header_alt_assets_1.jpg?t=1793202338",
-   "rank": 66,
+   "rank": 62,
    "discount": 20,
    "initial": 19900,
    "final": 15920,
@@ -2279,52 +2055,60 @@
    "best": 15920
   },
   {
-   "appid": 2141730,
-   "name": "Backrooms: Escape Together",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2141730/header.jpg?t=1780282746",
-   "rank": 67,
-   "discount": 30,
-   "initial": 11000,
-   "final": 7700,
+   "appid": 728880,
+   "name": "Overcooked! 2",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/728880/9305414f49b2f7aee7f7198dc507d6b66383fdd6/header.jpg?t=1789548883",
+   "rank": 63,
+   "discount": 66,
+   "initial": 50670,
+   "final": 17230,
    "low": true,
    "ko": true,
-   "ko_voice": true,
+   "ko_voice": false,
    "genres": [
     "액션",
-    "어드벤처",
-    "캐주얼"
+    "캐주얼",
+    "인디"
    ],
-   "meta": null,
-   "shops": [],
-   "ever_low": 6410,
-   "best": 7700
-  },
-  {
-   "appid": 4045750,
-   "name": "Out of the Park Baseball 27",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4045750/1ea81d6e40df7f9a4c47804c1f95a934d9843866/header.jpg?t=1789504434",
-   "rank": 68,
-   "discount": 50,
-   "initial": 53000,
-   "final": 26500,
-   "low": true,
-   "ko": true,
-   "ko_voice": true,
-   "genres": [
-    "인디",
-    "시뮬레이션",
-    "스포츠"
+   "meta": 81,
+   "shops": [
+    {
+     "shop": "Playsum",
+     "krw": 10188,
+     "cut": 10,
+     "url": "https://itad.link/01941e05-9788-722e-a000-862ba43b40ac/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GamersGate",
+     "krw": 10202,
+     "cut": 10,
+     "url": "https://itad.link/018d9386-a7ed-7225-8c09-7e759749ab73/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "Zapagames",
+     "krw": 11320,
+     "cut": 0,
+     "url": "https://itad.link/01a08df7-c2f5-70d9-a983-8253786f0a03/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "Gamesporium",
+     "krw": 11325,
+     "cut": 0,
+     "url": "https://itad.link/01a12125-2474-70a4-ba1e-e027539c0e9e/?app=g6au43",
+     "cur": "KRW"
+    }
    ],
-   "meta": null,
-   "shops": [],
-   "ever_low": 26500,
-   "best": 26500
+   "ever_low": 2838,
+   "best": 10188
   },
   {
    "appid": 3624140,
    "name": "Wanderburg 완더버그",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3624140/b482d4e6be62b2bc96bdd38e2623cae4a29af0a4/header_koreana.jpg?t=1792688998",
-   "rank": 69,
+   "rank": 64,
    "discount": 35,
    "initial": 15000,
    "final": 9750,
@@ -2371,10 +2155,323 @@
    "best": 9750
   },
   {
+   "appid": 1089090,
+   "name": "원피스 해적무쌍 4",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1089090/header_koreana.jpg?t=1763698599",
+   "rank": 65,
+   "discount": 80,
+   "initial": 49800,
+   "final": 9960,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "액션"
+   ],
+   "meta": 75,
+   "shops": [
+    {
+     "shop": "GameBillet",
+     "krw": 9267,
+     "cut": 83,
+     "url": "https://itad.link/018d9386-a5f2-70be-b9d1-296fbbcf92da/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GamesPlanet US",
+     "krw": 9320,
+     "cut": 83,
+     "url": "https://itad.link/018d9386-a5f2-70be-b9d1-296fa812ffda/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GamesPlanet FR",
+     "krw": 10448,
+     "cut": 83,
+     "url": "https://itad.link/018d9386-a5f2-70be-b9d1-296fa9dda5d2/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GamesPlanet DE",
+     "krw": 10448,
+     "cut": 83,
+     "url": "https://itad.link/018d9386-a5f2-70be-b9d1-296fa8c10ad2/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 9205,
+   "best": 9267
+  },
+  {
+   "appid": 2362060,
+   "name": "코드 베인 II",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2362060/955e8f3fce6d832c286ac8013657ed6fc51f1f85/header.jpg?t=1790931038",
+   "rank": 66,
+   "discount": 50,
+   "initial": 79800,
+   "final": 39900,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "액션",
+    "RPG"
+   ],
+   "meta": null,
+   "shops": [
+    {
+     "shop": "GameBillet",
+     "krw": 39733,
+     "cut": 57,
+     "url": "https://itad.link/01999486-df35-7124-bd75-cab4c2f82977/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GamesPlanet US",
+     "krw": 39747,
+     "cut": 57,
+     "url": "https://itad.link/019981b6-7bbc-708f-91cc-c74d16c17388/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "Humble Store",
+     "krw": 46653,
+     "cut": 50,
+     "url": "https://itad.link/01999bc0-00ec-705e-83c2-43da947132b1/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "DLGamer",
+     "krw": 93320,
+     "cut": 0,
+     "url": "https://itad.link/01a08bed-0fcf-7171-be04-e940806af8ab/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 39840,
+   "best": 39733
+  },
+  {
+   "appid": 2713000,
+   "name": "Resonance: A Plague Tale Legacy",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2713000/fd497979801c646561040243e1aa64a73d11f13a/header.jpg?t=1790254824",
+   "rank": 67,
+   "discount": 20,
+   "initial": 65000,
+   "final": 52000,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "액션",
+    "어드벤처"
+   ],
+   "meta": 84,
+   "shops": [
+    {
+     "shop": "GamesPlanet US",
+     "krw": 49987,
+     "cut": 25,
+     "url": "https://itad.link/019fa305-62fe-705c-b20d-86f5070767fc/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "AllYouPlay",
+     "krw": 50533,
+     "cut": 24,
+     "url": "https://itad.link/019ffb28-8fb5-7381-a25a-e394a2f0b9fa/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GamesPlanet FR",
+     "krw": 56039,
+     "cut": 25,
+     "url": "https://itad.link/019fa305-4225-708b-96fa-93ae843f4d2d/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GamesPlanet DE",
+     "krw": 56039,
+     "cut": 25,
+     "url": "https://itad.link/019fa305-20f9-737b-ac35-6066cc3190fd/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 44960,
+   "best": 49987
+  },
+  {
+   "appid": 3450310,
+   "name": "Europa Universalis V",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3450310/f5d84baaf8401cfe979d73802e5fe14ae9863dbe/header_alt_assets_3_koreana.jpg?t=1793206771",
+   "rank": 68,
+   "discount": 20,
+   "initial": 66000,
+   "final": 52800,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "전략"
+   ],
+   "meta": null,
+   "shops": [
+    {
+     "shop": "GameBillet",
+     "krw": 63933,
+     "cut": 20,
+     "url": "https://itad.link/019a4fe3-03aa-7358-b0b0-470b2a33adf0/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "PlanetPlay",
+     "krw": 64809,
+     "cut": 19,
+     "url": "https://itad.link/019ae793-4ad7-7302-879b-ab41484229b5/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GamersGate",
+     "krw": 64882,
+     "cut": 19,
+     "url": "https://itad.link/019a4fe3-14b1-7098-8853-b21c12ebbaee/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "Fanatical",
+     "krw": 65587,
+     "cut": 18,
+     "url": "https://itad.link/019a4fe2-d396-71ca-b730-9816542f127d/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 52800,
+   "best": 52800
+  },
+  {
+   "appid": 2141730,
+   "name": "Backrooms: Escape Together",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2141730/header.jpg?t=1780282746",
+   "rank": 69,
+   "discount": 30,
+   "initial": 11000,
+   "final": 7700,
+   "low": true,
+   "ko": true,
+   "ko_voice": true,
+   "genres": [
+    "액션",
+    "어드벤처",
+    "캐주얼"
+   ],
+   "meta": null,
+   "shops": [],
+   "ever_low": 6410,
+   "best": 7700
+  },
+  {
+   "appid": 391540,
+   "name": "Undertale",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/391540/header.jpg?t=1757349115",
+   "rank": 70,
+   "discount": 75,
+   "initial": 10500,
+   "final": 2620,
+   "low": true,
+   "ko": false,
+   "ko_voice": false,
+   "genres": [
+    "인디",
+    "RPG"
+   ],
+   "meta": 92,
+   "shops": [
+    {
+     "shop": "Humble Store",
+     "krw": 13320,
+     "cut": 0,
+     "url": "https://itad.link/018d9386-ec02-7346-b1d1-08d8735e19e1/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 1050,
+   "best": 2620
+  },
+  {
+   "appid": 2688950,
+   "name": "플래닛 코스터 2",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2688950/header_koreana.jpg?t=1792674586",
+   "rank": 71,
+   "discount": 65,
+   "initial": 53000,
+   "final": 18550,
+   "low": true,
+   "ko": true,
+   "ko_voice": true,
+   "genres": [
+    "시뮬레이션",
+    "전략"
+   ],
+   "meta": 76,
+   "shops": [
+    {
+     "shop": "GameBillet",
+     "krw": 28653,
+     "cut": 57,
+     "url": "https://itad.link/019329f9-5601-7275-ba8f-07844706cc8b/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "Playsum",
+     "krw": 30000,
+     "cut": 55,
+     "url": "https://itad.link/0191eb6f-4b1b-70e7-b622-e105165687df/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "PlanetPlay",
+     "krw": 30003,
+     "cut": 55,
+     "url": "https://itad.link/019852bc-0a58-72d1-a9e9-4dea4775bcd1/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GamersGate",
+     "krw": 30044,
+     "cut": 55,
+     "url": "https://itad.link/0191ebc7-06a2-7210-af11-9214f995adcb/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 18550,
+   "best": 18550
+  },
+  {
+   "appid": 346110,
+   "name": "ARK: Survival Evolved",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/346110/header.jpg?t=1792799671",
+   "rank": 72,
+   "discount": 34,
+   "initial": 16500,
+   "final": 10890,
+   "low": true,
+   "ko": true,
+   "ko_voice": true,
+   "genres": [
+    "액션",
+    "어드벤처",
+    "인디"
+   ],
+   "meta": 70,
+   "shops": [],
+   "ever_low": 15300,
+   "best": 10890
+  },
+  {
    "appid": 1196590,
    "name": "Biohazard Village",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1196590/header_koreana.jpg?t=1776927117",
-   "rank": 70,
+   "rank": 73,
    "discount": 75,
    "initial": 49800,
    "final": 12450,
@@ -2419,31 +2516,10 @@
    "best": 11205
   },
   {
-   "appid": 2087540,
-   "name": "Escape from Playtime",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2087540/ae8bd1812254242c63c873d45f134d4056535439/header.jpg?t=1792598504",
-   "rank": 71,
-   "discount": 10,
-   "initial": 10950,
-   "final": 9850,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "액션",
-    "어드벤처",
-    "인디"
-   ],
-   "meta": null,
-   "shops": [],
-   "ever_low": 9850,
-   "best": 9850
-  },
-  {
    "appid": 5344930,
    "name": "PUMP IT UP RISE - EZ2ON REBOOT : R PACK",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5344930/604872688b9ba9a40744694b674971de05c3a28a/header.jpg?t=1793250340",
-   "rank": 72,
+   "rank": 74,
    "discount": 10,
    "initial": 22900,
    "final": 20610,
@@ -2460,128 +2536,10 @@
    "best": 20610
   },
   {
-   "appid": 594650,
-   "name": "Hunt: Showdown 1896",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/594650/8cf55bcd74fc14c93f3a9cc7d0a442afabab6f88/header_alt_assets_29.jpg?t=1791385253",
-   "rank": 73,
-   "discount": 60,
-   "initial": 36700,
-   "final": 14680,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "액션"
-   ],
-   "meta": 81,
-   "shops": [
-    {
-     "shop": "GameBillet",
-     "krw": 14347,
-     "cut": 64,
-     "url": "https://itad.link/019b5137-9af8-70f0-baf1-4e7f3cad5807/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "PlanetPlay",
-     "krw": 14400,
-     "cut": 64,
-     "url": "https://itad.link/019b3801-1acf-705b-9127-b9863694763b/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "Fanatical",
-     "krw": 14787,
-     "cut": 63,
-     "url": "https://itad.link/019b45b0-ef79-724f-9c5f-597d45991422/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GamesPlanet US",
-     "krw": 15373,
-     "cut": 62,
-     "url": "https://itad.link/018d9386-77ad-73fe-b6cf-3e7ed1f2c67f/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 14252,
-   "best": 14347
-  },
-  {
-   "appid": 391540,
-   "name": "Undertale",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/391540/header.jpg?t=1757349115",
-   "rank": 74,
-   "discount": 75,
-   "initial": 10500,
-   "final": 2620,
-   "low": true,
-   "ko": false,
-   "ko_voice": false,
-   "genres": [
-    "인디",
-    "RPG"
-   ],
-   "meta": 92,
-   "shops": [
-    {
-     "shop": "Humble Store",
-     "krw": 13320,
-     "cut": 0,
-     "url": "https://itad.link/018d9386-ec02-7346-b1d1-08d8735e19e1/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 1050,
-   "best": 2620
-  },
-  {
-   "appid": 346110,
-   "name": "ARK: Survival Evolved",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/346110/header.jpg?t=1792799671",
-   "rank": 75,
-   "discount": 34,
-   "initial": 16500,
-   "final": 10890,
-   "low": true,
-   "ko": true,
-   "ko_voice": true,
-   "genres": [
-    "액션",
-    "어드벤처",
-    "인디"
-   ],
-   "meta": 70,
-   "shops": [],
-   "ever_low": 15300,
-   "best": 10890
-  },
-  {
-   "appid": 3464370,
-   "name": "사니양 연구실",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3464370/d21c14bba9b831fe0bed27c373bf60fb542844df/header_koreana.jpg?t=1791446376",
-   "rank": 76,
-   "discount": 25,
-   "initial": 28500,
-   "final": 21370,
-   "low": true,
-   "ko": true,
-   "ko_voice": true,
-   "genres": [
-    "어드벤처",
-    "시뮬레이션",
-    "전략"
-   ],
-   "meta": null,
-   "shops": [],
-   "ever_low": 21370,
-   "best": 21370
-  },
-  {
    "appid": 4096830,
    "name": "S.O.N.A.R. - 준비 안 된 잠수함 대원들",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4096830/a8d0f245a34233f12f854a3005cd848433a60175/header_koreana.jpg?t=1793286593",
-   "rank": 77,
+   "rank": 75,
    "discount": 15,
    "initial": 10500,
    "final": 8920,
@@ -2617,7 +2575,7 @@
    "appid": 2482760,
    "name": "Hunting Simulator 3",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2482760/1a9f19af74790e1981ddb42e627edb9c1a8a6e9f/header_alt_assets_1.jpg?t=1793264644",
-   "rank": 78,
+   "rank": 76,
    "discount": 20,
    "initial": 41000,
    "final": 32800,
@@ -2662,30 +2620,10 @@
    "best": 32800
   },
   {
-   "appid": 530611,
-   "name": "End of Zoe",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/530611/header_koreana.jpg?t=1683527618",
-   "rank": 79,
-   "discount": 75,
-   "initial": 18800,
-   "final": 4700,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "액션",
-    "어드벤처"
-   ],
-   "meta": null,
-   "shops": [],
-   "ever_low": 3500,
-   "best": 4700
-  },
-  {
    "appid": 952060,
    "name": "BIOHAZARD RE:3",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/952060/header_koreana.jpg?t=1790215956",
-   "rank": 80,
+   "rank": 77,
    "discount": 80,
    "initial": 49800,
    "final": 9960,
@@ -2733,7 +2671,7 @@
    "appid": 4244510,
    "name": "프랫폴",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4244510/d0865ad5304f9c87c60238ad3752c1ec08de5469/header_koreana.jpg?t=1793009009",
-   "rank": 81,
+   "rank": 78,
    "discount": 30,
    "initial": 8400,
    "final": 5880,
@@ -2773,345 +2711,31 @@
    "best": 5880
   },
   {
-   "appid": 1926210,
-   "name": "EZ2ON REBOOT : R - PRESTIGE PASS",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1926210/header.jpg?t=1744291202",
-   "rank": 82,
-   "discount": 37,
-   "initial": 39700,
-   "final": 25010,
+   "appid": 3464370,
+   "name": "사니양 연구실",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3464370/d21c14bba9b831fe0bed27c373bf60fb542844df/header_koreana.jpg?t=1791446376",
+   "rank": 79,
+   "discount": 25,
+   "initial": 28500,
+   "final": 21370,
    "low": true,
    "ko": true,
-   "ko_voice": false,
+   "ko_voice": true,
    "genres": [
-    "액션",
-    "캐주얼",
-    "스포츠"
-   ],
-   "meta": null,
-   "shops": [],
-   "ever_low": 25010,
-   "best": 25010
-  },
-  {
-   "appid": 934700,
-   "name": "Dead Island 2",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/934700/header.jpg?t=1790170542",
-   "rank": 83,
-   "discount": 90,
-   "initial": 50700,
-   "final": 5070,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "액션",
-    "어드벤처"
-   ],
-   "meta": null,
-   "shops": [
-    {
-     "shop": "Fanatical",
-     "krw": 9987,
-     "cut": 85,
-     "url": "https://itad.link/018f0685-2e27-71e1-8710-3d43888da21d/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "Humble Store",
-     "krw": 9987,
-     "cut": 85,
-     "url": "https://itad.link/018d9386-493a-71bb-bbb1-e7b41c20d2f2/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "AllYouPlay",
-     "krw": 13773,
-     "cut": 85,
-     "url": "https://itad.link/018e7aa6-b25b-71aa-83f4-8c229aae4618/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "Dreamgame",
-     "krw": 14932,
-     "cut": 80,
-     "url": "https://itad.link/01a056c8-eb64-7279-983a-db6e9e4da7a1/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 5070,
-   "best": 5070
-  },
-  {
-   "appid": 4704520,
-   "name": "ShredDead",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4704520/481c251d90942aa2a768de63a65dee1a508a91a7/header.jpg?t=1793034266",
-   "rank": 84,
-   "discount": 20,
-   "initial": 6550,
-   "final": 5240,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "캐주얼",
-    "인디",
+    "어드벤처",
+    "시뮬레이션",
     "전략"
    ],
    "meta": null,
    "shops": [],
-   "ever_low": 5240,
-   "best": 5240
-  },
-  {
-   "appid": 653530,
-   "name": "Return of the Obra Dinn",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/653530/header.jpg?t=1686697594",
-   "rank": 85,
-   "discount": 33,
-   "initial": 21500,
-   "final": 14400,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "어드벤처",
-    "인디"
-   ],
-   "meta": 89,
-   "shops": [
-    {
-     "shop": "Humble Store",
-     "krw": 26653,
-     "cut": 0,
-     "url": "https://itad.link/018d9386-b8f7-7145-9d07-0bc5a3277738/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 10750,
-   "best": 14400
-  },
-  {
-   "appid": 548430,
-   "name": "Deep Rock Galactic",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/548430/37b58a6c4816ee60b0ca97cb6724d6e904c58c41/header.jpg?t=1791554128",
-   "rank": 86,
-   "discount": 70,
-   "initial": 32000,
-   "final": 9600,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "액션"
-   ],
-   "meta": 85,
-   "shops": [
-    {
-     "shop": "GreenManGaming",
-     "krw": 8900,
-     "cut": 72,
-     "url": "https://itad.link/01a09faa-5560-73cc-960b-5ae435114724/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GameBillet",
-     "krw": 10680,
-     "cut": 73,
-     "url": "https://itad.link/01a0c2ae-0f96-7111-b581-d4dd342c3cfd/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "PlanetPlay",
-     "krw": 10800,
-     "cut": 73,
-     "url": "https://itad.link/01a08446-951e-71e4-8f20-60660fd5fd34/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GamesPlanet US",
-     "krw": 11600,
-     "cut": 71,
-     "url": "https://itad.link/01a085ea-4517-71c3-9388-74c20232073d/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 8900,
-   "best": 8900
-  },
-  {
-   "appid": 3949040,
-   "name": "RV There Yet?",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3949040/cae24b4ed7f4531be51f0d63f785b7d253f92dc3/header.jpg?t=1789134289",
-   "rank": 87,
-   "discount": 40,
-   "initial": 8900,
-   "final": 5340,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "액션",
-    "어드벤처",
-    "인디"
-   ],
-   "meta": null,
-   "shops": [],
-   "ever_low": 5340,
-   "best": 5340
-  },
-  {
-   "appid": 787480,
-   "name": "Phoenix Wright: Ace Attorney Trilogy",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/787480/header.jpg?t=1768866317",
-   "rank": 88,
-   "discount": 67,
-   "initial": 29800,
-   "final": 9830,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "어드벤처"
-   ],
-   "meta": 80,
-   "shops": [
-    {
-     "shop": "GamersGate",
-     "krw": 10930,
-     "cut": 70,
-     "url": "https://itad.link/0190a2e4-b3be-733c-8ce7-d785e7d56abb/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "Humble Store",
-     "krw": 13187,
-     "cut": 67,
-     "url": "https://itad.link/018d9386-ac72-7363-921f-4044d7730bb4/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GameBillet",
-     "krw": 33120,
-     "cut": 17,
-     "url": "https://itad.link/01922523-98f5-72ba-b802-3f2335d3026a/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "PlanetPlay",
-     "krw": 39329,
-     "cut": 10,
-     "url": "https://itad.link/019852bc-097a-73b7-af31-47f709b89205/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 9504,
-   "best": 9830
-  },
-  {
-   "appid": 3837350,
-   "name": "스테퍼 레트로: 초능력 추리 퀘스트",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3837350/b12632f5f23c31a3e96dbbc09498ac519f213fae/header_koreana.jpg?t=1790664331",
-   "rank": 89,
-   "discount": 13,
-   "initial": 32000,
-   "final": 27840,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "어드벤처",
-    "인디"
-   ],
-   "meta": 79,
-   "shops": [
-    {
-     "shop": "Fanatical",
-     "krw": 28987,
-     "cut": 13,
-     "url": "https://itad.link/019ea7b9-f608-720e-b3bc-420c962fc331/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 27840,
-   "best": 27840
-  },
-  {
-   "appid": 2277560,
-   "name": "명말: 공허의 깃털",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2277560/0f269ea2227fa0b25d0a2c7d1648cc9b76336c2b/header_koreana.jpg?t=1784896573",
-   "rank": 90,
-   "discount": 30,
-   "initial": 69800,
-   "final": 48860,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "액션",
-    "어드벤처",
-    "RPG"
-   ],
-   "meta": 77,
-   "shops": [
-    {
-     "shop": "Nuuvem",
-     "krw": 46653,
-     "cut": 30,
-     "url": "https://itad.link/01968780-4abe-7057-a03d-1e1d25b239eb/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GameBillet",
-     "krw": 55253,
-     "cut": 17,
-     "url": "https://itad.link/0196b47d-7089-7393-ab89-f29bd999169a/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "Humble Store",
-     "krw": 66653,
-     "cut": 0,
-     "url": "https://itad.link/019688f3-040f-73cb-a288-24fdeda2e3ef/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "DLGamer",
-     "krw": 66653,
-     "cut": 0,
-     "url": "https://itad.link/01a08bec-e8b2-7297-9bd4-2b1f7a4dc1df/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 35880,
-   "best": 46653
-  },
-  {
-   "appid": 4184650,
-   "name": "War Thunder - BMPT-72 “Terminator-2” Pack",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4184650/098ccc844e336054077cb2f03f561f92b1a22d0d/header.jpg?t=1783432856",
-   "rank": 91,
-   "discount": 50,
-   "initial": 95000,
-   "final": 47500,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "액션",
-    "대규모 멀티플레이어",
-    "시뮬레이션"
-   ],
-   "meta": null,
-   "shops": [],
-   "ever_low": 43950,
-   "best": 47500
+   "ever_low": 21370,
+   "best": 21370
   },
   {
    "appid": 389730,
    "name": "TEKKEN 7",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/389730/header.jpg?t=1765812753",
-   "rank": 92,
+   "rank": 80,
    "discount": 85,
    "initial": 43800,
    "final": 6570,
@@ -3157,79 +2781,52 @@
    "best": 6570
   },
   {
-   "appid": 1392860,
-   "name": "리틀 나이트메어 3",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1392860/908a83293912f5944f730f60f379e423b2db4b32/header_alt_assets_1_koreana.jpg?t=1790849221",
-   "rank": 93,
+   "appid": 4045750,
+   "name": "Out of the Park Baseball 27",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4045750/1ea81d6e40df7f9a4c47804c1f95a934d9843866/header.jpg?t=1789504434",
+   "rank": 81,
    "discount": 50,
-   "initial": 49800,
-   "final": 24900,
+   "initial": 53000,
+   "final": 26500,
+   "low": true,
+   "ko": true,
+   "ko_voice": true,
+   "genres": [
+    "인디",
+    "시뮬레이션",
+    "스포츠"
+   ],
+   "meta": null,
+   "shops": [],
+   "ever_low": 26500,
+   "best": 26500
+  },
+  {
+   "appid": 1926210,
+   "name": "EZ2ON REBOOT : R - PRESTIGE PASS",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1926210/header.jpg?t=1744291202",
+   "rank": 82,
+   "discount": 37,
+   "initial": 39700,
+   "final": 25010,
    "low": true,
    "ko": true,
    "ko_voice": false,
    "genres": [
-    "어드벤처"
-   ],
-   "meta": null,
-   "shops": [
-    {
-     "shop": "GamesPlanet US",
-     "krw": 22653,
-     "cut": 58,
-     "url": "https://itad.link/0197a359-74fb-733e-8996-834439d61c62/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GameBillet",
-     "krw": 23413,
-     "cut": 56,
-     "url": "https://itad.link/0197a8a4-d3ef-708c-a64b-07dad0e6445b/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GamesPlanet FR",
-     "krw": 25396,
-     "cut": 58,
-     "url": "https://itad.link/0197a37e-67b1-73e0-a751-2d7825ee5f65/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GamesPlanet DE",
-     "krw": 25396,
-     "cut": 58,
-     "url": "https://itad.link/0197a36b-75a7-727f-b87a-a232b682aaf7/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 22503,
-   "best": 22653
-  },
-  {
-   "appid": 2980270,
-   "name": "HackHub - Ultimate Hacker Simulator",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2980270/5f429b978e3cd0d42f5ad1886266048429895d6f/header_alt_assets_0.jpg?t=1793375804",
-   "rank": 94,
-   "discount": 30,
-   "initial": 18000,
-   "final": 12600,
-   "low": false,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "인디",
-    "시뮬레이션",
-    "전략"
+    "액션",
+    "캐주얼",
+    "스포츠"
    ],
    "meta": null,
    "shops": [],
-   "ever_low": 10800,
-   "best": 12600
+   "ever_low": 25010,
+   "best": 25010
   },
   {
    "appid": 1643320,
    "name": "S.T.A.L.K.E.R. 2: Heart of Chornobyl",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1643320/9c8da5440ab033af46b9c7fecfd37166479d2ea6/header.jpg?t=1790259592",
-   "rank": 95,
+   "rank": 83,
    "discount": 30,
    "initial": 64900,
    "final": 45430,
@@ -3276,10 +2873,590 @@
    "best": 45430
   },
   {
+   "appid": 787480,
+   "name": "Phoenix Wright: Ace Attorney Trilogy",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/787480/header.jpg?t=1768866317",
+   "rank": 84,
+   "discount": 67,
+   "initial": 29800,
+   "final": 9830,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "어드벤처"
+   ],
+   "meta": 80,
+   "shops": [
+    {
+     "shop": "GamersGate",
+     "krw": 10930,
+     "cut": 70,
+     "url": "https://itad.link/0190a2e4-b3be-733c-8ce7-d785e7d56abb/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "Humble Store",
+     "krw": 13187,
+     "cut": 67,
+     "url": "https://itad.link/018d9386-ac72-7363-921f-4044d7730bb4/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GameBillet",
+     "krw": 33120,
+     "cut": 17,
+     "url": "https://itad.link/01922523-98f5-72ba-b802-3f2335d3026a/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "PlanetPlay",
+     "krw": 39329,
+     "cut": 10,
+     "url": "https://itad.link/019852bc-097a-73b7-af31-47f709b89205/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 9504,
+   "best": 9830
+  },
+  {
+   "appid": 934700,
+   "name": "Dead Island 2",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/934700/header.jpg?t=1790170542",
+   "rank": 85,
+   "discount": 90,
+   "initial": 50700,
+   "final": 5070,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "액션",
+    "어드벤처"
+   ],
+   "meta": null,
+   "shops": [
+    {
+     "shop": "Fanatical",
+     "krw": 9987,
+     "cut": 85,
+     "url": "https://itad.link/018f0685-2e27-71e1-8710-3d43888da21d/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "Humble Store",
+     "krw": 9987,
+     "cut": 85,
+     "url": "https://itad.link/018d9386-493a-71bb-bbb1-e7b41c20d2f2/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "AllYouPlay",
+     "krw": 13773,
+     "cut": 85,
+     "url": "https://itad.link/018e7aa6-b25b-71aa-83f4-8c229aae4618/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "Dreamgame",
+     "krw": 14932,
+     "cut": 80,
+     "url": "https://itad.link/01a056c8-eb64-7279-983a-db6e9e4da7a1/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 5070,
+   "best": 5070
+  },
+  {
+   "appid": 3837350,
+   "name": "스테퍼 레트로: 초능력 추리 퀘스트",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3837350/b12632f5f23c31a3e96dbbc09498ac519f213fae/header_koreana.jpg?t=1790664331",
+   "rank": 86,
+   "discount": 13,
+   "initial": 32000,
+   "final": 27840,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "어드벤처",
+    "인디"
+   ],
+   "meta": 79,
+   "shops": [
+    {
+     "shop": "Fanatical",
+     "krw": 28987,
+     "cut": 13,
+     "url": "https://itad.link/019ea7b9-f608-720e-b3bc-420c962fc331/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 27840,
+   "best": 27840
+  },
+  {
+   "appid": 2277560,
+   "name": "명말: 공허의 깃털",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2277560/0f269ea2227fa0b25d0a2c7d1648cc9b76336c2b/header_koreana.jpg?t=1784896573",
+   "rank": 87,
+   "discount": 30,
+   "initial": 69800,
+   "final": 48860,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "액션",
+    "어드벤처",
+    "RPG"
+   ],
+   "meta": 77,
+   "shops": [
+    {
+     "shop": "Nuuvem",
+     "krw": 46653,
+     "cut": 30,
+     "url": "https://itad.link/01968780-4abe-7057-a03d-1e1d25b239eb/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GameBillet",
+     "krw": 55253,
+     "cut": 17,
+     "url": "https://itad.link/0196b47d-7089-7393-ab89-f29bd999169a/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "Humble Store",
+     "krw": 66653,
+     "cut": 0,
+     "url": "https://itad.link/019688f3-040f-73cb-a288-24fdeda2e3ef/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "DLGamer",
+     "krw": 66653,
+     "cut": 0,
+     "url": "https://itad.link/01a08bec-e8b2-7297-9bd4-2b1f7a4dc1df/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 35880,
+   "best": 46653
+  },
+  {
+   "appid": 2190220,
+   "name": "동방 탄막 카구라 판타지아 로스트",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2190220/header_koreana.jpg?t=1784265916",
+   "rank": 88,
+   "discount": 50,
+   "initial": 21500,
+   "final": 10750,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "액션",
+    "어드벤처",
+    "캐주얼"
+   ],
+   "meta": null,
+   "shops": [],
+   "ever_low": 9600,
+   "best": 10750
+  },
+  {
+   "appid": 4704520,
+   "name": "ShredDead",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4704520/481c251d90942aa2a768de63a65dee1a508a91a7/header.jpg?t=1793034266",
+   "rank": 89,
+   "discount": 20,
+   "initial": 6550,
+   "final": 5240,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "캐주얼",
+    "인디",
+    "전략"
+   ],
+   "meta": null,
+   "shops": [],
+   "ever_low": 5240,
+   "best": 5240
+  },
+  {
+   "appid": 530611,
+   "name": "End of Zoe",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/530611/header_koreana.jpg?t=1683527618",
+   "rank": 90,
+   "discount": 75,
+   "initial": 18800,
+   "final": 4700,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "액션",
+    "어드벤처"
+   ],
+   "meta": null,
+   "shops": [],
+   "ever_low": 3500,
+   "best": 4700
+  },
+  {
+   "appid": 466130,
+   "name": "화이트데이: 학교라는 이름의 미궁",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/466130/header.jpg?t=1792060774",
+   "rank": 91,
+   "discount": 90,
+   "initial": 32000,
+   "final": 3200,
+   "low": true,
+   "ko": true,
+   "ko_voice": true,
+   "genres": [
+    "액션",
+    "어드벤처",
+    "인디"
+   ],
+   "meta": null,
+   "shops": [
+    {
+     "shop": "GreenManGaming",
+     "krw": 3200,
+     "cut": 90,
+     "url": "https://itad.link/018d9386-f601-7171-b5ca-af7031b01658/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "Humble Store",
+     "krw": 9987,
+     "cut": 75,
+     "url": "https://itad.link/018d9386-f601-7171-b5ca-af7031e282b9/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GamersGate",
+     "krw": 28800,
+     "cut": 10,
+     "url": "https://itad.link/01906122-4fdc-71de-8c4b-23f3fb67d05e/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "PlanetPlay",
+     "krw": 28800,
+     "cut": 10,
+     "url": "https://itad.link/0198abbf-299e-721b-857d-134a60965519/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 2800,
+   "best": 3200
+  },
+  {
+   "appid": 3949040,
+   "name": "RV There Yet?",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3949040/cae24b4ed7f4531be51f0d63f785b7d253f92dc3/header.jpg?t=1789134289",
+   "rank": 92,
+   "discount": 40,
+   "initial": 8900,
+   "final": 5340,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "액션",
+    "어드벤처",
+    "인디"
+   ],
+   "meta": null,
+   "shops": [],
+   "ever_low": 5340,
+   "best": 5340
+  },
+  {
+   "appid": 653530,
+   "name": "Return of the Obra Dinn",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/653530/header.jpg?t=1686697594",
+   "rank": 93,
+   "discount": 33,
+   "initial": 21500,
+   "final": 14400,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "어드벤처",
+    "인디"
+   ],
+   "meta": 89,
+   "shops": [
+    {
+     "shop": "Humble Store",
+     "krw": 26653,
+     "cut": 0,
+     "url": "https://itad.link/018d9386-b8f7-7145-9d07-0bc5a3277738/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 10750,
+   "best": 14400
+  },
+  {
+   "appid": 4184650,
+   "name": "War Thunder - BMPT-72 “Terminator-2” Pack",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4184650/098ccc844e336054077cb2f03f561f92b1a22d0d/header.jpg?t=1783432856",
+   "rank": 94,
+   "discount": 50,
+   "initial": 95000,
+   "final": 47500,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "액션",
+    "대규모 멀티플레이어",
+    "시뮬레이션"
+   ],
+   "meta": null,
+   "shops": [],
+   "ever_low": 43950,
+   "best": 47500
+  },
+  {
+   "appid": 548430,
+   "name": "Deep Rock Galactic",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/548430/37b58a6c4816ee60b0ca97cb6724d6e904c58c41/header.jpg?t=1791554128",
+   "rank": 95,
+   "discount": 70,
+   "initial": 32000,
+   "final": 9600,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "액션"
+   ],
+   "meta": 85,
+   "shops": [
+    {
+     "shop": "GreenManGaming",
+     "krw": 8900,
+     "cut": 72,
+     "url": "https://itad.link/01a09faa-5560-73cc-960b-5ae435114724/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GameBillet",
+     "krw": 10680,
+     "cut": 73,
+     "url": "https://itad.link/01a0c2ae-0f96-7111-b581-d4dd342c3cfd/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "PlanetPlay",
+     "krw": 10800,
+     "cut": 73,
+     "url": "https://itad.link/01a08446-951e-71e4-8f20-60660fd5fd34/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GamesPlanet US",
+     "krw": 11600,
+     "cut": 71,
+     "url": "https://itad.link/01a085ea-4517-71c3-9388-74c20232073d/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 8900,
+   "best": 8900
+  },
+  {
+   "appid": 1297900,
+   "name": "Gothic 1 Remake",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1297900/6bc8c205a107e552f14631524f25cdf88743515a/header.jpg?t=1787564876",
+   "rank": 96,
+   "discount": 25,
+   "initial": 53000,
+   "final": 39750,
+   "low": true,
+   "ko": false,
+   "ko_voice": false,
+   "genres": [
+    "액션",
+    "RPG"
+   ],
+   "meta": null,
+   "shops": [
+    {
+     "shop": "GamersGate",
+     "krw": 45050,
+     "cut": 15,
+     "url": "https://itad.link/019e98d9-fe8b-723d-89ba-7e5c7098ed55/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "WinGameStore",
+     "krw": 50058,
+     "cut": 25,
+     "url": "https://itad.link/019d68e4-4756-7202-8b2c-8b3b0bbe80d1/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GreenManGaming",
+     "krw": 53000,
+     "cut": 0,
+     "url": "https://itad.link/019c4dfc-c738-7395-87b9-e13b71f3d4f0/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "Gamesporium",
+     "krw": 53000,
+     "cut": 0,
+     "url": "https://itad.link/01a12125-3340-71e6-891e-6cebfc03de0f/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 39750,
+   "best": 39750
+  },
+  {
+   "appid": 424840,
+   "name": "Little Nightmares",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/424840/facf9a7a675c6d7f210d96d6b111caffe0386cd5/header.jpg?t=1773135169",
+   "rank": 97,
+   "discount": 75,
+   "initial": 34800,
+   "final": 8700,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "어드벤처"
+   ],
+   "meta": 81,
+   "shops": [
+    {
+     "shop": "GameBillet",
+     "krw": 5880,
+     "cut": 78,
+     "url": "https://itad.link/018d9386-8d30-73f1-842b-1ae07fb4a7c4/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GamesPlanet US",
+     "krw": 5933,
+     "cut": 78,
+     "url": "https://itad.link/018d9386-8d30-73f1-842b-1ae077e97ea3/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GamesPlanet FR",
+     "krw": 6652,
+     "cut": 78,
+     "url": "https://itad.link/018d9386-8d30-73f1-842b-1ae06d4a4658/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GamesPlanet DE",
+     "krw": 6652,
+     "cut": 78,
+     "url": "https://itad.link/018d9386-8d30-73f1-842b-1ae06ca0052c/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 3720,
+   "best": 5880
+  },
+  {
+   "appid": 1217060,
+   "name": "Gunfire Reborn",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1217060/dd6c1906d262c38c183ccd711f192db187b5103f/header.jpg?t=1792125722",
+   "rank": 98,
+   "discount": 30,
+   "initial": 20500,
+   "final": 14350,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "액션",
+    "어드벤처",
+    "인디"
+   ],
+   "meta": null,
+   "shops": [
+    {
+     "shop": "Humble Store",
+     "krw": 18653,
+     "cut": 30,
+     "url": "https://itad.link/018d9386-701d-736a-aaad-d6fa83c6deee/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 11270,
+   "best": 14350
+  },
+  {
+   "appid": 750920,
+   "name": "Shadow of the Tomb Raider: Definitive Edition",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/750920/86f9744a410121ff869cc19f63aa9e3dfcf54b8d/header_alt_assets_0.jpg?t=1792675045",
+   "rank": 99,
+   "discount": 90,
+   "initial": 44000,
+   "final": 4400,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "액션",
+    "어드벤처"
+   ],
+   "meta": 77,
+   "shops": [
+    {
+     "shop": "Humble Store",
+     "krw": 5320,
+     "cut": 90,
+     "url": "https://itad.link/018d9386-c4a9-7358-9d1a-3bf71bc7e9f6/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "WinGameStore",
+     "krw": 7920,
+     "cut": 85,
+     "url": "https://itad.link/018d9386-c4a9-7358-9d1a-3bf723a9f65b/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "Gamesporium",
+     "krw": 8963,
+     "cut": 85,
+     "url": "https://itad.link/01a12125-3b1b-7306-bd19-ddc549762295/?app=g6au43",
+     "cur": "KRW"
+    },
+    {
+     "shop": "GamersGate",
+     "krw": 36052,
+     "cut": 55,
+     "url": "https://itad.link/018d9386-c4a9-7358-9d1a-3bf7058f7da4/?app=g6au43",
+     "cur": "KRW"
+    }
+   ],
+   "ever_low": 4068,
+   "best": 4400
+  },
+  {
    "appid": 3717070,
    "name": "WWE 2K26",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3717070/6e590c37107f7306ab9e42cc07d2aa92327625d1/header.jpg?t=1791395117",
-   "rank": 96,
+   "rank": 100,
    "discount": 60,
    "initial": 79800,
    "final": 31920,
@@ -3323,162 +3500,6 @@
    ],
    "ever_low": 28800,
    "best": 28800
-  },
-  {
-   "appid": 466130,
-   "name": "화이트데이: 학교라는 이름의 미궁",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/466130/header.jpg?t=1792060774",
-   "rank": 97,
-   "discount": 90,
-   "initial": 32000,
-   "final": 3200,
-   "low": false,
-   "ko": true,
-   "ko_voice": true,
-   "genres": [
-    "액션",
-    "어드벤처",
-    "인디"
-   ],
-   "meta": null,
-   "shops": [
-    {
-     "shop": "GreenManGaming",
-     "krw": 3200,
-     "cut": 90,
-     "url": "https://itad.link/018d9386-f601-7171-b5ca-af7031b01658/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "Humble Store",
-     "krw": 9987,
-     "cut": 75,
-     "url": "https://itad.link/018d9386-f601-7171-b5ca-af7031e282b9/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GamersGate",
-     "krw": 28800,
-     "cut": 10,
-     "url": "https://itad.link/01906122-4fdc-71de-8c4b-23f3fb67d05e/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "PlanetPlay",
-     "krw": 28800,
-     "cut": 10,
-     "url": "https://itad.link/0198abbf-299e-721b-857d-134a60965519/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 2800,
-   "best": 3200
-  },
-  {
-   "appid": 1737870,
-   "name": "REKA",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1737870/d8ea454a870af3d14aa41fbb58356185c9a7d29b/header_alt_assets_5.jpg?t=1793012900",
-   "rank": 98,
-   "discount": 35,
-   "initial": 21500,
-   "final": 13970,
-   "low": true,
-   "ko": false,
-   "ko_voice": false,
-   "genres": [
-    "어드벤처",
-    "캐주얼",
-    "인디"
-   ],
-   "meta": null,
-   "shops": [
-    {
-     "shop": "GreenManGaming",
-     "krw": 11400,
-     "cut": 47,
-     "url": "https://itad.link/018d9386-b7c7-73a0-b7b6-cef50285c74b/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GamersGate",
-     "krw": 12578,
-     "cut": 41,
-     "url": "https://itad.link/0191e5b2-1719-703a-b3be-0933c29eeb2f/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "GameBillet",
-     "krw": 13253,
-     "cut": 50,
-     "url": "https://itad.link/0193bfa4-6ab5-7038-a643-b48073757f1a/?app=g6au43",
-     "cur": "KRW"
-    },
-    {
-     "shop": "IndieGala Store",
-     "krw": 13307,
-     "cut": 50,
-     "url": "https://itad.link/0191f0fb-4045-735c-a43b-9c0af173161d/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 11400,
-   "best": 11400
-  },
-  {
-   "appid": 1875580,
-   "name": "Mina the Hollower",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1875580/368fcff2cd8f5ef01c5a89060a49f9a333076a87/header.jpg?t=1793298887",
-   "rank": 99,
-   "discount": 20,
-   "initial": 21000,
-   "final": 16800,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "액션",
-    "어드벤처"
-   ],
-   "meta": 90,
-   "shops": [
-    {
-     "shop": "Humble Store",
-     "krw": 23987,
-     "cut": 10,
-     "url": "https://itad.link/019e7440-e4c8-70a5-a7d7-d7f494c44c44/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 16800,
-   "best": 16800
-  },
-  {
-   "appid": 391220,
-   "name": "Rise of the Tomb Raider™",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/391220/29279804029df9b7540caef5c086c9f0393e2e2d/header_alt_assets_0.jpg?t=1792675385",
-   "rank": 100,
-   "discount": 90,
-   "initial": 32990,
-   "final": 3300,
-   "low": true,
-   "ko": true,
-   "ko_voice": true,
-   "genres": [
-    "액션",
-    "어드벤처"
-   ],
-   "meta": 86,
-   "shops": [
-    {
-     "shop": "Humble Store",
-     "krw": 7987,
-     "cut": 90,
-     "url": "https://itad.link/018d9386-b9d9-7358-81de-79088a3ba0d9/?app=g6au43",
-     "cur": "KRW"
-    }
-   ],
-   "ever_low": 330,
-   "best": 3300
   }
  ],
  "shops_status": "ok",
