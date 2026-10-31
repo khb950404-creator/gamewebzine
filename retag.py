@@ -12,20 +12,19 @@ GAP = 25  # 한꺼번에 몰아 달면 스팸으로 잡힐 수 있어 간격을 
 
 def main():
     plan = json.loads((Path(__file__).parent / "data" / "retag.json").read_text(encoding="utf-8"))
-    ok = streak = 0
+    count = lambda m: g.api("GET", m, fields="comments_count")["comments_count"]
     for mid, tags in plan.items():
+        n = count(mid)
+        if n >= 2:
+            continue
+        print(mid, "재시도, 현재 댓글", n)
         try:
-            print(mid, "완료", g.api("POST", f"{mid}/comments", message=tags).get("id"), tags)
-            ok += 1
-            streak = 0
+            print(mid, "완료", g.api("POST", f"{mid}/comments", message=tags).get("id"))
         except Exception as e:
-            print(mid, "실패", str(e)[:300])
-            streak += 1
-            if streak >= 3:
-                print("연속 실패로 중단")
-                break
-        time.sleep(GAP)
-    print(f"새 댓글 {ok} / {len(plan)}")
+            print(mid, "실패", str(e)[:200])
+        time.sleep(60)
+    time.sleep(5)
+    print("최종 댓글 수", {m: count(m) for m in plan})
 
 
 if __name__ == "__main__":
