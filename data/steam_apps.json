@@ -828,7 +828,24 @@
  "id:1799840": {
   "appid": 1799840,
   "name": "Queen's Domain",
-  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1799840/08c29832ac08bb3a802a269dffad9d519060e999/header.jpg?t=1791312742"
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1799840/1a209734951f53b019ec9fa03f835def14f2a968/header.jpg?t=1793379393",
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1799840/d5d3eed2239ee8c3b218ee19e93d185d21ad17f0/ss_d5d3eed2239ee8c3b218ee19e93d185d21ad17f0.1920x1080.jpg?t=1793379393",
+  "info": {
+   "date": "2026년 10월 30일",
+   "soon": false,
+   "genres": [
+    "액션",
+    "어드벤처",
+    "인디"
+   ],
+   "dev": "Freshly Baked Games LLC",
+   "pub": "Future Friends Games",
+   "ko": false,
+   "ko_voice": false,
+   "price": "₩ 19,120",
+   "discount": 15,
+   "meta": null
+  }
  },
  "id:4110680": {
   "appid": 4110680,
@@ -20179,5 +20196,56 @@
    "meta": 91
   }
  },
- "q:starwarssquadrons": null
+ "q:starwarssquadrons": null,
+ "q:chroniclesmedieval": 2231020,
+ "id:2231020": {
+  "appid": 2231020,
+  "name": "Chronicles: Medieval",
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2231020/322a3e5e98ce955972508f8ae5a6eb569ee40742/header.jpg?t=1791486435",
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2231020/8d564795cb6b1eaeb9f3ea6b862b445ffe62a5e5/ss_8d564795cb6b1eaeb9f3ea6b862b445ffe62a5e5.1920x1080.jpg?t=1791486435",
+  "info": {
+   "date": "2027년",
+   "soon": true,
+   "genres": [
+    "액션",
+    "인디",
+    "RPG"
+   ],
+   "dev": "Raw Power Games",
+   "pub": "Raw Power Games",
+   "ko": true,
+   "ko_voice": false,
+   "price": "",
+   "discount": 0,
+   "meta": null
+  }
+ },
+ "q:finalfantasyxivonline": null,
+ "id:39210": null,
+ "ig:finalfantasyxivonline": {
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar5eks.jpg",
+  "hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar5eks.jpg"
+ },
+ "id:4386090": {
+  "appid": 4386090,
+  "name": "How To Destroy A City",
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4386090/30b83aa0c4e3f4496a8c10e32652f97aca243cbb/header.jpg?t=1793372704",
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4386090/89059dbfe49cf00915ef126eaff90488f4ed5fe9/ss_89059dbfe49cf00915ef126eaff90488f4ed5fe9.1920x1080.jpg?t=1793372704",
+  "info": {
+   "date": "2026년 10월 30일",
+   "soon": false,
+   "genres": [
+    "캐주얼"
+   ],
+   "dev": "Studio LEF",
+   "pub": "Studio LEF",
+   "ko": true,
+   "ko_voice": true,
+   "price": "₩ 5,360",
+   "discount": 20,
+   "meta": null
+  }
+ },
+ "itad:4386090": "019cbd9a-1e06-71e0-85d6-7f4041b1f4be",
+ "itad:1799840": "018d937f-71f2-7114-b43b-09ebf4ba341a"
 }
