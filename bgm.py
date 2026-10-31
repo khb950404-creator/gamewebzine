@@ -9,7 +9,10 @@
 """
 import hashlib, wave
 from pathlib import Path
-import numpy as np
+try:
+    import numpy as np  # 옛 합성 배경음(synth) 전용. 게시 작업은 credit() 만 쓰고 numpy 를 설치하지 않는다
+except ImportError:
+    np = None
 
 SR = 44100
 # 반음 단위 (A4=440 기준 MIDI 번호)

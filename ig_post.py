@@ -8,7 +8,7 @@
           IG_ENABLED=1 일 때만 실제 게시 (기본은 준비·확인만)
           IG_PER_RUN(기본 1), IG_DAILY(기본 4)
 """
-import hashlib, json, os, re, sys, time, urllib.error, urllib.parse, urllib.request
+import hashlib, json, os, re, shutil, sys, time, urllib.error, urllib.parse, urllib.request
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -628,6 +628,11 @@ def regen_one(q, arts):
     from carousel import build_carousel
     kind = q.get("kind", "news")
     folder = SITE / IGDIR / q["id"]
+    if q.get("prebuilt"):  # 특집: 미리 만들어 저장소에 넣어 둔 파일을 그대로 쓴다
+        folder.mkdir(parents=True, exist_ok=True)
+        for f in q["files"]:
+            shutil.copy(ROOT / q["prebuilt"] / f, folder / f)
+        return
     a = next((x for x in arts if x["id"] == q["id"]), None)
     if kind == "reel":
         if (folder / "reel.mp4").exists():
@@ -1000,6 +1005,8 @@ def _publish():
     arts = {a["id"]: a for a in load(DATA / "articles.json", [])}
     today = datetime.now().strftime("%Y-%m-%d")
     def fresh(q):
+        if q.get("feature"):
+            return True
         if q.get("kind") == "story":
             return q["id"].endswith(today) or q["id"].endswith(today.replace("-", ""))
         a = arts.get(q["id"])
@@ -1009,7 +1016,7 @@ def _publish():
     if dropped:
         print(f"오래된 대기 {len(dropped)}건 정리")
     order = {"reel": 0, "series": 1, "deal": 2, "news": 3}
-    queue.sort(key=lambda q: (not q.get("breaking"), priority(arts.get(q["id"]) or {"title": q.get("caption", "")[:80]}),
+    queue.sort(key=lambda q: (not q.get("feature"), not q.get("breaking"), priority(arts.get(q["id"]) or {"title": q.get("caption", "")[:80]}),
                               order.get(q.get("kind", "news"), 4)))  # 속보 > 롤드컵 > GTA 6 > 나머지
     budget = int(os.environ.get("IG_PUBLISH_MAX", 99))  # 시간대 실행에서는 2건씩
     # 인사이트 학습: 반응 좋은 시간대엔 1건 더, 약한 시간대엔 1건 덜 (강제 게시 땐 그대로)
@@ -1062,6 +1069,20 @@ def _publish():
                                    **{k: q[k] for k in ("hl", "key", "end") if k in q}}
                 queue.remove(q)
                 print(f"인스타 스토리 게시: {q['id']}")
+                continue
+            if len(q["files"]) == 1:  # 한 장뿐이면 캐러셀이 아니라 단일 이미지로 (캐러셀은 2장 이상만 허용)
+                c = api("POST", f"{uid}/media", image_url=f"{site_url()}{IGDIR}/{q['id']}/{q['files'][0]}",
+                        caption=clean_caption(q["caption"]))["id"]
+                wait_ready(c)
+                mid = api("POST", f"{uid}/media_publish", creation_id=c)["id"]
+                comment_tags(mid, q["caption"])
+                posted[q["id"]] = {"media": mid, "kind": q.get("kind", "news"), "appids": q.get("appids", []),
+                                   "date": datetime.now().strftime("%Y-%m-%d"), "ts": time.time(),
+                                   "forced": os.environ.get("IG_FORCE") == "1"}
+                queue.remove(q)
+                budget -= 1
+                print(f"인스타 게시 완료: {q['id']} → {mid}")
+                post_threads(q)
                 continue
             children = []
             for f in q["files"]:

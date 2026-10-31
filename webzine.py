@@ -1752,6 +1752,7 @@ ARTICLE_CSS = """
 .art .tldr li::before{content:"0" counter(t);position:absolute;left:0;top:8px;font:800 14px ui-monospace,Consolas,monospace;color:var(--acc)}
 .art .abody p{line-height:1.9;margin:0 0 1.25em;word-break:keep-all}
 .art .abody figure{margin:28px 0}
+.art .abody h2{font-size:24px;line-height:1.4;margin:44px 0 18px;font-weight:800;word-break:keep-all}
 .art .src{margin-top:36px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px}
 .art .src h2{font-size:12px;letter-spacing:.12em;color:var(--mut);margin:0 0 8px;font-weight:800}
 .art .src ul{margin:0;padding-left:18px;font-size:14px;line-height:1.7}.art .src a{text-decoration:underline;text-underline-offset:3px}
@@ -2424,9 +2425,18 @@ def build():
             tldr = "".join(f"<li>{esc(t)}</li>" for t in a.get("tldr", []))
             gal = [g for g in a.get("gallery", []) if g.get("src") and g["src"] != (a.get("img_hd") or a.get("img"))]
             body = ""
+            n_h = 0
             for i, p in enumerate(a.get("body", [])):
+                if p.startswith("## "):  # 특집: 소제목마다 사진 한 장
+                    body += f"<h2>{esc(p[3:])}</h2>"
+                    if n_h < len(gal):
+                        g = gal[n_h]
+                        body += (f'<figure class="hero"><img src="{esc(rel_img(g["src"]))}" alt="" loading="lazy"'
+                                 f' onerror="this.parentNode.remove()"><figcaption>이미지: {esc(g["credit"])}</figcaption></figure>')
+                    n_h += 1
+                    continue
                 body += f"<p>{esc(p)}</p>"
-                if i < len(gal):  # 문단마다 원문 공식 이미지 한 장씩
+                if not a.get("feature") and i < len(gal):  # 문단마다 원문 공식 이미지 한 장씩
                     g = gal[i]
                     body += (f'<figure class="hero"><img src="{esc(rel_img(g["src"]))}" alt="" loading="lazy" referrerpolicy="no-referrer"'
                              f' onerror="this.parentNode.remove()"><figcaption>이미지: {esc(g["credit"])}</figcaption></figure>')
@@ -2450,7 +2460,7 @@ def build():
                       f'<span>알트탭 편집부</span><span>{fmt_time(a.get("written", a["ts"]))}</span>'
                       f'{f"<span>{esc(plats_)}</span>" if plats_ else ""}<span>출처 {len(a["sources"])}곳</span></div>')
             html_ = page(a["title"] + " — " + SITE_NAME, f"""<div class="apage"><article class="art">
-    <div class="kick">{esc(a.get("category") or "뉴스")}</div>
+    <div class="kick">{esc(a.get("kick") or a.get("category") or "뉴스")}</div>
     <h1>{esc(a["title"])}</h1>
     {f'<p class="dek">{esc(a["why"])}</p>' if a.get("why") else ''}
     {byline}
