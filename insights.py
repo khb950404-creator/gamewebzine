@@ -110,14 +110,16 @@ def learn():
         g.save(LEARN, {"n": len(items)})
         return
     base = sum(score(m) for m in items) / len(items) or 1
-    def rel(gr, min_n):  # 평균 대비 배율 (-1~+1 범위로 눌러서)
+    def rel(gr, min_n, base=base):  # 평균 대비 배율 (-1~+1 범위로 눌러서)
         return {k: round(max(-1, min(1, (v / base) - 1)), 2) for k, (v, n) in gr.items() if n >= min_n}
-    news = [m for m in items if m["kind"] == "news"]
+    # 이미지 게시물은 도달이 릴스보다 훨씬 낮아 섞으면 형식 차이가 게임·시간대 점수로 샌다 → 릴스끼리만 비교
+    reels = [m for m in items if m["kind"] == "reel"]
+    rbase = sum(score(m) for m in reels) / len(reels) if reels else 1
     g.save(LEARN, {
         "n": len(items), "updated": time.time(),
-        "category": rel(group(news, lambda m: m.get("category")), 2),
-        "game": rel(group(items, lambda m: (m["games"] or [None])[0] and m["games"][0].lower()), 2),
-        "hour": rel(group(items, lambda m: m["hour"]), 2),
+        "category": rel(group(reels, lambda m: m.get("category")), 2, rbase or 1),
+        "game": rel(group(reels, lambda m: (m["games"] or [None])[0] and m["games"][0].lower()), 2, rbase or 1),
+        "hour": rel(group(reels, lambda m: m["hour"]), 2, rbase or 1),
         "kind": rel(group(items, lambda m: m["kind"]), 2),
     })
 

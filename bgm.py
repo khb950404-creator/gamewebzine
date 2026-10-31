@@ -79,6 +79,7 @@ def arp(seconds, prog, rng):
 
 
 TRACKS = Path(__file__).parent / "media" / "bgm"
+QUIET = set()  # 참사·추모 소식: 배경음 없이 무음으로 내보낼 게시물 id
 
 
 def track(key):
@@ -87,11 +88,17 @@ def track(key):
 
 
 def credit(key):
-    t = track(key)
+    t = None if key in QUIET else track(key)
     return f'음악: "{t.stem.replace("_", " ")}" Kevin MacLeod (incompetech.com) · CC BY 4.0' if t else ""
 
 
 def make(path, seconds=11.5, key=""):
+    if key in QUIET:
+        import subprocess
+        from reels import ffmpeg_bin
+        subprocess.run([ffmpeg_bin(), "-y", "-loglevel", "error", "-f", "lavfi", "-i", f"anullsrc=r={SR}:cl=stereo",
+                        "-t", f"{seconds:.2f}", str(path)], check=True, timeout=120)
+        return path
     t = track(key)
     if t:
         import subprocess

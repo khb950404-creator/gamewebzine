@@ -216,6 +216,14 @@ def learned():
     return _LEARN
 
 
+SOMBER = re.compile(r"참사|추모|유가족|유족|희생자|사망자")
+
+
+def somber(a):
+    """인명 피해를 다루는 소식: 배경음·트레일러·팔로우 유도 문구를 붙이지 않는다."""
+    return bool(SOMBER.search(" ".join([a.get("title", "")] + a.get("tldr", []))))
+
+
 def pick(arts, posted, n, queued_ids=(), cap=True, by_pop=False):
     today = datetime.now().strftime("%Y-%m-%d")
     done_today = sum(1 for p in posted.values() if p.get("date") == today and p.get("kind", "news") == "news"
@@ -638,6 +646,9 @@ def regen_one(q, arts):
         if (folder / "reel.mp4").exists():
             return
         folder.mkdir(parents=True, exist_ok=True)
+        if q.get("quiet"):
+            import bgm
+            bgm.QUIET.add(q["id"])
         if a and q.get("trailer"):
             try:
                 from trailer_reel import build as build_trailer
@@ -697,21 +708,26 @@ def prepare():
                           if want_reel else []) if a["id"] not in {b["id"] for b in cands}]
     # 카드뉴스는 사진·표가 핵심인 기사만 (선수 사진·결과표·공식 이미지) — 나머지 소식은 릴스로만
     visual = lambda a: a.get("esports") or a.get("img_src") == "Riot Games" or a.get("gallery")
-    cands += [a for a in pick([a for a in arts if a["id"] not in queued and visual(a)], posted,
-                              int(os.environ.get("IG_PER_RUN", 1)), queued)
-              if a["id"] not in {c["id"] for c in cands}]
+    reels_cap = int(os.environ.get("IG_REELS_DAILY", 3)) + int(os.environ.get("IG_DAILY", 1))
+    if reels_today < reels_cap:
+        cands += [a for a in pick([a for a in arts if a["id"] not in queued and visual(a)], posted,
+                                  int(os.environ.get("IG_PER_RUN", 1)), queued)
+                  if a["id"] not in {c["id"] for c in cands}]
     for a in cands:
         if PROFILE == "ko":
             proofread(a)  # 게시 전 교열 (게임명·맞춤법·어색한 문장)
             ig_copy(a)    # 표지 두 줄 제목 + 해요체 캡션 본문
         is_brk = a in breaking
-        if is_brk or (want_reel and reels_today < int(os.environ.get("IG_REELS_DAILY", 3))):
+        if is_brk or visual(a) or (want_reel and reels_today < int(os.environ.get("IG_REELS_DAILY", 3))):
             try:  # 릴스: 도달이 가장 넓은 형식 → 하루 상위 기사 몇 건은 영상으로
                 from reels import render
                 ensure_hook(a, PROFILE)
                 (SITE / IGDIR / a["id"]).mkdir(parents=True, exist_ok=True)
                 trailer = None
-                if PROFILE == "ko" and a.get("appid") and video_news(a):
+                if somber(a):
+                    import bgm
+                    bgm.QUIET.add(a["id"])
+                if PROFILE == "ko" and a.get("appid") and video_news(a) and not somber(a):
                     try:  # 기사와 맞는 공식 트레일러가 있으면 소리 그대로 세로 편집해서 올린다
                         from trailer_reel import build as build_trailer
                         trailer = build_trailer(a, SITE / IGDIR / a["id"] / "reel.mp4")
@@ -725,7 +741,8 @@ def prepare():
                 if is_brk:
                     cap_ = ("[속보] " if PROFILE == "ko" else "BREAKING: ") + cap_
                 queue.append({"id": a["id"], "kind": "reel", "files": ["reel.mp4"], "caption": cap_, "trailer": bool(trailer),
-                              "hook": a.get("hook"), "hook_en": a.get("hook_en"), "breaking": is_brk})
+                              "hook": a.get("hook"), "hook_en": a.get("hook_en"), "breaking": is_brk,
+                              **({"quiet": True} if somber(a) else {})})
                 reels_today += 0 if is_brk else 1
                 print(f"인스타 준비({'속보 ' if is_brk else ''}릴스): {a['title']}")
                 continue
@@ -884,7 +901,8 @@ def caption(a):
         lines += [""] + [f"{check_icon(c['k'], c['v'])} {c['k']}: {c['v']}" for c in a["check"][:6]]
     if a.get("takeaway") and not a.get("ig_body"):
         lines += ["", a["takeaway"]]
-    lines += ["", FOLLOW_LINE]
+    if not somber(a):
+        lines += ["", FOLLOW_LINE]
     if srcs:
         lines += ["", "출처: " + srcs[0] + (f" 외 {len(srcs) - 1}곳" if len(srcs) > 1 else "")]
     uniq = {}
@@ -1042,7 +1060,7 @@ def _publish():
                 continue
             if kind == "reel":
                 cap = q["caption"]
-                if not q.get("trailer"):  # 배경음 곡 표기 (CC BY 조건)
+                if not q.get("trailer") and not q.get("quiet"):  # 배경음 곡 표기 (CC BY 조건)
                     from bgm import credit
                     if credit(q["id"]) and "음악:" not in cap:
                         body, tg = split_tags(cap)  # 해시태그 줄은 맨 끝에 남겨야 첫 댓글로 분리된다
