@@ -243,8 +243,7 @@ def release_story(r):
     plus(d, 100, 180)
     d.text((150, 180), "출시 예정", font=BH(56), fill=WHITE, anchor="lm", stroke_width=3, stroke_fill=(10, 10, 12))
     day = datetime.strptime(r["date"], "%Y-%m-%d")
-    left = (day.date() - datetime.now().date()).days
-    chip = "오늘 출시" if left <= 0 else f"D-{left}"
+    chip = f"{day.month}.{day.day}"  # 하이라이트에 며칠씩 남으므로 D-day 대신 고정된 날짜
     d.rounded_rectangle((76, 1000, 76 + d.textlength(chip, font=ANTON(130)) + 56, 1170), 18, fill=RED)
     d.text((104, 1085), chip, font=ANTON(130), fill=WHITE, anchor="lm")
     y = 1220
