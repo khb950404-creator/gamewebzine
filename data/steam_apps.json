@@ -20314,6 +20314,73 @@
   "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar4fu7.jpg",
   "hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar4fu7.jpg"
  },
+ "q:soulframe": 4095380,
+ "id:4095380": {
+  "appid": 4095380,
+  "name": "Soulframe",
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4095380/3fb8986f870e6c87bb0da141b590b667056c5e59/header.jpg?t=1792421628",
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4095380/6db41c46256a6a5de9d6b690a165764f8d6e8c5f/ss_6db41c46256a6a5de9d6b690a165764f8d6e8c5f.1920x1080.jpg?t=1792421628",
+  "info": {
+   "date": "출시 예정",
+   "soon": true,
+   "genres": [
+    "액션",
+    "어드벤처",
+    "RPG"
+   ],
+   "dev": "Digital Extremes",
+   "pub": "Digital Extremes",
+   "ko": true,
+   "ko_voice": false,
+   "price": "무료",
+   "discount": 0,
+   "meta": null
+  }
+ },
+ "id:2527500": {
+  "appid": 2527500,
+  "name": "MiSide",
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2527500/header.jpg?t=1792668822",
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2527500/ss_7d0dff5dd742b106889cde15fff3be6c4d521bb1.1920x1080.jpg?t=1792668822",
+  "info": {
+   "date": "2024년 12월 10일",
+   "soon": false,
+   "genres": [
+    "어드벤처",
+    "인디",
+    "RPG"
+   ],
+   "dev": "AIHASTO",
+   "pub": "IndieArk",
+   "ko": true,
+   "ko_voice": false,
+   "price": "₩ 13,200",
+   "discount": 20,
+   "meta": null
+  }
+ },
+ "id:1274570": {
+  "appid": 1274570,
+  "name": "DEVOUR",
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1274570/bb90f9fa36e4c35a5f28cdc38cf75b3eb5c39032/header.jpg?t=1765533474",
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1274570/ss_74c69c54b1b4f2dc14789e001787c6b462549698.1920x1080.jpg?t=1765533474",
+  "info": {
+   "date": "2021년 1월 28일",
+   "soon": false,
+   "genres": [
+    "인디"
+   ],
+   "dev": "Straight Back Games",
+   "pub": "Straight Back Games",
+   "ko": true,
+   "ko_voice": false,
+   "price": "₩ 5,500",
+   "discount": 50,
+   "meta": null
+  }
+ },
+ "itad:2527500": "018d937f-7399-7084-89e1-af18b086f6b9",
+ "itad:1274570": "018d937f-45e6-71ce-9e29-913c574efcab",
  "ig:사이버펑크2077": null,
  "ig:매직더개더링": null,
  "ig:포르자호라이즌6": null,
@@ -20387,32 +20454,5 @@
  "ig:schrodingerscall": null,
  "ig:horrorvaledeadluxeedition": null,
  "ig:marvelsguardiansofthegalaxyencoreedition": null,
- "ig:adorableadventure": null,
- "q:soulframe": 4095380,
- "id:4095380": {
-  "appid": 4095380,
-  "name": "Soulframe",
-  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4095380/3fb8986f870e6c87bb0da141b590b667056c5e59/header.jpg?t=1792421628",
-  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4095380/6db41c46256a6a5de9d6b690a165764f8d6e8c5f/ss_6db41c46256a6a5de9d6b690a165764f8d6e8c5f.1920x1080.jpg?t=1792421628",
-  "info": {
-   "date": "출시 예정",
-   "soon": true,
-   "genres": [
-    "액션",
-    "어드벤처",
-    "RPG"
-   ],
-   "dev": "Digital Extremes",
-   "pub": "Digital Extremes",
-   "ko": true,
-   "ko_voice": false,
-   "price": "무료",
-   "discount": 0,
-   "meta": null
-  }
- },
- "ig:9ripsequelww": null,
- "ig:urbanmythdissolutioncenternintendoswitch2edition": null,
- "ig:steinsgaterebootww": null,
- "ig:yomawarithelongnightcollectionww": null
+ "ig:adorableadventure": null
 }
