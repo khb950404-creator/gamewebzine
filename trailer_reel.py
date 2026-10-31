@@ -1,7 +1,7 @@
 """트레일러 릴스: 게임사 공식 트레일러(스팀 상점 영상)를 소리 그대로, 세로 화면으로 간단히 편집.
 
   화면: 흐린 트레일러 배경 + 가운데 원본 16:9 영상, 위에 제목, 아래 핵심 정보 2~3줄, 출처 표기
-  길이: 최대 MAX_SEC 초 — 컷이 가장 촘촘한 구간(하이라이트), 끝에서 소리·화면 페이드아웃
+  길이: 최대 MAX_SEC 초 (평균 시청이 짧아 45초 → 30초) — 컷이 가장 촘촘한 구간(하이라이트), 끝에서 소리·화면 페이드아웃
 
   python trailer_reel.py <기사ID>   # out/trailer/<ID>.mp4
 """
@@ -14,7 +14,7 @@ from carousel import LIME as RED, WHITE, SOFT, safe
 from reels import ffmpeg_bin, RW, RH, SAFE_R, SAFE_B, SAFE_T
 from video_carousel import steam_movies
 
-MAX_SEC = 45
+MAX_SEC = 30
 VY = 600          # 영상 칸 위쪽 (1080x608)
 VH = 608
 PROBE = ImageDraw.Draw(Image.new("RGB", (1, 1)))
@@ -59,14 +59,22 @@ def highlight_start(raw, dur, win=MAX_SEC, tail_skip=3):
 def info_lines(a):
     """영상 아래 알맹이: 체크 포인트 값(날짜·가격·플랫폼) 우선, 없으면 핵심 요약."""
     rows = [f"{c['k']}  {c['v']}" for c in (a.get("check") or [])][:2]
-    return rows or [t.rstrip(".") for t in (a.get("tldr") or [])][:2]
+    rows = rows or [t.rstrip(".") for t in (a.get("tldr") or [])][:2]
+    return ([a["ig_sub"]] if a.get("ig_sub") else []) + rows
 
 
 def panel(a, credit):
     img = Image.new("RGBA", (RW, RH), (0, 0, 0, 0))
     d = ImageDraw.Draw(img)
     # 제목: 영상 위 (안전 영역 안)
-    tf, tl = fit(d, safe(a.get("subject") or a["title"]), BH, 70, SAFE_R - 76, 3, 46)
+    if a.get("ig_head"):  # 표지 두 줄 제목 그대로 (결론부터)
+        tl = safe(a["ig_head"]).replace("·", ", ").split("\n")
+        size = 70
+        while size > 46 and max(d.textlength(ln, font=BH(size)) for ln in tl) > SAFE_R - 76:
+            size -= 2
+        tf = BH(size)
+    else:
+        tf, tl = fit(d, safe(a.get("subject") or a["title"]), BH, 70, SAFE_R - 76, 3, 46)
     lh = int(tf.size * 1.22)
     y = VY - 40 - len(tl) * lh
     d.text((76, y - 56), "공식 트레일러", font=NB(34), fill=RED)

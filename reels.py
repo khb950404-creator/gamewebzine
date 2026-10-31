@@ -1,6 +1,6 @@
 """인스타 릴스 영상 (1080x1920, 배경음 포함).
 
-  render(기사, 경로, lang="ko")   뉴스 릴스 ~12초: 훅(1.3초) → 제목 → 핵심 3줄 → 마무리
+  render(기사, 경로, lang="ko")   뉴스 릴스 ~12초: 두 줄 제목+부제(2.4초) → 핵심 3줄 → 팔로우 이유
   render_deals(딜목록, 경로)       할인 릴스: 훅 → 게임별 1.6초씩 → 마무리 (골드 테마)
 
   python reels.py [기사ID]        # out/reels/ 샘플
@@ -18,7 +18,7 @@ RW, RH, FPS = 1080, 1920, 24
 BG = (12, 12, 14)
 GOLD, INK = (245, 178, 51), (18, 16, 12)
 TXT = {
-    "ko": {"key": "핵심 요약", "end1": "매일 게임 소식 3줄", "end2": "업무 중 잠깐, Alt+Tab"},
+    "ko": {"key": "핵심 요약", "end1": "공짜, 할인, 마감일", "end2": "놓치기 싫으면 알트탭 팔로우"},
     "en": {"key": "KEY POINTS", "end1": "Game news in 3 lines", "end2": "Every day · Alt+Tab"},
 }
 PROBE = ImageDraw.Draw(Image.new("RGB", (1, 1)))
@@ -159,10 +159,24 @@ def render(a, out_path, lang="ko", handle=None):
     shade = shade_mask()
 
     hook = hook_layer(default_hook(a, lang), RED)
-    tf, title = fit(PROBE, title_txt.replace("…", "...").replace("·", ", ").replace("ㆍ", ", "), BH, 92 if lang == "ko" else 84, SAFE_R - 76, 4)
+    head = a.get("ig_head") if lang == "ko" else None
+    sub_f, sub = None, []
+    if head:  # 첫 화면에 결론부터: 표지 두 줄 제목 + 숫자·날짜 부제 (긴 기사 제목 대신)
+        title = head.replace("…", "...").replace("·", ", ").replace("ㆍ", ", ").split("\n")  # 제목 글꼴엔 가운뎃점이 없다
+        size = 112
+        while size > 64 and max(PROBE.textlength(ln, font=BH(size)) for ln in title) > SAFE_R - 76:
+            size -= 2
+        tf = BH(size)
+        if a.get("ig_sub"):
+            sub_f, sub = fit(PROBE, a["ig_sub"], NB, 50, SAFE_R - 76, 2, 40)
+    else:
+        tf, title = fit(PROBE, title_txt.replace("…", "...").replace("·", ", ").replace("ㆍ", ", "), BH, 92 if lang == "ko" else 84, SAFE_R - 76, 4)
     lh = int(tf.size * 1.19)
-    y0 = RH - 520 - len(title) * lh
+    sub_h = int(sub_f.size * 1.35) * len(sub) + 24 if sub else 0
+    y0 = RH - 520 - sub_h - len(title) * lh
     title_ls = [layer(lambda d, ln=ln, y=y0 + i * lh: d.text((76, y), ln, font=tf, fill=WHITE)) for i, ln in enumerate(title)]
+    title_ls += [layer(lambda d, ln=ln, y=y0 + len(title) * lh + 24 + i * int(sub_f.size * 1.35): d.text((76, y), ln, font=sub_f, fill=SOFT))
+                 for i, ln in enumerate(sub)]
     label = layer(lambda d: d.text((76, y0 - 80), f"{a.get('trust')} · {a.get('category')}" if lang == "ko"
                                    else (a.get("category_en") or "GAME NEWS"), font=NB(40), fill=RED))
     # 요약: 조금 작고 얇은 글씨(NM)로, 세 줄이 안전 영역 안에 다 들어가게 크기를 맞춘다
@@ -188,7 +202,8 @@ def render(a, out_path, lang="ko", handle=None):
                            d.text((RW // 2, 930), T["end2"], font=NM(46), fill=SOFT, anchor="mm")))
 
     # 훅 화면은 제목과 내용이 겹쳐서 뺐다 — 첫 프레임부터 제목이 보이게 (썸네일 겸 멈춰 세우기)
-    T_HOOK, T_TITLE, T_POINTS, T_END = 0, 3.0, 8.0, 1.8  # 요약은 읽을 시간 충분히
+    # 평균 시청이 3.6초(10월 집계)라 첫 요약 줄이 그 안에 나오게 제목을 2.4초로. 요약은 읽을 시간 충분히
+    T_HOOK, T_TITLE, T_POINTS, T_END = 0, 2.4, 8.0, 1.8
     table = None
     if a.get("esports") and a.get("gallery"):  # 결과표·대진표 장면 (안전 영역 안에 맞춤)
         tim = fetch_img(a["gallery"][0]["src"])

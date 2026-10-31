@@ -526,11 +526,11 @@ JSON 하나만 출력: {{"title": ..., "tldr": [...], "why": ..., "hook": ..., "
 
 IG_COPY = """너는 인스타그램 매거진(예: @etc_zine)의 에디터다. 아래 게임 기사로 인스타 게시물을 만든다.
 사진 위에는 짧게, 설명은 본문(캡션)에 충실하게.
-"ig_head": 표지 제목 두 줄 [윗줄, 아랫줄] 각 6~14자. 사실을 담되 궁금하게. 예: ["GTA 6 맵 크기", "GTA 5의 두 배"], ["팬텀 블레이드 제로", "첫날 29만 명 접속"]
+"ig_head": 표지 제목 두 줄 [윗줄, 아랫줄] 각 6~14자. 윗줄은 대상, 아랫줄은 결론·숫자 (결론을 뒤로 숨기지 말 것). 예: ["GTA 6 맵 크기", "GTA 5의 두 배"], ["팬텀 블레이드 제로", "첫날 29만 명 접속"]
 "ig_sub": 표지 한 줄 부제 20~34자, 핵심 숫자·날짜. 예: "11월 19일 출시, PS5 용량 약 210GB"
 "ig_body": 캡션 본문 문단 5~7개 (해요체 '~했습니다/~인데요/~예정입니다'). 첫 문단은 한 문장 리드.
   기사·체크 포인트에 있는 구체적 사실(이름, 날짜, 가격, 수치, 조건, 발언)을 빠짐없이 풀어 쓴다. 겉핥기 금지 — 독자가 '그래서 무엇을·언제·얼마에'를 알게.
-  배경 맥락 한 문단 포함. 마지막 문단은 정리 한 문장. 감탄·과장·이모지·질문 유도 금지. 출처에 없는 사실 금지.
+  배경 맥락 한 문단 포함. 무료·할인·예약·마감처럼 독자가 할 일이 있으면 마지막 문단에 언제까지·어디서·무엇을 하면 되는지 쓰고, 없으면 정리 한 문장. 감탄·과장·이모지·질문 유도 금지. 출처에 없는 사실 금지.
 JSON 하나만: {{"ig_head": [..,..], "ig_sub": "..", "ig_body": ["..", ".."]}}
 
 기사: {art}"""
@@ -839,39 +839,34 @@ def question(a):
     return qs[int(hashlib.md5(a["id"].encode()).hexdigest(), 16) % len(qs)]
 
 
-PLATFORM_TAGS = {"PS5": ["ps5", "playstation", "playstation5"], "Xbox": ["xbox", "xboxseriesx"],
-                 "Switch": ["nintendo", "nintendoswitch"], "Switch 2": ["nintendoswitch2", "nintendo"],
-                 "PC": ["pcgaming", "steam"]}
+FOLLOW_LINE = "게임 소식에 공짜·할인·마감일까지 매일 챙겨 드려요. [알트탭] 팔로우."
+MAX_TAGS = 5  # 인스타 해시태그 한도 (2025년 12월 공지 기준, 넓은 태그 대신 게임명 위주)
 
 
-def broad_tags(platforms):
-    """검색량 많은 포괄 태그: 게임 일반 + 플랫폼별 (소문자, 해외 검색용)."""
-    out = ["game", "games", "videogame", "gamer", "gamingcommunity", "게임", "게이머"]
-    for p_ in platforms or []:
-        out += PLATFORM_TAGS.get(p_, [])
-    return out
+def check_icon(k, v):
+    """정보 블록 앞 이모지: 가격 💰, 날짜 📅, 기기 🎮, 그 외 📌."""
+    if re.search(r"가격|비용|₩|\d원|\$", k + v):
+        return "💰"
+    if re.search(r"출시|발매|기간|시작|마감|프리로드|배포|일정|\d월 \d", k + v):
+        return "📅"
+    if re.search(r"플랫폼|PC|PS5|Xbox|스위치|용량", k):
+        return "🎮"
+    return "📌"
 
 
 def caption(a):
-    tags = ["게임뉴스", "게임소식", "알트탭"]
-    tags += [HASHTAG[a["category"]]] if a.get("category") in HASHTAG else []
-    tags += [p.replace(" ", "") for p in a.get("platforms", [])]
-    tags += ["".join(ch for ch in g if ch.isalnum()) for g in (a.get("games") or [])[:2]]
+    tags = ["".join(ch for ch in g if ch.isalnum()) for g in (a.get("games") or [])[:2]]
     if a.get("esports") or a.get("category") == "e스포츠":  # 롤드컵 등: 언급된 한국팀 태그
         txt = " ".join([a["title"]] + a.get("tldr", []) + a.get("body", []))
-        tags += ["롤드컵", "LCK", "롤"]
+        tags = ["롤드컵", "LCK"]
         for k, ts in (("T1", ["T1", "페이커"]), ("Gen.G", ["젠지", "GenG"]), ("젠지", ["젠지", "GenG"]),
                       ("Hanwha", ["한화생명e스포츠", "HLE"]), ("한화생명", ["한화생명e스포츠", "HLE"]),
                       ("Dplus", ["디플러스기아", "DplusKIA"]), ("디플러스", ["디플러스기아", "DplusKIA"]),
                       ("KT Rolster", ["kt롤스터"]), ("Nongshim", ["농심레드포스"])):
             if k in txt:
-                tags += ts
-        tags += ["Worlds2026", "LeagueOfLegends"]
-    # 영어 해시태그 (해외 노출용)
-    tags += ["gaming", "gamingnews", "videogames"]
-    tags += broad_tags(a.get("platforms", []))
-    tags += [TAG_EN[a["category"]]] if a.get("category") in TAG_EN else []
-    tags += ["".join(ch for ch in g if ch.isalnum()) for g in (a.get("games_en") or [])[:2]]
+                tags += ts[:1]
+    tags += [HASHTAG[a["category"]]] if a.get("category") in HASHTAG else []
+    tags += ["게임뉴스", "알트탭"]
     srcs = [s_["name"] for s_ in a.get("sources", [])]
     if a.get("ig_body"):  # 인스타 매거진식: 리드 → 본문 → 정보 블록
         lines = []
@@ -881,16 +876,17 @@ def caption(a):
     else:
         lines = [a["title"], ""] + [to_news_tone(t) for t in a.get("tldr", [])[:3]]
     if a.get("check"):  # 저장하고 다시 볼 실용 정보
-        lines += [""] + [f"▪ {c['k']}: {c['v']}" for c in a["check"][:6]]
+        lines += [""] + [f"{check_icon(c['k'], c['v'])} {c['k']}: {c['v']}" for c in a["check"][:6]]
     if a.get("takeaway") and not a.get("ig_body"):
         lines += ["", a["takeaway"]]
+    lines += ["", FOLLOW_LINE]
     if srcs:
         lines += ["", "출처: " + srcs[0] + (f" 외 {len(srcs) - 1}곳" if len(srcs) > 1 else "")]
     uniq = {}
     for t in tags:  # 대소문자만 다른 태그는 하나로 (#LeagueOfLegends / #LeagueofLegends)
         if t and t.lower() not in uniq:
             uniq[t.lower()] = t
-    lines += ["", " ".join("#" + t for t in list(uniq.values())[:30])]  # 인스타 한도 30개 (질문 문구 없이 기사체로)
+    lines += ["", " ".join("#" + t for t in list(uniq.values())[:MAX_TAGS])]  # 질문 문구 없이 기사체로
     return "\n".join(lines)[:2100]
 
 
@@ -935,14 +931,15 @@ def split_tags(caption):
     tags = []
     while lines and lines[-1].strip().startswith("#"):
         tags.insert(0, lines.pop().strip())
-    return "\n".join(lines).rstrip(), " ".join(tags)
+    return "\n".join(lines).rstrip(), " ".join(" ".join(tags).split()[:MAX_TAGS])
 
 
 def clean_caption(caption):
     """댓글 방식이 막혀 있으면(권한 없음) 해시태그를 캡션에 그대로 둔다."""
+    body, tags = split_tags(caption)
     if load(DATA / "state.json", {}).get("ig_comment_tags") is False:
-        return caption
-    return split_tags(caption)[0]
+        return f"{body}\n\n{tags}" if tags else body
+    return body
 
 
 def comment_tags(mid, caption):

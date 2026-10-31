@@ -180,7 +180,7 @@ def caption(title, items, tags):
     lines = [title, ""]
     for i, x in enumerate(items, 1):
         lines += [f"{i}. {x['name']}"] + [f"   {ln}" for ln in x["lines"]]
-    lines += ["", "저장해두고 놓치지 마세요. 매주 이런 정보만 골라 올립니다.", "", " ".join("#" + t for t in tags)]
+    lines += ["", "저장해두고 놓치지 마세요. 공짜·할인·마감일을 챙겨 드려요. [알트탭] 팔로우.", "", " ".join("#" + t for t in tags)]
     return "\n".join(lines)[:2100]
 
 
