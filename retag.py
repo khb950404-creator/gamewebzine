@@ -34,6 +34,15 @@ def tag_comments(mid):
 
 
 def main(mode):
+    if mode == "raw":
+        for mid in ("17916227772498931", "18117935203886667"):
+            print(mid, g.api("GET", mid, fields="comments_count,caption")["comments_count"])
+            for f in ("id,text,username,hidden", "id,text", "id"):
+                try:
+                    print(f, json.dumps(g.api("GET", f"{mid}/comments", fields=f), ensure_ascii=False)[:600])
+                except Exception as e:
+                    print(f, "오류", str(e)[:300])
+        return
     if mode == "list":
         ms = medias()
         print("게시물", len(ms))
