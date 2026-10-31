@@ -64813,7 +64813,7 @@
   ],
   "ts": 1793458723.0,
   "written": 1793459146.005851,
-  "deep_try": 1,
+  "deep_try": 2,
   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/230410/1a3e7c2a05ce4e5cad5ac4c7e858cf5b0934704e/header.jpg?t=1792613117",
   "img_v": 2,
   "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/230410/ss_2e4077f215eccde84171a4b8e0f2bc8a3264c776.1920x1080.jpg?t=1792613117",
@@ -64869,11 +64869,221 @@
   ],
   "ts": 1793454017.0,
   "written": 1793459146.0060787,
-  "deep_try": 1,
+  "deep_try": 2,
   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4095380/3fb8986f870e6c87bb0da141b590b667056c5e59/header.jpg?t=1792421628",
   "img_v": 2,
   "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4095380/6db41c46256a6a5de9d6b690a165764f8d6e8c5f/ss_6db41c46256a6a5de9d6b690a165764f8d6e8c5f.1920x1080.jpg?t=1792421628",
   "appid": 4095380,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "유로 트럭 시뮬레이터 2 '아이슬란드 DLC', 페리 항로 및 투명 수면 효과 공개",
+  "tldr": [
+   "SCS 소프트웨어가 '유로 트럭 시뮬레이터 2' 아이슬란드 DLC의 페리 항로와 해양 그래픽 개선 사항을 공개했다.",
+   "덴마크, 네덜란드, 노르웨이 항구와 연결되는 해상 경로와 함께 아이슬란드 내부를 횡단하는 우회 페리 노선이 추가된다.",
+   "수심이 얕은 해안의 암석과 지형이 훤히 들여다보이는 투명한 물 표현 및 포말 효과가 이번 DLC에서 처음 적용된다."
+  ],
+  "why": "육로가 닿지 않는 아이슬란드를 잇는 신규 해상 경로 3종과 내부 페리, 바닥 지형이 비치는 새로운 수면 그래픽이 적용된다.",
+  "body": [
+   "SCS 소프트웨어가 11월 10일 출시를 앞둔 '유로 트럭 시뮬레이터 2'의 신규 확장팩 '아이슬란드(Iceland)' DLC에 등장할 해상 페리 연결망과 새로운 그래픽 기능을 스팀 공식 공지로 공개했다. 유럽 대륙과 북대서양으로 단절된 지형 특성을 반영해 여러 유럽 항구에서 아이슬란드로 이어지는 뱃길이 구현된다.",
+   "추가되는 주요 경로는 덴마크 히르츠할스에서 동부 세이디스피외르뒤르를 잇는 노선으로, 실제 스뮈릴 라인(Smyril Line)이 운영 중인 선박 경로를 본떴다. 네덜란드 로테르담 유로포트에서 남서부 소를라크스회픈으로 향하는 화물 노선도 플레이어가 트럭과 트레일러를 싣고 이동할 수 있도록 일반 페리 노선으로 각색되어 도입된다. 여기에 9세기 정착 역사를 반영한 노르웨이 올레순발 세이디스피외르뒤르 가상 항로가 개설되면서, 그동안 접근할 수 없었던 올레순 페리 항구도 개방된다.",
+   "아이슬란드 섬 내부를 오가는 이동 수단도 마련된다. 서부 스티키스홀무르와 북서부 브랸슬라이퀴르 사이의 브레이다피외르뒤르 만을 가로지르는 횡단 페리가 지원되어, 수많은 섬과 조류 서식지를 감상하며 험준하고 굽이치는 60번 국도를 우회할 수 있다.",
+   "이번 확장팩을 통해 수면 그래픽 표현도 한층 강화된다. 얕은 연안에서 수면 아래 바위와 지형이 내려다보이는 투명한 물 효과가 게임 내 최초로 도입되며, 일부 해역에는 물보라와 파도 포말 표현이 추가된다. 유로 트럭 시뮬레이터 2의 아이슬란드 DLC는 PC 스팀을 통해 11월 10일 정식 출시된다."
+  ],
+  "category": "업데이트",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "유로 트럭 시뮬레이터 2"
+  ],
+  "games_en": [
+   "Euro Truck Simulator 2"
+  ],
+  "hook": "바닷속 비치는 아이슬란드",
+  "title_en": "Euro Truck Simulator 2 Iceland DLC Reveals Ferry Routes and Transparent Water",
+  "tldr_en": [
+   "SCS Software detailed ferry routes and graphical water upgrades coming with the Iceland DLC launching November 10.",
+   "New maritime connections from Denmark, the Netherlands, and Norway will link players to the North Atlantic island.",
+   "Transparent water effects showing submerged rocks and coastal terrain make their first appearance in the simulator."
+  ],
+  "hook_en": "Ferry into Iceland",
+  "video_q": null,
+  "trust": "공식",
+  "fixes": [
+   "[교열] 출처에 없는 날짜(11월 10일 출시 예정)를 tldr 첫 줄에서 삭제함"
+  ],
+  "status": "published",
+  "id": "4ba4a16c42",
+  "sources": [
+   {
+    "name": "Steam News",
+    "title": "Iceland: Ferries + Transparent Water",
+    "link": "https://store.steampowered.com/news/app/227300/view/711164926286104021",
+    "official": true,
+    "img": "https://clan.fastly.steamstatic.com/images/4419325/460a0333c3a8a114d86302f339fd3d2b36fc0383.jpg"
+   }
+  ],
+  "gallery": [
+   {
+    "src": "https://clan.fastly.steamstatic.com/images/4419325/460a0333c3a8a114d86302f339fd3d2b36fc0383.jpg",
+    "credit": "Steam News"
+   },
+   {
+    "src": "https://clan.fastly.steamstatic.com/images/4419325/748a74a925f59c737c646c7afe695e88f2763681.jpg",
+    "credit": "Steam News"
+   },
+   {
+    "src": "https://clan.fastly.steamstatic.com/images/4419325/b63f8caf5a7870e89212d7429d5b8ee4ec126d06.jpg",
+    "credit": "Steam News"
+   },
+   {
+    "src": "https://clan.fastly.steamstatic.com/images/4419325/9be5fee81fe2ca885982e60ae810ecdd324e529f.jpg",
+    "credit": "Steam News"
+   },
+   {
+    "src": "https://clan.fastly.steamstatic.com/images/4419325/28edd9e7467b62d8d9d4eb85c8835fb7807ce698.jpg",
+    "credit": "Steam News"
+   },
+   {
+    "src": "https://clan.fastly.steamstatic.com/images/4419325/74868aeaa57f2b4c0848ec1529a1a15938b8842d.jpg",
+    "credit": "Steam News"
+   }
+  ],
+  "ts": 1793462456.0,
+  "written": 1793470726.2276838,
+  "deep_try": 1,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/227300/d3c44cfff95e8223687121b05c80e594d35c4c53/header_alt_assets_9.jpg?t=1792055307",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/227300/e040f74641ac21f15e3ec7c2415fc8b4de0b6bf9/ss_e040f74641ac21f15e3ec7c2415fc8b4de0b6bf9.1920x1080.jpg?t=1792055307",
+  "appid": 227300,
+  "img_src": "Steam 스토어",
+  "video_v": 1,
+  "proofread": 1793471176.1349275,
+  "edited": 1793471176.1762137,
+  "ig_head": "유로 트럭 아이슬란드\n페리 항로 및 수면 효과",
+  "ig_sub": "11월 10일 스팀 출시, 신규 해상 경로 3종과 투명 수면 그래픽 공개",
+  "ig_body": [
+   "SCS 소프트웨어가 11월 10일 출시를 앞둔 '유로 트럭 시뮬레이터 2'의 신규 확장팩 '아이슬란드' DLC에 등장할 해상 페리 연결망과 새로운 그래픽 기능을 스팀 공식 공지로 공개했습니다.",
+   "유럽 대륙과 북대서양으로 단절된 지형 특성을 반영해 덴마크 히르츠할스에서 동부 세이디스피외르뒤르를 잇는 스뮈릴 라인 기반 노선과 네덜란드 로테르담 유로포트에서 남서부 소를라크스회픈으로 향하는 화물 노선이 도입됩니다.",
+   "여기에 9세기 정착 역사를 반영한 노르웨이 올레순발 세이디스피외르뒤르 가상 항로가 개설되면서 그동안 접근할 수 없었던 올레순 페리 항구도 함께 개방될 예정입니다.",
+   "아이슬란드 섬 내부를 오가는 이동 수단으로는 서부 스티키스홀무르와 북서부 브랸슬라이퀴르 사이를 가로지르는 횡단 페리가 지원되어 험준한 60번 국도를 우회할 수 있습니다.",
+   "이번 확장팩을 통해 수면 그래픽 표현도 강화되어 얕은 연안에서 수면 아래 바위와 지형이 내려다보이는 투명한 물 효과가 게임 내 최초로 도입되며 일부 해역에는 물보라와 파도 포말 표현이 추가됩니다.",
+   "유로 트럭 시뮬레이터 2의 아이슬란드 DLC는 PC 스팀을 통해 11월 10일 정식 출시됩니다."
+  ]
+ },
+ {
+  "title": "1992년 PC-98 컬트 호러 '데드 오브 더 브레인', 공식 영문판으로 스팀 출시",
+  "tldr": [
+   "1992년 발매된 PC-98 호러 어드벤처 게임 '데드 오브 더 브레인'이 공식 영어 번역을 지원하며 스팀에 출시됐다.",
+   "성인용 게임 개발사 페어리테일의 첫 공포 외도작으로, 퍼블리셔 파쿠(FAKKU)가 이식을 맡았다.",
+   "스팀 심의를 위해 일부 장면이 조정됐으나 공식 홈페이지에서 무료 무삭제 패치를 배포한다."
+  ],
+  "why": "PC-98 명작 좀비 어드벤처가 30여 년 만에 첫 공식 영문화를 거쳐 현대 PC 플랫폼으로 복각됐다.",
+  "body": [
+   "1992년 일본 PC-98 플랫폼으로 발매되어 공포 게임 팬 사이에서 이름을 알린 '데드 오브 더 브레인(Dead of the Brain)'이 사상 처음으로 공식 영어 번역을 탑재하고 스팀에 출시됐다고 코타쿠가 전했다. 이번 이식작의 배급은 레트로 일본 인디 게임 발굴에 나선 파쿠(FAKKU)가 맡았다.",
+   "작품은 성인용 타이틀 전문 개발사였던 페어리테일(FairyTale)이 처음으로 호러 장르에 도전해 탄생한 어드벤처 게임이다. 주인공 콜이 죽은 생명을 되살리는 약물을 발명한 쿠거 박사의 실험에 얽히고, 되살아난 고양이가 경찰관을 살해하면서 도시에 번져나가는 기괴한 음모를 마우스 클릭과 조준 사격 방식으로 풀어나가게 된다.",
+   "조지 로메로의 시체 시리즈와 브라이언 유즈나의 좀비오(Re-Animator) 등 고전 B급 호러 명작의 감성을 적극 차용했으며, 등장인물들이 장르적 클리셰를 유쾌하게 비트는 특유의 유머를 담았다. 배급사 측은 스팀의 심의 등급 기준을 맞추기 위해 일부 자극적인 연출을 덜어냈으나, 자사 홈페이지를 통해 이를 해제할 수 있는 무료 패치를 별도 제공한다고 밝혔다.",
+   "파쿠는 데드 오브 더 브레인 외에도 1992년작 엽기 RPG '전격 간호사(Dengeki Nurse)'를 향후 PC 플랫폼에 선보일 계획이라고 덧붙였다."
+  ],
+  "category": "신작",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "데드 오브 더 브레인"
+  ],
+  "games_en": [
+   "Dead of the Brain"
+  ],
+  "hook": "30여 년 만에 스팀 부활",
+  "title_en": "Cult PC-98 Horror 'Dead of the Brain' Gets Official Steam English Port",
+  "tldr_en": [
+   "FairyTale's 1992 PC-98 zombie adventure Dead of the Brain launched on Steam with its first official English translation.",
+   "Published by FAKKU, the retro title features point-and-click gameplay inspired by classic 80s zombie cinema.",
+   "Censored sequences removed for Steam ratings can be unlocked via a free external patch provided by the publisher."
+  ],
+  "hook_en": "PC-98 zombie classic",
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [
+   "hook의 '34년 만에'는 1992년 출시작 기준 연도 계산이 맞지 않아 '30여 년 만에 스팀 부활'로 바로잡았습니다."
+  ],
+  "status": "published",
+  "id": "978ce21caf",
+  "sources": [
+   {
+    "name": "Kotaku",
+    "title": "Cult PC-98 Zombie Gore Fest Re-Animated On Steam With First Official English Port",
+    "link": "https://kotaku.com/cult-pc-98-zombie-gore-fest-re-animated-on-steam-with-first-official-english-port-2000751956",
+    "official": false
+   }
+  ],
+  "ts": 1793470143.0,
+  "written": 1793470726.2289436,
+  "deep_try": 1,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5056390/ae1b91566b4025e9de9feaf9dc2a25c921a68e57/header.jpg?t=1793380593",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5056390/403b166bb8edc3177fba98afcd9414f3d671519f/ss_403b166bb8edc3177fba98afcd9414f3d671519f.1920x1080.jpg?t=1793380593",
+  "appid": 5056390,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "요트 클럽 게임즈, 신작 '미나 더 할로워' 50만 장 판매로 위기 극복",
+  "tldr": [
+   "'삽질 기사' 개발사 요트 클럽 게임즈의 신작 '미나 더 할로워'가 출시 후 수 주 만에 50만 장 이상 판매됐다.",
+   "스튜디오 존폐 갈림길에서 목표치였던 20만 장을 크게 뛰어넘으며 재정적 안정을 확보했다.",
+   "개발진은 향후 업데이트를 통해 무작위 생성 기능(랜더마이저)과 스피드런 설정을 추가할 계획이다."
+  ],
+  "why": "수년간 이어진 개발 지연으로 존폐 위기에 놓였던 제작사가 50만 장의 판매고를 기록하며 기사회생했다.",
+  "body": [
+   "'삽질 기사'로 이름을 알린 인디 개발사 요트 클럽 게임즈가 신작 '미나 더 할로워(Mina the Hollower)'의 흥행으로 스튜디오 폐쇄 위기를 넘겼다고 PC 게이머가 전했다. 요트 클럽 게임즈의 공동 창립자 숀 벨라스코는 레딧 AMA를 통해 게임의 판매 성과를 공개하며 스튜디오가 당분간 생존할 수 있게 되었다고 밝혔다.",
+   "요트 클럽 게임즈는 과거 '삽질 기사 트레저 트로브'에 다수의 대규모 무료 캠페인을 연이어 배포하며 호평을 받았으나, 차기작 미나 더 할로워의 개발 일정이 수년간 지연되면서 심각한 재정난에 직면해 있었다. 공동 창립자 크리스 벨라스코는 지난해 블룸버그와의 인터뷰에서 10만 장 판매에 그치면 위험하고 20만 장은 팔려야 회사가 유지될 수 있다며 사활이 걸린 프로젝트임을 토로한 바 있다.",
+   "하지만 미나 더 할로워가 출시 후 몇 주 만에 누적 50만 장 이상의 판매고를 기록하면서 스튜디오의 숨통이 트였다. 숀 벨라스코는 회사가 미래를 도모할 수 있는 여유를 찾았다고 언급했다.",
+   "개발진은 흥행에 발맞춰 후속 지원도 이어갈 방침이다. 미나 더 할로워의 차기 업데이트 항목으로는 무작위 생성 기능인 랜더마이저(Randomizer)와 전문 스피드러너를 위한 전용 플레이 옵션이 준비되고 있다."
+  ],
+  "category": "업계",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "미나 더 할로워"
+  ],
+  "games_en": [
+   "Mina the Hollower"
+  ],
+  "hook": "50만 장으로 살아났다",
+  "title_en": "Mina the Hollower Sells 500k Copies, Rescuing Yacht Club Games",
+  "tldr_en": [
+   "Yacht Club Games confirmed that Mina the Hollower sold over 500,000 copies within a few weeks of launch.",
+   "The milestone significantly outperformed the studio's break-even threshold of 200,000 units after years of delays.",
+   "The developer is preparing future updates including a randomizer and dedicated speedrunning settings."
+  ],
+  "hook_en": "500k copies saved studio",
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [
+   "본문에서 판매 시점을 '지난 몇 주 동안'으로 잘못 서술한 부분을 출처에 맞게 '출시 후 몇 주 만에'로 수정했습니다."
+  ],
+  "status": "published",
+  "id": "93df9f3edd",
+  "sources": [
+   {
+    "name": "PC Gamer",
+    "title": "Yacht Club confirms Mina the Hollower was the shot in the arm it needed stay alive—'for now'",
+    "link": "https://www.pcgamer.com/games/adventure/yacht-club-confirms-mina-the-hollower-was-the-shot-in-the-arm-it-needed-stay-alive-for-now/",
+    "official": false
+   }
+  ],
+  "ts": 1793468482.0,
+  "written": 1793470726.229259,
+  "deep_try": 1,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1875580/368fcff2cd8f5ef01c5a89060a49f9a333076a87/header.jpg?t=1793298887",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1875580/636e604435af8a62f88589f15c8ef24f38000e51/ss_636e604435af8a62f88589f15c8ef24f38000e51.1920x1080.jpg?t=1793298887",
+  "appid": 1875580,
   "img_src": "Steam 스토어",
   "video_v": 1
  }
