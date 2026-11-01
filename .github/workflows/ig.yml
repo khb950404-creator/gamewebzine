@@ -1,6 +1,6 @@
 name: ig-publish
 
-# 인스타·스레드 게시 전용. cron-job.org 가 한국 시간 10:30·12:30·15:30·18:30·22:00 에 호출한다.
+# 인스타·스레드 게시 전용. 예약 호출은 없고 수동 실행한다 (정기 게시는 webzine.yml 의 instagram 작업이 맡는다).
 # (이미지·영상은 webzine.yml 이 3시간마다 만들어 사이트에 배포해 둔다)
 on:
   workflow_dispatch:
