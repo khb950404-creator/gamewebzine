@@ -1039,8 +1039,8 @@ def _publish():
     hr = (learned().get("hour") or {}).get(str(datetime.now().hour))
     if hr is not None and os.environ.get("IG_FORCE") != "1" and budget < 50:
         budget = budget + 1 if hr > 0.3 else max(1, budget - 1) if hr < -0.3 else budget
-    # 하루 총량 상한: 6명 팔로워 계정에 하루 7~8건씩 올리니 스팸 같다는 피드백 (2026-11-03)
-    feed_max, story_max = int(os.environ.get("IG_FEED_MAX", 2)), int(os.environ.get("IG_STORY_MAX", 2))
+    # 하루 총량 상한: "들어갈 때마다 뜬다"는 피드백 (2026-11-03) → 피드·스토리 각 하루 1건
+    feed_max, story_max = int(os.environ.get("IG_FEED_MAX", 1)), int(os.environ.get("IG_STORY_MAX", 1))
     feed_today = sum(1 for v in posted.values() if v.get("date") == today and v.get("kind") != "story")
     story_today = sum(1 for v in posted.values() if v.get("date") == today and v.get("kind") == "story")
     if os.environ.get("IG_FORCE") != "1":
