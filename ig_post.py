@@ -901,8 +901,6 @@ def caption(a):
         lines += [""] + [f"{check_icon(c['k'], c['v'])} {c['k']}: {c['v']}" for c in a["check"][:6]]
     if a.get("takeaway") and not a.get("ig_body"):
         lines += ["", a["takeaway"]]
-    if not somber(a):
-        lines += ["", FOLLOW_LINE]
     if srcs:
         lines += ["", "출처: " + srcs[0] + (f" 외 {len(srcs) - 1}곳" if len(srcs) > 1 else "")]
     uniq = {}
@@ -1041,8 +1039,16 @@ def _publish():
     hr = (learned().get("hour") or {}).get(str(datetime.now().hour))
     if hr is not None and os.environ.get("IG_FORCE") != "1" and budget < 50:
         budget = budget + 1 if hr > 0.3 else max(1, budget - 1) if hr < -0.3 else budget
+    # 하루 총량 상한: 6명 팔로워 계정에 하루 7~8건씩 올리니 스팸 같다는 피드백 (2026-11-03)
+    feed_max, story_max = int(os.environ.get("IG_FEED_MAX", 2)), int(os.environ.get("IG_STORY_MAX", 2))
+    feed_today = sum(1 for v in posted.values() if v.get("date") == today and v.get("kind") != "story")
+    story_today = sum(1 for v in posted.values() if v.get("date") == today and v.get("kind") == "story")
+    if os.environ.get("IG_FORCE") != "1":
+        budget = min(budget, feed_max - feed_today)
     for q in list(queue):
         if q.get("kind") != "story" and budget <= 0:
+            continue
+        if q.get("kind") == "story" and story_today >= story_max and os.environ.get("IG_FORCE") != "1":
             continue
         if q["id"] in posted:
             queue.remove(q)
@@ -1086,6 +1092,7 @@ def _publish():
                                    "forced": os.environ.get("IG_FORCE") == "1",
                                    **{k: q[k] for k in ("hl", "key", "end") if k in q}}
                 queue.remove(q)
+                story_today += 1
                 print(f"인스타 스토리 게시: {q['id']}")
                 continue
             if len(q["files"]) == 1:  # 한 장뿐이면 캐러셀이 아니라 단일 이미지로 (캐러셀은 2장 이상만 허용)
