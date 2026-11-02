@@ -704,12 +704,20 @@ def prepare():
                 if popularity(a) - {0: 100, 1: 50}.get(priority(a), 0) >= brk_pop  # 우선순위 가점은 속보 판정에서 뺀다
                 and time.time() - a.get("written", a["ts"]) < 6 * 3600][:1]
     cands = breaking[:]
+    # 릴스 제작도 하루 1개 (2026-11-03 지시): 게시가 하루 1건이라 남는 영상은 버려질 뿐이다.
+    # 11시 빌드부터 그날 가장 화제인 기사로 1개 만들고, 이미 대기 중이거나 오늘 게시했으면 더 만들지 않는다.
+    # 속보는 오늘 아직 아무것도 안 올렸을 때만 추가로 만든다 (우선 게시되고 남은 1개는 30시간 뒤 정리됨)
+    fed_today = any(p.get("date") == today and p.get("kind") != "story" for p in posted.values())
+    made = reels_today >= 1 or fed_today or datetime.now().hour < int(os.environ.get("IG_MAKE_FROM", 11))
+    if made:
+        cands = [] if fed_today else cands
+        want_reel = False
     cands += [a for a in (pick([a for a in arts if a["id"] not in queued], posted, 1, queued, cap=False, by_pop=True)
                           if want_reel else []) if a["id"] not in {b["id"] for b in cands}]
     # 카드뉴스는 사진·표가 핵심인 기사만 (선수 사진·결과표·공식 이미지) — 나머지 소식은 릴스로만
     visual = lambda a: a.get("esports") or a.get("img_src") == "Riot Games" or a.get("gallery")
     reels_cap = int(os.environ.get("IG_REELS_DAILY", 3)) + int(os.environ.get("IG_DAILY", 1))
-    if reels_today < reels_cap:
+    if reels_today < reels_cap and not made:
         cands += [a for a in pick([a for a in arts if a["id"] not in queued and visual(a)], posted,
                                   int(os.environ.get("IG_PER_RUN", 1)), queued)
                   if a["id"] not in {c["id"] for c in cands}]
