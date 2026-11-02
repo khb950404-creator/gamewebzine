@@ -695,7 +695,7 @@ def prepare():
     queue = [q for q in load(QUEUE, []) if q["id"] not in posted]
     queued = {q["id"] for q in queue}
     today = datetime.now().strftime("%Y-%m-%d")
-    reels_today = sum(1 for p in posted.values() if p.get("kind") == "reel" and p.get("date") == today and not p.get("forced"))         + sum(1 for q in queue if q.get("kind") == "reel")
+    reels_today = sum(1 for p in posted.values() if p.get("kind") == "reel" and p.get("date") == today and not p.get("forced"))         + sum(1 for q in queue if q.get("kind") == "reel" and q.get("not_before", "") <= today)
     # 릴스는 캐러셀 한도와 별도로 하루 IG_REELS_DAILY 건
     want_reel = reels_today < int(os.environ.get("IG_REELS_DAILY", 3))
     # 속보: 6시간 안에 쓴 초대형 소식(화제성 IG_BREAK_POP 이상)은 하루 한도와 상관없이 바로 릴스로
@@ -1061,6 +1061,8 @@ def _publish():
             continue
         if q["id"] in posted:
             queue.remove(q)
+            continue
+        if q.get("not_before", "") > today:  # 날짜를 정해 둔 예약 게시물 (출시일 등)
             continue
         qt = (arts.get(q["id"]) or {}).get("title")
         if qt and q.get("kind") not in ("story", "series", "deal") and any(
