@@ -793,17 +793,20 @@ def publish_quick(arts):
         return
     uid = os.environ["IG_USER_ID"]
     posted = g.load(g.POSTED, {})
+    today = datetime.now().strftime("%Y-%m-%d")
     for a in arts:
         if a["id"] in posted:
             continue
+        # 피드는 하루 1건 (ig_post 와 같은 상한) — 이미 올렸으면 속보 카드도 사이트에만
+        if sum(1 for v in posted.values() if v.get("date") == today and v.get("kind") != "story") >= int(os.environ.get("IG_FEED_MAX", 1)):
+            print("오늘 피드 1건을 이미 올려 속보 카드는 게시 생략")
+            break
         url = RAW + a["img"]
         if not g.wait_url(url, tries=12):
             print(f"  ! 이미지 주소 준비 안 됨: {url}")
             continue
         cap = "\n".join([a["title"], ""] + a["tldr"] + ["", "출처: Liquipedia", "",
-                          " ".join("#" + t for t in ["롤드컵", "LCK", "롤", "Worlds2026", "e스포츠", "리그오브레전드",
-                                                     "알트탭", "LeagueOfLegends", "esports", "lol", "leagueoflegendsclips",
-                                                     "game", "gamer", "pcgaming", "게임"])])
+                          " ".join("#" + t for t in ["롤드컵", "LCK", "Worlds2026", "리그오브레전드", "LeagueOfLegends"])])
         tags = []
         for k, ts in (("T1", ["T1", "페이커"]), ("Gen.G", ["젠지", "GenG"]), ("Hanwha", ["한화생명e스포츠", "HLE"]),
                       ("Dplus", ["디플러스기아", "DplusKIA"])):

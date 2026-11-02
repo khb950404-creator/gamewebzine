@@ -1008,8 +1008,9 @@ def publish():
 
 
 def _publish():
-    # 게시 시간대 (한국 시간): 기본 10~23시. 밤·새벽에는 쌓아두기만
-    lo, hi = (int(x) for x in os.environ.get("IG_HOURS", "10-23").split("-"))
+    # 게시 시간대 (한국 시간): 기본 12~23시. 하루 1건이라 반응 좋은 점심부터 그날 가장 나은 1건을 고른다.
+    # 12시 이후 실행이 매시간 있으니 한 번 놓쳐도 다음 실행이 채운다 (매일 피드 1·스토리 1을 빠짐없이)
+    lo, hi = (int(x) for x in os.environ.get("IG_HOURS", "12-23").split("-"))
     if not (lo <= datetime.now().hour < hi) and os.environ.get("IG_FORCE") != "1":
         print(f"게시 시간대({lo}~{hi}시)가 아니라 건너뜀")
         return
@@ -1039,7 +1040,7 @@ def _publish():
     hr = (learned().get("hour") or {}).get(str(datetime.now().hour))
     if hr is not None and os.environ.get("IG_FORCE") != "1" and budget < 50:
         budget = budget + 1 if hr > 0.3 else max(1, budget - 1) if hr < -0.3 else budget
-    # 하루 총량 상한: "들어갈 때마다 뜬다"는 피드백 (2026-11-03) → 피드·스토리 각 하루 1건
+    # 하루 총량 상한: "들어갈 때마다 뜬다"는 피드백 (2026-11-03) → 피드(릴스 포함)·스토리 각 하루 딱 1건
     feed_max, story_max = int(os.environ.get("IG_FEED_MAX", 1)), int(os.environ.get("IG_STORY_MAX", 1))
     feed_today = sum(1 for v in posted.values() if v.get("date") == today and v.get("kind") != "story")
     story_today = sum(1 for v in posted.values() if v.get("date") == today and v.get("kind") == "story")
