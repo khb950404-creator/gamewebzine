@@ -798,7 +798,7 @@ def publish_quick(arts):
         if a["id"] in posted:
             continue
         # 피드는 하루 1건 (ig_post 와 같은 상한) — 이미 올렸거나 오늘로 예약된 게시물이 있으면 속보 카드는 사이트에만
-        if any(q.get("not_before") == today and q.get("kind") != "story" for q in g.load(g.QUEUE, [])):
+        if any(q.get("not_before") == today and q.get("kind") != "story" for q in g.load(g.QUEUE, []))                 or today in g.load(g.DATA / "ig_hold.json", {}):
             print("오늘 예약된 게시물이 있어 속보 카드는 게시 생략")
             break
         if sum(1 for v in posted.values() if v.get("date") == today and v.get("kind") != "story") >= int(os.environ.get("IG_FEED_MAX", 1)):

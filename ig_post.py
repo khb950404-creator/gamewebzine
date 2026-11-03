@@ -1054,6 +1054,11 @@ def _publish():
     story_today = sum(1 for v in posted.values() if v.get("date") == today and v.get("kind") == "story")
     if os.environ.get("IG_FORCE") != "1":
         budget = min(budget, feed_max - feed_today)
+        # 피드 자리 비워두기 (data/ig_hold.json {"날짜": 시}): 리뷰 엠바고처럼 언제 뜰지 모르는 소식용. 그 시각까지 피드 게시 보류
+        hold = load(DATA / "ig_hold.json", {}).get(today)
+        if hold and datetime.now().hour < int(hold):
+            print(f"오늘 피드는 {hold}시까지 비워 둠 (예약 소식 대기)")
+            budget = 0
     for q in list(queue):
         if q.get("kind") != "story" and budget <= 0:
             continue

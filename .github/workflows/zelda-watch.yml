@@ -1,0 +1,46 @@
+name: zelda-watch
+
+# 시간의 오카리나 리메이크 리뷰 엠바고 감지 (11월 5일까지). 점수가 뜨면 바로 릴스를 만들어 올린다. 자세한 규칙은 zelda_watch.py
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: zelda-watch
+  cancel-in-progress: false
+
+env:
+  TZ: Asia/Seoul
+  IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+  IG_USER_ID: ${{ secrets.IG_USER_ID }}
+  IG_ENABLED: ${{ vars.IG_ENABLED }}
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: 종료 확인
+        id: alive
+        run: |
+          if [ "$(date +%Y-%m-%d)" \> "2026-11-05" ] || grep -q '"done"' data/zelda_watch.json 2>/dev/null; then echo "on=0" >> $GITHUB_OUTPUT; else echo "on=1" >> $GITHUB_OUTPUT; fi
+      - uses: actions/setup-python@v5
+        if: steps.alive.outputs.on == '1'
+        with:
+          python-version: "3.12"
+      - name: 점수 확인 · 게시
+        if: steps.alive.outputs.on == '1'
+        run: |
+          git config user.name "webzine-bot"
+          git config user.email "webzine-bot@users.noreply.github.com"
+          git config merge.jsonunion.driver "python merge_data.py %O %A %B"
+          python -u zelda_watch.py dry
+          if python -c "import zelda_watch as z,sys; s,n,p=z.score(); sys.exit(0 if s is not None and n>=z.REVIEW_MIN else 1)"; then
+            pip install -q pillow numpy imageio-ffmpeg
+            python -u zelda_watch.py
+          fi
