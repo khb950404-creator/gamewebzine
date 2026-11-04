@@ -173,16 +173,22 @@ def is_big(a):
 WORLDS_UNTIL = "2026-11-16"  # 롤드컵 2026 결승 직후까지
 WORLDS_KW = ("롤드컵", "worlds", "월드챔피언십", "lck", "t1", "페이커", "faker", "젠지", "geng", "한화생명", "hanwha",
              "디플러스", "dplus", "kt롤스터", "ktrolster")
+# 지금 가장 뜨거운 것 (2026-11-04 사용자 판단): GTA·젤다가 최상위, 그다음 몬헌 아웃랜더스 같은 신작 화제작.
+# 한물간 IP(소닉 등)는 하루 1건 자리에 올리지 않는다 — 감점이 커서 다른 후보가 있으면 밀린다.
+TOP_KW = ("zelda", "젤다")
+HOT_KW = ("monsterhunteroutlanders", "몬스터헌터아웃랜더스", "몬헌아웃랜더스", "outlanders", "아웃랜더스")
+COLD_KW = ("sonic", "소닉")
 GTA_KW = ("gta6", "gtavi", "grandtheftautovi", "grandtheftauto6", "gta 6", "그랜드테프트오토6", "그랜드테프트오토vi")
 
 
 def priority(a):
-    """게시 우선순위 단계: 0 = 롤드컵(대회 기간), 1 = GTA 6, 2 = 나머지."""
+    """게시 우선순위 단계: 0 = 롤드컵(대회 기간), 1 = GTA 6·젤다, 2 = 나머지."""
     import re as _re
     text = _re.sub(r"[^0-9a-z가-힣]", "", " ".join([a.get("title", "")] + (a.get("games_en") or []) + (a.get("games") or [])).lower())
-    if datetime.now().strftime("%Y-%m-%d") <= WORLDS_UNTIL and (a.get("esports") or any(k in text for k in WORLDS_KW)):
+    wtext = text.replace("crossworlds", "").replace("크로스월드", "")  # '소닉 레이싱 크로스월드'가 롤드컵(worlds)으로 잡히던 것
+    if datetime.now().strftime("%Y-%m-%d") <= WORLDS_UNTIL and (a.get("esports") or any(k in wtext for k in WORLDS_KW)):
         return 0
-    if any(k.replace(" ", "") in text for k in GTA_KW):
+    if any(k.replace(" ", "") in text for k in GTA_KW) or any(k in text for k in TOP_KW):
         return 1
     return 2
 
@@ -194,6 +200,8 @@ def popularity(a):
     s_ += {0: 100, 1: 50}.get(priority(a), 0)  # 롤드컵 기간엔 롤드컵, 그다음 GTA 6
     s_ += 5 if a.get("appid") in top_played() else 0
     s_ += 5 if any(k in text for k in BIG_IP) else 0
+    s_ += 30 if any(k in text for k in HOT_KW) else 0
+    s_ -= 60 if any(k in text for k in COLD_KW) else 0
     s_ += 2 if a.get("trust") == "공식" else 0
     s_ += 2 if a.get("category") == "신작" or "트레일러" in a["title"] or "공개" in a["title"] else 0
     s_ += 2 if a.get("video") else 0
