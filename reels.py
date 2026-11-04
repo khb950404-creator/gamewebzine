@@ -316,7 +316,7 @@ def render_tips(items, out_path, hook_text, key="tips", handle=None):
         big = grade(cover_fit(src, int(RW * 1.15), int(RH * 1.15)), mono=0.15, bright=0.7)
         clip = None
         if x.get("appid"):
-            c = Clip(x["appid"], T_S + (T_HOOK if not scenes else 0))
+            c = Clip(x["appid"], x.get("secs", T_S) + (T_HOOK if not scenes else 0))
             clip = c if c.ok else None
 
         def draw(d, x=x):
@@ -374,36 +374,39 @@ def render_tips(items, out_path, hook_text, key="tips", handle=None):
     for yy in range(RH):
         top.putpixel((0, yy), int(max(0, 1 - yy / 360) * 150))
     top = top.resize((RW, RH))
-    total = T_HOOK + T_S * n + T_END
+    # 장면 길이: 항목마다 "secs" 로 바꿀 수 있다 (트레일러 컷 경계에 장면 전환을 맞출 때)
+    durs = [x.get("secs", T_S) for x in items]
+    starts = [T_HOOK + sum(durs[:i]) for i in range(n)]
+    body = T_HOOK + sum(durs)
+    total = body + T_END
     v = Video(out_path, total, key)
     gens = [c.frames() if c else None for _, c, _ in scenes]
     still_t = [0] * n
     last = dark
     for f in range(int(total * FPS)):
         t = f / FPS
-        if t < T_HOOK + T_S * n:
-            k = 0 if t < T_HOOK else int((t - T_HOOK) // T_S)
-            k = min(k, n - 1)
+        if t < body:
+            k = 0 if t < T_HOOK else max(i for i in range(n) if starts[i] <= t)
             big, clip, info = scenes[k]
             if gens[k]:
                 bg = next(gens[k])
             else:
                 still_t[k] += 1
-                bg = zoomed(big, 1.0 + 0.08 * still_t[k] / (FPS * (T_S + T_HOOK)))
+                bg = zoomed(big, 1.0 + 0.08 * still_t[k] / (FPS * (durs[k] + T_HOOK)))
             last = bg
             if t < T_HOOK:
                 im = Image.composite(dark, bg, Image.new("L", (RW, RH), 130)).convert("RGBA")
                 show(im, hook, 1.0, scale=pop(t / 0.5))  # 첫 프레임부터 보이게 (썸네일)
             else:
-                tt = t - T_HOOK - k * T_S
+                tt = t - starts[k]
                 im = Image.blend(bg, dark, 0.3 if gens[k] else 0.45)  # 글자가 잘 읽히게 전체를 한 톤 낮추고 (정지 키아트는 더)
                 im = Image.composite(dark, im, shade)
                 im = Image.composite(dark, im, top).convert("RGBA")
                 e = ease(tt / 0.3)
                 show(im, info, e, (1 - e) * 60)
-                bars(im, k, tt / T_S)
+                bars(im, k, tt / durs[k])
         else:
-            tt = t - T_HOOK - T_S * n
+            tt = t - body
             im = Image.composite(dark, last, Image.new("L", (RW, RH), 190)).convert("RGBA")
             e = ease(tt / 0.4)
             show(im, end, e, (1 - e) * 40)
