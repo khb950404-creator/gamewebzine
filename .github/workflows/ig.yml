@@ -24,6 +24,8 @@ env:
   THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
   THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
   IG_PUBLISH_MAX: ${{ vars.IG_PUBLISH_MAX || '2' }}
+  IG_FEED_MAX: ${{ vars.IG_FEED_MAX || '1' }}
+  IG_STORY_MAX: ${{ vars.IG_STORY_MAX || '1' }}
 
 jobs:
   publish:
