@@ -18,7 +18,7 @@ RW, RH, FPS = 1080, 1920, 24
 BG = (12, 12, 14)
 GOLD, INK = (245, 178, 51), (18, 16, 12)
 TXT = {
-    "ko": {"key": "핵심 요약", "end1": "공짜, 할인, 마감일", "end2": "놓치기 싫으면 알트탭 팔로우"},
+    "ko": {"key": "핵심 요약", "end1": "공짜, 할인, 마감일", "end2": "매일 정리하는 알트탭"},
     "en": {"key": "KEY POINTS", "end1": "Game news in 3 lines", "end2": "Every day · Alt+Tab"},
 }
 PROBE = ImageDraw.Draw(Image.new("RGB", (1, 1)))

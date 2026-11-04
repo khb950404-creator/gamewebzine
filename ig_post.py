@@ -178,6 +178,8 @@ WORLDS_KW = ("롤드컵", "worlds", "월드챔피언십", "lck", "t1", "페이�
 TOP_KW = ("zelda", "젤다")
 HOT_KW = ("monsterhunteroutlanders", "몬스터헌터아웃랜더스", "몬헌아웃랜더스", "outlanders", "아웃랜더스")
 COLD_KW = ("sonic", "소닉")
+# 공유되는 소식: 연기·판매 기록·이변·논란 해명 (2026-11-04 주간 분석: 도달 3~11배, 공유 대부분이 여기서 나옴)
+SURPRISE_KW = ("연기", "만장", "격파", "이변", "취소", "폐쇄", "해고", "논란", "아냐", "아니다")
 GTA_KW = ("gta6", "gtavi", "grandtheftautovi", "grandtheftauto6", "gta 6", "그랜드테프트오토6", "그랜드테프트오토vi")
 
 
@@ -185,7 +187,7 @@ def priority(a):
     """게시 우선순위 단계: 0 = 롤드컵(대회 기간), 1 = GTA 6·젤다, 2 = 나머지."""
     import re as _re
     text = _re.sub(r"[^0-9a-z가-힣]", "", " ".join([a.get("title", "")] + (a.get("games_en") or []) + (a.get("games") or [])).lower())
-    wtext = text.replace("crossworlds", "").replace("크로스월드", "")  # '소닉 레이싱 크로스월드'가 롤드컵(worlds)으로 잡히던 것
+    wtext = text.replace("crossworlds", "").replace("크로스월드", "").replace("worldsbeyond", "")  # '소닉 레이싱 크로스월드'가 롤드컵(worlds)으로 잡히던 것
     if datetime.now().strftime("%Y-%m-%d") <= WORLDS_UNTIL and (a.get("esports") or any(k in wtext for k in WORLDS_KW)):
         return 0
     if any(k.replace(" ", "") in text for k in GTA_KW) or any(k in text for k in TOP_KW):
@@ -202,6 +204,7 @@ def popularity(a):
     s_ += 5 if any(k in text for k in BIG_IP) else 0
     s_ += 30 if any(k in text for k in HOT_KW) else 0
     s_ -= 60 if any(k in text for k in COLD_KW) else 0
+    s_ += 6 if any(k in text for k in SURPRISE_KW) else 0
     s_ += 2 if a.get("trust") == "공식" else 0
     s_ += 2 if a.get("category") == "신작" or "트레일러" in a["title"] or "공개" in a["title"] else 0
     s_ += 2 if a.get("video") else 0
@@ -450,7 +453,7 @@ def prepare_deals(queue, posted):
     from reels import render_tips
     tag_tip = ["게임꿀팁", "게임정보", "게임뉴스", "알트탭", "무료게임", "gaming", "gamingnews", "videogames", "game", "gamer", "ps5", "pcgaming", "게임", "게이머"]
     for tkey, day, hour, title, build in (
-            ("chk", 2, 18, "이번 주 놓치면 손해", lambda: tips.weekly_checklist(load(DATA / "articles.json", []), popularity)),
+            ("chk", 2, 9, "이번 주 놓치면 손해", lambda: tips.weekly_checklist(load(DATA / "articles.json", []), popularity)),
             ("free", 4, 9, None, lambda: tips.free_games(load(DATA / "articles.json", [])))):
         k_ = f"{tkey}-{now.isocalendar()[0]}-{now.isocalendar()[1]:02d}"
         if not (force or (now.weekday() == day and now.hour >= hour)) or k_ in keys:
@@ -465,7 +468,7 @@ def prepare_deals(queue, posted):
         hook = title or f"이번 주 공짜 게임 {len(items)}개"
         (SITE / IGDIR / k_).mkdir(parents=True, exist_ok=True)
         render_tips(items, SITE / IGDIR / k_ / "reel.mp4", hook, key=k_)
-        queue.append({"id": k_, "kind": "reel", "files": ["reel.mp4"], "hook": hook, "tips": items,
+        queue.append({"id": k_, "kind": "reel", "files": ["reel.mp4"], "hook": hook, "tips": items, "made": time.time(),
                       "caption": tips.caption(f"[알트탭 꿀팁] {hook}", items, tag_tip)})
         print(f"인스타 준비: 꿀팁 릴스 {hook}")
     # ⑤ 월요일 시리즈: 이번 주 출시 게임 (월요일 9시 이후, 주 1회) — 저장 유도형
@@ -1040,6 +1043,8 @@ def _publish():
     def fresh(q):
         if q.get("feature"):
             return True
+        if q.get("tips"):  # 꿀팁 릴스는 만든 주 안에서만 (3일 지나면 날짜가 틀어진다)
+            return time.time() - q.get("made", time.time()) < 3 * 86400
         if q.get("kind") == "story":
             return q["id"].endswith(today) or q["id"].endswith(today.replace("-", ""))
         a = arts.get(q["id"])
@@ -1049,7 +1054,10 @@ def _publish():
     if dropped:
         print(f"오래된 대기 {len(dropped)}건 정리")
     order = {"reel": 0, "series": 1, "deal": 2, "news": 3}
-    queue.sort(key=lambda q: (not q.get("feature"), not q.get("breaking"), priority(arts.get(q["id"]) or {"title": q.get("caption", "")[:80]}),
+    # 꿀팁 릴스(수·금)는 저장형이라 한 번도 하루 1건 자리를 못 얻었다 → GTA·젤다와 같은 단계로 올려 시험
+    queue.sort(key=lambda q: (not q.get("feature"), not q.get("breaking"),
+                              min(1, priority(arts.get(q["id"]) or {"title": q.get("caption", "")[:80]})) if q.get("tips")
+                              else priority(arts.get(q["id"]) or {"title": q.get("caption", "")[:80]}),
                               order.get(q.get("kind", "news"), 4)))  # 속보 > 롤드컵 > GTA 6 > 나머지
     budget = int(os.environ.get("IG_PUBLISH_MAX", 99))  # 시간대 실행에서는 2건씩
     # 인사이트 학습: 반응 좋은 시간대엔 1건 더, 약한 시간대엔 1건 덜 (강제 게시 땐 그대로)

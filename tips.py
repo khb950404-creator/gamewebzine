@@ -152,7 +152,10 @@ def chip_of(a):
 
 def lines_of(a, n=3):
     """알맹이: 체크 포인트 중 날짜·숫자·고유명사가 있는 행을 '항목 값'으로."""
-    rows = [c for c in a.get("check") or [] if c["k"] not in ("플랫폼",)]
+    today = datetime.now().date()
+    # 이미 지난 날짜만 있는 행(예: 끝난 10월 게임 마감)은 '놓치면 손해'에서 뺀다
+    rows = [c for c in a.get("check") or [] if c["k"] not in ("플랫폼",)
+            and not (_dates(c["v"]) and all(d < today for d in _dates(c["v"])))]
     rows.sort(key=lambda c: -len(re.findall(r"\d", c["v"])))
     out = [f"{c['k']}  {c['v']}" for c in rows[:n]]
     return out or [a["takeaway"]]
@@ -180,7 +183,7 @@ def caption(title, items, tags):
     lines = [title, ""]
     for i, x in enumerate(items, 1):
         lines += [f"{i}. {x['name']}"] + [f"   {ln}" for ln in x["lines"]]
-    lines += ["", "저장해두고 놓치지 마세요. 공짜·할인·마감일을 챙겨 드려요. [알트탭] 팔로우.", "", " ".join("#" + t for t in tags)]
+    lines += ["", "저장해 두면 마감 전에 다시 꺼내 볼 수 있어요.", "", " ".join("#" + t for t in tags[:5])]  # 해시태그 5개 한도
     return "\n".join(lines)[:2100]
 
 
