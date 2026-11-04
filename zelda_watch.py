@@ -143,7 +143,8 @@ def main(dry=False):
     posted = g.load(g.POSTED, {})
     fed = any(v.get("date") == today and v.get("kind") != "story" for v in posted.values())
     at = datetime.now().strftime("%m월 %d일 %H:%M").lstrip("0").replace("월 0", "월 ")
-    if today < LAST_DAY and not fed:
+    force = os.environ.get("ZELDA_FORCE_REVIEW") == "1"  # 수동 실행: 그날 피드가 차 있어도 리뷰 릴스를 바로 (2026-11-04 지시)
+    if today < LAST_DAY and (not fed or force):
         mode, now = "review", True
     elif today < LAST_DAY:
         mode, now = "launch", False   # 오늘 몫은 이미 올렸다 → 출시일 릴스에 점수만 넣어 둔다

@@ -5,6 +5,11 @@ on:
   schedule:
     - cron: "*/5 * * * *"
   workflow_dispatch:
+    inputs:
+      force_review:
+        description: "오늘 피드가 차 있어도 리뷰 릴스를 바로 게시"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -18,6 +23,7 @@ env:
   IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
   IG_USER_ID: ${{ secrets.IG_USER_ID }}
   IG_ENABLED: ${{ vars.IG_ENABLED }}
+  ZELDA_FORCE_REVIEW: ${{ inputs.force_review && '1' || '' }}
 
 jobs:
   watch:
