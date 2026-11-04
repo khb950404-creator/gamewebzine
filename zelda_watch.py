@@ -40,7 +40,8 @@ def score():
 def items_and_caption(mode, sc, n, pos, at):
     d_ = lambda k: f"{D}/{k}.jpg"
     jump = {"img": d_("forest"), "chip": "달라진 것", "name": "28년 만의 점프 버튼", "lines": ["조작  수동 점프, 대시, 360도 카메라", "연주  마이크에 콧노래로 오카리나"]}
-    rev = {"img": d_("ganon"), "chip": "리뷰 공개", "name": f"메타크리틱 {sc}점",
+    roll = {"to": sc, "unit": "점", "max": 100, "ref": [99, "1998 원작"]}  # 점수가 0에서 굴러 오르고 원작 눈금과 나란히
+    rev = {"img": d_("ganon"), "chip": "메타크리틱", "name": "평론가 점수 공개", "roll": roll, "secs": 3.6,
            "lines": [f"리뷰  {n}개 중 호평 {pos}개", f"기준  {at} 집계, 계속 바뀜"]}
     price = "가격  다운로드 79,800원, 패키지 88,000원"
     src = "\n\n출처: 메타크리틱, 한국닌텐도\n이미지: Nintendo"
@@ -48,8 +49,7 @@ def items_and_caption(mode, sc, n, pos, at):
     if mode == "review":
         hook = "역대 최고점 게임의 리메이크, 점수 나왔다"
         items = [
-            {"img": d_("boy"), "chip": "리뷰 공개", "name": f"메타크리틱 {sc}점",
-             "lines": [f"리뷰  {n}개 중 호평 {pos}개", f"기준  {at} 집계, 계속 바뀜"]},
+            dict(rev, img=d_("boy")),
             {"img": d_("temple"), "chip": "비교", "name": "원작은 99점", "lines": ["1998년판  99점, 지금도 최고점", "2011년 3DS판  94점"]},
             jump,
             {"img": d_("ganon"), "chip": "그대로인 것", "name": "뼈대는 1998년 그대로", "lines": ["구조  선형 모험", "로딩  지역 간 로딩 유지"]},

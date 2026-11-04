@@ -366,6 +366,36 @@ def render_tips(items, out_path, hook_text, key="tips", handle=None):
             if f > 0:
                 d.rounded_rectangle((a, y, a + w * f, y + 8), 4, fill=WHITE)
 
+    def roll(im, r, tt):
+        """숫자가 주인공인 장면: 0에서 목표값까지 굴러 올라가고, 아래 게이지가 함께 찬다.
+        r = {"to": 88, "unit": "점", "max": 100, "ref": [99, "1998 원작"]} — ref 는 게이지 위 비교 눈금."""
+        d = ImageDraw.Draw(im)
+        to, mx, unit = r["to"], r.get("max", 100), r.get("unit", "")
+        p = ease((tt - 0.25) / 1.3)
+        val = round(to * p)
+        nf, uf = BH(300), BH(110)
+        # 최종값 기준으로 가운데를 잡고 숫자는 오른쪽 끝에 붙여 둔다: 자릿수가 늘어도 단위가 흔들리지 않게
+        wn, wu = d.textlength(str(to), font=nf), d.textlength(unit, font=uf)
+        xr = (RW - wn - 16 - wu) / 2 + wn
+        yb = 590
+        num = Image.new("RGBA", (RW, RH), (0, 0, 0, 0))
+        nd = ImageDraw.Draw(num)
+        nd.text((xr + 6, yb + 8), str(val), font=nf, fill=(0, 0, 0, 150), anchor="rs")
+        nd.text((xr, yb), str(val), font=nf, fill=WHITE, anchor="rs")
+        nd.text((xr + 16, yb), unit, font=uf, fill=WHITE, anchor="ls")
+        show(im, num, ease(tt / 0.3))
+        gx0, gx1, gy = 150, RW - 150, 670
+        d.rounded_rectangle((gx0, gy, gx1, gy + 18), 9, fill=(70, 70, 76))
+        d.rounded_rectangle((gx0, gy, gx0 + max(18, (gx1 - gx0) * val / mx), gy + 18), 9, fill=RED)
+        if r.get("ref"):
+            rv, rl = r["ref"]
+            rx = gx0 + (gx1 - gx0) * rv / mx
+            ov = Image.new("RGBA", (RW, RH), (0, 0, 0, 0))
+            od = ImageDraw.Draw(ov)
+            od.rectangle((rx - 3, gy - 22, rx + 3, gy + 40), fill=WHITE)
+            od.text((rx, gy + 54), f"{rl} {rv}{unit}", font=NM(42), fill=(220, 220, 226), anchor="ra")
+            show(im, ov, ease((tt - 1.6) / 0.4))  # 비교 눈금은 숫자가 다 오른 뒤에
+
     hook = hook_layer(hook_text, RED)
     end = layer(lambda d: (d.text((RW // 2, 820), "놓치기 전에", font=BH(96), fill=WHITE, anchor="mm"),
                            d.text((RW // 2, 950), "저장해두세요", font=BH(96), fill=RED, anchor="mm")))
@@ -404,6 +434,8 @@ def render_tips(items, out_path, hook_text, key="tips", handle=None):
                 im = Image.composite(dark, im, top).convert("RGBA")
                 e = ease(tt / 0.3)
                 show(im, info, e, (1 - e) * 60)
+                if items[k].get("roll"):
+                    roll(im, items[k]["roll"], tt)
                 bars(im, k, tt / durs[k])
         else:
             tt = t - body
