@@ -28,6 +28,11 @@ def pick(movies, article=None):
 class Clip:
     def __init__(self, appid, seconds, article=None, dim=0.72):
         self.ok, self.proc, self.seconds, self.dim = False, None, seconds, dim
+        local = Path(__file__).parent / str(appid)
+        if str(appid).endswith(".mp4") and local.exists():
+            # 저장소에 넣어 둔 공식 영상 조각 (컷 사이 구간만 잘라 둔 것): 처음부터 그대로 쓴다
+            self.raw, self.start, self.name, self.ok = local, 0.0, local.stem, True
+            return
         try:
             mv = pick(steam_movies(appid), article)
             if not mv:
