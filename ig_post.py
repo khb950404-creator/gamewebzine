@@ -1079,6 +1079,8 @@ def _publish():
             kind = q.get("kind", "news")
             if not wait_url(f"{site_url()}{IGDIR}/{q['id']}/{q['files'][0]}", tries=6):
                 print(f"  ! 사이트에 아직 파일 없음, 다음 기회에: {q['id']}")  # 오래 기다리지 않음 (시간 초과 방지)
+                if q.get("feature") and kind != "story":
+                    budget = 0  # 지정 게시물이 준비 안 됐으면 다른 게시물로 그날 자리를 채우지 않는다 (11-04 소닉 대체 게시 사고)
                 continue
             if kind == "reel":
                 cap = q["caption"]
