@@ -1015,7 +1015,23 @@
  "id:3432860": {
   "appid": 3432860,
   "name": "사이코 슬루스",
-  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3432860/b86b3a2adb5ad121484fd3af736f65caead07abd/header_koreana.jpg?t=1791600413"
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3432860/b86b3a2adb5ad121484fd3af736f65caead07abd/header_koreana.jpg?t=1793868129",
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3432860/bed623f2e25a043e2057235909390b0d97f6bb98/ss_bed623f2e25a043e2057235909390b0d97f6bb98.1920x1080.jpg?t=1793868129",
+  "info": {
+   "date": "2026년 11월 4일",
+   "soon": false,
+   "genres": [
+    "어드벤처",
+    "인디"
+   ],
+   "dev": "PHOSEPO",
+   "pub": "Thermite Games",
+   "ko": true,
+   "ko_voice": false,
+   "price": "₩ 21,420",
+   "discount": 10,
+   "meta": 81
+  }
  },
  "id:4139580": {
   "appid": 4139580,
@@ -23261,5 +23277,29 @@
  "itad:3274580": "019003bd-40d0-7266-8351-29538c14d9f4",
  "itad:981750": "018d937f-0c59-732f-8b16-5a9df15c549c",
  "itad:3123410": "0191d422-a4ca-7333-a9a3-26ef5495c2d6",
- "itad:2991310": "019305a5-fc93-7037-a61e-ee89e9183d96"
+ "itad:2991310": "019305a5-fc93-7037-a61e-ee89e9183d96",
+ "id:4176000": {
+  "appid": 4176000,
+  "name": "False Myth 2",
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4176000/24cab3eac2cefdda32c87afdf83f721829333f7e/header.jpg?t=1793858727",
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4176000/a8d41884f816bfa59b6d7f865bd81e294101d39a/ss_a8d41884f816bfa59b6d7f865bd81e294101d39a.1920x1080.jpg?t=1793858727",
+  "info": {
+   "date": "2026년 11월 4일",
+   "soon": false,
+   "genres": [
+    "어드벤처",
+    "인디",
+    "RPG"
+   ],
+   "dev": "不志陀羅亭",
+   "pub": "akaeroCore",
+   "ko": true,
+   "ko_voice": false,
+   "price": "₩ 19,350",
+   "discount": 10,
+   "meta": null
+  }
+ },
+ "itad:3432860": "0196d3d3-d4d8-734d-9114-69803bc40d28",
+ "itad:4176000": "019b0160-1312-717a-9493-1e7ebabcf5d6"
 }
