@@ -304,7 +304,7 @@ def render_deals(deals, out_path, hook_text, key="deals", handle=None):
     return out_path
 
 
-def render_tips(items, out_path, hook_text, key="tips", handle=None):
+def render_tips(items, out_path, hook_text, key="tips", handle=None, end_text=("놓치기 전에", "저장해두세요")):
     """실전 꿀팁 릴스: 훅 → 항목마다 [공식 트레일러 클립 배경 + 날짜 칩 + 큰 이름 + 핵심 2줄] → '저장' 마무리.
     트레일러가 없는 게임은 키아트를 천천히 확대. 위쪽 스토리식 진행 막대로 몇 번째인지 보여 준다."""
     from clips import Clip
@@ -397,8 +397,9 @@ def render_tips(items, out_path, hook_text, key="tips", handle=None):
             show(im, ov, ease((tt - 1.6) / 0.4))  # 비교 눈금은 숫자가 다 오른 뒤에
 
     hook = hook_layer(hook_text, RED)
-    end = layer(lambda d: (d.text((RW // 2, 820), "놓치기 전에", font=BH(96), fill=WHITE, anchor="mm"),
-                           d.text((RW // 2, 950), "저장해두세요", font=BH(96), fill=RED, anchor="mm")))
+    # 마무리 두 줄: 꿀팁은 '저장', 소식 릴스는 출시까지 남은 날 등으로 바꿔 쓴다
+    end = layer(lambda d: (d.text((RW // 2, 820), end_text[0], font=BH(96), fill=WHITE, anchor="mm"),
+                           d.text((RW // 2, 950), end_text[1], font=BH(96), fill=RED, anchor="mm")))
     shade = shade_mask(0.38, 240)
     top = Image.new("L", (1, RH))
     for yy in range(RH):

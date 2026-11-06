@@ -32,6 +32,7 @@ class Clip:
         if str(appid).endswith(".mp4") and local.exists():
             # 저장소에 넣어 둔 공식 영상 조각 (컷 사이 구간만 잘라 둔 것): 처음부터 그대로 쓴다
             self.raw, self.start, self.name, self.ok = local, 0.0, local.stem, True
+            self.keep = True  # 저장소 파일은 다 쓴 뒤에도 지우지 않는다
             return
         try:
             mv = pick(steam_movies(appid), article)
@@ -73,6 +74,8 @@ class Clip:
     def close(self):
         if self.proc:
             self.proc.kill()
+        if getattr(self, "keep", False):
+            return
         try:
             self.raw.unlink(missing_ok=True)
         except Exception:
