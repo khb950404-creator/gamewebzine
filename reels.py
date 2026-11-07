@@ -13,6 +13,13 @@ from cards import ROOT, fetch_img, cover_fit
 from card_themes import BH, NB, NM, ANTON, grade, fit, HANDLE
 from carousel import LIME as RED, WHITE, SOFT, best_image
 from ig_post import to_card_tone
+from functools import lru_cache
+from card_themes import ft
+
+# 릴스 글꼴: 투박한 블랙한산스 대신 프리텐다드(OFL, fonts/Pretendard-*.otf) — 2026-11-07 "글씨체도 별로야"
+BH = lru_cache(None)(lambda s: ft("Pretendard-ExtraBold.otf", s))   # 큰 제목·훅
+NB = lru_cache(None)(lambda s: ft("Pretendard-SemiBold.otf", s))    # 본문 줄
+NM = lru_cache(None)(lambda s: ft("Pretendard-Medium.otf", s))      # 작은 라벨
 
 RW, RH, FPS = 1080, 1920, 24
 BG = (12, 12, 14)
@@ -124,7 +131,14 @@ class Video:
                "-c:a", "aac", "-b:a", "128k", "-ar", "44100", "-movflags", "+faststart", str(out_path)]
         self.proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
 
+    _mark = None
+
     def write(self, im):
+        # 모든 장면 아래 가운데(글자 영역 바로 밑)에 작은 워드마크를 계속 띄운다 (2026-11-07 지시)
+        if Video._mark is None:
+            Video._mark = layer(lambda d: __import__("profile_pic").wordmark(d, RW / 2, SAFE_B + 80, 40, (235, 235, 240), RED))
+        im = im.convert("RGBA")
+        im.alpha_composite(Video._mark)
         self.proc.stdin.write(im.convert("RGB").tobytes())
 
     def close(self):
@@ -435,15 +449,11 @@ def render_tips(items, out_path, hook_text, key="tips", handle=None, end_text=("
             d.rectangle((RW / 2 - 70, y, RW / 2 + 70, y + 12), fill=RED)  # 워드마크의 커서 막대
         base = hook
         hook = Image.alpha_composite(base, layer(extra))
-        mk = brand_mark(120)
-        hook.alpha_composite(mk, (RW // 2 - 60, RH - 390))  # 아래 가운데 작은 마크
     # 마무리 두 줄: 꿀팁은 '저장', 소식 릴스는 출시까지 남은 날 등으로 바꿔 쓴다
     def end_draw(d):
         d.text((RW // 2, 820), end_text[0], font=BH(96), fill=WHITE, anchor="mm")
         d.text((RW // 2, 950), end_text[1], font=BH(96), fill=RED, anchor="mm")
     end = layer(end_draw)
-    if hook_chip or hook_sub:  # 첫 화면과 같은 마크로 닫는다
-        end.alpha_composite(brand_mark(120), (RW // 2 - 60, RH - 390))
     shade = shade_mask(0.38, 240)
     top = Image.new("L", (1, RH))
     for yy in range(RH):
