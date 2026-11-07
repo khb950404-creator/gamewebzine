@@ -1,0 +1,40 @@
+name: post-now
+
+# 대기열의 특정 릴스를 지금 바로 게시 (사용자 지시가 있을 때만 수동 실행). 하루 1건 제한을 건너뛴다.
+on:
+  workflow_dispatch:
+    inputs:
+      id:
+        description: "게시할 대기열 id"
+        required: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ig-publish
+  cancel-in-progress: false
+
+env:
+  TZ: Asia/Seoul
+  IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+  IG_USER_ID: ${{ secrets.IG_USER_ID }}
+  IG_ENABLED: ${{ vars.IG_ENABLED }}
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: 게시
+        env:
+          POST_ID: ${{ inputs.id }}
+        run: |
+          git config user.name "webzine-bot"
+          git config user.email "webzine-bot@users.noreply.github.com"
+          git config merge.jsonunion.driver "python merge_data.py %O %A %B"
+          python -u post_now.py "$POST_ID"
