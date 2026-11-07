@@ -79599,5 +79599,636 @@
   "appid": 2075800,
   "img_src": "Steam 스토어",
   "video_v": 1
+ },
+ {
+  "title": "매스 이펙트 3 멀티플레이어, 팬 제작으로 레전더리 에디션에 부활",
+  "tldr": [
+   "ME3Tweaks 개발팀이 '매스 이펙트 레전더리 에디션'에 '매스 이펙트 3' 멀티플레이어 모드를 이식했다고 발표했다.",
+   "이번 모드는 그래픽과 엔진 개선 사항이 적용되었으며 넥서스 모드에서 무료로 다운로드할 수 있다.",
+   "개발진은 AI 모딩 도구의 범람으로 인한 저품질 콘텐츠 양산과 커뮤니티 생태계 잠식에 대해 우려를 표명했다."
+  ],
+  "why": "바이오웨어 폐쇄와 후속작 개발 취소 속에서 팬들이 직접 핵심 콘텐츠를 부활시켰다.",
+  "body": [
+   "모딩 팀 ME3Tweaks는 N7의 날을 맞아 '매스 이펙트 레전더리 에디션'용 멀티플레이어 모드를 전격 공개했다. 2021년 작 본편 합본 발매 당시 누락되었던 원작의 멀티플레이어 모드를 레전더리 에디션의 엔진과 그래픽 개선 사항에 맞춰 완벽히 이식한 것이다.",
+   "본 프로젝트를 이끄는 Mgamerz는 과거 피나클 스테이션 DLC 이식 작업에 이어 이번 멀티플레이어 포팅을 성사시켰다. 이들은 향상된 광원, 재작업된 텍스처, 네이티브 HDR 및 컨트롤러 지원뿐만 아니라 겟·리퍼·세르베루스 등 적 진영이 무작위로 섞이는 새로운 웨이브 모드 등을 탑재했다.",
+   "한편 인터뷰를 통해 개발진은 최근 모딩 신을 강타한 AI 도구의 명암에 대해서도 쓴소리를 아끼지 않았다. Claude 같은 도구가 모딩 진입 장벽을 낮추기도 했지만, 최적화되지 않은 저품질 콘텐츠의 범람으로 기존의 탄탄한 생태계와 품질 필터링 기능이 서서히 무너지고 있다고 지적했다.",
+   "이들은 이러한 무분별한 AI 모드가 메모리 낭비와 기존 애드온과의 충돌을 유발해 유저들의 게임 경험을 해치고 있다고 비판했다. 바이오웨어의 폐쇄와 함께 시리즈의 공식 명맥이 끊긴 상황에서, 모딩 커뮤니티가 프랜차이즈의 명맥을 잇는 중요한 역할을 맡게 되었다.",
+   "본 모드는 넥서스 모드를 통해 무료로 배포되며, 구동을 위해서는 '매스 이펙트 레전더리 에디션' 본편을 소유하고 있어야 한다."
+  ],
+  "category": "업데이트",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "매스 이펙트 레전더리 에디션",
+   "매스 이펙트 3"
+  ],
+  "games_en": [
+   "Mass Effect Legendary Edition",
+   "Mass Effect 3"
+  ],
+  "hook": "매스 이펙트 멀티 부활",
+  "title_en": "Mass Effect 3 Multiplayer Rebuilt for Legendary Edition",
+  "tldr_en": [
+   "ME3Tweaks has ported the Mass Effect 3 multiplayer mode to the Legendary Edition.",
+   "The mod is available for free on Nexus Mods with updated engine features and graphics.",
+   "Developers expressed concern that AI modding tools are flooding the scene with low-quality content."
+  ],
+  "hook_en": "ME3 Multiplayer returns",
+  "video_q": "Mass Effect Legendary Edition multiplayer mod trailer",
+  "trust": "확인",
+  "fixes": [
+   "적 진영 중 원작의 겟(Geth)이 '렐릭'으로 잘못 표기되어 수정",
+   "IGN 및 코타쿠 등 2개 이상 매체에서 다룬 소식이므로 신뢰도(trust)를 '보도'에서 '확인'으로 변경"
+  ],
+  "status": "published",
+  "id": "eb51576a7c",
+  "sources": [
+   {
+    "name": "Steam News",
+    "title": "BioWare May Be Dead, But a Modder Has Rebuilt Mass Effect 3's Multiplayer Into the Legendary Edition",
+    "link": "https://store.steampowered.com/news/group/9869/view/705536268691308611",
+    "official": false
+   },
+   {
+    "name": "Steam News",
+    "title": "'I Feel Like Modding is Kind Of Dying' – Mass Effect 3 Multiplayer Modder on AI's Impact on the Scene",
+    "link": "https://store.steampowered.com/news/group/9869/view/705536268691308613",
+    "official": false
+   },
+   {
+    "name": "Kotaku",
+    "title": "How Modders Spent Three Years Remastering Mass Effect 3’s Fantastic Multiplayer For Legendary Edition: ‘Let’s Do Something Stupid’",
+    "link": "https://kotaku.com/mass-effect-3-multiplayer-legendary-edition-mod-me3tweaks-2000754691",
+    "official": false
+   },
+   {
+    "name": "IGN",
+    "title": "'I Feel Like Modding is Kind Of Dying' – Mass Effect 3 Multiplayer Modder on AI's Impact on the Scene",
+    "link": "https://www.ign.com/articles/i-feel-like-modding-is-kind-of-dying-mass-effect-3-multiplayer-modder-on-ais-impact-on-the-scene",
+    "official": false
+   }
+  ],
+  "ts": 1794071361.0,
+  "written": 1794075436.6979277,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar4mdj.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar4mdj.jpg",
+  "img_src": "IGDB",
+  "video_v": 1
+ },
+ {
+  "title": "워해머 블러드 볼, 2027년 봄으로 출시 또다시 연기",
+  "tldr": [
+   "퍼블리셔 슬리더린 게임즈와 개발사 사이아니드 스튜디오가 워해머 블러드 볼의 출시일을 2027년 봄으로 연기했다.",
+   "이번 연기로 인해 크리스마스 시즌 출시가 불발되었으며, 신작 출시 이후로 예정되었던 월드컵 일정 또한 미뤄졌다.",
+   "게임의 신규 팀들은 출시 연기 발표 시점에 이미 개발이 완료된 상태인 것으로 확인되었다."
+  ],
+  "why": "크리스마스 시즌을 겨냥했던 기대작이 일정을 미루면서 e스포츠 월드컵 계획에도 차질이 생겼다.",
+  "body": [
+   "슬리더린 게임즈와 사이아니드 스튜디오는 공동 발표를 통해 워해머 블러드 볼의 출시 일정을 기존 크리스마스 시즌에서 2027년 봄으로 변경한다고 밝혔다.",
+   "이번 발매 연기 여파로 게임 출시 직후 개최될 예정이었던 블러드 볼 월드컵의 구체적인 일정 또한 무기한 연기됐다.",
+   "대회 세부 일정은 본편이 플레이어들의 손에 들어간 이후 다시 발표될 예정이다.",
+   "다만 출시 연기에도 불구하고 게임에 투입될 신규 팀들의 제작은 이미 완료된 상태인 것으로 전해졌다."
+  ],
+  "category": "신작",
+  "platforms": [],
+  "games": [
+   "워해머 블러드 볼"
+  ],
+  "games_en": [
+   "Warhammer Blood Bowl"
+  ],
+  "hook": "블러드 볼 2027 연기",
+  "title_en": "Warhammer Blood Bowl Delayed to Spring 2027",
+  "tldr_en": [
+   "Slitherine Games and Cyanide Studio delayed Warhammer Blood Bowl to spring 2027.",
+   "The delay pushes back both its Christmas window and the subsequent Blood Bowl World Cup.",
+   "New teams for the game have already been fully completed despite the scheduling shift."
+  ],
+  "hook_en": "Blood Bowl delayed again",
+  "video_q": "Warhammer Blood Bowl trailer",
+  "trust": "공식",
+  "fixes": [
+   "출처에 언급되지 않은 플랫폼 정보(PC, PS5, Xbox Series X/S)를 출처에 맞게 제거"
+  ],
+  "status": "published",
+  "id": "416b6d77f5",
+  "sources": [
+   {
+    "name": "Steam News",
+    "title": "Warhammer Blood Bowl delayed, again, to 2027 - but the new teams are already ready",
+    "link": "https://store.steampowered.com/news/group/718735/view/689773669992366170",
+    "official": false
+   }
+  ],
+  "ts": 1794074863.0,
+  "written": 1794075436.6997335,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar6rt9.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar6rt9.jpg",
+  "img_src": "IGDB",
+  "video_v": 1
+ },
+ {
+  "title": "패스 오브 엑자일 2, 12월 11일 정식 1.0 버전 출시 확정",
+  "tldr": [
+   "그라인딩 기어 게임즈가 '패스 오브 엑자일 2'의 1.0 정식 출시일을 오는 12월 11일로 확정했다.",
+   "정식 버전에는 5막과 6막이 추가되어 전체 캠페인 스토리가 완전히 마무리될 예정이다.",
+   "은신과 덫을 활용하는 '섀도우'와 새로운 스탠스 메커니즘을 지닌 '듀얼리스트' 클래스가 새롭게 합류한다."
+  ],
+  "why": "출시 연기를 거듭했던 핵앤슬래시 대작이 올해 안에 완성된 캠페인과 함께 유저들을 찾아온다.",
+  "body": [
+   "개발사 그라인딩 기어 게임즈는 액션 RPG '패스 오브 엑자일 2'의 1.0 정식 출시일이 12월 11일로 확정되었다고 발표했다. 당초 출시 일정이 불투명해지며 우려를 샀으나 연내 정식 서비스에 돌입하게 됐다.",
+   "이번 1.0 업데이트의 가장 핵심적인 변화는 얼리 액세스 기간 이어져 온 이야기의 결말을 맺을 5막과 6막 캠페인의 전면 추가다. 이로써 플레이어들은 게임의 전체 스토리를 온전히 즐길 수 있게 된다.",
+   "새로운 두 가지 캐릭터 클래스도 추가된다. '섀도우'는 은신 상태를 활용해 몬스터의 시야를 피하고 덫과 단검 조합으로 치명적인 콤보를 구사할 수 있으며, '듀얼리스트'는 검술을 강화하는 스탠스 메커니즘을 통해 더욱 강력한 전투를 펼친다.",
+   "이 밖에도 바렉 및 용병들과 함께 렉스라스트를 정복하는 신규 리그가 개설된다. 또한 패시브 스킬 트리 개편, 스킬 젬과 서포트 젬 대대적 수정, 다양한 아이템 리밸런싱이 함께 적용될 예정이다."
+  ],
+  "category": "신작",
+  "platforms": [],
+  "games": [
+   "패스 오브 엑자일 2"
+  ],
+  "games_en": [
+   "Path of Exile 2"
+  ],
+  "hook": "POE 2 12월 정식출시",
+  "title_en": "Path of Exile 2 Launches 1.0 in December",
+  "tldr_en": [
+   "Grinding Gear Games confirmed Path of Exile 2 1.0 will launch on December 11.",
+   "The update introduces Acts 5 and 6 to complete the main campaign story.",
+   "Two new classes, the Shadow and the Duelist, join the roster with unique mechanics."
+  ],
+  "hook_en": "PoE 2 December launch",
+  "video_q": "Path of Exile 2 release date trailer",
+  "trust": "공식",
+  "fixes": [
+   "출처에 언급되지 않은 플랫폼 정보(PC, PS5, Xbox Series X/S)를 출처에 맞게 제거"
+  ],
+  "status": "published",
+  "id": "46aa9c3475",
+  "sources": [
+   {
+    "name": "Rock Paper Shotgun",
+    "title": "Path of Exile 2's 1.0 version is out this year after all, arriving in December with a full campaign, two neat new classes, and more",
+    "link": "https://www.rockpapershotgun.com/path-of-exile-2s-10-version-is-out-this-year-after-all-arriving-in-december-with-a-full-campaign-two-neat-new-classes-and-more",
+    "official": false
+   }
+  ],
+  "ts": 1794074440.0,
+  "written": 1794075436.6999283,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar5gc9.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar5gc9.jpg",
+  "img_src": "IGDB",
+  "video_v": 1
+ },
+ {
+  "title": "위쳐 노 맨즈 랜드, 11월 17일 예약 구매 개시 공식 발표",
+  "tldr": [
+   "인기 프랜차이즈 기반의 신작 위쳐 노 맨즈 랜드의 예약 구매가 오는 11월 17일부터 시작된다고 공식 발표됐다.",
+   "시리즈 팬들은 다가오는 11월 17일부터 해당 신작 게임의 소장용 카피를 미리 확보할 수 있게 된다.",
+   "다만 이번 발표에서는 예약 구매 일정만 공개되었으며 구체적인 정식 출시일은 아직 알려지지 않았다."
+  ],
+  "why": "위쳐 프랜차이즈의 신작 정보가 서서히 베일을 벗으며 사전 예약 일정이 확정되었다.",
+  "body": [
+   "인기 프랜차이즈 기반 신작 위쳐 노 맨즈 랜드의 예약 구매가 오는 11월 17일부터 시작된다고 공식 발표되었다.",
+   "시리즈 팬들은 다가오는 날짜에 맞춰 게임의 사전 주문을 진행하여 소장용 카피를 확보할 수 있다.",
+   "다만 이번 발표에서는 예약 구매 일정만 확정되었을 뿐, 게임의 구체적인 정식 출시일은 아직 공개되지 않았다."
+  ],
+  "category": "신작",
+  "platforms": [],
+  "games": [
+   "위쳐: 노 맨즈 랜드"
+  ],
+  "games_en": [
+   "The Witcher: No Man’s Land"
+  ],
+  "hook": "위쳐 신작 17일 예약",
+  "title_en": "The Witcher: No Man’s Land Pre-orders Start Nov 17",
+  "tldr_en": [
+   "The Witcher: No Man's Land pre-orders will officially begin on November 17.",
+   "Fans will be able to secure physical or digital copies ahead of launch.",
+   "An exact release date for the game has not yet been announced by the developers."
+  ],
+  "hook_en": "Witcher No Man's Land pre-orders",
+  "video_q": "The Witcher No Man's Land trailer",
+  "trust": "보도",
+  "fixes": [
+   "출처에 없는 제작사(CD 프로젝트 레드) 명기 및 임의 플랫폼 정보 제거",
+   "말한 사람 없는 해석성 추측 문장('~것으로 전망된다') 및 임의 배경 설명 삭제",
+   "단일 비공식 매체 보도이므로 신뢰도를 '공식'에서 '보도'로 변경"
+  ],
+  "status": "published",
+  "id": "6497f5df8b",
+  "sources": [
+   {
+    "name": "Steam News",
+    "title": "The Witcher: No Man’s Land Officially Announced for November 17",
+    "link": "https://store.steampowered.com/news/group/1450625/view/693151369547219027",
+    "official": false
+   }
+  ],
+  "ts": 1794073214.0,
+  "written": 1794075436.700273,
+  "img": null,
+  "img_v": 2,
+  "video_v": 1
+ },
+ {
+  "title": "GTA 6 실물 패키지 유출, 사전 다운로드는 10일 자정 시작",
+  "tldr": [
+   "락스타 게임즈가 GTA 6의 코드 인 박스 에디션을 소매점에 발송한 가운데 독일 유통업체 등을 통해 실물이 유출됐다.",
+   "디지털 버전 구매자는 플레이스테이션 5와 엑스박스 시리즈 X에서 11월 10일 자정부터 사전 다운로드를 시작할 수 있다.",
+   "실물 패키지에는 디스크가 포함되어 있지 않으며 공식 게임 설명과 예약 특전 포스터 등이 확인됐다."
+  ],
+  "why": "출시를 코앞에 둔 시점에서 오프라인 매장에 실물 상자가 도착하며 기대감이 최고조에 달하고 있다.",
+  "body": [
+   "오는 11월 19일 정식 출시를 앞둔 락스타 게임즈의 GTA 6 패키지 초도 물량이 전 세계 소매점에 도착하기 시작했다. 독일 미디어마르크트 등 유통 현장을 통해 게임의 실물 상자와 예약 특전 포스터가 소셜 미디어를 통해 유출되었다.",
+   "디지털 버전 선주문 유저들을 위한 사전 다운로드는 11월 10일 자정부터 플레이스테이션 5와 엑스박스 시리즈 X 스토어에서 시작된다. 다만 소매점에서 코드 인 박스 에디션을 구매한 유저들은 목요일부터 사전 다운로드가 가능하다.",
+   "유출된 패키지 외관에는 제이슨, 루시아, 레오니다 지역의 스크린샷과 함께 온라인 지원 및 인게임 구매 표기가 명시되어 있다. 이번 패키지 구성품에는 실제 게임 디스크가 동봉되지 않는 형태라고 매체는 보도했다.",
+   "현지 소매점들은 수많은 게이머들이 몰려들 것에 대비해 오는 11월 12일 매장 오픈 준비에 착수했다."
+  ],
+  "category": "신작",
+  "platforms": [
+   "PS5",
+   "Xbox Series X/S"
+  ],
+  "games": [
+   "GTA 6"
+  ],
+  "games_en": [
+   "Grand Theft Auto 6"
+  ],
+  "hook": "GTA 6 실물 패키지 유출",
+  "title_en": "GTA 6 Physical Boxes Arrive Ahead of November Launch",
+  "tldr_en": [
+   "Physical code-in-box editions of GTA 6 have begun arriving at international retailers.",
+   "Digital preloads on PS5 and Xbox Series X/S will begin at midnight on November 10.",
+   "The physical box art confirms online support features, though discs are not included."
+  ],
+  "hook_en": "GTA 6 boxes spotted",
+  "video_q": "Grand Theft Auto 6 physical edition unboxing",
+  "trust": "보도",
+  "fixes": [
+   "독일 유통업체(MediaMarkt)를 '독일 매체'로 잘못 기재한 것을 '독일 유통업체'로 수정",
+   "단일 매체 취재 내용에 대한 '확인됐다' 표현을 폴리곤 보도 인용 표현으로 수정"
+  ],
+  "status": "published",
+  "id": "36a67b395f",
+  "sources": [
+   {
+    "name": "Polygon",
+    "title": "Grand Theft Auto 6 Physical Copies Are Officially in the Wild",
+    "link": "https://www.polygon.com/gta-6-grand-theft-auto-physical-copies-retail/",
+    "official": false
+   }
+  ],
+  "ts": 1794072389.0,
+  "written": 1794075436.700464,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar64ek.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar64ek.jpg",
+  "img_src": "IGDB",
+  "video_v": 1
+ },
+ {
+  "title": "매스 이펙트 셰퍼드 성우들, 바이오웨어 폐쇄 속에서도 IP에 대한 희망 피력",
+  "tldr": [
+   "EA의 바이오웨어 폐쇄와 '매스 이펙트 5' 개발 취소 소식이 전해진 가운데 셰퍼드 성우들이 심경을 밝혔다.",
+   "마크 미어와 제니퍼 헤일은 바이오웨어가 캐나다 게임 산업에 남긴 30년 간의 유산을 깊이 추모했다.",
+   "제니퍼 헤일은 EA가 판권을 매각해 팬 커뮤니티가 IP를 이어받는 시나리오에 대해 강한 희망을 드러냈다."
+  ],
+  "why": "스튜디오가 역사 속으로 사라졌음에도 주요 출연진은 팬들과 함께 프랜차이즈의 생존을 바라고 있다.",
+  "body": [
+   "EA가 최근 바이오웨어를 전격 폐쇄하고 개발 중이던 '매스 이펙트' 차기작을 취소한 가운데, 커맨더 셰퍼드의 성우인 마크 미어와 제니퍼 헤일이 매체 인터뷰를 통해 이에 대한 입장을 밝혔다. 두 성우는 스튜디오의 갑작스러운 해체 소식에 큰 충격을 받았음을 전했다.",
+   "마크 미어는 바이오웨어가 캐나다 에드먼턴 지역과 국가 전체의 엄청난 자부심이었다고 회고했다. 현재 캐나다 현지 팬들은 정부 하원에 바이오웨어를 구하기 위한 청원을 제출한 상태로, 스튜디오가 지난 30년간 게임계에 남긴 발자취는 거대했다고 평가했다.",
+   "제니퍼 헤일은 과거 EA의 인수 이후 기업 주주들의 입김에 시달렸던 스튜디오의 역사적 아픔을 지적했다. 사모펀드 매각 과정에서 LGBTQ 관련 검열 요구 등이 이어졌던 정황을 언급하며 원래의 창작 정신과 충돌이 있었다고 덧붙였다.",
+   "그럼에도 불구하고 헤일은 EA가 '매스 이펙트' IP를 분리 매각하여 역량 있는 팬들과 크리에이터들로 구성된 커뮤니티가 이를 소유하는 대안적 미래에 대해 강한 기대감을 내비쳤다. 바이오웨어라는 개발사는 문을 닫았지만 게임의 자산과 프랜차이즈의 향방에는 여전히 이목이 쏠리고 있다."
+  ],
+  "category": "업계",
+  "platforms": [],
+  "games": [
+   "매스 이펙트"
+  ],
+  "games_en": [
+   "Mass Effect"
+  ],
+  "hook": "셰퍼드 성우들의 희망",
+  "title_en": "Mass Effect Voice Actors Hopeful Despite BioWare Closure",
+  "tldr_en": [
+   "Voice actors Mark Meer and Jennifer Hale reflected on BioWare's 30-year legacy after its closure.",
+   "Mark Meer highlighted the studio's cultural impact in Canada and ongoing fan petitions.",
+   "Jennifer Hale expressed hope that EA might sell the IP to a fan-led creator collective."
+  ],
+  "hook_en": "Shepard actors speak out",
+  "video_q": "Mark Meer Jennifer Hale Mass Effect interview",
+  "trust": "보도",
+  "fixes": [
+   "출처 내용과 대조 결과 사실관계 및 표현상 문제 없음"
+  ],
+  "status": "published",
+  "id": "3ff2cae25b",
+  "sources": [
+   {
+    "name": "Polygon",
+    "title": "Commander Shepard’s Actors Are ‘Wildly Hopeful’ for Mass Effect, Despite Everything",
+    "link": "https://www.polygon.com/mass-effect-commander-shepard-jennifer-hale-mark-meer-interview-n7-day-2026/",
+    "official": false
+   }
+  ],
+  "ts": 1794070819.0,
+  "written": 1794075436.7007816,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/sc8v1n.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/sc8v1n.jpg",
+  "img_src": "IGDB",
+  "video_v": 1
+ },
+ {
+  "title": "매스 이펙트 3 멀티 리마스터 모드 출시, 개발진 \"시리즈의 횃불 이어갈 것\"",
+  "tldr": [
+   "ME3Tweaks 모딩 팀이 '매스 이펙트 3' 멀티플레이어를 레전더리 에디션에 이식한 리마스터 모드를 출시했다.",
+   "이번 모드는 개선된 UI, 리베이킹된 조명, 네이티브 컨트롤러 지원 및 신규 웨이브 모드를 대거 탑재했다.",
+   "개발진은 바이오웨어가 폐쇄된 시점에서 커뮤니티가 시리즈의 명맥을 굳건히 이어가야 한다고 강조했다."
+  ],
+  "why": "공식 리마스터에서 누락되었던 멀티플레이를 팬들이 수년에 걸쳐 직접 완성해 세상에 내놓았다.",
+  "body": [
+   "모딩 집단 ME3Tweaks가 '매스 이펙트 레전더리 에디션'용 멀티플레이어 리마스터 모드를 정식 출시했다. 2021년 본편 리마스터 당시 제외되었던 멀티플레이 모드를 지난 3년간 비밀리에 재구축 및 확장한 결과물이다.",
+   "모드 제작에 참여한 오디무스는 이번 작품이 완전히 개편된 UI, 향상된 텍스처 및 셰이더, 네이티브 HDR, 컨트롤러 지원, 광범위한 버그 수정 등을 포함하고 있다고 밝혔다. 특히 겟과 리퍼, 세르베루스 적들이 무작위로 섞여 등장하는 '통합(Unified)' 모드와 '연합(Coalition)' 모드 등 새로운 웨이브 모드도 제공된다.",
+   "플레이어들은 ME3Tweaks가 제공하는 자체 매치메이킹 서버를 이용하거나 친구들과 비공개 서버를 통해 멀티플레이를 즐길 수 있다.",
+   "바이오웨어의 폐쇄와 차기작 개발 취소라는 악재 속에서 이뤄진 이번 모드 출시는 팬들에게 깊은 감동을 안기고 있다. 개발진은 공식적인 미래가 불투명해진 프랜차이즈의 횃불을 모딩 커뮤니티가 더욱 무겁게 이어받아야 할 책임감을 느낀다고 소회를 밝혔다."
+  ],
+  "category": "업데이트",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "매스 이펙트 레전더리 에디션",
+   "매스 이펙트 3"
+  ],
+  "games_en": [
+   "Mass Effect Legendary Edition",
+   "Mass Effect 3"
+  ],
+  "hook": "팬들이 살린 매스이펙트 멀티",
+  "title_en": "Mass Effect 3 Multiplayer Remaster Mod Released by Fans",
+  "tldr_en": [
+   "ME3Tweaks released a comprehensive multiplayer remaster mod for Mass Effect Legendary Edition.",
+   "The mod features overhauled UI, enhanced lighting, native HDR, and new enemy wave modes.",
+   "Developers stressed their commitment to carrying the franchise torch following BioWare's closure."
+  ],
+  "hook_en": "ME3 co-op mod launched",
+  "video_q": "Mass Effect Legendary Edition multiplayer mod gameplay",
+  "trust": "보도",
+  "fixes": [
+   "출처에 없는 과장된 수식 문장('원작 이상의 쾌적한 환경을 구현해 냈다') 삭제",
+   "신규 모드 명칭에서 누락된 '연합(Coalition)' 모드 명기"
+  ],
+  "status": "published",
+  "id": "5776629ca0",
+  "sources": [
+   {
+    "name": "Rock Paper Shotgun",
+    "title": "\"I feel that sense of responsibility more acutely\": After BioWare's closure, the makers of a new Mass Effect 3 co-op remaster mod look to carry their legacy",
+    "link": "https://www.rockpapershotgun.com/i-feel-that-sense-of-responsibility-more-acutely-after-biowares-closure-the-makers-of-a-new-mass-effect-3-co-op-remaster-mod-look-to-carry-their-legacy",
+    "official": false
+   }
+  ],
+  "ts": 1794070800.0,
+  "written": 1794075436.7009854,
+  "deep_try": 1,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar4mdj.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar4mdj.jpg",
+  "img_src": "IGDB",
+  "video_v": 1
+ },
+ {
+  "title": "GTA 6, 올해 더 게임 어워드 최고 상 수상 확률 89% 기록",
+  "tldr": [
+   "폴리마켓 예측 시장에 따르면 'GTA 6'가 올해 더 게임 어워드에서 올해의 게임(GOTY)을 수상할 확률이 89%로 집계됐다.",
+   "게임은 시상식 후보 등록 마감 시한 직전에 출시되어 올해의 게임 후보 자격을 얻게 된다.",
+   "이용자들은 첫날 판매량 기록 경신 및 메타크리틱 92점 이상 달성 가능성도 높게 점치고 있다."
+  ],
+  "why": "발매 전부터 압도적인 기대를 모으고 있는 대작이 시상식 주요 부문 싹쓸이 가능성을 높이고 있다.",
+  "body": [
+   "출시를 코앞에 둔 락스타 게임즈의 대작 'GTA 6'가 올해 더 게임 어워드(TGA)에서 최고의 영예인 올해의 게임(GOTY)을 거머쥘 확률이 89%에 달한다는 예측 결과가 나왔다. 예측 플랫폼 폴리마켓의 이용자 투표와 거래 지표를 기반으로 산출된 수치다.",
+   "GTA 6는 TGA 후보 선정 마감 시한을 불과 며칠 앞두고 출시되기 때문에 올해 시상식 심사 대상에 극적으로 포함될 수 있다. 시장 참여자들은 게임 디자인, 음악, 내러티브, 디렉션 등 다수의 부문에서도 수상 확률이 높다고 점치고 있다.",
+   "구체적인 폴리마켓 지표에 따르면 GOTY 89% 외에도 베스트 내러티브 55%, 베스트 오디오 디자인 53%, 베스트 게임 디렉션 70%의 확률을 기록 중이다. 후발 주자로는 '바이오해저드 레퀴엠'과 '팬텀 블레이드 제로' 등이 거론되고 있다.",
+   "또한 응답자의 96%는 GTA 6가 첫날 판매량 신기록을 경신할 것이라 내다봤으며, 100%에 가까운 유저들이 메타크리틱 평점 92점을 상회할 것으로 전망하고 있다."
+  ],
+  "category": "업계",
+  "platforms": [
+   "PS5",
+   "Xbox Series X/S"
+  ],
+  "games": [
+   "GTA 6"
+  ],
+  "games_en": [
+   "Grand Theft Auto 6"
+  ],
+  "hook": "GTA 6 GOTY 확률 89%",
+  "title_en": "GTA 6 Holds 89% Chance for GOTY at The Game Awards",
+  "tldr_en": [
+   "Prediction markets put GTA 6 at an 89% chance to win Game of the Year at TGA.",
+   "The game launches just before the submission cut-off, qualifying it for this year's awards.",
+   "Traders also overwhelmingly predict record-breaking sales and a Metacritic score over 92."
+  ],
+  "hook_en": "GTA 6 GOTY favorite",
+  "video_q": "Grand Theft Auto 6 trailer",
+  "trust": "보도",
+  "fixes": [
+   "출처 내용과 대조 결과 수치 및 사실관계 문제 없음"
+  ],
+  "status": "published",
+  "id": "41e42960ef",
+  "sources": [
+   {
+    "name": "Insider Gaming",
+    "title": "89% of People Think GTA 6 Will Win Game of the Year at The Game Awards",
+    "link": "https://insider-gaming.com/gta-6-game-of-the-year-awards-chances/",
+    "official": false
+   }
+  ],
+  "ts": 1794070782.0,
+  "written": 1794075436.701174,
+  "deep_try": 1,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar64ek.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar64ek.jpg",
+  "img_src": "IGDB",
+  "video_v": 1
+ },
+ {
+  "title": "스타워즈 제로 컴퍼니 개발사 비트 리액터, 일부 직원 추가 해고 단행",
+  "tldr": [
+   "‘스타워즈 제로 컴퍼니’ 개발사 비트 리액터가 복직하지 못한 일부 개발자들을 대상으로 해고를 단행했다.",
+   "프로듀서 마이클 블랙아드와 선임 QA 분석가 라이언 모셔 등 다수의 전직 직원들이 링크드인을 통해 해고 사실을 알렸다.",
+   "스튜디오 측은 아직 공식 입장을 내놓지 않았으나 출시 성과와 별개로 고용 불안이 이어지고 있다."
+  ],
+  "why": "비평적·상업적 성공을 거둔 게임의 개발사에서 휴직 복귀 불발로 인한 추가 구조조정이 발생했다.",
+  "body": [
+   "'스타워즈 제로 컴퍼니'를 개발한 비트 리액터가 지난 8월 출시 직전 휴직 처리했던 인력 중 일부를 복직시킨 데 이어, 남은 인원들을 상대로 추가 해고를 단행했다고 락페이퍼샷건이 보도했다. 당초 절반 이상의 인력이 정직원으로 복귀할 것이라는 관측과 달리 전원 복직은 불발된 모양새다.",
+   "스타워즈 전문 매체 베스핀 불레틴의 보도에 따르면, 스튜디오의 프로듀서 마이클 블랙아드와 선임 QA 분석가 라이언 모셔 등이 링크드인을 통해 해고 통보를 받았다고 직접 밝혔다. 3년 넘게 프리프로덕션 단계부터 참여했던 환경 아티스트 라이언 로페즈 역시 3개월간의 휴직 끝에 해고되었다고 전했다.",
+   "UI 엔지니어 타일러 에이히텐 또한 업계의 격변 속에서 동료들과 자신 모두 새로운 일자리를 찾기를 바란다는 심경을 전했다. 현재까지 비트 리액터 측은 이번 구조조정의 정확한 해고 규모에 대해 공식 입장을 밝히지 않고 있다.",
+   "'스타워즈 제로 컴퍼니'가 비평과 흥행 양면에서 훌륭한 성적을 거뒀음에도 불구하고 개발진이 고용 불안에 시달리는 상황이 이어지며 업계의 안타까움을 사고 있다."
+  ],
+  "category": "업계",
+  "platforms": [],
+  "games": [
+   "스타워즈 제로 컴퍼니"
+  ],
+  "games_en": [
+   "Star Wars Zero Company"
+  ],
+  "hook": "비트 리액터 추가 해고",
+  "title_en": "Bit Reactor Lays Off Remaining Staff After Star Wars Launch",
+  "tldr_en": [
+   "Star Wars Zero Company developer Bit Reactor has laid off several developers post-launch.",
+   "Former staff members shared news of their layoffs on LinkedIn following a three-month furlough.",
+   "The studio has not yet issued an official statement regarding the exact scale of the layoffs."
+  ],
+  "hook_en": "Bit Reactor layoffs hit",
+  "video_q": "Star Wars Zero Company gameplay",
+  "trust": "보도",
+  "fixes": [
+   "출처에 언급되지 않은 플랫폼 정보(PC, PS5, Xbox Series X/S)를 출처에 맞게 제거",
+   "단일 매체 취재 내용에 대한 '확인됐다' 단정 표현을 '락페이퍼샷건이 보도했다'로 수정"
+  ],
+  "status": "published",
+  "id": "5a1a3396d0",
+  "sources": [
+   {
+    "name": "Rock Paper Shotgun",
+    "title": "After Star Wars Zero Company dev Bit Reactor brought back an unspecified number of furloughed devs, some of those who weren't have seemingly been laid off",
+    "link": "https://www.rockpapershotgun.com/after-star-wars-zero-company-dev-bit-reactor-brought-back-an-unspecified-number-of-furloughed-devs-some-of-those-who-werent-have-seemingly-been-laid-off",
+    "official": false
+   }
+  ],
+  "ts": 1794070650.0,
+  "written": 1794075436.7013695,
+  "deep_try": 1,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2075800/2c7d5dad080c4888faaa03c4a955136c50f5bfae/header.jpg?t=1790340688",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2075800/ca1c9bd849571f0795dbc641f0f4906c15e2aaaa/ss_ca1c9bd849571f0795dbc641f0f4906c15e2aaaa.1920x1080.jpg?t=1790340688",
+  "appid": 2075800,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "워독스 시즌 3, 11월 12일 개막… 신규 도시 맵 및 18.5만 계정 제재",
+  "tldr": [
+   "벌크헤드가 개발한 100인 전술 슈터 '워독스'의 시즌 3가 오는 11월 12일에 시작된다.",
+   "이번 시즌에는 근접전 중심의 신규 도시 맵과 장비 제약이 걸린 '리미티드 모드'가 도입된다.",
+   "머신러닝 기반 안티치트 시스템을 통해 어뷰징 및 골드 파밍에 연루된 18만 5천 개의 계정이 영구 정지됐다."
+  ],
+  "why": "부정 사용자 대거 차단과 함께 게임 플레이 환경을 쇄신할 대규모 업데이트와 시즌 초기화가 단행된다.",
+  "body": [
+   "개발사 벌크헤드는 전술 슈팅 게임 '워독스'의 시즌 3를 오는 11월 12일에 개막한다고 발표했다. 이번 시즌에는 대대적인 캐릭터 초기화와 함께 얼리 액세스 출시 초기 당시의 공유 성취감을 되찾기 위한 진행도 개편이 함께 이뤄진다.",
+   "시즌 3의 핵심 콘텐츠인 신규 맵은 치열한 근접 시가전을 유도하도록 설계되었으며, 탄약·장갑·탈것 등이 제한되어 장비 격차를 줄여주는 '리미티드 모드'가 신규 서버 형태로 추가된다. 유저들은 FMJ 탄약 전용 및 2티어 방어구 상한선 등의 제약 속에서 동등한 전투를 치르게 된다.",
+   "또한 개발사는 머신러닝을 활용해 1억 8,700만 시간의 플레이 데이터를 분석한 결과, 불법 프로그램 사용자, 현금 거래상, 골드 파밍 네트워크 등 18만 5천 개의 계정을 영구 제재하고 서버 호스팅 권한을 박탈했다고 밝혔다. 유저 신뢰도 점수 도입 등 추가 보안책도 2027년에 선보일 계획이다.",
+   "한편 벌크헤드는 시즌 주기를 기존보다 길어진 3개월로 변경하여 플레이어들이 목표를 달성할 여유를 주겠다고 설명했다. '워독스'는 PC 얼리 액세스 서비스 중이며 콘솔 버전은 2028년 출시를 목표로 하고 있다."
+  ],
+  "category": "업데이트",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "워독스"
+  ],
+  "games_en": [
+   "Wardogs"
+  ],
+  "hook": "워독스 시즌3 대규모 제재",
+  "title_en": "Wardogs Season 3 Launches With Map, Mode, and Ban Wave",
+  "tldr_en": [
+   "Bulkhead will launch Wardogs Season 3 on November 12 with a full player wipe.",
+   "The update features a close-quarters urban map and a restrictive Limited Mode for fair play.",
+   "An automated anti-cheat wave has permanently banned 185,000 accounts for exploits and trading."
+  ],
+  "hook_en": "Wardogs Season 3 bans 185k",
+  "video_q": "Wardogs Season 3 gameplay trailer",
+  "trust": "공식",
+  "fixes": [
+   "얼리 액세스 출시 당시를 '1세대 당시'로 오역한 표현을 '얼리 액세스 출시 초기'로 수정"
+  ],
+  "status": "published",
+  "id": "e331b5bf07",
+  "sources": [
+   {
+    "name": "Eurogamer",
+    "title": "Wardogs Season 3 brings an urban map, Limited Mode, and a 185,000-account ban wave",
+    "link": "https://www.eurogamer.net/wardogs-season-3-release-date-limited-mode-ban-wave",
+    "official": false
+   }
+  ],
+  "ts": 1794070530.0,
+  "written": 1794075436.7015886,
+  "deep_try": 1,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1867240/59d4daf753bd5d982e6675f7eee363bc817c574e/header.jpg?t=1790774170",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1867240/13fbc7cb084ec25c20ad031c7e888a9459cd8e77/ss_13fbc7cb084ec25c20ad031c7e888a9459cd8e77.1920x1080.jpg?t=1790774170",
+  "appid": 1867240,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "워독스 시즌 3, 장비 제한 '리미티드 모드' 및 3개월 시즌제 도입",
+  "tldr": [
+   "벌크헤드가 '워독스' 시즌 3 로드맵을 공개하며 장비 격차를 줄이는 '리미티드 모드' 도입을 확정했다.",
+   "시즌 기간이 3개월로 연장되며, 진행도 시스템은 시즌 1 수준의 페이스로 조정된다.",
+   "본편은 2027년 PC 1.0 정식 출시를 거쳐 2028년에 콘솔 플랫폼으로 확장될 예정이다."
+  ],
+  "why": "시즌 2 피드백을 반영해 개발사 주도의 비전을 확립하고 뉴비 진입 장벽 낮추기에 나선다.",
+  "body": [
+   "개발사 벌크헤드는 팀17과 함께 전술 슈터 '워독스' 시즌 3의 세부 계획을 공개하며 뉴비 유저 친화적인 개편안을 발표했다. 시즌 2 당시 쏟아졌던 피드백을 수용해 지나치게 빨랐던 레벨링 속도를 조정하고, 개발진 본래의 기조로 돌아가겠다는 방침이다.",
+   "이번에 새롭게 선보이는 '리미티드 모드' 서버에서는 장비와 탄약, 방어구가 2티어 이하로 제한되며 특정 탈것의 접근이 차단된다. 이를 통해 게임 진행도가 높은 기존 유저들과의 격차를 줄이고 진입 장벽을 낮추어 신규 플레이어들이 공정한 환경에서 전투를 즐길 수 있도록 했다.",
+   "또한 앞으로의 시즌 주기는 3개월 단위로 연장되어 유저들이 초기화 전까지 목표를 달성할 여유를 갖게 된다. 메타게임 전면 개편은 2027년에 예정되어 있으나, 그전까지 다양한 경로로 아이템을 해제할 수 있는 다중 트랙 해제 시스템이 우선 도입된다.",
+   "워독스는 현재 PC 스팀 얼리 액세스로 서비스 중이며, 2027년 PC 1.0 정식 출시를 거쳐 2028년 플레이스테이션 5 및 엑스박스 시리즈 X/S 콘솔 버전으로 확장될 계획이다."
+  ],
+  "category": "업데이트",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "워독스"
+  ],
+  "games_en": [
+   "Wardogs"
+  ],
+  "hook": "워독스 뉴비 친화 모드",
+  "title_en": "Wardogs Season 3 Introduces Limited Mode for New Players",
+  "tldr_en": [
+   "Bulkhead announced Wardogs Season 3 will feature a weapon-restricted Limited Mode.",
+   "Seasons are extended to three months to give players more time to achieve progression goals.",
+   "The tactical shooter targets a 1.0 PC release in 2027 followed by console versions in 2028."
+  ],
+  "hook_en": "Wardogs Limited Mode added",
+  "video_q": "Wardogs Season 3 roadmap trailer",
+  "trust": "공식",
+  "fixes": [
+   "출처 내용과 대조 결과 사실관계 및 수치 문제 없음"
+  ],
+  "status": "published",
+  "id": "10a79e8b23",
+  "sources": [
+   {
+    "name": "Polygon",
+    "title": "Wardogs Season 3 Will Add A Mode That Limits What Weapons Players Can Use",
+    "link": "https://www.polygon.com/wardogs-season-3-reveal/",
+    "official": false
+   }
+  ],
+  "ts": 1794070072.0,
+  "written": 1794075436.7017891,
+  "deep_try": 1,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1867240/59d4daf753bd5d982e6675f7eee363bc817c574e/header.jpg?t=1790774170",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1867240/13fbc7cb084ec25c20ad031c7e888a9459cd8e77/ss_13fbc7cb084ec25c20ad031c7e888a9459cd8e77.1920x1080.jpg?t=1790774170",
+  "appid": 1867240,
+  "img_src": "Steam 스토어",
+  "video_v": 1
  }
 ]
