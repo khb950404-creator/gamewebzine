@@ -546,11 +546,14 @@ JSON 하나만 출력: {{"title": ..., "tldr": [...], "why": ..., "hook": ..., "
 IG_COPY = """너는 인스타그램 매거진(예: @etc_zine)의 에디터다. 아래 게임 기사로 인스타 게시물을 만든다.
 사진 위에는 짧게, 설명은 본문(캡션)에 충실하게.
 "ig_head": 표지 제목 두 줄 [윗줄, 아랫줄] 각 6~14자. 윗줄은 대상, 아랫줄은 결론·숫자 (결론을 뒤로 숨기지 말 것). 예: ["GTA 6 맵 크기", "GTA 5의 두 배"], ["팬텀 블레이드 제로", "첫날 29만 명 접속"]
+  게이머에게 직접 생기는 일(보안·용량·가격·마감·일정 변경·계정)이 있으면 아랫줄은 '내게 무슨 일인지·무엇을 해야 하는지'로. 예: ["GTA 6 프리로드", "212GB 비워 두세요"], ["니케 켰을 뿐인데", "PC 해킹 정황"]
+  핵심이 누군가의 발언이면 윗줄에 짧은 따옴표 인용을 써도 된다. 예: ["“기부 아닙니다”", "번지, 마라톤 해명"]. 기사에 없는 위험·숫자로 겁주기 금지.
 "ig_sub": 표지 한 줄 부제 20~34자, 핵심 숫자·날짜. 예: "11월 19일 출시, PS5 용량 약 210GB"
-"ig_body": 캡션 본문 문단 5~7개 (해요체 '~했습니다/~인데요/~예정입니다'). 첫 문단은 한 문장 리드.
+"ig_save": 독자가 날짜에 맞춰 할 일이 있을 때만(무료 배포·할인 마감·프리로드·예약·점검·보안 조치) 저장해 둘 이유를 쓴 한 문장, 해요체 25~45자. 대상 독자를 콕 집는다. 예: "GTA 6 기다리는 분이라면 저장해 두고 10일 프리로드 때 확인하세요." 할 일이 없으면 "" (억지로 만들지 말 것, 팔로우 권유 금지).
+"ig_body": 캡션 본문 문단 5~7개 (해요체 '~했습니다/~인데요/~예정입니다'). 첫 문단은 한 문장 리드: 무엇이 달라지는지와 게이머에게 왜 중요한지를 함께.
   기사·체크 포인트에 있는 구체적 사실(이름, 날짜, 가격, 수치, 조건, 발언)을 빠짐없이 풀어 쓴다. 겉핥기 금지 — 독자가 '그래서 무엇을·언제·얼마에'를 알게.
   배경 맥락 한 문단 포함. 무료·할인·예약·마감처럼 독자가 할 일이 있으면 마지막 문단에 언제까지·어디서·무엇을 하면 되는지 쓰고, 없으면 정리 한 문장. 감탄·과장·이모지·질문 유도 금지. 출처에 없는 사실 금지.
-JSON 하나만: {{"ig_head": [..,..], "ig_sub": "..", "ig_body": ["..", ".."]}}
+JSON 하나만: {{"ig_head": [..,..], "ig_sub": "..", "ig_save": "..", "ig_body": ["..", ".."]}}
 
 기사: {art}"""
 
@@ -568,13 +571,17 @@ def ig_copy(a):
             a["ig_head"] = "\n".join(x.strip() for x in head)
         if isinstance(r.get("ig_sub"), str):
             a["ig_sub"] = r["ig_sub"].strip()
+        save_ = r.get("ig_save")
+        # 날짜·용량·가격 같은 숫자가 없는 '추후 공지 확인' 류는 저장할 이유가 약하므로 버린다
+        if isinstance(save_, str) and 10 <= len(save_.strip()) <= 70 and "팔로우" not in save_ and re.search(r"\d", save_):
+            a["ig_save"] = save_.strip()
         body = [x.strip() for x in r.get("ig_body") or [] if isinstance(x, str) and x.strip()]
         if len(body) >= 3:
             a["ig_body"] = body
         arts = load(DATA / "articles.json", [])
         for x in arts:
             if x["id"] == a["id"]:
-                for k in ("ig_head", "ig_sub", "ig_body"):
+                for k in ("ig_head", "ig_sub", "ig_save", "ig_body"):
                     if k in a:
                         x[k] = a[k]
         save(DATA / "articles.json", arts)
@@ -918,6 +925,8 @@ def caption(a):
         lines = [a["title"], ""] + [to_news_tone(t) for t in a.get("tldr", [])[:3]]
     if a.get("check"):  # 저장하고 다시 볼 실용 정보
         lines += [""] + [f"{check_icon(c['k'], c['v'])} {c['k']}: {c['v']}" for c in a["check"][:6]]
+    if a.get("ig_save"):  # etc_zine 식: 할 일이 있는 소식에만, 대상 독자를 집어 저장 이유 한 줄
+        lines += ["", "🔖 " + a["ig_save"]]
     if a.get("takeaway") and not a.get("ig_body"):
         lines += ["", a["takeaway"]]
     if srcs:
