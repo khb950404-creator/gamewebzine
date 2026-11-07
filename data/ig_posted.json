@@ -1295,7 +1295,8 @@
   "hl": "deal",
   "key": "389730",
   "end": "2026-11-05",
-  "in_hl": true
+  "in_hl": true,
+  "removed": true
  },
  "story-deal-493520-2026-10-30": {
   "media": "18119568334788632",
@@ -1309,7 +1310,8 @@
   "hl": "deal",
   "key": "493520",
   "end": "2026-11-02",
-  "in_hl": true
+  "in_hl": true,
+  "removed": true
  },
  "story-deal-1477590-2026-10-30": {
   "media": "18425061865154552",
@@ -1335,7 +1337,8 @@
   "hl": "release",
   "key": "Zero Parades: Director's Cut",
   "end": "2026-11-03",
-  "in_hl": true
+  "in_hl": true,
+  "removed": true
  },
  "story-rel-world-of-warcraft-forever-2026-10-30": {
   "media": "18108362558619555",
@@ -1347,7 +1350,8 @@
   "hl": "release",
   "key": "World of Warcraft: Forever",
   "end": "2026-11-04",
-  "in_hl": true
+  "in_hl": true,
+  "removed": true
  },
  "story-deal-252490-2026-10-30": {
   "media": "18093196583196957",
@@ -1375,7 +1379,8 @@
   "hl": "deal",
   "key": "648800",
   "end": "2026-11-05",
-  "in_hl": true
+  "in_hl": true,
+  "removed": true
  },
  "story-deal-3357650-2026-10-30": {
   "media": "18129491515880773",
@@ -1389,7 +1394,8 @@
   "hl": "deal",
   "key": "3357650",
   "end": "2026-11-03",
-  "in_hl": true
+  "in_hl": true,
+  "removed": true
  },
  "story-rel-3296060-2026-10-30": {
   "media": "18095225798169384",
@@ -1403,7 +1409,8 @@
   "hl": "release",
   "key": "3296060",
   "end": "2026-11-05",
-  "in_hl": true
+  "in_hl": true,
+  "removed": true
  },
  "story-rel-4099810-2026-10-30": {
   "media": "18224354287341526",
@@ -1528,7 +1535,8 @@
   "hl": "deal",
   "key": "1326470",
   "end": "2026-11-02",
-  "in_hl": true
+  "in_hl": true,
+  "removed": true
  },
  "story-rel-2523740-2026-10-31": {
   "media": "18386018353232097",
@@ -1628,7 +1636,8 @@
   "forced": false,
   "hl": "deal",
   "key": "568220",
-  "end": "2026-11-02"
+  "end": "2026-11-02",
+  "skip_hl": "할인 종료(11/2) 후 정리"
  },
  "story-deal-534380-2026-11-01": {
   "media": "18114306548131831",
@@ -1641,7 +1650,8 @@
   "forced": false,
   "hl": "deal",
   "key": "534380",
-  "end": "2026-11-09"
+  "end": "2026-11-09",
+  "in_hl": true
  },
  "story-rel-3669620-2026-11-01": {
   "media": "18177154294445460",
@@ -1654,7 +1664,8 @@
   "forced": false,
   "hl": "release",
   "key": "3669620",
-  "end": "2026-11-10"
+  "end": "2026-11-10",
+  "in_hl": true
  },
  "story-rel-harold-halibut-2026-11-01": {
   "media": "18114233000519489",
@@ -1665,7 +1676,8 @@
   "forced": false,
   "hl": "release",
   "key": "Harold Halibut",
-  "end": "2026-11-12"
+  "end": "2026-11-12",
+  "in_hl": true
  },
  "lostark-roigwaen-reel": {
   "media": "18110118539192489",
@@ -1685,7 +1697,8 @@
   "forced": false,
   "hl": "deal",
   "key": "2399830",
-  "end": "2026-11-08"
+  "end": "2026-11-08",
+  "in_hl": true
  },
  "4ba4a16c42": {
   "media": "18128589209477065",
@@ -1728,7 +1741,8 @@
   "forced": false,
   "hl": "deal",
   "key": "3450310",
-  "end": "2026-11-11"
+  "end": "2026-11-11",
+  "in_hl": true
  },
  "story-rel-metaphor-refantazio-2026-11-02": {
   "media": "17949046617072145",
@@ -1739,7 +1753,8 @@
   "forced": false,
   "hl": "release",
   "key": "Metaphor: ReFantazio",
-  "end": "2026-11-12"
+  "end": "2026-11-12",
+  "in_hl": true
  },
  "story-rel-4304060-2026-11-02": {
   "media": "18116979092115242",
@@ -1752,7 +1767,8 @@
   "forced": false,
   "hl": "release",
   "key": "4304060",
-  "end": "2026-11-12"
+  "end": "2026-11-12",
+  "skip_hl": "소닉: 한물간 IP라 하이라이트 제외"
  },
  "568ea201cc": {
   "media": "17953766973314107",
@@ -1772,7 +1788,8 @@
   "forced": false,
   "hl": "deal",
   "key": "3035570",
-  "end": "2026-11-10"
+  "end": "2026-11-10",
+  "in_hl": true
  },
  "story-deal-1669000-2026-11-04": {
   "media": "18378457495240117",
@@ -1785,7 +1802,8 @@
   "forced": false,
   "hl": "deal",
   "key": "1669000",
-  "end": "2026-11-18"
+  "end": "2026-11-18",
+  "in_hl": true
  },
  "9e074cdd2e": {
   "media": "18138790687637432",
