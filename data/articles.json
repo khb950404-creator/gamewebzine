@@ -79074,7 +79074,7 @@
   ],
   "ts": 1794010619.0,
   "written": 1794032468.098278,
-  "deep_try": 2,
+  "deep_try": 3,
   "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar7lf.jpg",
   "img_v": 2,
   "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar7lf.jpg",
@@ -79251,12 +79251,191 @@
   ],
   "ts": 1794002103.0,
   "written": 1794042512.9782586,
-  "deep_try": 1,
+  "deep_try": 2,
   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2807960/c12d12ce3c7d217398d3fcad77427bfc9d57c570/header.jpg?t=1790375732",
   "img_v": 2,
   "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2807960/1ecd498c6f29458da24d45e3c005dd7f64025bfe/ss_1ecd498c6f29458da24d45e3c005dd7f64025bfe.1920x1080.jpg?t=1790375732",
   "appid": 2807960,
   "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "블래스트 R6 메이저 오사카 20개 팀, 투바랑·누르 조합 '사용 금지' 합의",
+  "tldr": [
+   "블래스트 R6 메이저 오사카에 출전한 20개 참가팀 전원이 투바랑과 신규 오퍼레이터 누르의 벽 방어 조합을 쓰지 않기로 신사협정을 맺었다.",
+   "해당 상호작용은 패치 노트에 없었으나 유비소프트 측은 의도된 시스템으로 확인했다.",
+   "강제성이 없는 자율 협정인 만큼 대회 운영은 참가 팀들의 자발적 스포츠맨십에 맡겨지게 됐다."
+  ],
+  "why": "공식 패치 노트에 누락됐던 강력한 벽 방어 상호작용에 대해 참가 팀 전체가 자체적으로 금지 조치를 내렸다.",
+  "body": [
+   "일본에서 열리고 있는 '블래스트 R6 메이저 오사카'에서 20개 참가팀 전원이 특정 오퍼레이터 조합을 쓰지 않기로 신사협정(GA)을 체결했다고 인사이더 게이밍이 보도했다. 이번 합의 대상은 기존 오퍼레이터 투바랑과 최근 새롭게 추가된 오퍼레이터 누르 간의 특수 상호작용이다.",
+   "팀 리퀴드 소속 펠리페 'FelipoX' 루시아 선수가 SNS를 통해 밝힌 내용에 따르면, 선수들은 최근 게임 플레이 도중 사전 공지되지 않았던 투바랑과 누르의 도구 연계 방식을 발견했다. 다수 팀이 대회 주최사인 블래스트에 문의한 결과, 유비소프트는 해당 상호작용이 의도된 기획이라고 공식 확인했다. 그러나 최신 패치 노트 등 어느 공지에도 관련 내용이 적혀 있지 않아 참가팀 사이에서 혼선이 빚어졌다.",
+   "결국 이번 대회에 나선 20개 팀은 투바랑과 누르를 연계한 벽 방어(Wall denial) 조합을 경기에서 사용하지 않기로 뜻을 모았다. 펠리포X는 \"타 e스포츠 종목에는 익숙하지만 시즈에서는 새로운 방식\"이라며 \"모든 팀이 이 협정을 끝까지 지켜주기를 바란다\"고 밝혔다.",
+   "신사협정은 대회 주최 측이 직접 규정으로 처벌하는 공식 룰이 아니므로, 규정 위반에 따른 몰수패나 징계 같은 강제 수단은 존재하지 않는다. 인사이더 게이밍은 지난 '식스 인비테이셔널 2019' 당시 카베이라의 피격 판정 버그를 쓰지 않기로 합의했음에도 한 팀이 이를 어기고 사용했던 전례를 언급하며, 이번 조치의 성패 역시 팀들의 페어플레이 정신에 달렸다고 덧붙였다."
+  ],
+  "category": "e스포츠",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "톰 클랜시의 레인보우식스 시즈"
+  ],
+  "games_en": [
+   "Tom Clancy's Rainbow Six Siege"
+  ],
+  "hook": "벽 막는 콤보 결국 금지?",
+  "title_en": "BLAST R6 Major Osaka Teams Agree to Ban Tubarão-Noor Combo",
+  "tldr_en": [
+   "All 20 teams competing in BLAST R6 Major Osaka agreed to a Gentlemen's Agreement banning the Tubarão and Noor combination.",
+   "Ubisoft confirmed the unannounced wall denial interaction was intentional despite missing from the patch notes.",
+   "The agreement is voluntary and relies entirely on team sportsmanship without official enforcement."
+  ],
+  "hook_en": "Major teams ban new combo",
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [
+   "게임명 표기 '레인보우 식스 시즈' → '톰 클랜시의 레인보우식스 시즈'"
+  ],
+  "status": "published",
+  "id": "fbe0e4ef80",
+  "sources": [
+   {
+    "name": "Insider Gaming",
+    "title": "Tubarão and Noor Combination GA’d During BLAST R6 Major Osaka",
+    "link": "https://insider-gaming.com/rainbow-six-siege-blast-osaka-agreement/",
+    "official": false
+   }
+  ],
+  "ts": 1794043874.0,
+  "written": 1794053152.1991227,
+  "deep_try": 1,
+  "img": null,
+  "img_v": 2,
+  "video_v": 1
+ },
+ {
+  "title": "닌텐도 스위치 2, 전 세계 판매량 2,635만 대 돌파… ‘포코피아’ 404만 장",
+  "tldr": [
+   "닌텐도 스위치 2가 2026년 9월 30일 기준 글로벌 누적 판매량 2,635만 대를 기록했다.",
+   "2026년 3월 출시된 '포켓몬 포코피아'는 404만 장을 기록해 '포켓몬 레전즈 Z-A'와 동률을 이뤘다.",
+   "9월 중순 출시된 '파이어 엠블렘: 포춘스 위브'는 약 2주 만에 134만 장의 판매고를 올렸다."
+  ],
+  "why": "닌텐도 하드웨어와 2026년 주요 퍼스트파티 신작들이 모두 밀리언셀러를 달성하며 견고한 흥행세를 증명했다.",
+  "body": [
+   "닌텐도가 공식 하드웨어 및 주요 소프트웨어 누적 판매량을 갱신한 결과, 차세대 콘솔 '닌텐도 스위치 2'의 글로벌 판매량이 2026년 9월 30일 기준 2,635만 대를 달성했다고 실리코네라가 전했다.",
+   "공개된 자료에 따르면 스위치 2는 2026년 7월부터 9월까지 3개월 동안 전 세계에서 267만 대가 추가로 판매됐다. 전작인 오리지널 닌텐도 스위치는 같은 날짜 기준으로 누적 1억 5,720만 대의 판매고를 기록하며 견조한 실적을 이어갔다.",
+   "소프트웨어 부문에서는 올해 출시된 독점 타이틀들이 잇달아 100만 장을 돌파했다. 2026년 3월 첫선을 보인 '포켓몬 포코피아'는 누적 판매량 404만 장을 기록하며 2025년 10월 발매작인 '포켓몬 레전즈: Z-A'(404만 장)와 어깨를 나란히 했다. 지난 7월 출시된 '스플래툰 레이더스'는 242만 장을 기록했다.",
+   "하반기 신작의 성과도 확인됐다. 9월 17일부터 30일까지 약 2주 동안의 실적만 집계된 '파이어 엠블렘: 포춘스 위브'는 스위치 2 단일 기종에서 134만 장을 판매했다. 6월 말 발매된 '스타폭스' 리메이크는 117만 장을 기록해 집계 대상 신작 4종이 모두 밀리언셀러에 올랐다. 한편 11월 5일 스위치 2로 정식 출시된 '젤다의 전설 시간의 오카리나' 리메이크 판매량은 이번 9월 말 집계에서 제외됐다."
+  ],
+  "category": "하드웨어",
+  "platforms": [
+   "Switch",
+   "Switch 2"
+  ],
+  "games": [
+   "포켓몬 포코피아",
+   "파이어 엠블렘: 포춘스 위브",
+   "스플래툰 레이더스"
+  ],
+  "games_en": [
+   "Pokemon Pokopia",
+   "Fire Emblem: Fortune's Weave",
+   "Splatoon Raiders"
+  ],
+  "hook": "스위치 2, 2,635만 대 돌파",
+  "title_en": "Switch 2 Hits 26.35M Sales as Pokemon Pokopia Reaches 4.04M",
+  "tldr_en": [
+   "Nintendo Switch 2 reached 26.35 million units sold globally as of September 30, 2026.",
+   "Pokemon Pokopia climbed to 4.04 million copies sold, matching Pokemon Legends: Z-A.",
+   "Fire Emblem: Fortune's Weave sold 1.34 million copies in its first two weeks on sale."
+  ],
+  "hook_en": "Switch 2 hits 26.35M sales",
+  "video_q": null,
+  "trust": "공식",
+  "fixes": [
+   "닌텐도의 공식 판매 데이터 업데이트를 전한 보도이므로 trust를 '확인'에서 '공식'으로 수정",
+   "본문의 핵심 대상 기기인 'Switch 2'를 플랫폼 목록에 추가"
+  ],
+  "status": "published",
+  "id": "0817607c28",
+  "sources": [
+   {
+    "name": "Siliconera",
+    "title": "Fire Emblem: Fortune’s Weave’s Alexandra, Catania, and Io Join Fire Emblem Heroes",
+    "link": "https://www.siliconera.com/fire-emblem-fortunes-weaves-alexandra-catania-and-io-join-fire-emblem-heroes/",
+    "official": false
+   },
+   {
+    "name": "Siliconera",
+    "title": "Fire Emblem: Fortune’s Weave and Switch 2 Hit New Sales Milestones",
+    "link": "https://www.siliconera.com/fire-emblem-fortunes-weave-and-switch-2-hit-new-sales-milestones/",
+    "official": false
+   }
+  ],
+  "ts": 1793998800.0,
+  "written": 1794053152.200998,
+  "deep_try": 1,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar5ijo.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar5ijo.jpg",
+  "img_src": "IGDB",
+  "video_v": 1
+ },
+ {
+  "title": "‘GTA 6’ 사전 다운로드 11월 10일 시작… 설치 용량 212GB",
+  "tldr": [
+   "락스타 게임즈의 신작 'GTA 6'가 11월 10일부터 212GB 규모의 사전 다운로드를 시작한다.",
+   "80달러 일반판 구매자는 20달러의 '얼티밋 에디션 업그레이드'를 통해 100달러 패키지 혜택을 사후 추가할 수 있다.",
+   "100달러 에디션에는 전용 의상 및 장비와 함께 미용실·타투샵 등 독점 사업장 접근 권한이 포함된다."
+  ],
+  "why": "출시를 앞두고 사전 설치 일정과 대용량 파일 크기, 일반판 구매자를 위한 별도 업그레이드 방식이 확정됐다.",
+  "body": [
+   "락스타 게임즈의 오픈월드 기대작 '그랜드 테프트 오토 6(GTA 6)'가 11월 10일부터 사전 다운로드를 개시한다고 게임스팟이 전했다. 정식 출시는 오는 11월 19일로 예정돼 있다.",
+   "보도에 따르면 GTA 6의 설치 파일 크기는 212GB에 달한다. 락스타 게임즈는 대규모 용량에 대비해 출시 9일 전부터 사전 설치를 지원하며, 80달러짜리 스탠다드 에디션을 구매한 이용자를 위한 20달러 상당의 '얼티밋 에디션 업그레이드' 상품도 별도로 마련했다. 해당 업그레이드는 플레이스테이션 및 엑스박스 스토어에서 구매한 디지털 다운로드 버전과 패키지 박스 동봉 코드 제품에 모두 적용된다.",
+   "소매점 매장에서는 판매되지 않는 100달러 얼티밋 에디션에는 이동수단과 무기, 의상 등 다수의 인게임 특전이 포함된다. 락스타 측은 이들 아이템이 주인공 제이슨과 루시아의 스토리 진행에 맞춰 각 챕터 클리어 시마다 순차적으로 잠금 해제된다고 밝혔다. 얼티밋 에디션 구매자에게는 일반 이용자가 이용할 수 없는 전용 사업장인 '사라 유니섹스 헤어살롱'과 타투 샵, 차량 개조점 등의 추가 혜택도 제공된다.",
+   "플랫폼을 불문하고 GTA 6를 사전 예약한 모든 이용자에게는 '빈티지 바이스 시티 팩'과 1개월 'GTA+' 구독 혜택이 지급된다. 타이틀은 출시일인 11월 19일 각 지역 현지 시각 자정에 정식으로 잠금 해제될 예정이다."
+  ],
+  "category": "신작",
+  "platforms": [
+   "PS5",
+   "Xbox"
+  ],
+  "games": [
+   "그랜드 테프트 오토 6"
+  ],
+  "games_en": [
+   "Grand Theft Auto VI"
+  ],
+  "hook": "GTA 6 용량 무려 212GB",
+  "title_en": "GTA 6 Pre-Load Starts Nov 10 With 212GB File Size",
+  "tldr_en": [
+   "GTA 6 pre-loading begins on November 10 ahead of its official launch on November 19.",
+   "The game requires 212GB of storage, and an Ultimate Edition Upgrade will be offered for $20.",
+   "The $100 edition includes exclusive vehicles, weapons, and in-game businesses like a hair salon."
+  ],
+  "hook_en": "GTA 6 weighs 212GB",
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [
+   "why 문구에서 11월 10일 사전 다운로드 시작(출시 9일 전)과 맞지 않는 '출시를 열흘 앞두고' 표현을 '출시를 앞두고'로 수정"
+  ],
+  "status": "published",
+  "id": "29e3702cfe",
+  "sources": [
+   {
+    "name": "GameSpot",
+    "title": "Can You Upgrade To GTA 6’s $100 Edition? Yes, And It’s Easy–Here’s How",
+    "link": "https://www.gamespot.com/articles/can-you-upgrade-to-gta-6s-100-edition-yes-and-its-easy-heres-how/",
+    "official": false
+   }
+  ],
+  "ts": 1793996619.0,
+  "written": 1794053152.2012396,
+  "deep_try": 1,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar64ek.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar64ek.jpg",
+  "img_src": "IGDB",
   "video_v": 1
  }
 ]
