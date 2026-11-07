@@ -53,6 +53,16 @@ def plus(d, color, cx=100, cy=150, L=26, t=4):
     d.rectangle((cx - t, cy - L, cx + t, cy + L), fill=color)
 
 
+def brand_mark(size=120):
+    """프로필 사진과 같은 빨간 원형 'alt / +tab' 마크를 작게 (RGBA)."""
+    from profile_pic import v2
+    m = v2().resize((size, size), Image.LANCZOS).convert("RGBA")
+    mask = Image.new("L", (size * 4, size * 4), 0)
+    ImageDraw.Draw(mask).ellipse((0, 0, size * 4 - 1, size * 4 - 1), fill=255)
+    m.putalpha(mask.resize((size, size), Image.LANCZOS))
+    return m
+
+
 def layer(fn):
     im = Image.new("RGBA", (RW, RH), (0, 0, 0, 0))
     fn(ImageDraw.Draw(im))
@@ -304,7 +314,8 @@ def render_deals(deals, out_path, hook_text, key="deals", handle=None):
     return out_path
 
 
-def render_tips(items, out_path, hook_text, key="tips", handle=None, end_text=("놓치기 전에", "저장해두세요")):
+def render_tips(items, out_path, hook_text, key="tips", handle=None, end_text=("놓치기 전에", "저장해두세요"),
+                hook_chip=None, hook_sub=None):
     """실전 꿀팁 릴스: 훅 → 항목마다 [공식 트레일러 클립 배경 + 날짜 칩 + 큰 이름 + 핵심 2줄] → '저장' 마무리.
     트레일러가 없는 게임은 키아트를 천천히 확대. 위쪽 스토리식 진행 막대로 몇 번째인지 보여 준다."""
     from clips import Clip
@@ -397,9 +408,42 @@ def render_tips(items, out_path, hook_text, key="tips", handle=None, end_text=("
             show(im, ov, ease((tt - 1.6) / 0.4))  # 비교 눈금은 숫자가 다 오른 뒤에
 
     hook = hook_layer(hook_text, RED)
+    if hook_chip or hook_sub:
+        # 첫 화면(썸네일)이 비어 보이지 않게: 훅 위에 빨간 칩, 아래에 보조 한 줄
+        f, ls = fit(PROBE, hook_text, BH, 132, RW - 140, 2, 72)
+        lh = int(f.size * 1.22)
+        y0 = RH // 2 - len(ls) * lh // 2 - 60
+
+        def extra(d):
+            # 알트탭 장식: 위쪽 'alt+tab_' 워드마크, 네 모서리 빨간 +, 훅 아래 커서 막대, 아래쪽 계정명
+            for cx, cy in ((90, 190), (RW - 90, 190), (90, RH - 330), (RW - 90, RH - 330)):
+                plus(d, RED, cx, cy, L=22, t=4)
+            if hook_chip:
+                cf = BH(54)
+                w = d.textlength(hook_chip, font=cf)
+                x = (RW - w - 52) / 2
+                d.rounded_rectangle((x, y0 - 128, x + w + 52, y0 - 40), 18, fill=RED)
+                d.text((RW / 2, y0 - 84), hook_chip, font=cf, fill=WHITE, anchor="mm")
+            if hook_sub:
+                sf = NB(50)
+                y = y0 + len(ls) * lh + 36
+                d.text((RW / 2 + 3, y + 3), hook_sub, font=sf, fill=(0, 0, 0, 170), anchor="ma")
+                d.text((RW / 2, y), hook_sub, font=sf, fill=(235, 235, 240), anchor="ma")
+                y += 50 + 40
+            else:
+                y = y0 + len(ls) * lh + 30
+            d.rectangle((RW / 2 - 70, y, RW / 2 + 70, y + 12), fill=RED)  # 워드마크의 커서 막대
+        base = hook
+        hook = Image.alpha_composite(base, layer(extra))
+        mk = brand_mark(120)
+        hook.alpha_composite(mk, (RW // 2 - 60, RH - 390))  # 아래 가운데 작은 마크
     # 마무리 두 줄: 꿀팁은 '저장', 소식 릴스는 출시까지 남은 날 등으로 바꿔 쓴다
-    end = layer(lambda d: (d.text((RW // 2, 820), end_text[0], font=BH(96), fill=WHITE, anchor="mm"),
-                           d.text((RW // 2, 950), end_text[1], font=BH(96), fill=RED, anchor="mm")))
+    def end_draw(d):
+        d.text((RW // 2, 820), end_text[0], font=BH(96), fill=WHITE, anchor="mm")
+        d.text((RW // 2, 950), end_text[1], font=BH(96), fill=RED, anchor="mm")
+    end = layer(end_draw)
+    if hook_chip or hook_sub:  # 첫 화면과 같은 마크로 닫는다
+        end.alpha_composite(brand_mark(120), (RW // 2 - 60, RH - 390))
     shade = shade_mask(0.38, 240)
     top = Image.new("L", (1, RH))
     for yy in range(RH):
@@ -426,7 +470,7 @@ def render_tips(items, out_path, hook_text, key="tips", handle=None, end_text=("
                 bg = zoomed(big, 1.0 + 0.08 * still_t[k] / (FPS * (durs[k] + T_HOOK)))
             last = bg
             if t < T_HOOK:
-                im = Image.composite(dark, bg, Image.new("L", (RW, RH), 130)).convert("RGBA")
+                im = Image.composite(dark, bg, Image.new("L", (RW, RH), 130 if not (hook_chip or hook_sub) else 95)).convert("RGBA")
                 show(im, hook, 1.0, scale=pop(t / 0.5))  # 첫 프레임부터 보이게 (썸네일)
             else:
                 tt = t - starts[k]
