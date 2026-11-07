@@ -17,9 +17,10 @@ from functools import lru_cache
 from card_themes import ft
 
 # 릴스 글꼴: 투박한 블랙한산스 대신 프리텐다드(OFL, fonts/Pretendard-*.otf) — 2026-11-07 "글씨체도 별로야"
-BH = lru_cache(None)(lambda s: ft("Pretendard-ExtraBold.otf", s))   # 큰 제목·훅
+BH = lru_cache(None)(lambda s: ft("Pretendard-Bold.otf", s))   # 큰 제목·훅 (ExtraBold는 두꺼워서 한 단계 낮춤)
 NB = lru_cache(None)(lambda s: ft("Pretendard-SemiBold.otf", s))    # 본문 줄
 NM = lru_cache(None)(lambda s: ft("Pretendard-Medium.otf", s))      # 작은 라벨
+RED = (242, 88, 44)  # 릴스 강조색: 주황에 가까운 붉은색 (2026-11-07 지시)
 
 RW, RH, FPS = 1080, 1920, 24
 BG = (12, 12, 14)
@@ -360,7 +361,7 @@ def render_tips(items, out_path, hook_text, key="tips", handle=None, end_text=("
             y = SAFE_B - h
             cf = BH(56)
             w = d.textlength(x["chip"], font=cf)
-            d.rounded_rectangle((76, y, 76 + w + 52, y + 92), 18, fill=RED)
+            d.rectangle((76, y, 76 + w + 52, y + 92), fill=RED)  # 칩은 각지게 (2026-11-07 지시)
             d.text((102, y + 46), x["chip"], font=cf, fill=WHITE, anchor="lm")
             y += 92 + 26
             for ln in nls:
@@ -370,7 +371,7 @@ def render_tips(items, out_path, hook_text, key="tips", handle=None, end_text=("
             y += 30
             for k, vf, vls in blocks:
                 if k:
-                    d.text((76, y), k, font=NM(36), fill=(255, 120, 110))
+                    d.text((76, y), k, font=NM(36), fill=(255, 150, 105))
                     y += 44
                 for ln in vls:
                     d.text((76 + 3, y + 3), ln, font=vf, fill=(0, 0, 0, 160))
@@ -436,7 +437,7 @@ def render_tips(items, out_path, hook_text, key="tips", handle=None, end_text=("
                 cf = BH(54)
                 w = d.textlength(hook_chip, font=cf)
                 x = (RW - w - 52) / 2
-                d.rounded_rectangle((x, y0 - 128, x + w + 52, y0 - 40), 18, fill=RED)
+                d.rectangle((x, y0 - 128, x + w + 52, y0 - 40), fill=RED)
                 d.text((RW / 2, y0 - 84), hook_chip, font=cf, fill=WHITE, anchor="mm")
             if hook_sub:
                 sf = NB(50)
