@@ -80982,11 +80982,225 @@
   ],
   "ts": 1794086629.0,
   "written": 1794096358.0435255,
-  "deep_try": 1,
+  "deep_try": 2,
   "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar6lm8.jpg",
   "img_v": 2,
   "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar6lm8.jpg",
   "img_src": "IGDB",
+  "video_v": 1
+ },
+ {
+  "title": "'젤다의 전설 시간의 오카리나' 리메이크, 고난도 '마스터 퀘스트' 추가되나",
+  "tldr": [
+   "닌텐도 스위치 2용 '젤다의 전설 시간의 오카리나' 리메이크 데이터에서 '마스터 퀘스트' 관련 코드가 대거 발견됐다.",
+   "데이터마이닝을 통해 'DodongoCavern MQ'를 비롯해 'HasMQ', 'ReleaseMQ' 같은 실행 문자열이 확인됐다.",
+   "아오누마 에이지 프로듀서는 최근 인터뷰에서 마스터 퀘스트에 대해 구체적으로 발표할 내용이 없다고 밝힌 바 있다."
+  ],
+  "why": "스위치 2판 '시간의 오카리나' 내부 파일에서 과거 고난도 던전 모드였던 '마스터 퀘스트' 식별 코드가 포착되며 DLC 출시 가능성이 제기됐다.",
+  "body": [
+   "닌텐도 스위치 2로 출시된 '젤다의 전설 시간의 오카리나' 리메이크 버전에 원작의 고난도 모드인 '마스터 퀘스트(Master Quest)'가 추가될 가능성을 보여주는 데이터가 발견됐다. 닌텐도 전문 매체 닌텐도 라이프(Nintendo Life)는 데이터마이너 MrCheeze의 분석을 인용해 게임 내부 파일에서 마스터 퀘스트 관련 문자열이 확인됐다고 보도했다.",
+   "보도에 따르면 유출된 내부 데이터에는 '도동고의 동굴(DodongoCavern)' 명칭 옆에 'MQ' 표기가 붙은 행들이 다수 포함되어 있었다. 실행 파일(exefs) 내부에서도 'HasMQ', 'IsMQModeExist', 'NewGameMQ', 'ReleaseMQ' 등 마스터 퀘스트 모드의 존재와 실행 조건을 명시하는 여러 핵심 코드가 함께 확인됐다.",
+   "마스터 퀘스트는 과거 게임큐브와 닌텐도 3DS 이식작에서 선보였던 콘텐츠로, 퍼즐과 던전 구조를 재배치하고 적 배치를 변경해 난도를 크게 높인 버전이다. 이번 스위치 2 리메이크는 뛰어난 완성도를 갖췄으나 원작이나 3DS 버전에 익숙한 베테랑 이용자에게는 상대적으로 평이하다는 평가가 있었다.",
+   "다만 닌텐도는 해당 모드의 출시 여부를 공식적으로 확정하지 않았다. 프랜차이즈 프로듀서 아오누마 에이지는 최근 IGN과의 인터뷰에서 마스터 퀘스트의 수록 여부를 묻는 질문에 \"현재 시점에서는 구체적으로 발표할 만한 내용이 없다\"고 선을 그은 바 있다. 향후 무료 업데이트나 유료 DLC 형태로 정식 제공될지 여부는 닌텐도의 후속 발표를 지켜봐야 할 부분이다."
+  ],
+  "category": "업데이트",
+  "platforms": [
+   "Switch"
+  ],
+  "games": [
+   "젤다의 전설 시간의 오카리나"
+  ],
+  "games_en": [
+   "The Legend of Zelda: Ocarina of Time"
+  ],
+  "hook": "마스터 퀘스트 부활하나",
+  "title_en": "Data Found in Zelda: Ocarina of Time Remake Hints at Master Quest DLC",
+  "tldr_en": [
+   "Datamined files in the Switch 2 remake of Zelda: Ocarina of Time indicate references to Master Quest mode.",
+   "Strings such as 'DodongoCavern MQ' and 'ReleaseMQ' were spotted in the game's executable files.",
+   "Producer Eiji Aonuma previously stated Nintendo has nothing specific to announce at this time."
+  ],
+  "hook_en": "Master Quest returning soon?",
+  "video_q": null,
+  "trust": "루머",
+  "fixes": [
+   "말한 사람 없는 해석(\"~로 관측된다\")을 삭제함."
+  ],
+  "status": "published",
+  "id": "2c130a1b8a",
+  "sources": [
+   {
+    "name": "Nintendo Life",
+    "title": "Rumour: Data Found In Zelda: Ocarina Of Time May Hint At Master Quest DLC",
+    "link": "https://www.nintendolife.com/news/2026/11/rumour-data-found-in-zelda-ocarina-of-time-may-hint-at-master-quest-dlc",
+    "official": false
+   }
+  ],
+  "ts": 1794078900.0,
+  "written": 1794107116.0967875,
+  "deep_try": 1,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar1t7u.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar1t7u.jpg",
+  "img_src": "IGDB",
+  "video_v": 1
+ },
+ {
+  "title": "AMD 리사 수 CEO \"우리는 데이터 센터 퍼스트 기업\"… 2027년 PC 침체 전망",
+  "tldr": [
+   "AMD 리사 수 CEO는 인터뷰를 통해 회사가 '데이터 센터 퍼스트' 기업으로 체질을 완전히 전환했다고 선언했다.",
+   "데이터 센터 사업 매출은 2026년 3분기에서 4분기로 넘어가며 50% 순증할 것으로 예상됐으며, 내년에는 2배 이상 성장을 목표로 한다.",
+   "반면 일반 소비자용 PC 시장에 대해서는 2027년에 두 자릿수 비율의 판매량 급감을 겪을 것이라고 전망했다."
+  ],
+  "why": "AMD가 인공지능과 엔터프라이즈 컴퓨팅에 무게 중심을 둔 데이터 센터 우선 기업임을 선언하며 향후 PC 시장 위축을 예고했다.",
+  "body": [
+   "외신 피씨 게이머(PC Gamer) 등 주요 외신이 보도한바에 따르면, AMD가 인공지능(AI)과 고성능 엔터프라이즈 컴퓨팅 중심의 '데이터 센터 퍼스트' 체제를 공식 선언했다. AMD 최고경영자(CEO) 리사 수 박사는 야후 파이낸스와의 인터뷰에서 회사의 핵심 자원과 역량을 데이터 센터 확장에 전면 집중하고 있다고 밝혔다.",
+   "리사 수 CEO는 인터뷰를 통해 \"우리는 많은 자원과 공급 능력, 고객 지원 역량을 갖춘 기술 기업이며 이것이 엄청난 성장으로 이어졌다\"며 \"데이터 센터 사업 부문은 3분기에서 4분기로 가면서 전 분기 대비 50% 성장할 예정이고, 이는 오늘날 업계에서 컴퓨팅이 얼마나 중요한지를 보여주는 증거\"라고 말했다. 이어 \"내년으로 접어들면서 이 사업 규모를 두 배 이상으로 늘릴 계획이며, 우리는 데이터 센터 퍼스트 기업이라는 점이 우리의 정체성\"이라고 강조했다.",
+   "데이터 센터 부문의 폭발적인 성장 기대와 달리 일반 소비자용 PC 시장에 대한 전망은 비관적이었다. 리사 수 CEO는 2026년 3분기 실적 발표 콘퍼런스 콜을 통해 다가오는 2027년 전 세계 PC 판매량이 두 자릿수(double-digit) 비율로 감소하는 침체를 겪을 것이라고 내다봤다.",
+   "이번 발언은 인텔 및 엔비디아와 경쟁하는 AMD가 게이밍 PC용 CPU 및 그래픽카드보다 AI 인프라 구축과 서버 공급에 최우선 순위를 두고 있음을 명확히 보여준다."
+  ],
+  "category": "하드웨어",
+  "platforms": [
+   "PC"
+  ],
+  "games": [],
+  "games_en": [],
+  "hook": "AMD \"데이터센터 올인\"",
+  "title_en": "AMD CEO Lisa Su Declares Company 'Data Center-First', Forecasts 2027 PC Slump",
+  "tldr_en": [
+   "AMD CEO Lisa Su emphasized the company's full commitment to becoming a 'data center-first' enterprise.",
+   "The data center business is projected to grow 50% sequentially in Q4, with plans to more than double next year.",
+   "Su forecasted an overall double-digit slump in global PC market sales heading into 2027."
+  ],
+  "hook_en": "Data center comes first",
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [
+   "유출·익명 정보가 아니므로 보도 매체명 'PC Gamer(피씨 게이머)'를 명시하고, 말한 사람 없는 해석(\"~보고 있다\")을 삭제함."
+  ],
+  "status": "published",
+  "id": "3ccd98b309",
+  "sources": [
+   {
+    "name": "PC Gamer",
+    "title": "AMD CEO Lisa Su: 'We are a data center-first company'",
+    "link": "https://www.pcgamer.com/gaming-industry/amd-ceo-lisa-su-we-are-a-data-center-first-company/",
+    "official": false
+   }
+  ],
+  "ts": 1794075016.0,
+  "written": 1794107116.0988035,
+  "deep_try": 1,
+  "img": null,
+  "img_v": 2,
+  "video_v": 1
+ },
+ {
+  "title": "소니, '고스트 오브 요테이' 등에 'PS 독점' 브랜딩 재도입… 독점 정책 복귀 신호",
+  "tldr": [
+   "소니가 '고스트 오브 요테이'와 '언틸 던 2' 공식 웹페이지에 '플레이스테이션 독점' 브랜딩을 부착했다.",
+   "퍼스트파티 타이틀의 PC 이식 전략을 전개하던 소니가 콘솔 독점 정책을 다시 강화하는 것으로 나타났다.",
+   "다만 소니는 '마블 토콘: 파이팅 소울즈' 같은 라이브 서비스 및 일부 멀티플레이 게임은 PC 출시를 유지한다."
+  ],
+  "why": "소니가 주요 퍼스트파티 신작 웹페이지에 플레이스테이션 독점 표기를 다시 추가하며 PC 이식 속도 조절과 콘솔 독점 강화 행보를 보였다.",
+  "body": [
+   "소니 인터랙티브 엔터테인먼트가 주요 퍼스트파티 차기작의 공식 제품 정보 페이지에 '플레이스테이션 독점(PlayStation Exclusive)' 브랜딩을 다시 전면에 내걸기 시작했다. 플레이스테이션 전문 매체 푸시 스퀘어(Push Square)는 소셜 미디어 이용자 Radec의 발견을 인용해 소니의 공식 사이트 내 '고스트 오브 요테이'와 '언틸 던 2' 소개 페이지에 독점 로고가 공식 부착됐다고 전했다.",
+   "소니는 PS5 세대 중반 자사 주요 퍼스트파티 싱글플레이 타이틀을 스팀 등 PC 플랫폼으로 적극 이식하는 행보를 보였다. 그러나 외신 보도에 따르면 싱글플레이 타이틀의 PC 판매 성과가 기대에 미치지 못하면서, 소니는 약 1년여 전부터 콘솔 하드웨어 판매를 견인하기 위한 독점작 정책으로 내부 방향성을 재정립해 왔다.",
+   "이번 공식 브랜딩 재도입은 핵심 싱글 플레이 대작들을 콘솔 독점으로 유지하겠다는 전략을 대외적으로 명확히 표시한 조치다. 푸시 스퀘어는 차기작 '갓 오브 워 라우페이(God of War Laufey)'와 '인터갤럭틱: 더 헤레틱 프로핏(Intergalactic: The Heretic Prophet)' 등 향후 라인업에서도 독점 로고 적용이 이어질 것으로 내다봤다.",
+   "다만 멀티플레이 플랫폼 정책은 이원화하여 운영된다. 소니는 올해 선보인 격투 게임 '마블 토콘: 파이팅 소울즈(Marvel Tokon: Fighting Souls)'처럼 이용자 풀 확보가 필수적인 일부 멀티플레이 및 라이브 서비스 프로젝트에 한해 PC 출시를 지속할 방침이라고 밝힌 바 있다."
+  ],
+  "category": "업계",
+  "platforms": [
+   "PS5"
+  ],
+  "games": [
+   "고스트 오브 요테이",
+   "언틸 던 2"
+  ],
+  "games_en": [
+   "Ghost of Yotei",
+   "Until Dawn 2"
+  ],
+  "hook": "PS 독점 로고 부활했다",
+  "title_en": "Sony Reintroduces 'PlayStation Exclusive' Branding for Ghost of Yotei and Major Games",
+  "tldr_en": [
+   "Sony added official 'PlayStation Exclusive' logos to product pages for Ghost of Yotei and Until Dawn 2.",
+   "The move signals a recommitment to console exclusivity after previous experiments with PC ports.",
+   "Live-service and select multiplayer titles will continue to see simultaneous or planned PC releases."
+  ],
+  "hook_en": "PS exclusives are back",
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [
+   "말한 사람 없는 해석(\"~로 풀이된다\")을 삭제함."
+  ],
+  "status": "published",
+  "id": "bc9ac5d55d",
+  "sources": [
+   {
+    "name": "Push Square",
+    "title": "'PlayStation Exclusive' Branding Added to Tentpole PS5 Games as Sony Doubles Down",
+    "link": "https://www.pushsquare.com/news/2026/11/playstation-exclusive-branding-added-to-tentpole-ps5-games-as-sony-doubles-down",
+    "official": false
+   }
+  ],
+  "ts": 1794065400.0,
+  "written": 1794107116.0990489,
+  "deep_try": 1,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar4u71.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar4u71.jpg",
+  "img_src": "IGDB",
+  "video_v": 1
+ },
+ {
+  "title": "GOG, 자체 런처 '갤럭시' 2027년 리눅스 정식 지원 및 클라이언트 전면 개편",
+  "tldr": [
+   "GOG가 첫 공식 온라인 쇼케이스를 통해 'GOG 갤럭시' 런처를 2027년에 전면 개편한다고 발표했다.",
+   "이번 개편과 함께 수년간 요청이 이어졌던 리눅스(Linux) 운영체제 전용 클라이언트가 정식 출시된다.",
+   "윈도우 및 맥 버전은 라이브러리 인터페이스를 개선하고 속도를 대폭 높이며, 런처 사용 강제 없는 선택 정책은 유지된다."
+  ],
+  "why": "DRM 프리 스토어 GOG가 자체 런처 'GOG 갤럭시'의 구조적 개선과 함께 2027년 리눅스 지원을 확정하며 스팀과의 편의성 격차 줄이기에 나섰다.",
+  "body": [
+   "DRM 프리(무인증) PC 게임 플랫폼 GOG가 자사 전용 데스크톱 클라이언트 'GOG 갤럭시(GOG Galaxy)'의 대규모 리워크와 리눅스(Linux) 공식 지원 계획을 발표했다. GOG는 자체 진행한 첫 공식 쇼케이스 'GOG 쇼케이스(GOG Showcase)'를 통해 2027년 적용을 목표로 런처 시스템 전반을 개편 중이라고 밝혔다.",
+   "쇼케이스 발표에 따르면 가장 큰 변화는 리눅스 지원이다. GOG 측은 \"오랜 시간이 걸렸다는 점을 알고 있지만, 제대로 완성하고 싶었다\"며 \"GOG 갤럭시가 공식적으로 리눅스로 향한다\"고 설명했다. 스팀덱을 필두로 리눅스 기반 PC 게이밍 환경이 급성장함에 따라, 다양한 리눅스 배포판 이용자들을 수용하기 위한 조치다.",
+   "기존 윈도우(Windows) 및 맥(macOS) 버전 역시 대대적인 개편을 거친다. 클라이언트를 한층 단순화해 구동 속도를 크게 끌어올리고, 방대한 라이브러리를 직관적으로 정리하고 열람할 수 있도록 UI 디자인을 깔끔하게 재구성한다. 그간 베타에 머물렀던 2.0 버전의 느린 성능과 무거운 동작 문제를 해결하는 것이 핵심 과제다.",
+   "플랫폼의 기본 철학인 '선택적 사용' 원칙은 변함없이 이어진다. GOG는 런처 설치를 강제하지 않고 웹 브라우저를 통한 무설치 DRM 프리 설치 파일 직접 다운로드 기능을 온전히 유지할 계획이다. 개편된 GOG 갤럭시 클라이언트는 2027년 정식 배포될 예정이다."
+  ],
+  "category": "업계",
+  "platforms": [
+   "PC"
+  ],
+  "games": [],
+  "games_en": [],
+  "hook": "GOG 갤럭시 리눅스 진출",
+  "title_en": "GOG Announces Major Galaxy Revamp for 2027, Adding Official Linux Support",
+  "tldr_en": [
+   "GOG announced at its first showcase that GOG Galaxy will receive a major revamp in 2027.",
+   "The upcoming overhaul includes long-awaited official support for Linux distributions.",
+   "Windows and Mac versions will be reworked to run faster while keeping the client strictly optional."
+  ],
+  "hook_en": "GOG Galaxy on Linux",
+  "video_q": null,
+  "trust": "공식",
+  "fixes": [
+   "문제없음."
+  ],
+  "status": "published",
+  "id": "7ea3a78bb6",
+  "sources": [
+   {
+    "name": "PC Gamer",
+    "title": "Linux on the desktop marches on as GOG announces its Galaxy client is getting a revamp headed to Windows, macOS, and your distro of choice",
+    "link": "https://www.pcgamer.com/software/linux/linux-on-the-desktop-marches-on-as-gog-announces-its-galaxy-client-is-getting-a-revamp-headed-to-windows-macos-and-your-distro-of-choice/",
+    "official": false
+   }
+  ],
+  "ts": 1794063600.0,
+  "written": 1794107116.0992634,
+  "deep_try": 1,
+  "img": null,
+  "img_v": 2,
   "video_v": 1
  }
 ]
