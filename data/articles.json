@@ -81467,8 +81467,7 @@
   "title": "'시간의 오카리나' 스위치 2 리메이크, 출시 나흘 만에 슈퍼 점프 글리치 발견",
   "tldr": [
    "닌텐도 스위치 2로 11월 5일 출시된 '젤다의 전설 시간의 오카리나' 리메이크에서 공중 높이 솟구치는 물리 버그가 확인됐다.",
-   "보물상자 위 특정 조작이나 폭탄 반동을 활용해 던전 구간을 건너뛰는 스피드런 기술이 잇따라 연구되고 있다.",
-   "새로 추가된 달리기 기능에도 불구하고 최적의 이동 방식으로 구르기가 다시 채택됐다."
+   "보물상자 위 특정 조작이나 폭탄 반동을 활용해 던전 구간을 건너뛰는 스피드런 기술이 잇따라 연구되고 있다."
   ],
   "why": "28년 역사의 명작을 현대화한 리메이크작에서도 원작 못지않은 기상천외한 버그와 주파 방식이 연이어 드러나며 스피드런 커뮤니티의 분석이 본격화됐다.",
   "body": [
@@ -81498,7 +81497,9 @@
   "video_q": null,
   "trust": "보도",
   "fixes": [
-   "팩트체크 미완료"
+   "팩트체크 미완료",
+   "[교열] 표기 사전에 따라 '젤다의 전설 시간의 오카리나' 게임 명칭 통일",
+   "[교열] tldr 3번 줄이 1, 2번 줄의 내용과 중복되므로 삭제"
   ],
   "force_review": true,
   "status": "published",
@@ -81548,7 +81549,20 @@
   "img_v": 2,
   "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar1t7u.jpg",
   "img_src": "IGDB",
-  "video_v": 1
+  "video_v": 1,
+  "proofread": 1794172074.543724,
+  "edited": 1794172074.5873065,
+  "ig_head": "시간의 오카리나 리메이크\n출시 나흘 만에 점프 글리치",
+  "ig_sub": "11월 5일 스위치 2 출시, 슈퍼 점프 버그와 구르기 이동법 확인",
+  "ig_body": [
+   "닌텐도 스위치 2로 지난 11월 5일 정식 출시된 '젤다의 전설 시간의 오카리나' 리메이크에서 원작 못지않은 기상천외한 버그와 주파 방식이 연이어 드러나며 스피드런 커뮤니티의 분석이 본격화됐습니다.",
+   "IGN 등 주요 외신은 스피드런 전문 게이머들이 게임 속 특정 물리 판정을 이용해 링크를 폭죽처럼 공중으로 쏘아 올리는 기법을 확인했다고 보도했는데요.",
+   "이번 현상은 스피드러너 Zfg1과 SNS 이용자들을 중심으로 공유됐으며, 특정 지형에서 자세를 잡거나 보물상자 위에 올라탄 뒤 갑작스러운 움직임 또는 폭탄 폭발을 가하면 링크가 하늘 높이 솟구치는 방식입니다.",
+   "스피드런 이용자들은 높은 고도에서 안전하게 착지해 던전의 퍼즐 구간이나 이동 경로를 건너뛰는 시퀀스 브레이크 기술로 이를 연구하고 있습니다.",
+   "이동 방식에 대한 분석도 이어져, 닌텐도가 이번 리메이크에 전력 질주 기능을 도입해 이동 편의성을 개선했음에도 여전히 구르기를 연속 사용하는 것이 가장 빠른 이동 방식으로 나타났습니다.",
+   "폴리곤은 이번 리메이크가 현대 액션 게임의 유행인 패링 시스템을 억지로 도입하지 않고 조준과 베기, 옆걸음 및 백덤블링 회피라는 원작 고유의 간결한 전투 공방을 온전히 유지했다고 평가했습니다.",
+   "게임 플레이의 기본 틀을 보존한 가운데 새 물리 엔진이 맞물리면서 향후 스피드런 기록 단축을 향한 기법 발굴은 더욱 늘어날 것으로 보입니다."
+  ]
  },
  {
   "title": "에픽게임즈, '포트나이트' 해적 상점 토큰 확률 13만 분의 1 공식 공개",
@@ -81657,9 +81671,262 @@
   ],
   "ts": 1794168715.0,
   "written": 1794170517.930899,
-  "deep_try": 1,
+  "deep_try": 2,
   "img": null,
   "img_v": 2,
+  "video_v": 1
+ },
+ {
+  "title": "트랜스포트 피버 출시 10주년 기념 번들 및 3편 실물 소장판 공개",
+  "tldr": [
+   "어반 게임즈는 '트랜스포트 피버' 출시 10주년을 맞아 스팀에 전작 합본 번들을 14일간 10% 할인 가격으로 출시했다.",
+   "시리즈 최신작 '트랜스포트 피버 3' 소장판 박스 버전이 공식 굿즈 스토어에 59.99달러 및 유로로 출시됐다.",
+   "개발사는 '트랜스포트 피버 3' 안정성 테스트 빌드를 스팀 프리뷰 브랜치에 배포하고 연내 첫 대형 업데이트를 예고했다."
+  ],
+  "why": "도시 건설 및 운송 시뮬레이션 명가 어반 게임즈가 10주년을 맞아 할인 번들과 실물 소장판을 공개하고 피버 3의 향후 패치 계획을 밝혔다.",
+  "body": [
+   "어반 게임즈는 지난 2016년 11월 8일 첫 작품을 선보인 이후 10년 동안 백만 장 이상 팔린 시뮬레이션 시리즈로 성장한 '트랜스포트 피버'의 10주년을 맞이했다고 스팀 뉴스를 통해 밝혔다.",
+   "이를 기념해 스팀에서 누락된 시리즈를 채워 구매할 수 있는 '트랜스포트 피버: 더 컴플리트 시리즈' 번들이 14일 동안 기존 할인에 10% 추가 할인된 가격으로 독점 판매된다.",
+   "또한 디지털 복사본을 이미 소유한 팬들을 위해 게임 타이틀이 제외된 실물 구성품만의 '트랜스포트 피버 3' 소장판 박스가 공식 굿즈 스토어에 59.99달러 및 59.99유로로 등록됐다.",
+   "개발사는 지난 9월 말 출시된 '트랜스포트 피버 3'에 대한 유저들의 피드백을 수렴해 안정성 향상 패치 테스트를 스팀 프리뷰 브랜치에서 진행 중이라고 전했다.",
+   "연말 이전에는 첫 번째 정식 게임 업데이트가 배포될 예정이며, 지속적인 피드백 반영을 통해 완성도를 높여갈 계획이다."
+  ],
+  "category": "업데이트",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "트랜스포트 피버 3",
+   "트랜스포트 피버"
+  ],
+  "games_en": [
+   "Transport Fever 3",
+   "Transport Fever"
+  ],
+  "hook": "10주년 기념 할인 번들 출시",
+  "title_en": "Transport Fever Celebrates 10 Years with Steam Bundle and Collector's Box",
+  "tldr_en": [
+   "Urban Games released a 10-year anniversary bundle on Steam with an extra 10% discount.",
+   "The Transport Fever 3 Collector's Box is now available on the official merch store for $59.99 / €59.99.",
+   "Developers released a stability test build on the Steam Preview branch and plan the first major update before the end of the year."
+  ],
+  "hook_en": "10 years of transport",
+  "video_q": "Transport Fever 3 trailer",
+  "trust": "공식",
+  "fixes": [
+   "팩트체크 미완료"
+  ],
+  "force_review": true,
+  "status": "published",
+  "id": "102e016673",
+  "sources": [
+   {
+    "name": "Steam News",
+    "title": "Celebrating 10 incredible years of Transport Fever!",
+    "link": "https://store.steampowered.com/news/app/3493540/view/702158299935539911",
+    "official": true,
+    "img": "https://clan.akamai.steamstatic.com/images/45628540/74c58526e34e53841d7a3a4af368530075cc2cb9.jpg"
+   }
+  ],
+  "gallery": [
+   {
+    "src": "https://clan.akamai.steamstatic.com/images/45628540/74c58526e34e53841d7a3a4af368530075cc2cb9.jpg",
+    "credit": "Steam News"
+   },
+   {
+    "src": "https://clan.akamai.steamstatic.com/images/45628540/74519e13c5c48654de89b88e222151581a866708.jpg",
+    "credit": "Steam News"
+   }
+  ],
+  "ts": 1794161082.0,
+  "written": 1794171748.7686484,
+  "deep_try": 1,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3493540/4c179a79a6286b15575ca3f1a6ca620e5d159b19/header.jpg?t=1791359026",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3493540/310d3f73f3df4e20382dab16946a6c93c4f16ed2/ss_310d3f73f3df4e20382dab16946a6c93c4f16ed2.1920x1080.jpg?t=1791359026",
+  "appid": 3493540,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "크림, 리버스 장르 비틀은 보드게임 '엘 샤다이 제로 나인 리버스' PC 스팀 출시",
+  "tldr": [
+   "크림은 모바일로 선보였던 '엘 샤다이 제로 나인 리버스'를 PC 스팀 플랫폼에 10% 할인된 3.59달러로 정식 출시했다.",
+   "스팀 출시일과 함께 기존 모바일 버전에도 온라인 멀티플레이 지원 및 아카이브 기능이 추가되었다.",
+   "돌에 체력 수치를 부여하고 0이 되면 정화되어 사라지는 독특한 규칙을 적용해 전략성을 높였다."
+  ],
+  "why": "독창적인 규칙을 더한 리버스 변형 보드게임이 PC 플랫폼으로 확장되며 모바일 버전도 동시 업데이트됐다.",
+  "body": [
+   "크림은 클래식 보드게임에 독특한 규칙을 가미한 '엘 샤다이 제로 나인 리버스'를 PC 스팀 플랫폼을 통해 출시했다고 밝혔다.",
+   "스팀 출시 기념으로 11월 15일까지 10% 할인된 가격인 3.59달러에 판매되며, 이후에는 정가 3.99달러로 전환된다.",
+   "앱스토어와 구글플레이를 통해 먼저 선보였던 모바일 버전 역시 PC판 출시와 발맞추어 온라인 멀티플레이와 아카이브 기능이 업데이트되었다.",
+   "게임은 깊이 있는 싱글플레이를 즐기는 클래식 모드와 캐릭터를 골라 대전하는 온라인 모드를 지원한다.",
+   "일반적인 방식과 달리 모든 돌에 체력이 존재하며, 돌이 뒤집힐 때마다 1 HP가 깎여 0이 되면 판에서 사라지는 규칙을 도입해 자원 관리의 재미를 강조했다."
+  ],
+  "category": "신작",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "엘 샤다이 제로 나인 리버스"
+  ],
+  "games_en": [
+   "El Shaddai: Zero Nine Reversi"
+  ],
+  "hook": "체력 있는 돌로 벌이는 리버스",
+  "title_en": "El Shaddai: Zero Nine Reversi Now Available for PC on Steam",
+  "tldr_en": [
+   "Crim has released El Shaddai: Zero Nine Reversi on PC via Steam for $3.59 with a launch discount.",
+   "Mobile versions on iOS and Android received simultaneous updates adding online multiplayer and an archive.",
+   "Stones feature HP mechanics where flipped pieces lose health and vanish when reaching zero."
+  ],
+  "hook_en": "Reversi with HP mechanics",
+  "video_q": "El Shaddai Zero Nine Reversi trailer",
+  "trust": "보도",
+  "fixes": [
+   "팩트체크 미완료"
+  ],
+  "force_review": true,
+  "status": "published",
+  "id": "1d1c2756b6",
+  "sources": [
+   {
+    "name": "Gematsu",
+    "title": "El Shaddai: Zero Nine Reversi now available for PC",
+    "link": "https://www.gematsu.com/2026/11/el-shaddai-zero-nine-reversi-now-available-for-pc",
+    "official": false
+   }
+  ],
+  "ts": 1794150946.0,
+  "written": 1794171748.7695618,
+  "deep_try": 1,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4590950/5ee393092d115423260110c54c57249373387257/header.jpg?t=1794133992",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4590950/b33b0ca9d654fae3e17561c4787eda7d83506ed1/ss_b33b0ca9d654fae3e17561c4787eda7d83506ed1.1920x1080.jpg?t=1794133992",
+  "appid": 4590950,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "반다이남코, 배틀로얄 신작 '나의 히어로 울트라 럼블 모바일' 티저 트레일러 공개",
+  "tldr": [
+   "반다이남코는 무료 배틀로얄 게임 '나의 히어로 울트라 럼블 모바일'의 티저 트레일러를 공개하고 사전 등록에 돌입했다.",
+   "모바일 버전은 기존 PC 및 콘솔 버전과 크로스플레이를 지원하지 않으나 iOS와 안드로이드 간 크로스플레이는 가능하다.",
+   "3인 1조로 구성된 8개 팀이 총 24명이 참가해 개성을 활용해 최후까지 살아남는 방식으로 매 시즌 콘텐츠가 추가된다."
+  ],
+  "why": "인기 애니메이션 기반 배틀로얄 게임의 모바일 이외 플랫폼 연동 제외 및 세부 규칙이 공개됐다.",
+  "body": [
+   "반다이남코는 무료 배틀로얄 액션 게임 '나의 히어로 울트라 럼블 모바일'의 티저 트레일러를 공개하고 애플 앱스토어와 구글플레이를 통해 사전 등록을 시작했다.",
+   "모바일 버전은 독립된 게임으로 운영되며, 기존에 서비스 중인 콘솔 및 PC 버전과의 크로스플레이는 지원하지 않는다.",
+   "다만 iOS와 안드로이드 플랫폼 이용자들 간의 크로스플레이는 정상적으로 지원되어 모바일 유저끼리 함께 즐길 수 있다.",
+   "게임은 3인 1조로 이루어진 총 8개 팀, 총 24명의 플레이어가 넓은 전장에서 각 캐릭터 고유의 개성을 활용해 최후의 승자를 가리는 방식으로 진행된다.",
+   "개발사는 매 시즌 캐릭터와 코스튬 등 신규 콘텐츠를 지속적으로 추가해 전황이 순식간에 뒤바뀌는 배틀을 선사할 예정이다."
+  ],
+  "category": "신작",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "나의 히어로 울트라 럼블"
+  ],
+  "games_en": [
+   "My Hero Ultra Rumble"
+  ],
+  "hook": "나의 히어로 울트라 럼블 모바일",
+  "title_en": "My Hero Ultra Rumble Mobile Teaser Trailer Released with Pre-Registration",
+  "tldr_en": [
+   "Bandai Namco has released a teaser trailer for My Hero Ultra Rumble Mobile and opened pre-registrations.",
+   "The mobile version does not support cross-play with PC or consoles, but allows iOS and Android cross-play.",
+   "Matches feature 24 players split into 8 teams of three utilizing character Quirks in a battle royale."
+  ],
+  "hook_en": "My Hero battle royale mobile",
+  "video_q": "My Hero Ultra Rumble Mobile teaser trailer",
+  "trust": "보도",
+  "fixes": [
+   "팩트체크 미완료"
+  ],
+  "force_review": true,
+  "status": "published",
+  "id": "488df55be5",
+  "sources": [
+   {
+    "name": "Gematsu",
+    "title": "My Hero Ultra Rumble Mobile teaser trailer",
+    "link": "https://www.gematsu.com/2026/11/my-hero-ultra-rumble-mobile-teaser-trailer",
+    "official": false
+   }
+  ],
+  "ts": 1794150059.0,
+  "written": 1794171748.7697072,
+  "deep_try": 1,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1607250/609881717ea2123b86cc44909a60ebbc790e7c39/header.jpg?t=1790820130",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1607250/0bd381231c888dda40b52333926958e80d3c3a5d/ss_0bd381231c888dda40b52333926958e80d3c3a5d.1920x1080.jpg?t=1790820130",
+  "appid": 1607250,
+  "img_src": "Steam 스토어",
+  "video_v": 1,
+  "video": {
+   "id": "uiFesJDEC9k",
+   "title": "MY HERO ULTRA RUMBLE Mobile - Teaser Trailer",
+   "channel": "[Global] Bandai Namco Entertainment - Mobile Games"
+  }
+ },
+ {
+  "title": "포켓몬 TCG 신규 확장팩 '델타 레인' 세부 카드 정보 공개",
+  "tldr": [
+   "포켓몬 카드게임 신규 확장팩 '델타 레인'은 수집용인 30주년 기념 세트와 달리 플레이 중심의 성능과 지원 옵션을 강조했다.",
+   "기본 포켓몬인 '메가 레쿠쟈 ex'는 체력 280과 불꽃·번개 에너지당 50 대미지를 주는 공격 능력을 갖추었다.",
+   "전설적인 스타디움 카드 '레전더리 서밋'은 무색 크리처의 프라이즈 보상을 줄여주는 게임 체인저 역할을 한다."
+  ],
+  "why": "포켓몬 TCG 신규 확장팩이 수집보다 대전 플레이어들을 겨냥한 강력한 카드 성능과 시스템을 선보였다.",
+  "body": [
+   "포켓몬 카드게임의 새로운 확장팩 '메가 에볼루션: 델타 레인'이 수집가 중심이었던 전작 '30주년 기념 세트'와 달리 철저히 플레이어 지향적인 구성을 선보였다고 실리콘에라가 보도했다.",
+   "이번 세트의 핵심인 '메가 레쿠쟈 ex'는 280의 체력을 가진 기본 포켓몬으로 등장하며, 보드 위의 불꽃 및 번개 에너지당 50의 대미지를 입히는 강력한 공격력을 자랑한다.",
+   "카드 일러스트 역시 수채화풍의 수서벌레나 수공예 니드란 등 창작자의 의도가 돋보이는 다양한 스타일을 실험하여 시각적 즐거움을 더했다.",
+   "또한 토너먼트 활용도가 높은 '메가 레쿠쟈 캡'과 특수 에너지 3종이 추가되어 덱 구성의 폭을 넓혔으며, 썬더볼트·랜드로스·토네로스·디안시 등 '화신' 카드군의 조합 가능성도 제시됐다.",
+   "특히 역사상 최초로 2장의 카드가 합쳐진 형태의 '레전더리 스타디움' 카드가 도입되어, 그중 '레전더리 서밋'은 무색 생명체의 프라이즈 보상을 줄여주는 전례 없는 판도 변화를 이끌어낸다."
+  ],
+  "category": "업데이트",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "포켓몬 카드 게임"
+  ],
+  "games_en": [
+   "Pokemon TCG"
+  ],
+  "hook": "메가 레쿠쟈 ex 등장",
+  "title_en": "Pokemon TCG: Delta Reign Expansion Highlights Playability and New Mechanics",
+  "tldr_en": [
+   "The Mega Evolution: Delta Reign expansion focuses on gameplay mechanics rather than pure collector value.",
+   "Mega Rayquaza ex debuts as a Basic Pokémon with 280 HP and damage scaling per energy.",
+   "Legendary Stadium cards make their first appearance, led by Legendary Summit which alters prize rewards."
+  ],
+  "hook_en": "Delta Reign cards revealed",
+  "video_q": "Pokemon TCG Delta Reign expansion trailer",
+  "trust": "보도",
+  "fixes": [
+   "팩트체크 미완료"
+  ],
+  "force_review": true,
+  "status": "published",
+  "id": "a94dcc2a6b",
+  "sources": [
+   {
+    "name": "Siliconera",
+    "title": "Pokemon TCG: The Best Delta Reign Cards",
+    "link": "https://www.siliconera.com/pokemon-tcg-the-best-delta-reign-cards/",
+    "official": false
+   }
+  ],
+  "ts": 1794146400.0,
+  "written": 1794171748.769841,
+  "deep_try": 1,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar1vjx.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar1vjx.jpg",
+  "img_src": "IGDB",
   "video_v": 1
  }
 ]
