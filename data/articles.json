@@ -80743,7 +80743,7 @@
   ],
   "ts": 1794081970.0,
   "written": 1794085370.6528854,
-  "deep_try": 1,
+  "deep_try": 2,
   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2075800/2c7d5dad080c4888faaa03c4a955136c50f5bfae/header.jpg?t=1790340688",
   "img_v": 2,
   "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2075800/ca1c9bd849571f0795dbc641f0f4906c15e2aaaa/ss_ca1c9bd849571f0795dbc641f0f4906c15e2aaaa.1920x1080.jpg?t=1790340688",
@@ -80804,10 +80804,188 @@
   ],
   "ts": 1794079439.0,
   "written": 1794085370.6531346,
-  "deep_try": 1,
+  "deep_try": 2,
   "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar64ek.jpg",
   "img_v": 2,
   "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar64ek.jpg",
+  "img_src": "IGDB",
+  "video_v": 1
+ },
+ {
+  "title": "'삭제 버그' 악명 D&D RPG '풀 오브 래디언스', 25년 만에 PC 재출시",
+  "tldr": [
+   "2001년 출시 당시 윈도우 시스템 파일 삭제 버그로 악명 높았던 '풀 오브 래디언스: 루인스 오브 미스 드라노르'가 스팀과 GOG에 재출시됐다.",
+   "퍼블리셔 SNEG는 치명적 세이브 손상 버그를 해결하고 와이드스크린, 컨트롤러 조작, 전투 속도 조절, 액션 바 등 편의 기능을 추가했다.",
+   "외신 PC 게이머 기자는 초반 플레이 동안 아이템 증발이나 세이브 손상 없이 안정적으로 구동되는 것을 확인했다고 전했다."
+  ],
+  "why": "윈도우 삭제라는 최악의 버그로 봉인됐던 고전 던전 크롤러가 편의 시스템을 전면 보완해 정식 복각됐다.",
+  "body": [
+   "2001년 출시 당시 극심한 버그와 치명적인 시스템 오류로 악명을 떨쳤던 던전앤드래곤(D&D) 기반 RPG '풀 오브 래디언스: 루인스 오브 미스 드라노르'가 버그를 해결하고 PC 플랫폼에 재출시됐다. 퍼블리셔 SNEG는 각종 편의 기능과 현대적 시스템 개선을 적용한 수정 버전을 스팀(Steam)과 GOG를 통해 선보였다.",
+   "원작은 출시 당시 세이브 파일 손상과 핵심 퀘스트 아이템 소실 등 수많은 결함을 안고 있었으며, 특히 게임을 삭제할 때 윈도우 시스템 파일을 함께 지워버리는 치명적 오류로 게이머들에게 큰 충격을 안겼다. 외신 PC 게이머는 당시 리뷰를 회고하며 \"다이카타나의 악명 높은 데뷔 이후 초기 구매자들에게 이토록 격렬한 분노를 일으킨 게임은 없었다\"고 평가한 바 있다.",
+   "이번 재출시 버전은 과거의 치명적인 문제들을 전면 해결하고 최신 PC 환경에 맞춘 다양한 개선 기능을 탑재했다. 와이드스크린 화면 비율을 지원하며 컨트롤러 조작 기능과 전투 속도 조절 옵션을 추가했다. 아울러 게임 플레이 편의를 돕는 상세 툴팁과 액션 바가 새롭게 도입됐으며, 비주얼 선명도 역시 한층 개선됐다.",
+   "PC 게이머의 기자는 \"과거의 악명 높은 결함 때문에 게임을 건너뛰었던 이용자라도 이제는 문제없이 매끄럽게 즐길 수 있다\"며 \"초반 몇 시간을 플레이하는 동안 아이템 증발이나 세이브 파일 손상이 단 한 번도 발생하지 않았다\"고 직접 검증한 소감을 전했다.",
+   "치명적인 삭제 버그로 게이머들의 기억에 남았던 '풀 오브 래디언스: 루인스 오브 미스 드라노르'의 개선 버전은 현재 PC 플랫폼인 스팀과 GOG에서 구매해 즉시 플레이할 수 있다."
+  ],
+  "category": "신작",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "풀 오브 래디언스: 루인스 오브 미스 드라노르"
+  ],
+  "games_en": [
+   "Pool of Radiance: Ruins of Myth Drannor"
+  ],
+  "hook": "컴퓨터 날리던 게임 부활?",
+  "title_en": "Infamous D&D RPG Pool of Radiance Rereleased on PC",
+  "tldr_en": [
+   "Pool of Radiance: Ruins of Myth Drannor, notorious for its OS-wiping uninstaller bug in 2001, has returned to Steam and GOG.",
+   "Publisher SNEG fixed game-breaking issues and added widescreen support, controller compatibility, and an action bar.",
+   "PC Gamer reported smooth gameplay without any missing quest items or corrupted save files."
+  ],
+  "hook_en": "Worst Bug Ever Fixed?",
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [
+   "출처에 근거가 없는 알트탭 자체 배경설명 및 불일치 항목 없음. 신뢰도 '보도' 적용."
+  ],
+  "status": "published",
+  "id": "6b762f56ff",
+  "sources": [
+   {
+    "name": "Steam News",
+    "title": "One of the buggiest D&D games ever released, Pool of Radiance: Ruins of Myth Drannor, is back and actually playable again",
+    "link": "https://store.steampowered.com/news/group/1850/view/693151369547219061",
+    "official": false
+   },
+   {
+    "name": "PC Gamer",
+    "title": "One of the buggiest D&D games ever released, Pool of Radiance: Ruins of Myth Drannor, is back and actually playable again",
+    "link": "https://www.pcgamer.com/games/rpg/one-of-the-buggiest-d-and-d-games-ever-released-pool-of-radiance-ruins-of-myth-drannor-is-back-and-actually-playable-again/",
+    "official": false
+   }
+  ],
+  "ts": 1794093942.0,
+  "written": 1794096358.0423422,
+  "deep_try": 1,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4834760/d56eafff9c3c2a6788604850e402c1f02ee4d955/header.jpg?t=1793974605",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4834760/eea2e04daf082fe0627b8e3991f4357b0eec87bf/ss_eea2e04daf082fe0627b8e3991f4357b0eec87bf.1920x1080.jpg?t=1793974605",
+  "appid": 4834760,
+  "img_src": "Steam 스토어",
+  "video_v": 1
+ },
+ {
+  "title": "사이버펑크풍 암시장 운영 '프로버블리 스톨른', 스팀 동접 17만 돌파",
+  "tldr": [
+   "신작 인디 게임 '프로버블리 스톨른'이 스팀DB 기준 11월 4일 최고 동시 접속자 수 17만 4,382명을 돌파했다.",
+   "퀘스팅 구스가 개발한 이 게임은 디스토피아 우주 정거장에서 불법 장물을 거래하며 임대료를 감당하는 상점 운영 시뮬레이션이다.",
+   "스팀 유저 평가 '압도적으로 긍정적'을 기록 중이며 현재 스팀에서 17.99달러에 판매되고 있다."
+  ],
+  "why": "'사이버펑크 2077'의 분위기와 '페이퍼 플리즈'의 시스템을 융합한 인디 신작이 입소문만으로 스팀 차트를 장악했다.",
+  "body": [
+   "인디 개발사 퀘스팅 구스(Questing Goose)의 신작 '프로버블리 스톨른(Probably Stolen)'이 출시 일주일 만에 스팀 최고 동시 접속자 수 17만 명을 돌파하며 깜짝 흥행을 기록하고 있다. 외신 폴리곤에 따르면 지난 10월 28일 출시된 이 게임은 스팀DB 집계 기준 11월 4일 최고 동시 접속자 17만 4,382명을 기록하며 폭발적인 상승세를 이어가고 있다.",
+   "'프로버블리 스톨른'은 '사이버펑크 2077' 특유의 디스토피아 분위기와 '페이퍼 플리즈'의 시스템, 그리고 인벤토리 관리 요소를 결합한 시뮬레이션 게임이다. 플레이어는 막대한 대출을 끼고 간신히 노점을 차린 전직 스캐빈저가 되어, 치솟는 임대료와 세력들의 감시 속에서 불법 장물과 암시장 물품을 거래해 최대한의 이익을 남겨야 한다.",
+   "이용자는 무기 제작자, 화학자, 농부, 물 상인, 장물아비 등 다양한 수익 방식을 선택할 수 있으며, 이에 따라 마약 중독이나 불시 검문, 추가 기계 및 허가증 요구 등 서로 다른 위험 요소를 해결해야 한다. 사업 규모가 커지면 여러 개의 불법 매장을 동시에 운영할 수도 있지만, 정기적인 임대료 납부를 지키지 못하면 몰락하게 된다.",
+   "스팀 이용자 평가는 현재 '압도적으로 긍정적'을 유지하고 있다. 유저들은 \"불시 검문을 피해 귀중품 상자를 쓰레기통에 숨겼다 가 깜빡 잊어 환경미화원을 하룻밤 사이에 부자로 만들었다\"거나 \"형편이 어려워 물에 아편을 타서 팔았다\"는 등 자유도 높은 상황극과 강한 중독성을 높이 평가했다. 후반부 시스템 확장이 다소 아쉽다는 지적이 일부 있으나, 대부분의 이용자는 수십 시간의 몰입감을 고려할 때 17.99달러의 가격이 아깝지 않다는 반응이다.",
+   "독특한 암시장 운영 재미로 입소문을 타며 스팀 차트를 장악한 '프로버블리 스톨른'은 현재 PC(스팀)에서 17.99달러에 정식 판매되고 있다."
+  ],
+  "category": "업계",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "프로버블리 스톨른"
+  ],
+  "games_en": [
+   "Probably Stolen"
+  ],
+  "hook": "스팀 동접 17만 돌파",
+  "title_en": "Probably Stolen Surges Past 170,000 Players on Steam",
+  "tldr_en": [
+   "Indie sim Probably Stolen peaked at 174,382 concurrent players on Steam on November 4, according to SteamDB.",
+   "The game mixes Cyberpunk 2077 vibes with Papers, Please mechanics as players run an illicit stall in a space station.",
+   "Currently holding an 'Overwhelmingly Positive' rating on Steam, the title is available for $17.99."
+  ],
+  "hook_en": "170K Concurrent Players",
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [
+   "출처에 근거가 없는 알트탭 기존 보도 리스트 및 불일치 항목 없음. 신뢰도 '보도' 적용."
+  ],
+  "status": "published",
+  "id": "aef9c1814e",
+  "sources": [
+   {
+    "name": "Polygon",
+    "title": "Cyberpunk 2077 Meets Papers, Please in Steam’s Latest Surprise Viral Hit",
+    "link": "https://www.polygon.com/probably-stolen-cyberpunk-shopkeeping-simulator-steam-hit/",
+    "official": false
+   }
+  ],
+  "ts": 1794096017.0,
+  "written": 1794096358.0433812,
+  "deep_try": 1,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar6f1b.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar6f1b.jpg",
+  "img_src": "IGDB",
+  "video_v": 1
+ },
+ {
+  "title": "'와우: 포에버', 론칭 최고 동접 경신… 15년 만의 최다 신규 유저 유입",
+  "tldr": [
+   "블리자드는 11월 4일 출시된 '월드 오브 워크래프트: 포에버'가 시리즈 역대 론칭 최고 동시 접속자 수 및 복귀 유저 기록을 세웠다고 밝혔다.",
+   "홀리 롱데일 총괄 프로듀서는 15년 만의 와우 론칭 중 가장 많은 신규 유저가 유입됐다고 공식 발표했다.",
+   "오리지널 바닐라 감성을 살린 이번 신작은 최고 레벨 60 제한과 함께 신규 지역, 1,000개 이상의 퀘스트, 신규 종족을 지원한다."
+  ],
+  "why": "오리지널 바닐라 감성으로 회귀한 '와우: 포에버'가 15년 만의 최대 신규 유저 유입을 이끌며 시리즈 흥행 신기록을 달성했다.",
+  "body": [
+   "블리자드 엔터테인먼트의 신작 '월드 오브 워크래프트: 포에버(World of Warcraft: Forever)'가 출시 직후 역대 시리즈 사상 최고 동시 접속자 수와 복귀 유저 기록을 동시에 갈아치웠다. 블리자드는 공식 SNS를 통해 지난 11월 4일 출시된 'WoW: 포에버'가 시리즈 론칭 기준 최고 동시 접속자와 최다 복귀 유저 기록을 달성했다고 발표했다.",
+   "신규 유저 유입 지표에서도 역사적인 기록이 나왔다. '월드 오브 워크래프트' 총괄 프로듀서 겸 부사장 홀리 롱데일(Holly Longdale)은 \"15년 만에 와우 론칭 중 가장 많은 신규 유저가 아제로스를 찾았다\"며 \"처음으로 아제로스를 경험하는 이들과 다시 이곳을 찾은 모든 유저를 환영하며, 여러분의 성원에 진심으로 감사드린다\"고 전했다.",
+   "블리즈컨 2026에서 처음 공개된 'WoW: 포에버'는 클래식 오리지널 바닐라 시절의 경험에 최대한 가깝게 구현하는 것을 목표로 기획됐다. 60레벨 상한을 유지하면서도 완전히 새로운 탐험 지역과 1,000개 이상의 신규 퀘스트를 추가했고, PvP 밸런스 개선, 신규 던전, 새로운 전문 기술과 평판 시스템 등 방대한 콘텐츠를 새롭게 구축했다.",
+   "여기에 한층 개선된 비주얼 그래픽과 함께 오리지널에는 없던 신규 플레이어블 종족까지 도입해 고전적인 감성과 현대적 재미를 동시에 잡았다는 평가를 받는다. 출시 전 우려를 샀던 서버 시스템 역시 안착하면서 전 세계 이용자들의 폭발적인 유입을 견인했다.",
+   "클래식 바닐라의 재해석으로 15년 만의 대기록을 세운 '월드 오브 워크래프트: 포에버'는 현재 PC 플랫폼에서 서비스 중이다."
+  ],
+  "category": "업계",
+  "platforms": [
+   "PC"
+  ],
+  "games": [
+   "월드 오브 워크래프트: 포에버"
+  ],
+  "games_en": [
+   "World of Warcraft: Forever"
+  ],
+  "hook": "15년 만에 최다 신규 유저",
+  "title_en": "WoW: Forever Breaks Launch Concurrent Player Records",
+  "tldr_en": [
+   "Blizzard announced that World of Warcraft: Forever set a new launch record for peak concurrent and returning players.",
+   "Executive Producer Holly Longdale confirmed the game saw the largest influx of new players for a WoW launch in 15 years.",
+   "The vanilla-inspired title features a level cap of 60, over 1,000 new quests, updated visuals, and a new playable race."
+  ],
+  "hook_en": "15-Year Launch Record",
+  "video_q": null,
+  "trust": "공식",
+  "fixes": [
+   "출처에 근거가 없는 알트탭 기존 보도 리스트 및 불일치 항목 없음. 신뢰도 '공식' 적용."
+  ],
+  "status": "published",
+  "id": "bbf5b1df1d",
+  "sources": [
+   {
+    "name": "Insider Gaming",
+    "title": "WoW: Forever Sets Launch Record for Concurrent Players",
+    "link": "https://insider-gaming.com/wow-forever-launch-concurrent-player-record/",
+    "official": false
+   }
+  ],
+  "ts": 1794086629.0,
+  "written": 1794096358.0435255,
+  "deep_try": 1,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar6lm8.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar6lm8.jpg",
   "img_src": "IGDB",
   "video_v": 1
  }
