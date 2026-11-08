@@ -204,9 +204,13 @@ def llm(prompt, prefer_lite=False, search=False):
                                     {"generationConfig": {"responseMimeType": "application/json", "temperature": 0.4}})}).encode(),
                 headers={"Content-Type": "application/json", "x-goog-api-key": os.environ["GEMINI_API_KEY"]})
             for attempt in range(3):
+                # LLM_DEADLINE(유닉스 시각)을 넘기면 바로 포기: 제미나이 장애 때 인스타 준비가 15분 제한을 넘겨 하루치 게시가 통째로 빠졌다 (2026-11-06)
+                left = float(os.environ.get("LLM_DEADLINE") or 1e12) - time.time()
+                if left < 15:
+                    raise RuntimeError("LLM 시간 예산 소진 — 건너뜀")
                 try:
                     t = time.time()
-                    r = json.loads(urllib.request.urlopen(req, timeout=300).read())
+                    r = json.loads(urllib.request.urlopen(req, timeout=min(int(os.environ.get("LLM_TIMEOUT") or 300), left)).read())
                     print(f"    ({model}, {time.time() - t:.0f}초)")
                     text = "".join(pt.get("text", "") for pt in r["candidates"][0]["content"]["parts"])
                     if search:  # 검색 모드는 JSON 강제가 안 돼서 본문에서 JSON 만 꺼낸다

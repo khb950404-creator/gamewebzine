@@ -179,7 +179,7 @@ TOP_KW = ("zelda", "젤다")
 HOT_KW = ("monsterhunteroutlanders", "몬스터헌터아웃랜더스", "몬헌아웃랜더스", "outlanders", "아웃랜더스")
 COLD_KW = ("sonic", "소닉")
 # 공유되는 소식: 연기·판매 기록·이변·논란 해명 (2026-11-04 주간 분석: 도달 3~11배, 공유 대부분이 여기서 나옴)
-SURPRISE_KW = ("연기", "만장", "격파", "이변", "취소", "폐쇄", "해고", "논란", "아냐", "아니다")
+SURPRISE_KW = ("연기", "만장", "돌파", "격파", "이변", "취소", "폐쇄", "해고", "논란", "아냐", "아니다")
 GTA_KW = ("gta6", "gtavi", "grandtheftautovi", "grandtheftauto6", "gta 6", "그랜드테프트오토6", "그랜드테프트오토vi")
 
 
@@ -204,7 +204,7 @@ def popularity(a):
     s_ += 5 if any(k in text for k in BIG_IP) else 0
     s_ += 30 if any(k in text for k in HOT_KW) else 0
     s_ -= 60 if any(k in text for k in COLD_KW) else 0
-    s_ += 6 if any(k in text for k in SURPRISE_KW) else 0
+    s_ += 12 if any(k in text for k in SURPRISE_KW) else 0  # 2주 상위 5개(연기 1,222·400만 장 592·이변 329 등)가 모두 이 유형, 정례 소식의 3~10배 → 6에서 12로
     s_ += 2 if a.get("trust") == "공식" else 0
     s_ += 2 if a.get("category") == "신작" or "트레일러" in a["title"] or "공개" in a["title"] else 0
     s_ += 2 if a.get("video") else 0
@@ -705,6 +705,9 @@ def regen_one(q, arts):
 
 
 def prepare():
+    # 인스타 준비 단계의 LLM(문구·교열) 호출은 합쳐서 4분, 한 번에 90초까지만 — 넘기면 교열 없이 준비를 마친다
+    os.environ.setdefault("LLM_DEADLINE", str(time.time() + 240))
+    os.environ.setdefault("LLM_TIMEOUT", "90")
     from carousel import build_carousel
     arts = load(DATA / "articles.json", [])
     if PROFILE == "en":  # 영문 계정: 영문 제목·요약이 있는 기사만
@@ -1063,10 +1066,12 @@ def _publish():
     if dropped:
         print(f"오래된 대기 {len(dropped)}건 정리")
     order = {"reel": 0, "series": 1, "deal": 2, "news": 3}
-    # 꿀팁 릴스(수·금)는 저장형이라 한 번도 하루 1건 자리를 못 얻었다 → GTA·젤다와 같은 단계로 올려 시험
-    queue.sort(key=lambda q: (not q.get("feature"), not q.get("breaking"),
+    # 꿀팁 릴스(수·금)는 2주 연속 특집(젤다·프래그먼터리 오더)에 밀려 한 번도 못 올라갔다 (11-04 chk 3일 대기 후 폐기)
+    # → 특집과 같은 첫 단계로 올리고, 만든 지 20시간이 지나면 같은 단계(GTA·젤다) 특집보다 먼저. 롤드컵(0단계)은 그대로 위
+    queue.sort(key=lambda q: (not (q.get("feature") or q.get("tips")), not q.get("breaking"),
                               min(1, priority(arts.get(q["id"]) or {"title": q.get("caption", "")[:80]})) if q.get("tips")
                               else priority(arts.get(q["id"]) or {"title": q.get("caption", "")[:80]}),
+                              not (q.get("tips") and time.time() - q.get("made", time.time()) > 20 * 3600),
                               order.get(q.get("kind", "news"), 4)))  # 속보 > 롤드컵 > GTA 6 > 나머지
     budget = int(os.environ.get("IG_PUBLISH_MAX", 99))  # 시간대 실행에서는 2건씩
     # 인사이트 학습: 반응 좋은 시간대엔 1건 더, 약한 시간대엔 1건 덜 (강제 게시 땐 그대로)
