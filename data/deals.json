@@ -1,5 +1,5 @@
 {
- "updated": "11.08 22:10",
+ "updated": "11.08 22:14",
  "deals": [
   {
    "appid": 4530370,
@@ -2055,10 +2055,31 @@
    "best": 3200
   },
   {
+   "appid": 5286590,
+   "name": "삼한쟁패",
+   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5286590/f1693d9dc9adb88d55e15af6078c9be69a239931/header_koreana.jpg?t=1793184895",
+   "rank": 60,
+   "discount": 15,
+   "initial": 11000,
+   "final": 9350,
+   "low": true,
+   "ko": true,
+   "ko_voice": false,
+   "genres": [
+    "인디",
+    "시뮬레이션",
+    "전략"
+   ],
+   "meta": null,
+   "shops": [],
+   "ever_low": 9350,
+   "best": 9350
+  },
+  {
    "appid": 3773070,
    "name": "DJMAX RESPECT V - V LIBERTY III PACK",
    "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3773070/4012e0fba27735d364f97c99b903fa4ebbd1295f/header.jpg?t=1752745004",
-   "rank": 60,
+   "rank": 61,
    "discount": 65,
    "initial": 29800,
    "final": 10430,
@@ -2103,27 +2124,6 @@
    ],
    "ever_low": 10430,
    "best": 10430
-  },
-  {
-   "appid": 5286590,
-   "name": "삼한쟁패",
-   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5286590/f1693d9dc9adb88d55e15af6078c9be69a239931/header_koreana.jpg?t=1793184895",
-   "rank": 61,
-   "discount": 15,
-   "initial": 11000,
-   "final": 9350,
-   "low": true,
-   "ko": true,
-   "ko_voice": false,
-   "genres": [
-    "인디",
-    "시뮬레이션",
-    "전략"
-   ],
-   "meta": null,
-   "shops": [],
-   "ever_low": 9350,
-   "best": 9350
   },
   {
    "appid": 1601580,
@@ -3528,7 +3528,7 @@
    "discount": 45,
    "initial": 5500,
    "final": 3020,
-   "low": false,
+   "low": true,
    "ko": true,
    "ko_voice": false,
    "genres": [
