@@ -80824,7 +80824,7 @@
   ],
   "ts": 1794079010.0,
   "written": 1794085370.6524346,
-  "deep_try": 2,
+  "deep_try": 3,
   "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/cf6mifo2svxpde4zks6x.jpg",
   "img_v": 2,
   "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/cf6mifo2svxpde4zks6x.jpg",
@@ -80882,7 +80882,7 @@
   ],
   "ts": 1794082828.0,
   "written": 1794085370.652667,
-  "deep_try": 2,
+  "deep_try": 3,
   "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar64ek.jpg",
   "img_v": 2,
   "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar64ek.jpg",
@@ -81461,6 +81461,205 @@
   "ts": 1794112025.0,
   "written": 1794118039.3644629,
   "deep_try": 3,
+  "video_v": 1
+ },
+ {
+  "title": "'시간의 오카리나' 스위치 2 리메이크, 출시 나흘 만에 슈퍼 점프 글리치 발견",
+  "tldr": [
+   "닌텐도 스위치 2로 11월 5일 출시된 '젤다의 전설 시간의 오카리나' 리메이크에서 공중 높이 솟구치는 물리 버그가 확인됐다.",
+   "보물상자 위 특정 조작이나 폭탄 반동을 활용해 던전 구간을 건너뛰는 스피드런 기술이 잇따라 연구되고 있다.",
+   "새로 추가된 달리기 기능에도 불구하고 최적의 이동 방식으로 구르기가 다시 채택됐다."
+  ],
+  "why": "28년 역사의 명작을 현대화한 리메이크작에서도 원작 못지않은 기상천외한 버그와 주파 방식이 연이어 드러나며 스피드런 커뮤니티의 분석이 본격화됐다.",
+  "body": [
+   "닌텐도 스위치 2로 지난 11월 5일 정식 출시된 '젤다의 전설 시간의 오카리나' 리메이크에서 게임 물리를 무너뜨리는 버그가 출시 나흘 만에 다수 발견됐다. IGN 등 주요 외신은 스피드런 전문 게이머들이 게임 속 특정 물리 판정을 이용해 링크를 폭죽처럼 공중으로 쏘아 올리는 기법을 확인했다고 보도했다.",
+   "이번에 발견된 현상은 스피드러너 Zfg1과 SNS 이용자들을 중심으로 공유됐다. 특정 지형에서 자세를 잡거나 보물상자 위에 올라탄 뒤 갑작스러운 움직임 또는 폭탄 폭발을 가하면 링크가 천장이나 하늘 높이 솟구치는 방식이다. 스피드런 이용자들은 높은 고도에서 안전하게 착지해 던전의 퍼즐 구간이나 이동 경로를 건너뛰는 시퀀스 브레이크 기술로 이를 연구하고 있다.",
+   "이동 방식에 대한 분석도 이어졌다. 닌텐도는 이번 리메이크에 전력 질주(스프린트) 기능을 도입해 이동 편의성을 개선했으나, 이용자들의 검증 결과 여전히 구르기를 연속 사용하는 것이 가장 빠른 이동 방식으로 나타났다. 원작 N64 시절부터 최종 보스 가논도르프에게 도달하기 위해 쓰이던 상징적인 테크닉이 새 하드웨어에서도 유효하게 작동하는 셈이다.",
+   "한편 폴리곤은 이번 리메이크가 현대 액션 게임의 유행인 패링(쳐내기) 시스템을 억지로 도입하지 않고, 조준과 베기, 옆걸음 및 백덤블링 회피라는 원작 고유의 간결한 전투 공방을 온전히 유지했다고 평가했다. 게임 플레이의 기본 틀을 보존한 가운데 새 물리 엔진이 맞물리면서 향후 스피드런 기록 단축을 향한 기법 발굴은 더욱 늘어날 것으로 관측된다."
+  ],
+  "category": "기타",
+  "platforms": [
+   "Switch"
+  ],
+  "games": [
+   "젤다의 전설 시간의 오카리나"
+  ],
+  "games_en": [
+   "The Legend of Zelda: Ocarina of Time"
+  ],
+  "hook": "출시 나흘 만에 공중 발사?",
+  "title_en": "Zelda: Ocarina of Time Remake Speedrunners Find Super Jump Glitches",
+  "tldr_en": [
+   "Speedrunners found physics glitches sending Link skyward in the Switch 2 Zelda remake released Nov 5.",
+   "Chest and bomb-triggered jumps allow players to skip major dungeon sequences.",
+   "Rolling remains the fastest traversal method despite the addition of a new sprint mechanic."
+  ],
+  "hook_en": "Link flying to space",
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [
+   "팩트체크 미완료"
+  ],
+  "force_review": true,
+  "status": "published",
+  "id": "978e85fad7",
+  "sources": [
+   {
+    "name": "IGN",
+    "title": "The Legend of Zelda: Ocarina of Time Speedrunners Have Already Found New Ways to Break the Remake",
+    "link": "https://www.ign.com/articles/the-legend-of-zelda-ocarina-of-time-speedrunners-have-already-found-new-ways-to-break-the-remake",
+    "official": false
+   },
+   {
+    "name": "Polygon",
+    "title": "The Legend of Zelda: Ocarina of Time Thankfully Resists FromSoftware’s Influence",
+    "link": "https://www.polygon.com/the-legend-of-zelda-ocarina-of-time-parrying/",
+    "official": false
+   },
+   {
+    "name": "Kotaku",
+    "title": "Speedrunners Are Already Breaking The Legend Of Zelda: Ocarina Of Time Remake In Absurd Ways",
+    "link": "https://kotaku.com/speedrunners-are-already-breaking-the-legend-of-zelda-ocarina-of-time-remake-in-absurd-ways-2000754878",
+    "official": false
+   },
+   {
+    "name": "Polygon",
+    "title": "Speedrunners Already Breaking The Legend of Zelda: Ocarina of Time's Remake",
+    "link": "https://www.polygon.com/ocarina-of-time-remake-speedrunning-actor-jumping/",
+    "official": false
+   },
+   {
+    "name": "Polygon",
+    "title": "The Legend Of Zelda: Ocarina of Time For Switch 2 Could Bring Back A Classic Mode",
+    "link": "https://www.polygon.com/ocarina-of-time-master-quest-switch-2/",
+    "official": false
+   },
+   {
+    "name": "GamesRadar",
+    "title": "Zelda: Ocarina of Time remake devs wanted to nod to the series' notoriously convoluted timeline",
+    "link": "https://www.gamesradar.com/games/the-legend-of-zelda/zelda-ocarina-of-time-remake-devs-wanted-to-add-nods-to-the-series-notoriously-convoluted-timeline-but-series-boss-eiji-aonuma-shut-them-down/",
+    "official": false
+   }
+  ],
+  "ts": 1794157496.0,
+  "written": 1794170517.9288528,
+  "deep_try": 1,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar1t7u.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar1t7u.jpg",
+  "img_src": "IGDB",
+  "video_v": 1
+ },
+ {
+  "title": "에픽게임즈, '포트나이트' 해적 상점 토큰 확률 13만 분의 1 공식 공개",
+  "tldr": [
+   "에픽게임즈가 포트나이트 '트레저 헌터스' 시즌 상자의 주요 보상 획득 확률을 공식 공개했다.",
+   "2주간 상점 아이템을 무료로 받는 '해적 상점 이용권'의 등장 확률은 13만 5,700분의 1로 확인됐다.",
+   "가장 희귀한 '주간 골드 의상'의 기본 획득 확률은 156만 2,500분의 1에 달한다."
+  ],
+  "why": "신규 시즌 상자에서 최고 등급 보상이 지나치게 나오지 않는다는 유저 불만이 쏟아지자 개발사가 세부 수치를 투명하게 밝혔다.",
+  "body": [
+   "에픽게임즈가 '포트나이트'의 신규 시즌 '트레저 헌터스'에 도입된 보물 상자 핵심 보상들의 드롭 확률을 소셜 미디어를 통해 공식 공개했다. 데스트럭토이드 보도에 따르면, 지난주 시즌 시작 직후 보상 획득 확률이 극단적으로 낮다는 커뮤니티 반발이 거세지자 개발사가 침묵을 깨고 구체적인 수치를 밝혔다.",
+   "공개된 확률표에 따르면 2주 동안 아이템 상점의 치장품을 무료로 획득할 수 있는 '해적 상점 이용권 토큰(Pirate Shop Access Token)'의 드롭률은 13만 5,700분의 1(1:135,700)에 불과했다. 유료 재화를 쓰지 않고 상점 물품을 대거 확보할 수 있는 파격적인 혜택인 만큼 획득 난도를 극도로 높게 책정한 셈이다.",
+   "가장 희귀한 품목인 '주간 골드 의상'의 획득 확률은 156만 2,500분의 1(1:1,562,500)로 100만 분의 1 수준을 훌쩍 넘겼다. 이 외에도 주간 탈것 및 데칼이 7,813분의 1, 주간 곡괭이 또는 등 장신구가 568분의 1, 주간 잼 트랙이 391분의 1, 로딩 화면이 272분의 1, 기즈모 아이템이 127분의 1로 나타났다.",
+   "에픽게임즈는 특정 시간대에 상자 보상 확률이 올라가는 '트레저 아워(Treasure Hours)' 시스템을 통해 확률을 완화하고 있다고 덧붙였다. 트레저 아워 동안에는 주간 골드 의상 확률이 기본 7.5배(일부 시간대 최대 10배), 해적 상점 이용권 토큰은 1.5배(최대 2배), 탈것 및 데칼은 10배까지 상향된다. 에픽게임즈는 향후 진행되는 트레저 아워에서 이보다 높은 배율을 적용할 수도 있다고 밝혔다."
+  ],
+  "category": "업데이트",
+  "platforms": [],
+  "games": [
+   "포트나이트"
+  ],
+  "games_en": [
+   "Fortnite"
+  ],
+  "hook": "13만분의 1 실화?",
+  "title_en": "Epic Confirms 1:135,700 Drop Rate for Fortnite Pirate Shop Token",
+  "tldr_en": [
+   "Epic Games revealed official drop rates for Fortnite's Treasure Hunters season chests.",
+   "The Pirate Shop Access Token drops at a 1 in 135,700 rate from chests.",
+   "Weekly Gold Outfits sit at a 1 in 1,562,500 chance, boosted during Treasure Hours."
+  ],
+  "hook_en": "One in a million",
+  "video_q": null,
+  "trust": "공식",
+  "fixes": [
+   "팩트체크 미완료"
+  ],
+  "force_review": true,
+  "status": "published",
+  "id": "90c593e02a",
+  "sources": [
+   {
+    "name": "Steam News",
+    "title": "Epic confirms drop rates for Fortnite’s most coveted item, and it’s no wonder you haven’t seen one",
+    "link": "https://store.steampowered.com/news/group/38204750/view/719047067319664810",
+    "official": false
+   },
+   {
+    "name": "Destructoid",
+    "title": "Epic confirms drop rates for Fortnite’s most coveted item, and it’s no wonder you haven’t seen one",
+    "link": "https://www.destructoid.com/fortnite-pirate-access-token-confirmed-drop-rate/",
+    "official": false
+   }
+  ],
+  "ts": 1794163241.0,
+  "written": 1794170517.930669,
+  "deep_try": 1,
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar6aet.jpg",
+  "img_v": 2,
+  "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar6aet.jpg",
+  "img_src": "IGDB",
+  "video_v": 1
+ },
+ {
+  "title": "전 SIEA 대표 숀 레이든 \"소니에 필요한 건 1,200달러 PS6 아닌 300달러 PS5\"",
+  "tldr": [
+   "숀 레이든 전 SIEA 대표가 팟캐스트에서 콘솔 기기 가격 상승세를 지적하며 하드웨어 정책 전환을 촉구했다.",
+   "레이든은 테라플롭스 확장에 매달리는 1,200달러 PS6 대신 300달러대 보급형 PS5를 만드는 것이 진정한 혁신이라고 밝혔다.",
+   "PS5 기본형 가격이 649달러까지 오른 상황에서 성능 추가보다 기기 경량화와 원가 절감이 시급하다고 지적했다."
+  ],
+  "why": "콘솔 업계 전반의 출하량 감소와 기기 가격 폭등 속에 전직 플레이스테이션 수장이 차세대기 개발 방향에 쓴소리를 냈다.",
+  "body": [
+   "소니 인터랙티브 엔터테인먼트 아메리카(SIEA)의 사장 겸 CEO를 역임했던 숀 레이든이 최근 치솟는 콘솔 하드웨어 가격을 강하게 꼬집었다. IGN에 따르면 레이든은 팟캐스트 '더 트로피 룸'에 출연해 소니가 고민해야 할 혁신은 1,200달러짜리 플레이스테이션 6가 아니라 300달러짜리 플레이스테이션 5를 선보이는 것이라고 강조했다.",
+   "레이든은 인터뷰에서 차세대 기기가 단순 수치 개선에 매달리는 행태를 비판했다. 그는 레이 트레이싱과 테라플롭스를 더 얹는 방식은 답이 아니며 이미 기기 성능은 충분하다고 말했다. 이어 \"진정한 혁신은 1,200달러짜리 PS6를 내놓는 데서 오는 것이 아니라 300달러짜리 또 다른 PS5를 만드는 것\"이라며 \"소니가 지금까지 해보지 않았던 방식, 즉 성능 판올림 대신 기기를 더 작고 저렴하게 만드는 원가 절감 노력이 필요하다\"고 덧붙였다.",
+   "특히 시간이 흐를수록 하드웨어 가격이 오르는 기형적인 시장 구조를 지적했다. 레이든은 \"플레이스테이션 2는 황혼기에 99달러에 살 수 있었다. 세월이 흐르면서 가격이 오르는 플랫폼은 이번 세대가 처음\"이라고 언급했다. 실제로 2020년 499달러(디스크 에디션)로 시작한 PS5는 연이은 가격 인상으로 현재 미국 소니 공식 스토어 기준 기본형이 649달러, 디지털 에디션이 599달러, 고성능 모델인 PS5 Pro는 899달러에 판매되고 있다.",
+   "소니는 글로벌 경기 압박을 기기 가격 인상의 원인으로 들었으나, 이는 소니와 마이크로소프트, 닌텐도 등 콘솔 3사 전반의 하드웨어 판매 둔화로 이어지는 형국이다. 차세대기 PS6의 출시 시점을 두고 2028년 또는 2029년 연기설이 흘러나오는 가운데, 지나친 고가 정책에 대한 이용자들의 피로감도 한층 커지고 있다."
+  ],
+  "category": "하드웨어",
+  "platforms": [
+   "PS5"
+  ],
+  "games": [],
+  "games_en": [],
+  "hook": "PS6가 1200달러?",
+  "title_en": "Former PlayStation Boss: Sony Needs a $300 PS5, Not a $1,200 PS6",
+  "tldr_en": [
+   "Former SIEA boss Shawn Layden criticized rising console prices on The Trophy Room podcast.",
+   "Layden argued real innovation lies in a $300 PS5 rather than a $1,200 PS6 packed with teraflops.",
+   "He pointed out that PS5 is the first console to see steady price hikes over its lifespan."
+  ],
+  "hook_en": "$300 PS5 needed",
+  "video_q": null,
+  "trust": "보도",
+  "fixes": [
+   "팩트체크 미완료"
+  ],
+  "force_review": true,
+  "status": "published",
+  "id": "4ff7af55d7",
+  "sources": [
+   {
+    "name": "IGN",
+    "title": "Former PlayStation Boss Says Sony Doesn't Need a 'PS6 for $1,200,' It Needs a 'PS5 for $300'",
+    "link": "https://www.ign.com/articles/former-playstation-boss-says-sony-doesnt-need-a-ps6-for-1200-it-needs-a-ps5-for-300",
+    "official": false
+   }
+  ],
+  "ts": 1794168715.0,
+  "written": 1794170517.930899,
+  "deep_try": 1,
+  "img": null,
+  "img_v": 2,
   "video_v": 1
  }
 ]
