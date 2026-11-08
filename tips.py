@@ -95,7 +95,10 @@ def ps_plus(arts):
                 lines.append(info["desc"])
                 if info["fact"] and info["fact"] != info["desc"]:
                     lines.append(info["fact"])
-            lines.append(f"{c['기간'].replace('(화)', '').replace('(월)', '')} 무료" + (f" (정가 {info['price'].replace('₩ ', '₩')})" if info and info["price"] else ""))
+            # PS 플러스는 구독자만 받고 구독 중에만 실행된다 → '무료'가 아니라 가입자 조건을 밝히고, 정가는 스팀 기준임을 표시
+            lines.append(f"{c['기간'].replace('(화)', '').replace('(월)', '')} 가입자 추가 비용 없이 받기")
+            if info and info["price"]:
+                lines.append(f"스팀 정가 {info['price'].replace('₩ ', '₩')} · 구독 해지하면 실행 불가")
             out.append({"name": g, "img": (info or {}).get("img") or a.get("img_hd") or a["img"], "img2": (info or {}).get("img2"),
                         "appid": (info or {}).get("appid"),
                         "chip": "PS 플러스", "lines": lines})

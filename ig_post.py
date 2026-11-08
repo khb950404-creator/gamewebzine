@@ -465,7 +465,10 @@ def prepare_deals(queue, posted):
             continue
         if len(items) < 2:
             continue
-        hook = title or f"이번 주 공짜 게임 {len(items)}개"
+        n_free = sum(1 for x in items if x.get("chip") != "PS 플러스")  # PS 플러스는 구독자 조건부라 '공짜'로 묶지 않는다
+        hook = title or (f"이번 주 공짜 게임 {len(items)}개" if n_free == len(items)
+                         else f"PS 플러스 이번 달 게임 {len(items)}개" if not n_free
+                         else f"이번 주 받을 수 있는 게임 {len(items)}개")
         (SITE / IGDIR / k_).mkdir(parents=True, exist_ok=True)
         render_tips(items, SITE / IGDIR / k_ / "reel.mp4", hook, key=k_)
         queue.append({"id": k_, "kind": "reel", "files": ["reel.mp4"], "hook": hook, "tips": items, "made": time.time(),

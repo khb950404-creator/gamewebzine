@@ -968,6 +968,28 @@ def run():
         except LLMDown:
             print("LLM 호출 실패 - 이번 후보는 다음 실행 때 재시도")
             failed = True
+    # 같은 소식 재탕 차단 (프롬프트만으로는 못 막았다: 11월 첫 주 '메타크리틱 96점' 3건, 'GTA 6 PC판 조기 출시' 2건)
+    # 최근 72시간 기사와 제목 핵심어가 3개 이상·짧은 쪽의 60% 이상 겹치면 버린다. 속보(e스포츠 결과)는 제외
+    try:
+        from ig_post import title_tokens
+        recent = [x for x in articles if time.time() - x.get("written", x["ts"]) < 72 * 3600]
+        keep = []
+
+        def same_(a, x):  # 게임 이름 자체는 빼고 비교 ('젤다의 전설 시간의 오카리나 리메이크'만으로 같은 소식이 되지 않게)
+            g = title_tokens(" ".join((a.get("games") or []) + (x.get("games") or [])))
+            ta, tx = title_tokens(a["title"]) - g, title_tokens(x["title"]) - g
+            n = len({t for t in ta & tx if not t.isdigit()})  # 날짜·버전 숫자만 겹친 건 같은 소식이 아니다
+            return n >= 3 and n / max(1, min(len(ta), len(tx))) >= 0.6
+
+        for a in new:
+            dup = None if a.get("esports") else next((x for x in recent + keep if same_(a, x)), None)
+            if dup:
+                print(f"  중복 기사 버림: {a['title'][:40]} ← {dup['title'][:40]}")
+            else:
+                keep.append(a)
+        new = keep
+    except Exception as e:
+        print(f"  ! 중복 검사 실패: {e}")
     articles += new
     # 심층 보강이 실패한 최근 기사는 다음 실행에서 다시 (기사당 3번까지)
     late = [x for x in articles if not x.get("check") and not x.get("esports") and x.get("deep_try", 0) < 3
