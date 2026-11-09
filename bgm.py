@@ -85,7 +85,7 @@ QUIET = set()  # 참사·추모 소식: 배경음 없이 무음으로 내보낼 
 # 게시물별로 곡을 지정 (분위기를 맞춰야 할 때). media/bgm/epic/ 은 웅장한 곡 모음이라 자동 순환에는 안 들어간다
 # 키는 렌더 폴더 이름과 대기열 id 둘 다 넣는다 (영상에 깔린 곡과 캡션 표기가 같아야 한다)
 PICK = {
-    "poe2-release": "epic/Five_Armies", "poe2-release-reel": "epic/Five_Armies",
+    "poe2-release": "epic/Five_Armies", "poe2-release-reel": "epic/Five_Armies", "t1-worlds26-sf": "epic/Agnus_Dei_X",
 }
 
 
