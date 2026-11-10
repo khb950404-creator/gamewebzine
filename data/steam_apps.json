@@ -1072,7 +1072,23 @@
  "id:2638080": {
   "appid": 2638080,
   "name": "Annihilated",
-  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2638080/e44c696c243b2fc64b65eb2ef439ef3535ba1e40/header.jpg?t=1791381332"
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2638080/e44c696c243b2fc64b65eb2ef439ef3535ba1e40/header.jpg?t=1794297395",
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2638080/fc1d9f9aa3e0a762bcae28ef969fdff1bd8f02cc/ss_fc1d9f9aa3e0a762bcae28ef969fdff1bd8f02cc.1920x1080.jpg?t=1794297395",
+  "info": {
+   "date": "2026년 11월 9일",
+   "soon": false,
+   "genres": [
+    "인디",
+    "RPG"
+   ],
+   "dev": "Death Kumiai",
+   "pub": "Death Kumiai",
+   "ko": false,
+   "ko_voice": false,
+   "price": "₩ 16,200",
+   "discount": 10,
+   "meta": null
+  }
  },
  "id:3610790": {
   "appid": 3610790,
@@ -25256,5 +25272,35 @@
    "meta": null
   }
  },
- "itad:3326230": "01930a77-84f6-721e-886f-73e1bf4e8c16"
+ "itad:3326230": "01930a77-84f6-721e-886f-73e1bf4e8c16",
+ "q:supermariopartyjamboree": null,
+ "q:슈퍼마리오파티저니버리": null,
+ "ig:supermariopartyjamboree": {
+  "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar4dht.jpg",
+  "hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar4dht.jpg"
+ },
+ "id:1658920": {
+  "appid": 1658920,
+  "name": "Crown Wars: The Black Prince",
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1658920/header.jpg?t=1778173233",
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1658920/ss_d03b3346145fc4835f0389c0d75502be4658ce3c.1920x1080.jpg?t=1778173233",
+  "info": {
+   "date": "2024년 5월 23일",
+   "soon": false,
+   "genres": [
+    "어드벤처",
+    "RPG",
+    "전략"
+   ],
+   "dev": "Artefacts Studio",
+   "pub": "Nacon",
+   "ko": true,
+   "ko_voice": false,
+   "price": "₩ 1,050",
+   "discount": 95,
+   "meta": null
+  }
+ },
+ "itad:2638080": "018e3673-848a-721e-91f6-ce5b9483fad7",
+ "itad:1658920": "018d937f-6ef1-73d9-ad41-390d2bd442cb"
 }
