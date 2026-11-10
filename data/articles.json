@@ -82787,7 +82787,7 @@
   ],
   "ts": 1794298786.0,
   "written": 1794301825.7276905,
-  "deep_try": 1,
+  "deep_try": 2,
   "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1808500/29e8af9fbf06833558758f94cfb406746f338c45/header_alt_assets_8.jpg?t=1791401542",
   "img_v": 2,
   "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1808500/1763664f3ea80080867eafa751685b7feec950c8/ss_1763664f3ea80080867eafa751685b7feec950c8.1920x1080.jpg?t=1791401542",
@@ -82851,7 +82851,7 @@
   ],
   "ts": 1794276300.0,
   "written": 1794301825.7279224,
-  "deep_try": 1,
+  "deep_try": 2,
   "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar4dht.jpg",
   "img_v": 2,
   "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar4dht.jpg",
@@ -82908,7 +82908,7 @@
   ],
   "ts": 1794264622.0,
   "written": 1794301825.7283058,
-  "deep_try": 1,
+  "deep_try": 2,
   "img": null,
   "img_v": 2,
   "video_v": 1
@@ -82971,11 +82971,89 @@
   ],
   "ts": 1794261221.0,
   "written": 1794301825.7285504,
-  "deep_try": 1,
+  "deep_try": 2,
   "img": "https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar64ek.jpg",
   "img_v": 2,
   "img_hd": "https://images.igdb.com/igdb/image/upload/t_1080p/ar64ek.jpg",
   "img_src": "IGDB",
+  "video_v": 1
+ },
+ {
+  "title": "‘빅 워크’ 개발사 하우스 하우스, 인디 어워드 심사위원 AI 반대 선언에 해명",
+  "tldr": [
+   "하우스 하우스는 IGF 제출 당시 버그 해결을 위해 생성형 AI를 사용했다고 확인했다.",
+   "개발진은 전체 코드의 0.1% 미만에만 제한적으로 LLM이 쓰였다고 밝혔다.",
+   "심사위원들은 생성형 AI 사용 게임을 배제하겠다는 입장을 밝혔다."
+  ],
+  "why": "인디 게임 어워드 심사위원들의 AI 사용 반대 선언 직후, '빅 워크' 개발사가 개발 과정에서의 제한적 AI 활용 사실을 직접 공개했다.",
+  "body": [
+   "VGC 등 외신에 따르면, 인디 게임 '빅 워크'의 개발사 하우스 하우스가 최근 독립 게임 페스티벌(IGF) 심사위원들의 AI 반대 성명에 대응하여 개발 과정에서의 생성형 AI 사용 사실을 시인했다. 앞서 29회 IGF 어워드 심사위원 19명은 생성형 AI를 조금이라도 사용한 게임에 대해 투표를 거부하겠다는 공동 성명을 발표한 바 있다.",
+   "이후 소셜 미디어를 통해 하우스 하우스가 IGF 출품 당시 코딩 과정에서 AI를 사용했다고 적시했다는 주장이 제기되었다. 이에 개발사는 외부 매체와 공식 FAQ를 통해 대규모 언어 모델(LLM)을 기술적 난제와 버그 해결 목적으로 제한적으로 사용했다고 밝혔다.",
+   "하우스 하우스는 '빅 워크' 개발 막바지에 복잡한 오류를 해결하기 위해 LLM을 참고용으로 활용했다고 설명했다. 특히 자체 인력과 유니티 엔지니어 모두 해결하지 못한 속도 저하 버그를 챗봇의 도움으로 수정했던 구체적인 사례를 언급했다.",
+   "개발진은 LLM 응답 코드의 일부를 수정하여 게임 코드의 시작점으로 활용했으며, 전체 코드 중 AI와 관련된 부분은 0.1%에도 미치지 않는다고 강조했다. 또한 생성형 AI는 오직 이 목적으로만 쓰였으며 다른 제작 과정에서는 전혀 사용되지 않았다고 덧붙였다.",
+   "하우스 하우스는 이 같은 자발적 공개가 AI 기술의 정상화나 불가피성으로 비쳐질 것을 우려한다고 밝혔다. 그러면서 생성형 AI가 게임 업계에 미치는 악영향을 제한하려는 이들의 노력을 지지하며, 자사의 LLM 활용이 기준에 미치지 못할 수 있음을 인정했다."
+  ],
+  "category": "업계",
+  "platforms": [
+   "PC",
+   "Xbox"
+  ],
+  "games": [
+   "Big Walk"
+  ],
+  "games_en": [
+   "Big Walk"
+  ],
+  "hook": "인디 상 후보작의 AI 사용 논란",
+  "title_en": "Big Walk Devs Confirm 'Sparingly' Using AI for Coding Amid Award Controversy",
+  "tldr_en": [
+   "House House confirmed using AI during Big Walk's development.",
+   "The studio stated that LLMs accounted for well under 0.1% of the game's code.",
+   "Nineteen IGF jurors previously declared they would not vote for AI-assisted games."
+  ],
+  "hook_en": "Big Walk AI controversy",
+  "video_q": "Big Walk gameplay trailer House House",
+  "trust": "공식",
+  "fixes": [
+   "팩트체크 미완료"
+  ],
+  "force_review": true,
+  "status": "published",
+  "id": "93aba42809",
+  "sources": [
+   {
+    "name": "Steam News",
+    "title": "Big Walk studio says it used AI ‘sparingly’ in response to indie award jury statement against its use",
+    "link": "https://store.steampowered.com/news/group/42342144/view/679640570579125227",
+    "official": false
+   },
+   {
+    "name": "VGC",
+    "title": "Big Walk studio says it used AI ‘sparingly’ in response to indie award jury statement against its use",
+    "link": "https://www.videogameschronicle.com/news/big-walk-studio-says-it-used-ai-sparingly-in-response-to-indie-award-jury-statement-against-its-use/",
+    "official": false
+   },
+   {
+    "name": "Insider Gaming",
+    "title": "Big Walk Devs Issue Statement Regarding AI Usage Following Award Controversy",
+    "link": "https://insider-gaming.com/big-walk-devs-issue-statement-regarding-ai-usage-following-award-controversy/",
+    "official": false
+   },
+   {
+    "name": "Eurogamer",
+    "title": "Under pressure, Big Walk studio reveals it used generative AI \"sparingly\" while making its hit 2026 game",
+    "link": "https://www.eurogamer.net/house-house-big-walk-generative-ai-development",
+    "official": false
+   }
+  ],
+  "ts": 1794311396.0,
+  "written": 1794312416.7753377,
+  "deep_try": 1,
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1478500/62eeee1507dbac905e128a62f2ce690550238db0/header.jpg?t=1785911674",
+  "img_v": 2,
+  "img_hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1478500/69e83f754bbdb7bba0587b61d45cdcdf18ab956a/ss_69e83f754bbdb7bba0587b61d45cdcdf18ab956a.1920x1080.jpg?t=1785911674",
+  "appid": 1478500,
+  "img_src": "Steam 스토어",
   "video_v": 1
  }
 ]
