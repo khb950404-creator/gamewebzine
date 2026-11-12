@@ -194,6 +194,7 @@ def llm(prompt, prefer_lite=False, search=False):
         models = [m for m in (os.environ.get("GEMINI_MODEL"), "gemini-flash-latest", "gemini-flash-lite-latest") if m]
         if prefer_lite:
             models = ["gemini-flash-lite-latest", "gemini-flash-latest"]
+        busy = []  # 3번 모두 429(분당 한도)로 막힌 모델
         for model in models:
             if model in exhausted:
                 continue
@@ -226,6 +227,13 @@ def llm(prompt, prefer_lite=False, search=False):
                         raise RuntimeError(f"{model} {e.code}: {msg[:300]}")
                     print(f"    … {model} {e.code}, {10 * (attempt + 1)}초 후 재시도")
                     time.sleep(10 * (attempt + 1))
+                    if e.code == 429 and attempt == 2:
+                        busy.append(model)
+        # 모든 모델이 429로 막히면 이번 실행에서는 더 부르지 않는다: 호출마다 2분씩 재시도하다
+        # 수집 단계가 15분 제한을 넘겨 사이트 빌드·인스타가 통째로 빠졌다 (2026-11-10~12)
+        if busy and all(m in exhausted or m in busy for m in models):
+            print("    … 모든 모델 한도 초과 — 이번 실행에서는 제미나이 호출 중단")
+            exhausted.update(busy)
         raise RuntimeError("모든 Gemini 모델이 응답하지 않음 (혼잡 또는 무료 한도 소진)")
     if mode == "ollama":
         req = urllib.request.Request(
