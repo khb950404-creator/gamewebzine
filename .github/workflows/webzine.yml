@@ -51,7 +51,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 22   # 15분이면 모든 단계가 끝나고도 2초 차로 잘린 적이 있다 (2026-11-12)
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -62,7 +62,7 @@ jobs:
         if: github.event_name != 'push'
         continue-on-error: true   # 실패해도 경고로 표시하고 기존 기사로 빌드·배포는 계속
         run: |
-          export LLM_DEADLINE=$(( $(date +%s) + 540 ))   # 제미나이는 9분까지만: 나머지 단계(빌드·인스타)가 15분 안에 끝나도록
+          export LLM_DEADLINE=$(( $(date +%s) + 420 ))   # 제미나이는 7분까지만: 나머지 단계(빌드·인스타)가 15분 안에 끝나도록
           python -u webzine.py
           pip install -q pillow   # esports.py 는 결과표 이미지를 그린다 (설치 전에 돌아 매번 실패하던 것 수정)
           python -u esports.py || true   # 롤드컵 기간: 한국팀 새 결과가 있으면 결과표 + 기사
