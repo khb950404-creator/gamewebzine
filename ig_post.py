@@ -203,6 +203,9 @@ def popularity(a):
     s_ += 5 if a.get("appid") in top_played() else 0
     s_ += 5 if any(k in text for k in BIG_IP) else 0
     s_ += 30 if any(k in text for k in HOT_KW) else 0
+    # 롤드컵 뒤 스토브리그(T1·페이커 재계약, LCK 이적): 롤드컵 릴스 2건이 도달 1,269·1,555, 공유 21·41로 다른 릴스(~110)의 12배
+    if datetime.now().strftime("%Y-%m-%d") > WORLDS_UNTIL and (a.get("esports") or any(k in text for k in WORLDS_KW)):
+        s_ += 30
     s_ -= 60 if any(k in text for k in COLD_KW) else 0
     s_ += 12 if any(k in text for k in SURPRISE_KW) else 0  # 2주 상위 5개(연기 1,222·400만 장 592·이변 329 등)가 모두 이 유형, 정례 소식의 3~10배 → 6에서 12로
     s_ += 2 if a.get("trust") == "공식" else 0
@@ -471,8 +474,9 @@ def prepare_deals(queue, posted):
                          else f"이번 주 받을 수 있는 게임 {len(items)}개")
         (SITE / IGDIR / k_).mkdir(parents=True, exist_ok=True)
         render_tips(items, SITE / IGDIR / k_ / "reel.mp4", hook, key=k_)
+        tags_ = tag_tip if "공짜" in hook else [t for t in tag_tip if t != "무료게임"]  # PS 플러스·놓치면 손해에 #무료게임은 오해
         queue.append({"id": k_, "kind": "reel", "files": ["reel.mp4"], "hook": hook, "tips": items, "made": time.time(),
-                      "caption": tips.caption(f"[알트탭 꿀팁] {hook}", items, tag_tip)})
+                      "caption": tips.caption(f"[알트탭 꿀팁] {hook}", items, tags_)})
         print(f"인스타 준비: 꿀팁 릴스 {hook}")
     # ⑤ 월요일 시리즈: 이번 주 출시 게임 (월요일 9시 이후, 주 1회) — 저장 유도형
     rk_ = f"rel-{now.isocalendar()[0]}-{now.isocalendar()[1]:02d}"
@@ -1126,6 +1130,10 @@ def _publish():
             queue.remove(q)
             continue
         if q.get("not_before", "") > today:  # 날짜를 정해 둔 예약 게시물 (출시일 등)
+            continue
+        # 사진 카드(시리즈·뉴스 카드)는 21시까지 피드 자리를 릴스에 양보: 하루 1건뿐인데 11-10·11-12 시리즈가
+        # 그 자리를 먹었다 (도달 5·4 vs 같은 주 릴스 106~1,555). 21시까지 릴스가 없으면 그때 카드를 올린다
+        if q.get("kind", "news") in ("series", "news", "deal") and not q.get("breaking") and datetime.now().hour < 21 and os.environ.get("IG_FORCE") != "1":
             continue
         qt = (arts.get(q["id"]) or {}).get("title")
         if qt and q.get("kind") not in ("story", "series", "deal") and any(

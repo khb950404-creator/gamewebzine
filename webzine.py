@@ -294,7 +294,8 @@ e스포츠(롤드컵·LCK): 경기 결과 단순 보도(누가 몇 대 몇으로
 새로 밝혀진 게 없으면 skip. 이미 출시·공개된 게임을 '코드명 언급', '최초 공개', '유출'처럼 처음 알려진 듯 쓰면 안 된다
 (예: 이미 서비스 중인 '데드락'을 '차기작 코드명 데드락 언급'으로 쓰는 것 금지). 후속 소식이면 새로 바뀐 점만 쓴다.
 
-PC·콘솔 비디오게임과 무관하거나(보드·카드게임, 게임과 연결 약한 영화·드라마 소식 등)
+PC·콘솔 비디오게임과 무관하거나(보드·카드게임, 게임과 연결 약한 영화·드라마 소식 등.
+게임 원작이 아닌 영화·드라마·극장·OTT 소식은 전부 skip — 예: 배우의 슈퍼맨 복귀 발언, 극장 앱 접속 지연, 코믹스 원작 영화 후속작, OTT 구독 번들)
 광고/딜 나열/퀴즈/팟캐스트 같은 저가치 글은 {{"issue": 번호, "skip": true}} 로만 표시하라.
 
 JSON 하나만 출력:
@@ -386,6 +387,28 @@ def deepen(drafts, checked):
             tgt["takeaway"] = x["takeaway"].strip()
         k += 1
     print(f"  심층 보강 {k}건")
+
+
+# 같은 게임 재탕 판정에서 빼는 흔한 낱말 (이것만 겹친 '스위치 2 리메이크 영국 차트' / '스위치 2 리메이크 520만 장'은 다른 소식)
+GENERIC_T = {"스위치", "리메이크", "ps5", "pc", "콘솔", "xbox", "엑스박스", "정식", "dlc", "버전", "패치", "얼리", "액세스",
+             "출시일", "신작", "개발", "개발사", "시리즈"}
+
+
+def deepen_pending(articles):
+    """체크포인트 없는 최근 기사를 실행 맨 앞에서 검색 보강. 출처가 많은(큰) 소식부터 4건, 기사당 3번까지."""
+    late = [x for x in articles if not x.get("check") and not x.get("esports") and not x.get("edited")
+            and x.get("deep_try", 0) < 3 and x.get("status") == "published"
+            and time.time() - x.get("written", x["ts"]) < 2 * 86400]
+    late.sort(key=lambda x: (-len(x.get("sources") or []), -x.get("written", x["ts"])))
+    late = late[:4]
+    if not late:
+        return
+    for x in late:
+        x["deep_try"] = x.get("deep_try", 0) + 1
+    try:
+        deepen({i: x for i, x in enumerate(late)}, {})
+    except Exception as e:
+        print(f"  ! 보강 재시도 실패: {e}")
 
 
 def needs_expand(a):
@@ -661,7 +684,8 @@ def write_batch(cands):
         except Exception as e:
             print(f"  ! 분량 보강 실패: {e}")
 
-    deepen(drafts, checked)
+    # 검색 보강(deepen)은 여기서 하지 않는다: 작성·팩트체크·분량 보강 뒤 네 번째 호출이라 분당 한도(429)에 매번 막혔다
+    # (11-08~15 기사 70건 중 체크포인트 0건). 다음 실행 맨 앞, 한도가 비어 있을 때 deepen_pending()이 채운다
 
     out = []
     for n, a in sorted(drafts.items()):
@@ -945,6 +969,7 @@ def run():
     save_json(DATA / "state.json", state)
     seen = set(load_json(DATA / "seen.json", []))
     articles = load_json(DATA / "articles.json", [])
+    deepen_pending(articles)  # 분당 한도가 비어 있는 실행 첫 호출로
     print("수집 중...")
     items = [i for name, url, off in FEEDS for i in fetch_feed(name, url, off)]
     fresh = [i for i in items if i["id"] not in seen and time.time() - i["ts"] < 2 * 86400]  # 원문 발행 48시간 이내만
@@ -987,7 +1012,18 @@ def run():
             g = title_tokens(" ".join((a.get("games") or []) + (x.get("games") or [])))
             ta, tx = title_tokens(a["title"]) - g, title_tokens(x["title"]) - g
             n = len({t for t in ta & tx if not t.isdigit()})  # 날짜·버전 숫자만 겹친 건 같은 소식이 아니다
-            return n >= 3 and n / max(1, min(len(ta), len(tx))) >= 0.6
+            if n >= 3 and n / max(1, min(len(ta), len(tx))) >= 0.6:
+                return True
+            # 같은 게임이면 기준을 낮춘다: 표기만 다른 재탕이 샜다 (11-10 다크 헤레시 '1월 28일 정식 출시' / '1월 28일 PC 및 콘솔 출시')
+            # 2주치 시험: 새로 잡힌 6쌍 모두 실제 재탕(GTA 6 프리로드 11월 10일, 와우 포에버 최다 동접 등), 오탐 0
+            ga, gx = (title_tokens(" ".join(y.get("games") or [])) for y in (a, x))
+            if not ga or not gx or len(ga & gx) < 0.75 * min(len(ga), len(gx)):
+                return False
+            ta, tx = ta - GENERIC_T, tx - GENERIC_T
+            sh = ta & tx
+            d = len({t for t in sh if t.isdigit() and len(t) >= 2})  # '1월 28일'·'212GB' 같은 같은 숫자 두 개
+            n2 = len({t for t in sh if not t.isdigit()})
+            return d >= 2 or (n2 >= 2 and n2 / max(1, min(len(ta), len(tx))) >= 0.4)
 
         for a in new:
             dup = None if a.get("esports") else next((x for x in recent + keep if same_(a, x)), None)
@@ -999,16 +1035,6 @@ def run():
     except Exception as e:
         print(f"  ! 중복 검사 실패: {e}")
     articles += new
-    # 심층 보강이 실패한 최근 기사는 다음 실행에서 다시 (기사당 3번까지)
-    late = [x for x in articles if not x.get("check") and not x.get("esports") and x.get("deep_try", 0) < 3
-            and time.time() - x.get("written", x["ts"]) < 2 * 86400 and x.get("status") == "published"][-5:]
-    if late:
-        for x in late:
-            x["deep_try"] = x.get("deep_try", 0) + 1
-        try:
-            deepen({i: x for i, x in enumerate(late)}, {})
-        except Exception as e:
-            print(f"  ! 보강 재시도 실패: {e}")
     cache = load_json(DATA / "steam_apps.json", {})
     for step in (lambda: resolve_names(new, cache), lambda: attach_images(articles, cache), lambda: find_videos(new, cache), lambda: collect_patches(cache), lambda: collect_calendar(cache),
                  lambda: collect_deals(cache), collect_all_deals):

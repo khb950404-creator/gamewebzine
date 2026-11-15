@@ -130,10 +130,11 @@ def _dates(text):
 
 
 def upcoming(a):
-    """오늘 이후 챙길 날짜가 있는 기사만 '놓치면 손해' 대상 (이미 지난 출시·마감은 뺀다)."""
+    """앞으로 9일 안에 챙길 날짜가 있는 기사만 '놓치면 손해' 대상.
+    11-11 릴스에 두 달 뒤 출시(무한대 1/15)·한 달 뒤 출시(PoE2 12/12)가 섞여 '이번 주' 제목과 어긋났다."""
     today = datetime.now().date()
     text = " ".join(c["v"] for c in a.get("check") or []) + " " + a.get("takeaway", "")
-    return any(d >= today for d in _dates(text))
+    return any(0 <= (d - today).days <= 9 for d in _dates(text))
 
 
 def chip_of(a):
