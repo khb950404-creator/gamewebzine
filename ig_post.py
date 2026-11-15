@@ -894,7 +894,27 @@ def question(a):
 
 
 FOLLOW_LINE = "게임 소식에 공짜·할인·마감일까지 매일 챙겨 드려요. [알트탭] 팔로우."
-MAX_TAGS = 5  # 인스타 해시태그 한도 (2025년 12월 공지 기준, 넓은 태그 대신 게임명 위주)
+MAX_TAGS = 5  # 캡션에 직접 넣을 때 한도 (2025년 12월 공지 기준)
+COMMENT_TAGS = 25  # 첫 댓글 해시태그 수: 사용자 지시로 많이 단다 (2026-11-15). 댓글이 막히면 5개로 다시 시도
+
+# 게시물마다 붙이는 공통 태그 (한국어 검색 + 영어 검색)
+BASE_TAGS = ["게임", "게임뉴스", "게임소식", "게이머", "게임스타그램", "겜스타그램", "게임추천", "알트탭",
+             "gaming", "gamer", "videogames", "gamingnews", "gamenews", "instagaming"]
+PLATFORM_TAGS = {"PC": ["PC게임", "스팀"], "PS5": ["PS5", "플스5", "playstation5"], "Xbox": ["엑스박스", "xbox"],
+                 "Switch 2": ["닌텐도스위치2", "nintendoswitch2"], "Switch": ["닌텐도스위치", "nintendoswitch"],
+                 "Mobile": ["모바일게임"]}
+ESPORTS_TAGS = ["롤", "리그오브레전드", "LoL", "leagueoflegends", "e스포츠", "이스포츠", "esports", "롤드컵", "worlds2026", "LCK"]
+
+
+def more_tags(a):
+    """게임명·기종·분야로 넓힌 해시태그 (중복은 caption 에서 걸러진다)."""
+    tags = ["".join(ch for ch in g if ch.isalnum()).lower() for g in (a.get("games_en") or [])[:2]]
+    if a.get("esports") or a.get("category") == "e스포츠":
+        tags += ESPORTS_TAGS  # e스포츠는 기종 태그(스팀 등) 대신 대회 태그
+    else:
+        for p_ in a.get("platforms") or []:
+            tags += PLATFORM_TAGS.get(p_, [])
+    return tags + BASE_TAGS
 
 
 def check_icon(k, v):
@@ -920,7 +940,7 @@ def caption(a):
             if k in txt:
                 tags += ts[:1]
     tags += [HASHTAG[a["category"]]] if a.get("category") in HASHTAG else []
-    tags += ["게임뉴스", "알트탭"]
+    tags += ["게임뉴스", "알트탭"] + more_tags(a)
     srcs = [s_["name"] for s_ in a.get("sources", [])]
     if a.get("ig_body"):  # 인스타 매거진식: 리드 → 본문 → 정보 블록
         lines = []
@@ -941,7 +961,7 @@ def caption(a):
     for t in tags:  # 대소문자만 다른 태그는 하나로 (#LeagueOfLegends / #LeagueofLegends)
         if t and t.lower() not in uniq:
             uniq[t.lower()] = t
-    lines += ["", " ".join("#" + t for t in list(uniq.values())[:MAX_TAGS])]  # 질문 문구 없이 기사체로
+    lines += ["", " ".join("#" + t for t in list(uniq.values())[:COMMENT_TAGS])]  # 질문 문구 없이 기사체로
     return "\n".join(lines)[:2100]
 
 
@@ -986,13 +1006,14 @@ def split_tags(caption):
     tags = []
     while lines and lines[-1].strip().startswith("#"):
         tags.insert(0, lines.pop().strip())
-    return "\n".join(lines).rstrip(), " ".join(" ".join(tags).split()[:MAX_TAGS])
+    return "\n".join(lines).rstrip(), " ".join(" ".join(tags).split()[:COMMENT_TAGS])
 
 
 def clean_caption(caption):
     """댓글 방식이 막혀 있으면(권한 없음) 해시태그를 캡션에 그대로 둔다."""
     body, tags = split_tags(caption)
     if load(DATA / "state.json", {}).get("ig_comment_tags") is False:
+        tags = " ".join(tags.split()[:MAX_TAGS])  # 캡션에는 5개까지만
         return f"{body}\n\n{tags}" if tags else body
     return body
 
@@ -1003,7 +1024,11 @@ def comment_tags(mid, caption):
     if not tags or load(DATA / "state.json", {}).get("ig_comment_tags") is False:
         return
     try:
-        api("POST", f"{mid}/comments", message=tags)
+        try:
+            api("POST", f"{mid}/comments", message=tags)
+        except Exception as e:  # 태그가 많아서 막혔을 수 있다 → 5개로 한 번 더
+            print(f"  ! 해시태그 {len(tags.split())}개 댓글 실패, 5개로 재시도: {e}")
+            api("POST", f"{mid}/comments", message=" ".join(tags.split()[:MAX_TAGS]))
         st = load(DATA / "state.json", {})
         st["ig_comment_tags"] = True
         save(DATA / "state.json", st)

@@ -7,6 +7,9 @@ on:
       id:
         description: "게시할 대기열 id"
         required: true
+      tags:
+        description: "이미 올린 게시물에 해시태그 댓글만 더 달 때 (비우면 게시)"
+        required: false
 
 permissions:
   contents: write
@@ -33,6 +36,7 @@ jobs:
       - name: 게시
         env:
           POST_ID: ${{ inputs.id }}
+          TAGS: ${{ inputs.tags }}
         run: |
           git config user.name "webzine-bot"
           git config user.email "webzine-bot@users.noreply.github.com"

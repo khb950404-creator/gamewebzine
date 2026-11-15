@@ -22,5 +22,16 @@ def main(rid):
     push(f"인스타 즉시 게시: {rid}")
 
 
+def add_tags(rid, tags):
+    """이미 올린 게시물에 해시태그 댓글을 하나 더 단다 (사용자 지시가 있을 때만)."""
+    g.refresh_if_needed()
+    mid = g.load(g.POSTED, {})[rid]["media"]
+    g.api("POST", f"{mid}/comments", message=tags)
+    print(f"해시태그 댓글 추가: {rid} → {len(tags.split())}개")
+
+
 if __name__ == "__main__":
-    main(sys.argv[1])
+    if os.environ.get("TAGS"):
+        add_tags(sys.argv[1], os.environ["TAGS"])
+    else:
+        main(sys.argv[1])
