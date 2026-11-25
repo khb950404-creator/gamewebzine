@@ -240,7 +240,22 @@
  "id:1551980": {
   "appid": 1551980,
   "name": "Clive Barker's Hellraiser: Revival",
-  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1551980/d1e7111b93b6a8b3eb029908887648348c2c55e6/header.jpg?t=1791462446"
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1551980/d1e7111b93b6a8b3eb029908887648348c2c55e6/header.jpg?t=1795519744",
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1551980/ee693688114623ede11637a3aceeb24636b85fae/ss_ee693688114623ede11637a3aceeb24636b85fae.1920x1080.jpg?t=1795519744",
+  "info": {
+   "date": "2026년 10월 8일",
+   "soon": false,
+   "genres": [
+    "액션"
+   ],
+   "dev": "Saber Interactive",
+   "pub": "Saber Interactive",
+   "ko": false,
+   "ko_voice": false,
+   "price": "₩ 35,920",
+   "discount": 25,
+   "meta": null
+  }
  },
  "id:1352700": {
   "appid": 1352700,
@@ -31578,5 +31593,30 @@
   }
  },
  "itad:5472080": "01a162ad-efa3-730a-aa9a-9e56d7da2119",
- "itad:1145360": "018d937f-33f0-7200-80fc-87f769196c84"
+ "itad:1145360": "018d937f-33f0-7200-80fc-87f769196c84",
+ "id:5057800": {
+  "appid": 5057800,
+  "name": "When Chests Rain Tons of Loot",
+  "img": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5057800/b5d39447154225bb636567d630130f43ab161c7c/header.jpg?t=1795630389",
+  "hd": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5057800/215616ee5cf4e7e29af86a4423d2f3ec583452c3/ss_215616ee5cf4e7e29af86a4423d2f3ec583452c3.1920x1080.jpg?t=1795630389",
+  "info": {
+   "date": "2026년 11월 25일",
+   "soon": false,
+   "genres": [
+    "캐주얼",
+    "인디",
+    "전략"
+   ],
+   "dev": "LeenGameDev",
+   "pub": "LeenGameDev",
+   "ko": true,
+   "ko_voice": false,
+   "price": "₩ 7,020",
+   "discount": 10,
+   "meta": null
+  }
+ },
+ "itad:5057800": "01a05cae-524a-7093-a200-9b2c121f950f",
+ "itad:4019220": "01995753-2a17-70d4-bb5d-7abc91e63685",
+ "itad:1551980": "01983201-7a07-7112-b086-e83c2aa285cf"
 }
