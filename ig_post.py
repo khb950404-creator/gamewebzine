@@ -319,9 +319,61 @@ def featured_recent(posted, days=7):
     return {a for p in posted.values() if time.time() - p.get("ts", 0) < days * 86400 for a in p.get("appids", [])}
 
 
+WD = "월화수목금토일"
+DATE_RE = re.compile(r"(?:(\d{4})년 )?(\d{1,2})월 (\d{1,2})일(?!\s*\()")
+
+
+def with_weekday(text, now=None):
+    """'11월 30일까지' → '11월 30일(월)까지'. 독자가 달력을 다시 열지 않게 요일을 붙인다.
+    연도가 없으면 기준일에서 가까운 쪽(지난 두 달 ~ 앞으로 열 달)으로 보고, 그 밖의 날짜는 그대로 둔다."""
+    now = now or datetime.now()
+
+    def add(m):
+        years = [int(m[1])] if m[1] else [now.year, now.year + 1, now.year - 1]
+        for y in years:
+            try:
+                day = datetime(y, int(m[2]), int(m[3]))
+            except ValueError:
+                continue
+            if -60 <= (day - now).days <= 300:
+                return f"{m[0]}({WD[day.weekday()]})"
+        return m[0]
+    return DATE_RE.sub(add, text)
+
+
+def deal_reason(x):
+    """할인 한 줄 옆에 붙는 '살 이유'. 데이터에 있는 것만: 역대 최저가, 메타 점수, 한국어 지원, 마감일."""
+    why = []
+    if x.get("record"):
+        why.append("역대 최저가")
+    if x.get("meta"):
+        why.append(f"메타 {x['meta']}")
+    if x.get("ko"):
+        why.append("한국어 " + ("자막·음성" if x.get("ko_voice") else "자막"))
+    if x.get("expiry"):
+        end = datetime.strptime(x["expiry"][:10], "%Y-%m-%d")
+        why.append(f"{end.month}월 {end.day}일({WD[end.weekday()]})까지")
+    return " · ".join(why)
+
+
 def deal_caption(deals, head):
-    lines = [head, ""] + [f"▪ {x['name'].replace('™', '')} -{x['discount']}% ₩{x['final']:,}" for x in deals]
-    lines += ["", "할인은 게임별 마감일까지 진행된다. 가격은 게시 시점 Steam 한국 가격 기준이다.", "",
+    """할인 캡션: 맨 위에 '하나만 산다면' 한 개를 먼저 집고(목록의 첫 게임 = 점수 1위), 나머지는 이유와 함께 나열."""
+    def name(x):
+        return x["name"].replace("™", "").replace("®", "")
+
+    def line(x):
+        why = deal_reason(x)
+        return f"▪ {name(x)} -{x['discount']}% ₩{x['final']:,}" + (f" ({why})" if why else "")
+
+    lines = [head, ""]
+    rest = deals
+    if len(deals) >= 3 and deals[0].get("initial"):
+        pick, rest = deals[0], deals[1:]
+        lines += [f"📌 하나만 산다면: {name(pick)}",
+                  " · ".join(x for x in (f"₩{pick['initial']:,} → ₩{pick['final']:,} (-{pick['discount']}%)", deal_reason(pick)) if x),
+                  "", f"함께 볼 만한 {len(rest)}개"]
+    lines += [line(x) for x in rest]
+    lines += ["", "할인은 게임별 마감일까지 진행됩니다. 가격은 게시 시점 Steam 한국 가격 기준입니다.", "",
               "이번에 장바구니에 담을 게임은?", "",
               "#스팀할인 #스팀세일 #게임할인 #역대최저가 #PC게임 #게임추천 #알트탭 #steamsale #steamdeals #pcgaming #gamedeals #steam #game #games #videogame #gamer #게임 #게이머"]
     return "\n".join(lines)
@@ -962,9 +1014,10 @@ def caption(a):
     else:
         lines = [a["title"], ""] + [to_news_tone(t) for t in a.get("tldr", [])[:3]]
     if a.get("check"):  # 저장하고 다시 볼 실용 정보
-        lines += [""] + [f"{check_icon(c['k'], c['v'])} {c['k']}: {c['v']}" for c in a["check"][:6]]
+        wrote = datetime.fromtimestamp(a.get("written") or a.get("ts") or time.time())  # 요일 계산 기준일
+        lines += [""] + [f"{check_icon(c['k'], c['v'])} {c['k']}: {with_weekday(c['v'], wrote)}" for c in a["check"][:6]]
     if a.get("ig_save"):  # etc_zine 식: 할 일이 있는 소식에만, 대상 독자를 집어 저장 이유 한 줄
-        lines += ["", "🔖 " + a["ig_save"]]
+        lines += ["", "🔖 " + with_weekday(a["ig_save"], datetime.fromtimestamp(a.get("written") or a.get("ts") or time.time()))]
     if a.get("takeaway") and not a.get("ig_body"):
         lines += ["", a["takeaway"]]
     if srcs:

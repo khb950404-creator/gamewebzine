@@ -150,8 +150,8 @@ def slide_deal(x, page, total):
     y += 86
     info = []
     if x.get("expiry"):
-        m, dd = x["expiry"][5:7], x["expiry"][8:10]
-        info.append(f"{int(m)}월 {int(dd)}일까지")
+        end = datetime.strptime(x["expiry"][:10], "%Y-%m-%d")
+        info.append(f"{end.month}월 {end.day}일({'월화수목금토일'[end.weekday()]})까지")
     if x.get("genres"):
         info.append(" · ".join(x["genres"][:2]))
     d.text((76, y), "   |   ".join(info), font=NR(34), fill=SOFT)
