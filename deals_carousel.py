@@ -67,7 +67,10 @@ def pick_deals(n=7):
         app = apps.get(f"id:{x['appid']}") or {}
         extra = alld.get(norm(app.get("name"))) or alld.get(norm(x["name"])) or {}
         lo = x.get("ever_low") or extra.get("lo")
-        x = {**x, "hd": key_art(x["appid"], app.get("hd") or x["img"]), "expiry": extra.get("x", ""),
+        expiry = extra.get("x") or ""
+        if expiry[:10] < datetime.now().strftime("%Y-%m-%d"):  # 마감일 원본이 오래돼 이미 지난 날짜면 표시하지 않는다
+            expiry = ""
+        x = {**x, "hd": key_art(x["appid"], app.get("hd") or x["img"]), "expiry": expiry,
              "record": bool(lo) and x["final"] <= lo * 1.02}
         score = (3 if x["record"] else 0) + (2 if x["ko"] else 0) + (1 if (x.get("meta") or 0) >= 75 else 0) \
             + (1 if x["rank"] <= 30 else 0) + x["discount"] / 100
